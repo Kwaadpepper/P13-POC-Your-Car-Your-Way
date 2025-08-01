@@ -1,0 +1,29 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-idiomatic-order"
+  ],
+  "files": [
+    "**/*.css"
+  ],
+  "ignoreFiles": [
+    "**/vendor/*.css",
+    "**/vendor/**/*.css"
+  ],
+  "rules": {
+    "declaration-property-value-no-unknown": true,
+    "selector-max-id": null,
+    "color-no-invalid-hex": true,
+    "order/properties-alphabetical-order": null,
+    "selector-max-compound-selectors": 5,
+    "max-nesting-depth": 5,
+    "at-rule-no-deprecated": [
+      true,
+      {
+        "ignoreAtRules": [
+          "apply"
+        ]
+      }
+    ]
+  }
+}

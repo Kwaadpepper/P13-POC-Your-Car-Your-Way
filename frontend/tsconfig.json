@@ -25,12 +25,6 @@
   "files": [],
   "references": [
     {
-      "path": "./projects/host-app/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/host-app/tsconfig.spec.json"
-    },
-    {
       "path": "./projects/shell/tsconfig.app.json"
     },
     {

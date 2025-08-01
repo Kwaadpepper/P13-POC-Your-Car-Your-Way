@@ -2,7 +2,7 @@ import { bootstrapApplication } from '@angular/platform-browser'
 import { provideRouter } from '@angular/router'
 import { APP_CONFIG } from '@ycyw/shared'
 
-import { App } from './app/app'
+import { App } from './app/app.component'
 import { AppConfig } from './app/app.config'
 import { routes } from './app/app.routes'
 

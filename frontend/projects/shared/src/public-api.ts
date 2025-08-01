@@ -8,9 +8,9 @@ export {
 } from './lib'
 
 // * CONFIG
-export type {
+export {
   APP_CONFIG,
-  ApplicationConfig,
+  type ApplicationConfig,
 } from './config'
 
 // * SERVICES

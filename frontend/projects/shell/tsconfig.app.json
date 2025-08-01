@@ -2,7 +2,26 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      // INHERITANCE
+      "@ycyw/shared": [
+        "../../dist/shared"
+      ],
+      // SHELL
+      "@core/*": [
+        "./src/app/core/*"
+      ],
+      "@env/*": [
+        "./src/environment/*"
+      ],
+      "@routes": [
+        "./src/app/app.routes.ts"
+      ],
+      "@layout": [
+        "./src/app/layout"
+      ],
+    },
   },
   "include": [
     "src/**/*.ts"

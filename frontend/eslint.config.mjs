@@ -33,17 +33,6 @@ export default tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      // Garde la règle d'accessibilité que vous avez ajoutée
-      "@typescript-eslint/explicit-function-return-type": [
-        "error",
-        {
-          "allowExpressions": false,
-          "allowHigherOrderFunctions": false,
-          "allowTypedFunctionExpressions": false,
-          "allowDirectConstAssertionInArrowFunctions": true,
-          "allowConciseArrowFunctionExpressionsStartingWithVoid": true,
-        }
-      ],
       // Assurez-vous que vos sélecteurs de directives sont cohérents
       "@angular-eslint/directive-selector": [
         "error",

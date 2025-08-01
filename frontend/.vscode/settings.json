@@ -1,6 +1,7 @@
 {
     "conventionalCommits.scopes": [
         "frontend",
-        "frontend-users"
+        "frontend-users",
+        "frontend-shell"
     ]
 }

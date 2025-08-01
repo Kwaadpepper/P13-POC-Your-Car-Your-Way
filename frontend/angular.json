@@ -5,7 +5,17 @@
   "projects": {
     "shell": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "projects/shell",
       "sourceRoot": "projects/shell/src",
       "prefix": "app",
@@ -25,13 +35,16 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-architects/native-federation:build",
-          "options": {
-            "target": "shell:serve-original:development",
-            "rebuildDelay": 0,
-            "dev": true,
-            "port": 0
-          }
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "development": {
+              "buildTarget": "shell:esbuild:development"
+            },
+            "production": {
+              "buildTarget": "shell:esbuild:production"
+            }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
@@ -39,6 +52,10 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "projects/shell/tsconfig.spec.json",
             "assets": [
               {
@@ -66,7 +83,7 @@
               "projects/shell/src/styles.css"
             ],
             "polyfills": [
-              "es-module-shims"
+              "zone.js"
             ]
           },
           "configurations": {
@@ -121,7 +138,17 @@
     },
     "users-app": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
       "root": "projects/users-app",
       "sourceRoot": "projects/users-app/src",
       "prefix": "app",
@@ -131,23 +158,26 @@
           "options": {},
           "configurations": {
             "production": {
-              "target": "users-app:esbuild:production"
+              "target": "shell:esbuild:production"
             },
             "development": {
-              "target": "users-app:esbuild:development",
+              "target": "shell:esbuild:development",
               "dev": true
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-architects/native-federation:build",
-          "options": {
-            "target": "users-app:serve-original:development",
-            "rebuildDelay": 0,
-            "dev": true,
-            "port": 0
-          }
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "development": {
+              "buildTarget": "shell:esbuild:development"
+            },
+            "production": {
+              "buildTarget": "shell:esbuild:production"
+            }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
@@ -155,6 +185,10 @@
         "test": {
           "builder": "@angular/build:karma",
           "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "projects/users-app/tsconfig.spec.json",
             "assets": [
               {
@@ -168,7 +202,7 @@
           }
         },
         "esbuild": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "@angular/build:application",
           "options": {
             "browser": "projects/users-app/src/main.ts",
             "tsConfig": "projects/users-app/tsconfig.app.json",
@@ -182,7 +216,7 @@
               "projects/users-app/src/styles.css"
             ],
             "polyfills": [
-              "es-module-shims"
+              "zone.js"
             ]
           },
           "configurations": {

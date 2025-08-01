@@ -20,6 +20,7 @@
   },
   "private": true,
   "dependencies": {
+    "@angular-architects/native-federation": "^20.1.2",
     "@angular/animations": "^20.1.0",
     "@angular/common": "^20.1.0",
     "@angular/compiler": "^20.1.0",
@@ -33,6 +34,7 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@angular-devkit/build-angular": "^20.1.4",
     "@angular/build": "^20.1.4",
     "@angular/cli": "^20.1.4",
     "@angular/compiler-cli": "^20.1.0",

@@ -34,6 +34,7 @@ export default tseslint.config(
     processor: angular.processInlineTemplates,
     rules: {
       // Assurez-vous que vos sélecteurs de directives sont cohérents
+      "@typescript-eslint/no-explicit-any": "error",
       "@angular-eslint/directive-selector": [
         "error",
         {

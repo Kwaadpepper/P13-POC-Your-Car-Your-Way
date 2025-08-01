@@ -10,7 +10,7 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "paths": {
-      "shared": [
+      "@ycyw/shared": [
         "./dist/shared"
       ]
     },

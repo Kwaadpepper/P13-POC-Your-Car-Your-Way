@@ -8,6 +8,9 @@
       "@ycyw/shared": [
         "../../dist/shared"
       ],
+      "@themes": [
+        "../../themes"
+      ],
       // SHELL
       "@core/*": [
         "./src/app/core/*"

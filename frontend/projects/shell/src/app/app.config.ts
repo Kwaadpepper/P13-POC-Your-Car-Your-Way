@@ -1,5 +1,5 @@
+import { environment } from '@env/environment'
 import { ApplicationConfig } from '@ycyw/shared'
-import { environment } from '../environments/environment'
 
 export const AppConfig: ApplicationConfig = {
   appName: 'Your Car Your Way',

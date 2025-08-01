@@ -1,6 +1,6 @@
 import { initFederation } from '@angular-architects/native-federation'
 import { enableProdMode } from '@angular/core'
-import { environment } from './environments/environment'
+import { environment } from '@env/environment'
 
 if (environment.env === 'production') {
   enableProdMode()

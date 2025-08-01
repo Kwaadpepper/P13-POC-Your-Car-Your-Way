@@ -1,11 +1,9 @@
-const { withNativeFederation, shareAll } = require('@angular-architects/native-federation/config');
+import { shareAll, withNativeFederation } from '@angular-architects/native-federation/config';
 
-module.exports = withNativeFederation({
-
-  name: 'users-app',
-
-  exposes: {
-    './Component': './projects/users-app/src/app/app.ts',
+export default withNativeFederation({
+  name: 'shell',
+  remotes: {
+    'users_app': 'http://localhost:4201/remoteEntry.json',
   },
 
   shared: {

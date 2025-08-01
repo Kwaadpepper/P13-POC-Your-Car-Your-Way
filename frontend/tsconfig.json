@@ -12,7 +12,10 @@
     "paths": {
       "@ycyw/shared": [
         "./dist/shared"
-      ]
+      ],
+      "@themes": [
+        "./themes"
+      ],
     },
     "importHelpers": true,
     "target": "ES2022",

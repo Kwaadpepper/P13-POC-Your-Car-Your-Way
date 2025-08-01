@@ -1,21 +1,41 @@
-import { Component, inject, signal } from '@angular/core'
+import { Component } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { ConfigService } from '@ycyw/shared'
+import { ToastModule } from 'primeng/toast'
+
+import { HeaderComponent } from '@layout'
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  imports: [RouterOutlet],
+  styleUrls: ['./app.component.css'],
+  imports: [
+    RouterOutlet,
+    HeaderComponent,
+    ToastModule,
+  ],
 })
-export class App {
-  protected readonly title = signal<string>('')
+export class AppComponent {
+  onActivate(): void {
+    this.scrollToTop()
+  }
 
-  private readonly configService = inject(ConfigService)
+  onAttach(): void {
+    this.scrollToTop()
+  }
 
-  constructor() {
-    const appConfig = this.configService.config
-
-    this.title.set(appConfig.appName)
+  /**
+   * Scrolls the window to the top.
+   */
+  private scrollToTop(): void {
+    if (window.scroll) {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth',
+      })
+    }
+    else {
+      window.scrollTo(0, 0) // For Safari
+    }
   }
 }

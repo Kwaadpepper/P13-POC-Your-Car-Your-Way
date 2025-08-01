@@ -60,11 +60,12 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/shell/public"
+                "input": "projects/shell/public",
+                "output": "/"
               }
             ],
             "styles": [
-              "projects/shell/src/styles.css"
+              "projects/shell/src/styles/styles.css"
             ]
           }
         },
@@ -76,11 +77,12 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/shell/public"
+                "input": "projects/shell/public",
+                "output": "/"
               }
             ],
             "styles": [
-              "projects/shell/src/styles.css"
+              "projects/shell/src/styles/styles.css"
             ],
             "polyfills": [
               "zone.js"
@@ -193,11 +195,12 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/users-app/public"
+                "input": "projects/users-app/public",
+                "output": "/users"
               }
             ],
             "styles": [
-              "projects/users-app/src/styles.css"
+              "projects/users-app/src/styles/styles.css"
             ]
           }
         },
@@ -209,11 +212,12 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/users-app/public"
+                "input": "projects/users-app/public",
+                "output": "/users"
               }
             ],
             "styles": [
-              "projects/users-app/src/styles.css"
+              "projects/users-app/src/styles/styles.css"
             ],
             "polyfills": [
               "zone.js"

@@ -7,8 +7,6 @@ describe('App', () => {
     await TestBed.configureTestingModule({
       imports: [
         RouterModule.forRoot([]),
-      ],
-      declarations: [
         App,
       ],
     }).compileComponents()

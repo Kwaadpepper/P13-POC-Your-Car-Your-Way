@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component } from '@angular/core'
 
 @Component({
-  selector: 'lib-shared',
+  selector: 'app-lib-shared',
   imports: [],
   template: `
     <p>
       shared works!
     </p>
   `,
-  styles: ``
+  styles: ``,
 })
 export class Shared {
 

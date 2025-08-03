@@ -4,10 +4,22 @@ This project was generated using [Angular CLI](https://github.com/angular/angula
 
 ## Development server
 
+To install packages you may need bun <https://bun.sh/>:
+
+```sh
+curl -fsSL https://bun.sh/install | bash
+```
+
+You could also just use another package manager with Node.js if you prefer.
+
 To start a local development server, run:
 
 ```bash
-ng serve
+bun run ng serve shell
+
+#or
+
+ng serve shell
 ```
 
 Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.

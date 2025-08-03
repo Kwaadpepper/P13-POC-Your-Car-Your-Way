@@ -1,21 +1,27 @@
-@import url("primeicons/primeicons.css");
-@import url("./vars.css");
-@import url("./titles.css");
-@import url("./fonts.css");
+@import url("tailwindcss");
 
-/* You can add global styles to this file, and also import other style files */
-@layer tailwind-base, primeng, tailwind-utilities;
+/* stylelint-disable-next-line at-rule-no-unknown */
+@plugin "tailwindcss-primeui";
 
-@layer tailwind-base {
-  /* stylelint-disable-next-line at-rule-no-unknown */
-  @tailwind base;
+/* stylelint-disable-next-line at-rule-no-unknown */
+@plugin "tailwind-bootstrap-grid" {
+  container_max_widths:
+    'sm', '540px', 'md', '720px', 'lg', '960px', 'xl', '1140px', '2xl', '1320px';
 }
 
-@layer primeng;
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
+@import url("primeicons/primeicons.css");
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
+@import url("./vars.css");
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
+@import url("./titles.css");
+/* stylelint-disable-next-line no-invalid-position-at-import-rule */
+@import url("./fonts.css");
 
-@layer tailwind-utilities {
-  /* stylelint-disable-next-line at-rule-no-unknown */
-  @tailwind components;
+
+@layer plugins;
+
+@layer plugins {
   /* stylelint-disable-next-line at-rule-no-unknown */
   @tailwind utilities;
 }

@@ -24,7 +24,7 @@ bootstrapApplication(AppComponent, {
           darkModeSelector: 'system',
           cssLayer: {
             name: 'primeng',
-            order: 'tailwind-base, primeng, tailwind-utilities',
+            order: 'theme,base,components,utilities,plugins,primeng',
           },
         },
       },

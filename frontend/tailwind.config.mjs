@@ -1,11 +1,17 @@
+import tailwindBootstrapGrid from 'tailwind-bootstrap-grid';
+import tailwindcssPrimeUI from 'tailwindcss-primeui';
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-    content: ["./src/**/*.{html,js}"],
+export default {
+  content: [
+      "./projects/**/*.{html,ts}",
+      "./projects/**/*.{css,scss}"
+    ],
     theme: {
         extend: {},
     },
     plugins: [
-        require('tailwind-bootstrap-grid')({
+        tailwindBootstrapGrid({
             containerMaxWidths: {
                 sm: '540px',
                 md: '720px',
@@ -13,8 +19,7 @@ module.exports = {
                 xl: '1140px',
             },
         }),
-        require('tailwindcss-primeui'),
-        require('@tailwindcss/typography'),
+        tailwindcssPrimeUI,
     ],
     corePlugins: {
         container: false,

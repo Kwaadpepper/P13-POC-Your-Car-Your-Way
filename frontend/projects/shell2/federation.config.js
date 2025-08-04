@@ -1,11 +1,6 @@
-import { shareAll, withNativeFederation } from '@angular-architects/native-federation/config';
+const { withNativeFederation, shareAll } = require('@angular-architects/native-federation/config');
 
-export default withNativeFederation({
-  name: 'users-app',
-
-  exposes: {
-    './Component': './projects/users-app/src/app/app.ts',
-  },
+module.exports = withNativeFederation({
 
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),
@@ -28,4 +23,5 @@ export default withNativeFederation({
     // get the traditional behavior:
     ignoreUnusedDeps: true
   }
+
 });

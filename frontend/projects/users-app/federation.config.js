@@ -1,9 +1,11 @@
-import { shareAll, withNativeFederation } from '@angular-architects/native-federation/config';
+const { shareAll, withNativeFederation } = require('@angular-architects/native-federation/config');
 
-export default withNativeFederation({
-  name: 'shell',
-  remotes: {
-    'users_app': 'http://localhost:4201/remoteEntry.json',
+module.exports = withNativeFederation({
+
+  name: 'users-app',
+
+  exposes: {
+    'TchatWindow': './projects/users-app/src/app/tchat-window/tchat-window.component.ts',
   },
 
   shared: {

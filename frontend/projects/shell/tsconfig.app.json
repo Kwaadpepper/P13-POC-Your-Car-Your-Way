@@ -4,14 +4,6 @@
     "outDir": "../../out-tsc/app",
     "types": [],
     "paths": {
-      // INHERITANCE
-      "@ycyw/shared": [
-        "../../dist/shared"
-      ],
-      "@themes": [
-        "../../themes"
-      ],
-      // SHELL
       "@core/*": [
         "./src/app/core/*"
       ],
@@ -24,7 +16,16 @@
       "@layout": [
         "./src/app/layout"
       ],
-    },
+      "@remote/*": [
+        "./src/app/remote/*"
+      ],
+      "@ycyw/shared": [
+        "../../dist/shared"
+      ],
+      "@themes": [
+        "../../themes"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts"

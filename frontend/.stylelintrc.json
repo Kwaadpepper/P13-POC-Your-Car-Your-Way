@@ -11,6 +11,7 @@
     "**/vendor/**/*.css"
   ],
   "rules": {
+    "import-notation": null,
     "declaration-property-value-no-unknown": true,
     "selector-max-id": null,
     "color-no-invalid-hex": true,

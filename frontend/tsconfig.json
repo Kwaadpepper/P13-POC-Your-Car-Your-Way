@@ -34,6 +34,15 @@
       "path": "./projects/shell/tsconfig.app.json"
     },
     {
+      "path": "./projects/users-app/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/shared/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/shell/tsconfig.app.json"
+    },
+    {
       "path": "./projects/shell/tsconfig.spec.json"
     },
     {
@@ -43,10 +52,16 @@
       "path": "./projects/users-app/tsconfig.spec.json"
     },
     {
-      "path": "./projects/shared/tsconfig.lib.json"
+      "path": "./projects/support-app/tsconfig.app.json"
     },
     {
-      "path": "./projects/shared/tsconfig.spec.json"
+      "path": "./projects/support-app/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/shell2/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/shell2/tsconfig.spec.json"
     }
   ]
 }

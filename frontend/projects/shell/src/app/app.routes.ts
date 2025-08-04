@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router'
 
-import { loadRemoteModule } from '@angular-architects/native-federation'
 import { GuestGuard } from './guard'
 import { HomeComponent } from './pages'
 
@@ -19,11 +18,23 @@ export const routes: Routes = [
     component: HomeComponent,
   },
   {
-    path: 'users',
-    loadComponent: () =>
-      loadRemoteModule({
-        remoteName: 'users_app',
-        exposedModule: './Component',
-      }).then(m => m.AppComponent),
+    path: 'login',
+    canActivate: [],
+    title: 'Bienvenue',
+    component: HomeComponent,
   },
+  {
+    path: 'posts',
+    canActivate: [],
+    title: 'Bienvenue',
+    component: HomeComponent,
+  },
+  // {
+  //   path: 'users',
+  //   loadComponent: () => loadRemoteModule('users-app', './TchatWindow').then(m => m.TchatWindow),
+  // },
+  // {
+  //   path: 'users2',
+  //   component: TchatWindow,
+  // },
 ]

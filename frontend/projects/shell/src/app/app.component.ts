@@ -5,7 +5,7 @@ import { ToastModule } from 'primeng/toast'
 import { HeaderComponent } from '@layout'
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-shell-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   imports: [

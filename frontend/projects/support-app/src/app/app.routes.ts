@@ -1,8 +1,9 @@
-import { Routes } from '@angular/router'
-import { TchatDetail } from './components/tchat-detail/tchat-detail'
-import { TchatWindow } from './components/tchat-window/tchat-window'
+import { NgModule } from '@angular/core'
+import { RouterModule, Routes } from '@angular/router'
 
-export const routes: Routes = [
+import { TchatDetail, TchatWindow } from './components'
+
+const routes: Routes = [
   {
     path: '',
     component: TchatWindow,
@@ -12,3 +13,9 @@ export const routes: Routes = [
     component: TchatDetail,
   },
 ]
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule { }

@@ -11,13 +11,3 @@ import { RouterModule } from '@angular/router'
 })
 export class App {
 }
-
-@Component({
-  selector: 'app-root',
-  // eslint-disable-next-line @angular-eslint/prefer-standalone
-  standalone: false,
-  templateUrl: './app.html',
-  styleUrl: './app.css',
-})
-export class AppForModule {
-}

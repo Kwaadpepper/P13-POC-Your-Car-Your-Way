@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router'
 
-import { GuestGuard } from './core/auth/guard'
+import { GuestGuard } from './guard'
 import { HomeComponent } from './pages'
 
 export const redirectUrls = {

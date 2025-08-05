@@ -12,7 +12,19 @@ export const routes: Routes = [
     loadChildren: () =>
       loadRemoteModule({
         remoteName: 'support-app',
-        exposedModule: './Module',
-      }).then(m => m.AppModule),
+        exposedModule: './routes',
+      })
+        .then((m) => {
+          console.log(m)
+          return m.routes
+        }),
   },
+  // {
+  //   path: 'support',
+  //   loadChildren: () =>
+  //     loadRemoteModule({
+  //       remoteName: 'support-app',
+  //       exposedModule: './Module',
+  //     }).then(m => m.AppModule),
+  // },
 ]

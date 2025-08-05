@@ -5,7 +5,8 @@ module.exports = withNativeFederation({
   name: 'support-app',
 
   exposes: {
-    './Module': './projects/support-app/src/app/app.module.ts',
+    "./routes": "./projects/support-app/src/app/app.routes.ts",
+    // './Module': './projects/support-app/src/app/app.module.ts',
   },
 
   shared: {

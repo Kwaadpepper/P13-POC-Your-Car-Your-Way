@@ -5,7 +5,7 @@ module.exports = withNativeFederation({
   name: 'support-app',
 
   exposes: {
-    './Component': './projects/support-app/src/app/app.ts',
+    './Module': './projects/support-app/src/app/app.module.ts',
   },
 
   shared: {
@@ -18,7 +18,6 @@ module.exports = withNativeFederation({
     'rxjs/testing',
     'rxjs/webSocket',
     // Add further packages you don't need at runtime
-    '@components'
   ],
 
   // Please read our FAQ about sharing libs:

@@ -1,20 +1,21 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core'
-import { BrowserModule } from '@angular/platform-browser'
 
-import { App } from './app'
-import { AppRoutingModule } from './app.routes'
+import { CommonModule } from '@angular/common'
+import { RouterModule } from '@angular/router'
+import { AppForModule } from './app'
+import { routes } from './app.routes'
 
 @NgModule({
   declarations: [
-    App,
+    AppForModule,
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
+    CommonModule,
+    RouterModule.forChild(routes),
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
   ],
-  bootstrap: [App],
+  bootstrap: [AppForModule],
 })
 export class AppModule { }

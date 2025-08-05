@@ -5,7 +5,7 @@ module.exports = withNativeFederation({
   name: 'support-app',
 
   exposes: {
-    './Support': './projects/support-app/src/app/components/tchat-window/tchat-window.ts',
+      './SupportModule': './projects/support-app/src/app/support.module.ts',
   },
 
   shared: {

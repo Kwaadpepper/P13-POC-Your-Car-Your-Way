@@ -9,6 +9,10 @@ export const routes: Routes = [
   },
   {
     path: 'support',
-    loadComponent: () => loadRemoteModule('support-app', './Support').then(m => m.TchatWindow),
+    loadChildren: () =>
+      loadRemoteModule({
+        remoteName: 'support-app',
+        exposedModule: './SupportModule',
+      }).then(m => m.SupportModule),
   },
 ]

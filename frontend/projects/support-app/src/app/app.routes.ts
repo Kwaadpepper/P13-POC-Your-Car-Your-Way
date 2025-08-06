@@ -1,11 +1,12 @@
 import { Routes } from '@angular/router'
 
-import { home } from './core'
+import { Dashboard } from '@support-core/home/pages'
+import { homeRoutes } from '@support-core/home/routes'
 
 export const routes: Routes = [
   {
     path: '',
-    component: home.pages.Dashboard,
+    component: Dashboard,
   },
-  ...home.routes,
+  ...homeRoutes,
 ]

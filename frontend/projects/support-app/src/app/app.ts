@@ -1,11 +1,11 @@
 import { Component } from '@angular/core'
 
-import { layout } from './core'
+import { Main } from '@support-core/layout'
 
 @Component({
   selector: 'app-root',
   imports: [
-    layout.Main,
+    Main,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',

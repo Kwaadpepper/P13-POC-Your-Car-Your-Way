@@ -10,6 +10,15 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "paths": {
+      "@support-core/*": [
+        "./projects/support-app/src/app/core/*"
+      ],
+      "@support-domains/*": [
+        "./projects/support-app/src/app/domains/*"
+      ],
+      "@support-shared/*": [
+        "./projects/support-app/src/app/shared/*"
+      ],
       "@ycyw/shared": [
         "./dist/shared"
       ],

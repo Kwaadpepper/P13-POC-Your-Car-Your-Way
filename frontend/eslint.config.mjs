@@ -13,7 +13,7 @@ export default tseslint.config(
       "projects/**/dist/**",
       "src/polyfills.ts",
       "src/test.ts"
-    ]
+    ],
   },
   {
     files: ["**/*.ts"],
@@ -58,7 +58,7 @@ export default tseslint.config(
           "varsIgnorePattern": "^_",
           "caughtErrorsIgnorePattern": "^_"
         }
-      ]
+      ],
     }
   },
   {

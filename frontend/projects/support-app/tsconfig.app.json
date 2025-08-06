@@ -9,16 +9,7 @@
       ],
       "@themes": [
         "../../themes"
-      ],
-      "core/*": [
-        "./src/app/core/*"
-      ],
-      "domains/*": [
-        "./src/app/domains/*"
-      ],
-      "shared/*": [
-        "./src/app/shared/*"
-      ],
+      ]
     }
   },
   "include": [

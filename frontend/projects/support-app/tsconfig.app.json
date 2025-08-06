@@ -9,6 +9,9 @@
       "@support-core/*": [
         "./src/app/core/*"
       ],
+      "@support-env/*": [
+        "./src/environments/*"
+      ],
       "@support-domains/*": [
         "./src/app/domains/*"
       ],

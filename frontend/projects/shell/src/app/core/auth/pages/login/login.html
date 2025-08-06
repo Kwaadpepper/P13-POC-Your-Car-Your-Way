@@ -1,1 +1,61 @@
-<p>login works!</p>
+<div class="container-fluid min-h-full">
+  <div class="row mb-3">
+    <div class="col text-center">
+      <shell-back-button backUrl="/" />
+
+      <div class="sm:hidden flex flex-row justify-center pt-10">
+        <img class="img-fluid " src="/assets/pictures/logo_p6.png" alt="Logo Monde de dèv" />
+      </div>
+
+      <h1>Se connecter</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="form" class="mx-auto sm:max-w-80" (ngSubmit)="onSubmit()">
+
+        @if (viewModel.formErrorMessage()) {
+        <p-message icon="pi pi-times-circle" styleClass="mb-3" severity="error">
+          {{ viewModel.formErrorMessage() }}
+        </p-message>
+        }
+
+        <div class="flex flex-col mb-3">
+          <label for="login">Email ou nom d'utilisateur</label>
+          <input pInputText id="login" formControlName="login" aria-describedby="login-help" />
+          @if (form.controls.login.dirty || form.controls.login.touched) {
+          <small id="login-help" class="text-red-600">
+            @if (form.controls.login.hasError('required')) {
+            <span class="block"> Obligatoire.</span>
+            }
+          </small>
+          }
+        </div>
+
+        <div class="flex flex-col mb-3">
+          <label for="password">Mot de passe</label>
+          <input pInputText id="password" formControlName="password" aria-describedby="password-help" type="password" />
+          @if (form.controls.login.dirty || form.controls.login.touched) {
+          <small id="login-help" class="text-red-600">
+            @if (form.controls.login.hasError('required')) {
+            <span class="block"> Obligatoire.</span>
+            }
+          </small>
+          }
+        </div>
+
+
+        <div class="flex flex-col mb-3">
+          <button pButton class="mx-auto my-4" [disabled]="!form.valid || viewModel.loading()" type="submit">
+            <span pButtonLabel>Se connecter</span>
+            @if (viewModel.loading()) {
+            <span pButtonLabel>
+              <i class="pi pi-spin pi-cog"></i>
+            </span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,10 +1,9 @@
 import { Component, inject } from '@angular/core'
 import { ActivatedRoute, RouterLink } from '@angular/router'
-
 import { SuperLabel } from '@support-domains/tchat/components'
 
 @Component({
-  selector: 'app-tchat-detail',
+  selector: 'support-tchat-detail',
   imports: [
     RouterLink,
     SuperLabel,

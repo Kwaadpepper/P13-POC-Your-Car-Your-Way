@@ -1,7 +1,7 @@
 import { Component } from '@angular/core'
 
 @Component({
-  selector: 'app-super-label',
+  selector: 'support-super-label',
   templateUrl: './super-label.html',
   styleUrl: './super-label.css',
 })

@@ -1,5 +1,4 @@
 import { inject, Injectable, signal } from '@angular/core'
-
 import { ConfigStore } from '@ycyw/shared'
 
 @Injectable({

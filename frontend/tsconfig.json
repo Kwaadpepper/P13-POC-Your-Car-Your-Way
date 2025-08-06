@@ -71,18 +71,6 @@
     },
     {
       "path": "./projects/shell2/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/test/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/test/tsconfig.spec.json"
-    },
-    {
-      "path": "./projects/test2/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/test2/tsconfig.spec.json"
     }
   ]
 }

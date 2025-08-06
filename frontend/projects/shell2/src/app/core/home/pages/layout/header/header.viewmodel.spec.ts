@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing'
-
 import { Router } from '@angular/router'
 import { SessionStore } from '@shell2-core/auth/stores'
 import { of } from 'rxjs'
+
 import { HeaderViewModel } from './header.viewmodel'
 
 describe('HeaderModel', () => {

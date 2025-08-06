@@ -1,5 +1,4 @@
 import { computed, inject, Injectable } from '@angular/core'
-
 import { SessionStore } from '@shell2-core/auth/stores'
 
 @Injectable({

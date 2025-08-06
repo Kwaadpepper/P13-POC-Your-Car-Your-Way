@@ -2,6 +2,7 @@
 import eslint from "@eslint/js";
 import stylistic from "@stylistic/eslint-plugin";
 import angular from "angular-eslint";
+import importEslint from "eslint-plugin-import";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
@@ -30,6 +31,8 @@ export default tseslint.config(
 
       // Règles recommandées pour Angular TypeScript
       ...angular.configs.tsRecommended,
+
+      importEslint.flatConfigs.typescript,
     ],
     processor: angular.processInlineTemplates,
     rules: {
@@ -59,6 +62,21 @@ export default tseslint.config(
           "caughtErrorsIgnorePattern": "^_"
         }
       ],
+      "semi": ["error", "never"],
+      "import/order": [
+        "error",
+        {
+            "groups": [
+                "builtin",
+                "external",
+                "internal",
+                "parent",
+                "sibling",
+                "index"
+            ],
+            "newlines-between": "always"
+        }
+    ]
     }
   },
   {

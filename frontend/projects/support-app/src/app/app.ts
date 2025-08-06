@@ -1,9 +1,8 @@
 import { Component } from '@angular/core'
-
 import { Main } from '@support-core/layout'
 
 @Component({
-  selector: 'app-root',
+  selector: 'support-root',
   imports: [
     Main,
   ],

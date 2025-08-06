@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core'
 import { CanActivate, GuardResult, MaybeAsync, RedirectCommand, Router } from '@angular/router'
-
 import { redirectUrls } from '@shell2-core/auth/routes'
 import { SessionStore } from '@shell2-core/auth/stores'
 

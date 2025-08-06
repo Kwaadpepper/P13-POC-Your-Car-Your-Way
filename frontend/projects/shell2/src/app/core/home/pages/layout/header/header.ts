@@ -5,6 +5,7 @@ import { DrawerModule } from 'primeng/drawer'
 import { filter, Subject, takeUntil } from 'rxjs'
 
 import { NavMenu } from '../nav-menu/nav-menu'
+
 import { HeaderViewModel } from './header.viewmodel'
 
 @Component({

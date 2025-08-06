@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { RouterModule } from '@angular/router'
 
 @Component({
-  selector: 'app-layout',
+  selector: 'shell2-layout',
   imports: [
     RouterModule,
   ],

@@ -2,7 +2,7 @@ import { Component } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
 @Component({
-  selector: 'app-tchat-window',
+  selector: 'support-tchat-window',
   imports: [
     RouterLink,
   ],

@@ -1,6 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
 import { Router } from '@angular/router'
-
 import { redirectUrls } from '@shell2-core/auth/routes'
 import { SessionStore } from '@shell2-core/auth/stores'
 import { ConfigStore } from '@ycyw/shared'

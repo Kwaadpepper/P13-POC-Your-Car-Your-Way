@@ -1,12 +1,12 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core'
 import { provideRouter } from '@angular/router'
-import { providePrimeNG } from 'primeng/config'
 import { OpenClassrooms } from '@themes'
 import { APP_CONFIG, Configuration } from '@ycyw/shared'
+import { providePrimeNG } from 'primeng/config'
 
+import { environment } from './../environments/environment'
 import { routes } from './app.routes'
 import config from './application.json'
-import { environment } from './environment/environment'
 
 export const AppConfig: Configuration = {
   ...config,

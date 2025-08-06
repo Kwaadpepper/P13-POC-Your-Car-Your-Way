@@ -56,7 +56,13 @@
             },
             "development": {
               "target": "shell:esbuild:development",
-              "dev": true
+              "dev": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/shell/src/environments/environment.ts",
+                  "with": "projects/shell/src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"

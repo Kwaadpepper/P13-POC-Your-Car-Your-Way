@@ -10,7 +10,7 @@ export {
 // * CONFIG
 export {
   APP_CONFIG,
-  type ApplicationConfig,
+  type Configuration,
 } from './config'
 
 // * SERVICES

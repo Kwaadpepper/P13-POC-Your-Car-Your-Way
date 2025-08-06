@@ -1,13 +1,13 @@
 import { inject, Injectable } from '@angular/core'
-import { APP_CONFIG, type ApplicationConfig } from '../config/ApplicationConfig.type'
+import { APP_CONFIG, type Configuration } from '../config/configuration'
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigService {
-  private readonly appConfig = inject<ApplicationConfig>(APP_CONFIG)
+  private readonly appConfig = inject<Configuration>(APP_CONFIG)
 
-  get config(): ApplicationConfig {
+  get config(): Configuration {
     return structuredClone(this.appConfig)
   }
 }

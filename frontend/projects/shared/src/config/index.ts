@@ -1,6 +1,6 @@
-import { APP_CONFIG, ApplicationConfig } from './ApplicationConfig.type'
+import { APP_CONFIG, Configuration } from './configuration'
 
 export {
   APP_CONFIG,
-  type ApplicationConfig,
+  type Configuration,
 }

@@ -42,7 +42,7 @@ Cela permet d’uniformiser l’apparence des applications et d’éviter la dup
 
 ## 5. Convention de nommage
 
-**Prefixe des composants**  
+**Préfixe des composants**  
 Chaque projet Angular doit définir un préfixe unique dans son fichier `angular.json`.  
 Tous les tags des composants générés dans un projet utiliseront ce préfixe (ex : `shell-dashboard`, `support-dashboard`).  
 Cela évite les collisions de selectors, notamment lors de l’utilisation de Native Federation.
@@ -90,12 +90,13 @@ Les instructions détaillées pour contribuer au projet seront ajoutées prochai
 
 ## 🖥️ Développement local
 
-Pour lancer le serveur de développement sur l’application principale (exemple : `shell`) :
+Les scripts sont configurés pour utiliser la variable `--project`.  
+Pour lancer le serveur de développement sur un projet spécifique (exemple : `shell`) :
 
 ```bash
-bun run ng serve shell
+npm run start --project=shell
 # ou
-ng serve shell
+bun run start --project=shell
 ```
 
 Ouvrez [http://localhost:4200/](http://localhost:4200/)  
@@ -105,13 +106,13 @@ L’application se rechargera automatiquement lors de la modification des fichie
 
 ## 🧹 Linter le code
 
-Pour lancer le lint sur un projet :
+Pour lancer le lint sur un projet précis :
 
 ```bash
 ng lint <nom-du-projet>
 ```
 
-Pour tous les projets :
+Pour tous les projets (avec vérification des alias et du style) :
 
 ```bash
 npm run lint
@@ -123,10 +124,12 @@ bun run lint
 
 ## ⚙️ Construire le projet
 
-Pour compiler un projet spécifique :
+Pour compiler un projet spécifique en production :
 
 ```bash
-ng build <nom-du-projet>
+npm run build --project=shell
+# ou
+bun run build --project=shell
 ```
 
 Pour tous les projets :
@@ -138,6 +141,30 @@ bun run build
 ```
 
 Les artefacts de build sont générés dans le dossier `dist/`.
+
+---
+
+## 👁️ Build en mode watch
+
+Pour builder un projet en mode « watch » :
+
+```bash
+npm run watch --project=shell
+# ou
+bun run watch --project=shell
+```
+
+---
+
+## 🧪 Tester
+
+Pour exécuter les tests unitaires sur un projet :
+
+```bash
+npm run test --project=shell
+# ou
+bun run test --project=shell
+```
 
 ---
 

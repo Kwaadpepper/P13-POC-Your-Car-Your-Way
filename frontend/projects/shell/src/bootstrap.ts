@@ -1,38 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser'
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
-import { provideRouter } from '@angular/router'
-import { MessageService } from 'primeng/api'
-import { providePrimeNG } from 'primeng/config'
 
-import { provideZoneChangeDetection } from '@angular/core'
-import { OpenClassrooms } from '@themes'
-import { APP_CONFIG } from '@ycyw/shared'
-import { AppComponent } from './app/app.component'
-import { AppConfig } from './app/app.config'
-import { routes } from './app/app.routes'
+import { App } from './app/app'
+import { appConfig } from './app/app.config'
 
-bootstrapApplication(AppComponent, {
-  providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideAnimationsAsync(),
-    providePrimeNG({
-      ripple: false,
-      theme: {
-        preset: OpenClassrooms,
-        options: {
-          darkModeSelector: 'system',
-          cssLayer: {
-            name: 'primeng',
-            order: 'theme,base,components,utilities,plugins,primeng',
-          },
-        },
-      },
-    }),
-    {
-      provide: APP_CONFIG,
-      useValue: AppConfig,
-    },
-    { provide: MessageService, useClass: MessageService },
-  ],
-}).catch(err => console.error(err))
+bootstrapApplication(App, appConfig)
+  .catch(err => console.error(err))

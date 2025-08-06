@@ -10,14 +10,14 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "paths": {
-      "@shell2-core/*": [
-        "./projects/shell2/src/app/core/*"
+      "@shell-core/*": [
+        "./projects/shell/src/app/core/*"
       ],
-      "@shell2-domains/*": [
-        "./projects/shell2/src/app/domains/*"
+      "@shell-domains/*": [
+        "./projects/shell/src/app/domains/*"
       ],
-      "@shell2-shared/*": [
-        "./projects/shell2/src/app/shared/*"
+      "@shell-shared/*": [
+        "./projects/shell/src/app/shared/*"
       ],
       "@support-core/*": [
         "./projects/support-app/src/app/core/*"
@@ -49,9 +49,6 @@
   "files": [],
   "references": [
     {
-      "path": "./projects/shell/tsconfig.app.json"
-    },
-    {
       "path": "./projects/shared/tsconfig.lib.json"
     },
     {
@@ -66,11 +63,5 @@
     {
       "path": "./projects/support-app/tsconfig.spec.json"
     },
-    {
-      "path": "./projects/shell2/tsconfig.app.json"
-    },
-    {
-      "path": "./projects/shell2/tsconfig.spec.json"
-    }
   ]
 }

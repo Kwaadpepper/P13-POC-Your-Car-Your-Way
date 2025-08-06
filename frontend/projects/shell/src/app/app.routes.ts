@@ -1,40 +1,13 @@
 import { Routes } from '@angular/router'
+// NOTE: Cannot use TS aliases here due to NativeFederation limitations
+import { homeRoutes } from '@shell-core/home/routes'
 
-import { GuestGuard } from './guard'
-import { HomeComponent } from './pages'
-
-export const redirectUrls = {
-  home: '',
-  posts: '/posts',
-  login: '/login',
-  register: '/register',
-}
+import { Dashboard } from './core/home/pages'
 
 export const routes: Routes = [
   {
     path: '',
-    canActivate: [GuestGuard],
-    title: 'Bienvenue',
-    component: HomeComponent,
+    component: Dashboard,
   },
-  {
-    path: 'login',
-    canActivate: [],
-    title: 'Bienvenue',
-    component: HomeComponent,
-  },
-  {
-    path: 'posts',
-    canActivate: [],
-    title: 'Bienvenue',
-    component: HomeComponent,
-  },
-  // {
-  //   path: 'users',
-  //   loadComponent: () => loadRemoteModule('users-app', './TchatWindow').then(m => m.TchatWindow),
-  // },
-  // {
-  //   path: 'users2',
-  //   component: TchatWindow,
-  // },
+  ...homeRoutes,
 ]

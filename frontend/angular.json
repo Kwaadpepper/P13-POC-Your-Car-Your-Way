@@ -8,12 +8,42 @@
     ]
   },
   "projects": {
+    "shared": {
+      "projectType": "library",
+      "root": "projects/shared",
+      "sourceRoot": "projects/shared/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/shared/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/shared/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "tsConfig": "projects/shared/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
     "shell": {
       "projectType": "application",
       "schematics": {},
       "root": "projects/shell",
       "sourceRoot": "projects/shell/src",
-      "prefix": "app",
+      "prefix": "shell",
       "architect": {
         "build": {
           "builder": "@angular-architects/native-federation:build",
@@ -119,159 +149,15 @@
           "options": {
             "port": 4200
           }
-        }
-      }
-    },
-    "shared": {
-      "projectType": "library",
-      "root": "projects/shared",
-      "sourceRoot": "projects/shared/src",
-      "prefix": "lib",
-      "architect": {
-        "build": {
-          "builder": "@angular/build:ng-packagr",
-          "configurations": {
-            "production": {
-              "tsConfig": "projects/shared/tsconfig.lib.prod.json"
-            },
-            "development": {
-              "tsConfig": "projects/shared/tsconfig.lib.json"
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "tsConfig": "projects/shared/tsconfig.spec.json",
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ]
-          }
-        }
-      }
-    },
-    "shell2": {
-      "projectType": "application",
-      "schematics": {},
-      "root": "projects/shell2",
-      "sourceRoot": "projects/shell2/src",
-      "prefix": "shell",
-      "architect": {
-        "build": {
-          "builder": "@angular-architects/native-federation:build",
-          "options": {
-            "federationConfigPath": "projects/shell2/federation.config.cjs"
-          },
-          "configurations": {
-            "production": {
-              "target": "shell2:esbuild:production"
-            },
-            "development": {
-              "target": "shell2:esbuild:development",
-              "dev": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve": {
-          "builder": "@angular-architects/native-federation:build",
-          "options": {
-            "target": "shell2:serve-original:development",
-            "rebuildDelay": 0,
-            "dev": true,
-            "port": 0
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular/build:extract-i18n"
-        },
-        "test": {
-          "builder": "@angular/build:karma",
-          "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
-            "tsConfig": "projects/shell2/tsconfig.spec.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/shell2/public"
-              }
-            ],
-            "styles": [
-              "projects/shell2/src/styles/styles.css"
-            ]
-          }
-        },
-        "esbuild": {
-          "builder": "@angular/build:application",
-          "options": {
-            "browser": "projects/shell2/src/main.ts",
-            "polyfills": [
-              "zone.js",
-              "es-module-shims"
-            ],
-            "tsConfig": "projects/shell2/tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "projects/shell2/public"
-              }
-            ],
-            "styles": [
-              "projects/shell2/src/styles/styles.css"
-            ]
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve-original": {
-          "builder": "@angular/build:dev-server",
-          "configurations": {
-            "production": {
-              "buildTarget": "shell2:esbuild:production"
-            },
-            "development": {
-              "buildTarget": "shell2:esbuild:development"
-            }
-          },
-          "defaultConfiguration": "development",
-          "options": {
-            "port": 4200
-          }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/shell2/**/*.ts",
-              "projects/shell2/**/*.html"
+              "projects/shell/**/*.ts",
+              "projects/shell/**/*.html"
             ],
-            "eslintConfig": "projects/shell2/eslint.config.mjs"
+            "eslintConfig": "projects/shell/eslint.config.mjs"
           }
         }
       }

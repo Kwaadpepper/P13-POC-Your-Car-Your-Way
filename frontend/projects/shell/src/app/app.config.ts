@@ -1,8 +1,39 @@
-import { environment } from '@env/environment'
-import { ApplicationConfig } from '@ycyw/shared'
+import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core'
+import { provideRouter } from '@angular/router'
+import { providePrimeNG } from 'primeng/config'
+import { OpenClassrooms } from '@themes'
+import { APP_CONFIG, Configuration } from '@ycyw/shared'
 
-export const AppConfig: ApplicationConfig = {
-  appName: 'Your Car Your Way',
-  version: '1.0.0',
+import { routes } from './app.routes'
+import config from './application.json'
+import { environment } from './environment/environment'
+
+export const AppConfig: Configuration = {
+  ...config,
   environment: environment.env,
+}
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideRouter(routes),
+    providePrimeNG({
+      ripple: false,
+      theme: {
+        preset: OpenClassrooms,
+        options: {
+          darkModeSelector: 'system',
+          cssLayer: {
+            name: 'primeng',
+            order: 'theme,base,components,utilities,plugins,primeng',
+          },
+        },
+      },
+    }),
+    {
+      provide: APP_CONFIG,
+      useValue: AppConfig,
+    },
+  ],
 }

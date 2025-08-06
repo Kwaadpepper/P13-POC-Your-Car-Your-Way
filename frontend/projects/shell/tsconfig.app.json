@@ -4,20 +4,14 @@
     "outDir": "../../out-tsc/app",
     "types": [],
     "paths": {
-      "@core/*": [
+      "@shell-core/*": [
         "./src/app/core/*"
       ],
-      "@env/*": [
-        "./src/environment/*"
+      "@shell-domains/*": [
+        "./src/app/domains/*"
       ],
-      "@routes": [
-        "./src/app/app.routes.ts"
-      ],
-      "@layout": [
-        "./src/app/layout"
-      ],
-      "@remote/*": [
-        "./src/app/remote/*"
+      "@shell-shared/*": [
+        "./src/app/shared/*"
       ],
       "@ycyw/shared": [
         "../../dist/shared"

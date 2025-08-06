@@ -1,9 +1,7 @@
-/* Cet import pourras être packagé en cas de scission future. */
-
-/* @import "./../../../shared/src/styles/shared.css";
+@import "./../../../shared/src/styles/shared.css";
 @import "./vars.css";
 @import "./titles.css";
-@import "./fonts.css"; */
+@import "./fonts.css";
 
 * {
   font-family: var(--font-default);
@@ -14,7 +12,7 @@ body {
   height: 100dvh;
   margin: 0;
 
-  /* @apply bg-surface-0; */
+  @apply bg-surface-0;
 
   @media (prefers-color-scheme: dark) {
     background-color: color-mix(in srgb, var(--p-surface-900) calc(100% * var(--tw-bg-opacity, 1)), transparent);
@@ -43,3 +41,4 @@ body {
     }
   }
 }
+

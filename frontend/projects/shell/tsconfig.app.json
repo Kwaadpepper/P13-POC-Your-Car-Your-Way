@@ -1,0 +1,30 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../out-tsc/app",
+    "types": [],
+    "paths": {
+      "@shell-core/*": [
+        "./src/app/core/*"
+      ],
+      "@shell-domains/*": [
+        "./src/app/domains/*"
+      ],
+      "@shell-shared/*": [
+        "./src/app/shared/*"
+      ],
+      "@ycyw/shared": [
+        "../../dist/shared"
+      ],
+      "@themes": [
+        "../../themes"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}

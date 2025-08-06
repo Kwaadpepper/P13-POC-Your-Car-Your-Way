@@ -1,0 +1,11 @@
+:root {
+  --header-height: 3.5rem;
+  --page-top-padding: 2rem;
+  --font-default: 'Inter', 'Helvetica', sans-serif;
+  --title-font: var(--font-default);
+
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media screen(sm) {
+    --header-height: 5rem;
+  }
+}

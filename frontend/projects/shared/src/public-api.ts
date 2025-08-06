@@ -15,5 +15,13 @@ export {
 
 // * SERVICES
 export {
-  ConfigService,
-} from './service'
+  ConfigStore,
+} from './stores'
+
+// * TYPES
+export type {
+  Entity,
+  PageOf,
+  UUID,
+  zSchema,
+} from './types'

@@ -4,7 +4,7 @@ import { APP_CONFIG, type Configuration } from '../config/configuration'
 @Injectable({
   providedIn: 'root',
 })
-export class ConfigService {
+export class ConfigStore {
   private readonly appConfig = inject<Configuration>(APP_CONFIG)
 
   get config(): Configuration {

@@ -194,7 +194,13 @@
             },
             "development": {
               "target": "support-app:esbuild:development",
-              "dev": true
+              "dev": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/support-app/src/environments/environment.ts",
+                  "with": "projects/support-app/src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"

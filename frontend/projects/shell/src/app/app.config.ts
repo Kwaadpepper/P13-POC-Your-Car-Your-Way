@@ -1,4 +1,4 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core'
+import { ApplicationConfig, enableProdMode, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core'
 import { provideRouter } from '@angular/router'
 import { OpenClassrooms } from '@themes'
 import { APP_CONFIG, Configuration } from '@ycyw/shared'
@@ -10,7 +10,11 @@ import config from './application.json'
 
 export const AppConfig: Configuration = {
   ...config,
-  environment: environment.env,
+  environment: environment.env as Configuration['environment'],
+}
+
+if (AppConfig.environment === 'production') {
+  enableProdMode()
 }
 
 export const appConfig: ApplicationConfig = {

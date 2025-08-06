@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'
 import { RouterOutlet } from '@angular/router'
-import { Header } from '@shell2-core/home/pages/layout'
+import { Header } from '@shell2-core/layout'
 import { ToastModule } from 'primeng/toast'
 
 @Component({

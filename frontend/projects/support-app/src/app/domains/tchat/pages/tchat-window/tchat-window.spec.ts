@@ -1,23 +1,23 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { TchatWindow } from './tchat-window';
+import { TchatWindow } from './tchat-window'
 
 describe('TchatWindow', () => {
-  let component: TchatWindow;
-  let fixture: ComponentFixture<TchatWindow>;
+  let component: TchatWindow
+  let fixture: ComponentFixture<TchatWindow>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TchatWindow]
+      imports: [TchatWindow],
     })
-    .compileComponents();
+      .compileComponents()
 
-    fixture = TestBed.createComponent(TchatWindow);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+    fixture = TestBed.createComponent(TchatWindow)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
 
   it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    expect(component).toBeTruthy()
+  })
+})

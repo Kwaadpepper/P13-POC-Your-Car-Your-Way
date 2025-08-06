@@ -3,7 +3,6 @@ const { shareAll, withNativeFederation } = require('@angular-architects/native-f
 module.exports = withNativeFederation({
   name: 'shell',
   remotes: {
-    'users-app': 'http://localhost:4201/remoteEntry.json',
   },
   shared: {
     ...shareAll({ singleton: true, strictVersion: true, requiredVersion: 'auto' }),

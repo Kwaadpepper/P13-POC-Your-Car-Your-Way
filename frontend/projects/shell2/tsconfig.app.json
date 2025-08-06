@@ -4,7 +4,15 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@ycyw/shared": [
+        "../../dist/shared"
+      ],
+      "@themes": [
+        "../../themes"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts"

@@ -1,7 +1,14 @@
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
-import { ApplicationConfig, enableProdMode, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core'
+import {
+  ApplicationConfig,
+  enableProdMode,
+  ErrorHandler as NgErrorHandler,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+} from '@angular/core'
 import { provideRouter } from '@angular/router'
 import { SessionInterceptor } from '@shell-core/auth/interceptors'
+import { ErrorHandler } from '@shell-core/error-handler'
 import { OpenClassrooms } from '@themes'
 import { APP_CONFIG, Configuration } from '@ycyw/shared'
 import { MessageService } from 'primeng/api'
@@ -46,6 +53,7 @@ export const appConfig: ApplicationConfig = {
       provide: APP_CONFIG,
       useValue: AppConfig,
     },
+    { provide: NgErrorHandler, useClass: ErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: SessionInterceptor, multi: true },
   ],
 }

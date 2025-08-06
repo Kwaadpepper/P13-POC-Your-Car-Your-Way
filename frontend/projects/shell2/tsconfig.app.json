@@ -6,6 +6,15 @@
     "outDir": "../../out-tsc/app",
     "types": [],
     "paths": {
+      "@shell2-core/*": [
+        "./src/app/core/*"
+      ],
+      "@shell2-domains/*": [
+        "./src/app/domains/*"
+      ],
+      "@shell2-shared/*": [
+        "./src/app/shared/*"
+      ],
       "@ycyw/shared": [
         "../../dist/shared"
       ],

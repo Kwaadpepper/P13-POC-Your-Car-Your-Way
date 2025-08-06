@@ -10,6 +10,15 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "paths": {
+      "@shell2-core/*": [
+        "./projects/shell2/src/app/core/*"
+      ],
+      "@shell2-domains/*": [
+        "./projects/shell2/src/app/domains/*"
+      ],
+      "@shell2-shared/*": [
+        "./projects/shell2/src/app/shared/*"
+      ],
       "@support-core/*": [
         "./projects/support-app/src/app/core/*"
       ],

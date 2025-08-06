@@ -157,7 +157,7 @@
       "schematics": {},
       "root": "projects/shell2",
       "sourceRoot": "projects/shell2/src",
-      "prefix": "app",
+      "prefix": "shell",
       "architect": {
         "build": {
           "builder": "@angular-architects/native-federation:build",
@@ -291,7 +291,7 @@
       },
       "root": "projects/support-app",
       "sourceRoot": "projects/support-app/src",
-      "prefix": "app",
+      "prefix": "support",
       "architect": {
         "build": {
           "builder": "@angular-architects/native-federation:build",

@@ -1,30 +1,13 @@
 import { Routes } from '@angular/router'
-import { loadRemoteModule } from '@softarc/native-federation-runtime'
-import { HomePage } from './home-page/home-page'
+
+// NOTE: Cannot use TS aliases here due to NativeFederation limitations
+import { homeRoutes } from '@shell2-core/home/routes'
+import { Dashboard } from './core/home/pages'
 
 export const routes: Routes = [
   {
     path: '',
-    component: HomePage,
+    component: Dashboard,
   },
-  {
-    path: 'support',
-    loadChildren: () =>
-      loadRemoteModule({
-        remoteName: 'support-app',
-        exposedModule: './routes',
-      })
-        .then((m) => {
-          console.log(m)
-          return m.routes
-        }),
-  },
-  // {
-  //   path: 'support',
-  //   loadChildren: () =>
-  //     loadRemoteModule({
-  //       remoteName: 'support-app',
-  //       exposedModule: './Module',
-  //     }).then(m => m.AppModule),
-  // },
+  ...homeRoutes,
 ]

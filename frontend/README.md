@@ -1,71 +1,155 @@
 # Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.1.4.
+Ce projet est un monorepo Angular (version 20).
 
-## Development server
+---
 
-To install packages you may need bun <https://bun.sh/>:
+## 1. Prérequis
 
-```sh
-curl -fsSL https://bun.sh/install | bash
+- **Node.js** (version recommandée : >=18)
+- **bun** (optionnel mais recommandé) [https://bun.sh/](https://bun.sh/)
+- Un navigateur moderne (Chrome, Firefox, Edge…)
+
+---
+
+## 2. Architecture du projet
+
+Le monorepo utilise la structure standard Angular :
+- Le dossier `projects/` contient les différentes applications et librairies.
+- Les styles partagés sont mutualisés dans `shared/src/styles/shared.css`.
+- Chaque projet possède son propre préfixe pour les composants.
+
+---
+
+## 3. Configuration / Variables d’environnement
+
+**TODO**  
+La gestion des variables d’environnement et la configuration spécifique seront documentées ultérieurement.
+
+---
+
+## 4. Gestion des styles
+
+Dans chaque projet, le fichier de styles principal (généralement `projects/<nom-du-projet>/src/styles.css`) doit importer les styles partagés :
+
+```css
+@import "./../../../shared/src/styles/shared.css";
 ```
 
-You could also just use another package manager with Node.js if you prefer.
+Cela permet d’uniformiser l’apparence des applications et d’éviter la duplication de styles.
 
-To start a local development server, run:
+---
+
+## 5. Convention de nommage
+
+**Prefixe des composants**  
+Chaque projet Angular doit définir un préfixe unique dans son fichier `angular.json`.  
+Tous les tags des composants générés dans un projet utiliseront ce préfixe (ex : `shell-dashboard`, `support-dashboard`).  
+Cela évite les collisions de selectors, notamment lors de l’utilisation de Native Federation.
+
+---
+
+## 8. Utilisation des librairies
+
+La bibliothèque de composants principale du monorepo est **PrimeNG**.
+
+**Installation :**
+```bash
+ng add primeng
+# ou
+npm install primeng primeicons
+# ou
+bun add primeng primeicons
+```
+
+**Utilisation :**  
+Importez les modules nécessaires dans vos modules Angular selon la [documentation officielle de PrimeNG](https://primeng.org/).
+
+---
+
+## 9. Scripts d’automatisation
+
+**TODO**  
+Les scripts personnalisés (vérification des alias, formatage, etc.) seront ajoutés prochainement.
+
+---
+
+## 10. Déploiement
+
+**TODO**  
+La procédure de déploiement sera documentée ultérieurement.
+
+---
+
+## 11. Contribution
+
+**TODO**  
+Les instructions détaillées pour contribuer au projet seront ajoutées prochainement.
+
+---
+
+## 🖥️ Développement local
+
+Pour lancer le serveur de développement sur l’application principale (exemple : `shell`) :
 
 ```bash
 bun run ng serve shell
-
-#or
-
+# ou
 ng serve shell
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Ouvrez [http://localhost:4200/](http://localhost:4200/)  
+L’application se rechargera automatiquement lors de la modification des fichiers sources.
 
-## Code scaffolding
+---
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 🧹 Linter le code
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Pour lancer le lint sur un projet :
 
 ```bash
-ng generate --help
+ng lint <nom-du-projet>
 ```
 
-## Building
-
-To build the project run:
+Pour tous les projets :
 
 ```bash
-ng build
+npm run lint
+# ou
+bun run lint
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+---
 
-## Running unit tests
+## ⚙️ Construire le projet
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+Pour compiler un projet spécifique :
 
 ```bash
-ng test
+ng build <nom-du-projet>
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Pour tous les projets :
 
 ```bash
-ng e2e
+npm run build
+# ou
+bun run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Les artefacts de build sont générés dans le dossier `dist/`.
 
-## Additional Resources
+---
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📚 Guide d’ajout de projet
+
+Consultez le guide détaillé pour ajouter un nouveau projet, générer des composants, configurer les alias TypeScript, mutualiser les styles, et respecter les conventions du monorepo :
+
+➡️ [Guide : Ajouter un nouveau projet à votre monorepo Angular](./GUIDE-ajouter-un-nouveau-projet-angular-monorepo.md)
+
+---
+
+## 🔗 Ressources complémentaires
+
+- [Documentation Angular CLI](https://angular.dev/tools/cli)
+- [Documentation PrimeNG](https://primeng.org/)

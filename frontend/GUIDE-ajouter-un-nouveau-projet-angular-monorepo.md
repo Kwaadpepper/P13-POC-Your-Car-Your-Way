@@ -34,7 +34,35 @@ ng g angular-eslint:add-eslint-to-project <nom-du-projet>
 
 ---
 
-## 3. Définir les alias TypeScript
+## 3. Générer un composant avec préfixe
+
+**Générer un composant dans votre projet :**
+```bash
+ng generate component <nom-du-composant> --project=<nom-du-projet>
+```
+
+Le préfixe configuré dans `angular.json` pour le projet sera automatiquement appliqué au selector du composant généré.
+
+**Exemple :**
+Si le préfixe du projet `shell` est `shell` et vous exécutez :
+```bash
+ng generate component dashboard --project=shell
+```
+Le selector du composant sera automatiquement :
+```typescript
+@Component({
+  selector: 'shell-dashboard',
+  // ...
+})
+```
+
+> **Astuce :**  
+> Pour garantir l’unicité des selectors et éviter les collisions (notamment avec Native Federation), chaque projet doit avoir son propre préfixe, défini dans la configuration du projet dans `angular.json`.  
+> ESLint vérifie aussi ce préfixe grâce à la règle `@angular-eslint/component-selector`.
+
+---
+
+## 4. Définir les alias TypeScript
 
 - Ouvrez le fichier racine `tsconfig.json`.
 - Ajoutez ou modifiez les alias nécessaires dans la section `compilerOptions.paths`.
@@ -50,7 +78,38 @@ ng g angular-eslint:add-eslint-to-project <nom-du-projet>
 
 ---
 
-## 4. Vérifier les alias
+## 5. Importer les styles partagés
+
+Dans le fichier de styles principal du projet (généralement `projects/<nom-du-projet>/src/styles.css` ou `styles.scss`), ajoutez en haut du fichier :
+
+```css
+@import "./../../../shared/src/styles/shared.css";
+```
+
+Cela permet de mutualiser les styles entre les différents projets du monorepo.
+
+---
+
+## 6. Installer et utiliser PrimeNG
+
+PrimeNG est la bibliothèque de composants utilisée dans le monorepo.
+
+**Installation dans le projet :**
+```bash
+ng add primeng
+```
+ou
+```bash
+npm install primeng primeicons
+```
+
+**Utilisation :**
+- Importez les modules PrimeNG nécessaires dans le ou les modules Angular de votre projet.
+- Consultez la documentation officielle pour les composants et les thèmes : [PrimeNG Documentation](https://primeng.org/).
+
+---
+
+## 7. Vérifier les alias
 
 Lancez le script de vérification :
 ```bash
@@ -60,7 +119,7 @@ Corrigez toutes les erreurs signalées par le script jusqu’à obtention d’un
 
 ---
 
-## 5. Lancer le lint sur le projet
+## 8. Lancer le lint sur le projet
 
 ```bash
 ng lint <nom-du-projet>
@@ -73,7 +132,7 @@ npm run lint
 
 ---
 
-## 6. Vérifier la build
+## 9. Vérifier la build
 
 Testez la build du projet pour vous assurer que tout fonctionne :
 ```bash
@@ -86,7 +145,7 @@ npm run build
 
 ---
 
-## 7. Adapter la configuration spécifique (Native Federation, styles, etc.)
+## 10. Adapter la configuration spécifique (Native Federation, styles, etc.)
 
 - Si le projet doit utiliser Native Federation, configurez le builder dans `angular.json` selon les exemples présents.
 - Ajoutez les dépendances ou configurations spécifiques (stylelint, tailwind, etc.) si besoin.
@@ -97,7 +156,7 @@ npm run build
 
 ---
 
-## 8. Commit & Push
+## 11. Commit & Push
 
 N’oubliez pas d’ajouter et de committer tous les nouveaux fichiers :
 ```bash
@@ -112,13 +171,12 @@ git push
 
 - [ ] Projet généré dans `projects/`
 - [ ] ESLint installé et configuré (ESM ou `.mjs` si souhaité)
+- [ ] Composants générés avec un préfixe unique
 - [ ] Alias TypeScript définis et valides
 - [ ] Script `check:alias` OK
+- [ ] Styles partagés importés
+- [ ] PrimeNG installé et utilisé pour les composants
 - [ ] Lint OK
 - [ ] Build OK
 - [ ] Config spécifique adaptée (Native Federation, styles…)
 - [ ] Commit effectué
-
----
-
-> Dupliquez ce guide dans le README ou le wiki du dépôt pour faciliter l’onboarding des nouveaux contributeurs.

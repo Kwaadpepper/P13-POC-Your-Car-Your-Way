@@ -8,10 +8,11 @@
   </div>
   <div class="row">
     <div class="col text-center">
-      <a pButton routerLink="/login" class="mx-4 my-4 inline-block min-w-32" title="Se connecter à l'application">
+      <a pButton [routerLink]="['/login']" class="mx-4 my-4 inline-block min-w-32" title="Se connecter à l'application">
         <span>Se connecter</span>
       </a>
-      <a pButton routerLink="/register" class="mx-4 my-4 inline-block min-w-32" title="S'inscrire à l'application">
+      <a pButton [routerLink]="['/register']" class="mx-4 my-4 inline-block min-w-32"
+        title="S'inscrire à l'application">
         <span>S'inscrire</span>
       </a>
     </div>

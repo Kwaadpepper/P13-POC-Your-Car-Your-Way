@@ -23,7 +23,7 @@ export class HeaderViewModel {
   }
 
   public isHomePage(url: string): boolean {
-    return url === redirectUrls.home
+    return url === redirectUrls.guest
   }
 
   public isAuthPage(url: string): boolean {

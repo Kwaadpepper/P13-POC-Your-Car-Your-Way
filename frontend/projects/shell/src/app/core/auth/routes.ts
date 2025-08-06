@@ -1,26 +1,20 @@
 import { Routes } from '@angular/router'
 
 import { GuestGuard } from './guards'
-import { HomePage } from './pages'
+import { Login } from './pages'
 
 export const redirectUrls = {
-  home: '',
-  posts: '/posts',
+  guest: '',
+  auth: '/dashboard',
   login: '/login',
   register: '/register',
 }
 
-export const routes: Routes = [
-  {
-    path: '',
-    canActivate: [GuestGuard],
-    title: 'Bienvenue',
-    component: HomePage,
-  },
+export const authRoutes: Routes = [
   {
     path: 'login',
-    canActivate: [],
+    canActivate: [GuestGuard],
     title: 'Login',
-    component: HomePage,
+    component: Login,
   },
 ]

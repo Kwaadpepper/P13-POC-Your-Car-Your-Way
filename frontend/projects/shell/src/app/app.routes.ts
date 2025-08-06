@@ -1,13 +1,13 @@
 import { Routes } from '@angular/router'
-// NOTE: Cannot use TS aliases here due to NativeFederation limitations
+import { HomePage } from '@shell-core/auth/pages/home/home'
+import { authRoutes } from '@shell-core/auth/routes'
 import { homeRoutes } from '@shell-core/home/routes'
-
-import { Dashboard } from './core/home/pages'
 
 export const routes: Routes = [
   {
     path: '',
-    component: Dashboard,
+    component: HomePage,
   },
+  ...authRoutes,
   ...homeRoutes,
 ]

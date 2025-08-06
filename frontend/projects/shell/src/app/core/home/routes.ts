@@ -1,16 +1,22 @@
 import { loadRemoteModule } from '@angular-architects/native-federation'
+import { Routes } from '@angular/router'
+import { AuthGuard } from '@shell-core/auth/guards'
 
-// NOTE: Cannot import using TS aliases here.
-// Always use relative imports in files exposed via Module Federation!
+import { Dashboard } from './pages'
 
-export const homeRoutes = [
+export const homeRoutes: Routes = [
+  {
+    path: 'dashboard',
+    canActivate: [AuthGuard],
+    component: Dashboard,
+  },
   {
     path: 'support',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       loadRemoteModule({
         remoteName: 'support-app',
         exposedModule: './routes',
-      })
-        .then(m => m.routes),
+      }).then(m => m.routes),
   },
 ]

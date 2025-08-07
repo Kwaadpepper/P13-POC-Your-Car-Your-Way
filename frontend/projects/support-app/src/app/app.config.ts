@@ -6,7 +6,7 @@ import { environment } from '../environments/environment'
 
 import { routes } from './app.routes'
 
-export const AppConfig: Configuration = {
+export const configuration: Configuration = {
   ...{
     appName: 'Support App',
     version: '1.0.0',
@@ -20,7 +20,7 @@ if (environment.env === 'production') {
   enableProdMode()
   configProvider.push({
     provide: APP_CONFIG,
-    useValue: AppConfig,
+    useValue: configuration,
   })
 }
 

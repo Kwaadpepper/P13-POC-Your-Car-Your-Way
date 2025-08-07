@@ -4,7 +4,7 @@
   "scripts": {
     "start": "ng serve $npm_config_project",
     "build": "npm run lint && ng build $npm_config_project --configuration production",
-    "watch": "ng build $npm_config_project --watch",
+    "watch": "ng build $npm_config_project --watch=true",
     "test": "ng test $npm_config_project --watch=false",
     "lint": "npm-run-all -s check:alias lint:ts lint:css",
     "lint:fix": "npm-run-all -s lint:ts:fix lint:css:fix",

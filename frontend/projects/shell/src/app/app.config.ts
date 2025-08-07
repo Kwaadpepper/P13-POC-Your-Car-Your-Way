@@ -18,12 +18,12 @@ import { environment } from './../environments/environment'
 import { routes } from './app.routes'
 import config from './application.json'
 
-export const AppConfig: Configuration = {
+export const configuration: Configuration = {
   ...config,
   environment: environment.env as Configuration['environment'],
 }
 
-if (AppConfig.environment === 'production') {
+if (configuration.environment === 'production') {
   enableProdMode()
 }
 
@@ -51,7 +51,7 @@ export const appConfig: ApplicationConfig = {
     { provide: MessageService, useClass: MessageService },
     {
       provide: APP_CONFIG,
-      useValue: AppConfig,
+      useValue: configuration,
     },
     { provide: NgErrorHandler, useClass: ErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: SessionInterceptor, multi: true },

@@ -55,14 +55,7 @@
               "target": "shell:esbuild:production"
             },
             "development": {
-              "target": "shell:esbuild:development",
-              "dev": true,
-              "fileReplacements": [
-                {
-                  "replace": "projects/shell/src/environments/environment.ts",
-                  "with": "projects/shell/src/environments/environment.development.ts"
-                }
-              ]
+              "target": "shell:esbuild:development"
             }
           },
           "defaultConfiguration": "production"
@@ -136,7 +129,13 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/shell/src/environments/environment.ts",
+                  "with": "projects/shell/src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -193,14 +192,7 @@
               "target": "support-app:esbuild:production"
             },
             "development": {
-              "target": "support-app:esbuild:development",
-              "dev": true,
-              "fileReplacements": [
-                {
-                  "replace": "projects/support-app/src/environments/environment.ts",
-                  "with": "projects/support-app/src/environments/environment.development.ts"
-                }
-              ]
+              "target": "support-app:esbuild:development"
             }
           },
           "defaultConfiguration": "production"
@@ -284,7 +276,13 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/support-app/src/environments/environment.ts",
+                  "with": "projects/support-app/src/environments/environment.development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"

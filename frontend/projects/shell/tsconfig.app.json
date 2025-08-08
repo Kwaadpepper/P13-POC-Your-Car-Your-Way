@@ -19,9 +19,6 @@
       "@ycyw/shared": [
         "../../dist/shared"
       ],
-      "@themes": [
-        "../../themes"
-      ]
     }
   },
   "include": [

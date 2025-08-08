@@ -1,5 +1,5 @@
 import { ApplicationConfig, enableProdMode } from '@angular/core'
-import { provideRouter } from '@angular/router'
+import { provideRouter, withComponentInputBinding } from '@angular/router'
 import { APP_CONFIG, Configuration } from '@ycyw/shared'
 
 import { environment } from '../environments/environment'
@@ -26,7 +26,7 @@ if (environment.env === 'production') {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     ...configProvider,
   ],
 }

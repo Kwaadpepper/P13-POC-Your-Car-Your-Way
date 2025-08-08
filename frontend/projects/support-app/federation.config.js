@@ -1,4 +1,5 @@
-const { withNativeFederation, shareAll } = require('@angular-architects/native-federation/config');
+const { withNativeFederation } = require('@angular-architects/native-federation/config');
+const federationShared = require('../../federation-shared.config.cjs');
 
 module.exports = withNativeFederation({
 
@@ -9,19 +10,11 @@ module.exports = withNativeFederation({
   },
 
   shared: {
-    ...shareAll({
-      singleton: true,
-      strictVersion: true,
-      requiredVersion: 'auto'
-    }),
+    ...federationShared.shared,
   },
 
   skip: [
-    'rxjs/ajax',
-    'rxjs/fetch',
-    'rxjs/testing',
-    'rxjs/webSocket',
-    // Add further packages you don't need at runtime
+    ...federationShared.skip,
   ],
 
   // Please read our FAQ about sharing libs:

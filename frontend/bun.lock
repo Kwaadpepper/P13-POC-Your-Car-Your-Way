@@ -489,7 +489,7 @@
 
     "@primeuix/styles": ["@primeuix/styles@1.2.3", "", { "dependencies": { "@primeuix/styled": "^0.7.2" } }, ""],
 
-    "@primeuix/themes": ["@primeuix/themes@1.2.3", "", { "dependencies": { "@primeuix/styled": "^0.7.2" } }, ""],
+    "@primeuix/themes": ["@primeuix/themes@1.2.3", "", { "dependencies": { "@primeuix/styled": "^0.7.2" } }, "sha512-GLAU2h6lhgln2w10EQalUQlgwbgQ0xZoIOLMNGfIvqU4O09L282P7rwKCKQksvAGAFt1GoO/Q1NgBSxnttr7iA=="],
 
     "@primeuix/utils": ["@primeuix/utils@0.6.1", "", {}, ""],
 
@@ -2277,8 +2277,6 @@
 
     "less/mime": ["mime@1.6.0", "", { "bin": "cli.js" }, ""],
 
-    "lightningcss/detect-libc": ["detect-libc@2.0.4", "", {}, ""],
-
     "load-json-file/parse-json": ["parse-json@4.0.0", "", { "dependencies": { "error-ex": "^1.3.1", "json-parse-better-errors": "^1.0.1" } }, ""],
 
     "load-json-file/pify": ["pify@3.0.0", "", {}, ""],
@@ -2318,8 +2316,6 @@
     "node-gyp/tar": ["tar@7.4.3", "", { "dependencies": { "@isaacs/fs-minipass": "^4.0.0", "chownr": "^3.0.0", "minipass": "^7.1.2", "minizlib": "^3.0.1", "mkdirp": "^3.0.1", "yallist": "^5.0.0" } }, ""],
 
     "node-gyp/which": ["which@5.0.0", "", { "dependencies": { "isexe": "^3.1.1" }, "bin": { "node-which": "bin/which.js" } }, ""],
-
-    "node-gyp-build-optional-packages/detect-libc": ["detect-libc@2.0.4", "", {}, ""],
 
     "normalize-package-data/hosted-git-info": ["hosted-git-info@2.8.9", "", {}, ""],
 

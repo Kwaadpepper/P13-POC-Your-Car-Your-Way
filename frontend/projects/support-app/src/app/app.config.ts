@@ -1,6 +1,8 @@
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { ApplicationConfig, enableProdMode } from '@angular/core'
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { provideRouter, withComponentInputBinding } from '@angular/router'
-import { APP_CONFIG, Configuration } from '@ycyw/shared'
+import { APP_CONFIG, Configuration, primeNgProvider } from '@ycyw/shared'
 
 import { environment } from '../environments/environment'
 
@@ -14,19 +16,21 @@ export const configuration: Configuration = {
   environment: environment.env as Configuration['environment'],
 }
 
-const configProvider: ApplicationConfig['providers'] = []
-
 if (environment.env === 'production') {
   enableProdMode()
-  configProvider.push({
-    provide: APP_CONFIG,
-    useValue: configuration,
-  })
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
-    ...configProvider,
+    provideAnimationsAsync(),
+    primeNgProvider,
+    provideHttpClient(
+      withInterceptorsFromDi(),
+    ),
+    {
+      provide: APP_CONFIG,
+      useValue: configuration,
+    },
   ],
 }

@@ -10,9 +10,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter, withComponentInputBinding } from '@angular/router'
 import { SessionInterceptor } from '@shell-core/auth/interceptors'
 import { ErrorHandler } from '@shell-core/error-handler'
-import { APP_CONFIG, Configuration, OpenClassrooms } from '@ycyw/shared'
+import { APP_CONFIG, Configuration, primeNgProvider } from '@ycyw/shared'
 import { MessageService } from 'primeng/api'
-import { providePrimeNG } from 'primeng/config'
 
 import { environment } from './../environments/environment'
 import { routes } from './app.routes'
@@ -33,19 +32,7 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideAnimationsAsync(),
-    providePrimeNG({
-      ripple: false,
-      theme: {
-        preset: OpenClassrooms,
-        options: {
-          darkModeSelector: 'system',
-          cssLayer: {
-            name: 'primeng',
-            order: 'theme,base,components,utilities,plugins,primeng',
-          },
-        },
-      },
-    }),
+    primeNgProvider,
     provideHttpClient(
       withInterceptorsFromDi(),
     ),

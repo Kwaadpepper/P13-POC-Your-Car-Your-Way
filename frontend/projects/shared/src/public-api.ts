@@ -13,10 +13,10 @@ export {
   type Configuration,
 } from './config'
 
-// * THEMES
+// * PROVIDERS
 export {
-  OpenClassrooms,
-} from './themes'
+  primeNgProvider,
+} from './providers'
 
 // * SERVICES
 export {

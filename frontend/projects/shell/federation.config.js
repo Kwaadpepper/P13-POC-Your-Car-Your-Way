@@ -1,5 +1,5 @@
 const { withNativeFederation } = require('@angular-architects/native-federation/config');
-const federationShared = require('../../federation-shared.config.cjs');
+const federationShared = require('../../shared/federation-shared.config.cjs');
 
 module.exports = withNativeFederation({
 

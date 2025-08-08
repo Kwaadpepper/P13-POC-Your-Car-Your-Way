@@ -86,6 +86,37 @@
       "type": "http",
       "streamingMode": null,
       "streamingInterval": 0
+    },
+    {
+      "uuid": "ce3d54bb-8664-4df8-8f35-b753cfb577f1",
+      "type": "http",
+      "documentation": "",
+      "method": "post",
+      "endpoint": "auth/logout",
+      "responses": [
+        {
+          "uuid": "a494fc22-5604-453f-8f98-faa426316be2",
+          "body": "{\n  \"message\": \"success\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": true,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "proxyMode": false,
@@ -141,6 +172,10 @@
     {
       "type": "route",
       "uuid": "f5164abe-efa9-44f1-8dee-54ba19bfdd4d"
+    },
+    {
+      "type": "route",
+      "uuid": "ce3d54bb-8664-4df8-8f35-b753cfb577f1"
     }
   ],
   "callbacks": []

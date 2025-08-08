@@ -1,5 +1,15 @@
-<div>
-  <h3>Liste des chats</h3>
-  <a [routerLink]="['1']">Chat 1</a>
-  <a [routerLink]="['2']">Chat 2</a>
+<div class="container-fluid">
+  <div class="row h-14">
+    <div class="col relative">
+      <support-back-button backUrl=".."></support-back-button>
+
+      <h3 class="ms-20">Liste des chats</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <a pButton [routerLink]="['1']" class="mx-2">Chat 1</a>
+      <a pButton [routerLink]="['2']" class="mx-2">Chat 2</a>
+    </div>
+  </div>
 </div>

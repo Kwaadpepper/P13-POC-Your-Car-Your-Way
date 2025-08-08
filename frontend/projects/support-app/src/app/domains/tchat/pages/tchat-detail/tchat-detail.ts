@@ -1,12 +1,15 @@
 import { Component, inject } from '@angular/core'
-import { ActivatedRoute, RouterLink } from '@angular/router'
+import { ActivatedRoute } from '@angular/router'
 import { SuperLabel } from '@support-domains/tchat/components'
+import { BackButton } from '@support-shared/components'
+import { ButtonModule } from 'primeng/button'
 
 @Component({
   selector: 'support-tchat-detail',
   imports: [
-    RouterLink,
+    ButtonModule,
     SuperLabel,
+    BackButton,
   ],
   templateUrl: './tchat-detail.html',
   styleUrl: './tchat-detail.css',

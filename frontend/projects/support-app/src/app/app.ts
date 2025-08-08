@@ -1,10 +1,12 @@
 import { Component } from '@angular/core'
-import { Main } from '@support-core/layout'
+import { RouterModule } from '@angular/router'
+import { BackButton } from '@support-shared/components'
 
 @Component({
   selector: 'support-root',
   imports: [
-    Main,
+    RouterModule,
+    BackButton,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',

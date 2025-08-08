@@ -6,16 +6,16 @@ import { SessionStore } from '@shell-core/auth/stores'
 @Injectable({
   providedIn: 'root',
 })
-/** This is used to prevent non logged in user to access protected routes */
+/** This is used to make sure that a logged in user cannot access guest routes */
 export class GuestGuard implements CanActivate {
-  private readonly redirectUrl = redirectUrls.auth
+  private readonly redirectUrl = redirectUrls.authHomeUrl
 
   private readonly router = inject(Router)
   private readonly sessionStore = inject(SessionStore)
 
   canActivate(): MaybeAsync<GuardResult> {
-    // * If the user is not logged in, redirect to the login page
-    if (!this.sessionStore.isLoggedIn()) {
+    // * If the user is logged in, redirect
+    if (this.sessionStore.isLoggedIn()) {
       const loginRoute = this.router.parseUrl(this.redirectUrl)
 
       return new RedirectCommand(loginRoute)

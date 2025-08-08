@@ -70,7 +70,7 @@ export class Login implements OnDestroy {
       .pipe(takeUntil(this.endObservables))
       .subscribe({
         next: () => {
-          this.router.navigateByUrl(redirectUrls.auth)
+          this.router.navigateByUrl(redirectUrls.authHomeUrl)
         },
       })
   }

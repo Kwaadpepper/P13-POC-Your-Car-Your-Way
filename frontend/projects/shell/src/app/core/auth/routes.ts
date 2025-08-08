@@ -4,8 +4,8 @@ import { GuestGuard } from './guards'
 import { Login } from './pages'
 
 export const redirectUrls = {
-  guest: '',
-  auth: '/dashboard',
+  guestHomeUrl: '',
+  authHomeUrl: '/dashboard',
   login: '/login',
   register: '/register',
 }

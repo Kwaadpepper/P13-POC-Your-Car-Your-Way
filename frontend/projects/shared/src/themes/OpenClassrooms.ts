@@ -1,6 +1,6 @@
 // mypreset.ts
-import { definePreset } from '@primeng/themes'
-import Aura from '@primeng/themes/aura'
+import { definePreset } from '@primeuix/themes'
+import Aura from '@primeuix/themes/aura'
 
 export default definePreset({
   ...Aura,
@@ -2092,7 +2092,9 @@ export default definePreset({
         dropPoint: {
           color: '{primary.color}',
         },
-        columnResizerWidth: '0.5rem',
+        columnResizer: {
+          width: '0.5rem',
+        },
         resizeIndicator: {
           width: '1px',
           color: '{primary.color}',
@@ -3799,18 +3801,18 @@ export default definePreset({
         colorScheme: {
           light: {
             root: {
-              'color.1': '{red.500}',
-              'color.2': '{blue.500}',
-              'color.3': '{green.500}',
-              'color.4': '{yellow.500}',
+              colorOne: '{red.500}',
+              colorTwo: '{blue.500}',
+              colorThree: '{green.500}',
+              colorFour: '{yellow.500}',
             },
           },
           dark: {
             root: {
-              'color.1': '{red.400}',
-              'color.2': '{blue.400}',
-              'color.3': '{green.400}',
-              'color.4': '{yellow.400}',
+              colorOne: '{red.400}',
+              colorTwo: '{blue.400}',
+              colorThree: '{green.400}',
+              colorFour: '{yellow.400}',
             },
           },
         },
@@ -4067,12 +4069,16 @@ export default definePreset({
         colorScheme: {
           light: {
             handle: {
-              contentBackground: '{surface.0}',
+              content: {
+                background: '{surface.0}',
+              },
             },
           },
           dark: {
             handle: {
-              contentBackground: '{surface.950}',
+              content: {
+                background: '{surface.950}',
+              },
             },
           },
         },
@@ -4593,8 +4599,7 @@ export default definePreset({
           disabledColor: '{form.field.disabled.color}',
         },
         content: {
-          left: '0.25rem',
-          top: '0.25rem',
+          padding: '0.25rem 0.25rem',
           checkedShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 2px 0px rgba(0, 0, 0, 0.04)',
         },
         colorScheme: {
@@ -4894,7 +4899,9 @@ export default definePreset({
           borderWidth: '0 0 1px 0',
           padding: '0.75rem 1rem',
         },
-        columnResizerWidth: '0.5rem',
+        columnResizer: {
+          width: '0.5rem',
+        },
         resizeIndicator: {
           width: '1px',
           color: '{primary.color}',
@@ -4990,7 +4997,9 @@ export default definePreset({
         },
         colorScheme: {
           light: {
-            blur: '1.5px',
+            root: {
+              blur: '1.5px',
+            },
             info: {
               background: 'color-mix(in srgb, {blue.50}, transparent 5%)',
               borderColor: '{blue.200}',
@@ -5077,7 +5086,9 @@ export default definePreset({
             },
           },
           dark: {
-            blur: '10px',
+            root: {
+              blur: '10px',
+            },
             info: {
               background: 'color-mix(in srgb, {blue.500}, transparent 84%)',
               borderColor: 'color-mix(in srgb, {blue.700}, transparent 64%)',

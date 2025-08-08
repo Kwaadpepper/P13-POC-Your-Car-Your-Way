@@ -1,19 +1,29 @@
-import { ApplicationConfig, enableProdMode, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core'
-import { provideRouter } from '@angular/router'
-import { OpenClassrooms } from '@themes'
-import { APP_CONFIG, Configuration } from '@ycyw/shared'
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
+import {
+  ApplicationConfig,
+  enableProdMode,
+  ErrorHandler as NgErrorHandler,
+  provideBrowserGlobalErrorListeners,
+  provideZoneChangeDetection,
+} from '@angular/core'
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
+import { provideRouter, withComponentInputBinding } from '@angular/router'
+import { SessionInterceptor } from '@shell-core/auth/interceptors'
+import { ErrorHandler } from '@shell-core/error-handler'
+import { APP_CONFIG, Configuration, OpenClassrooms } from '@ycyw/shared'
+import { MessageService } from 'primeng/api'
 import { providePrimeNG } from 'primeng/config'
 
 import { environment } from './../environments/environment'
 import { routes } from './app.routes'
 import config from './application.json'
 
-export const AppConfig: Configuration = {
+export const configuration: Configuration = {
   ...config,
   environment: environment.env as Configuration['environment'],
 }
 
-if (AppConfig.environment === 'production') {
+if (configuration.environment === 'production') {
   enableProdMode()
 }
 
@@ -21,7 +31,8 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
+    provideAnimationsAsync(),
     providePrimeNG({
       ripple: false,
       theme: {
@@ -35,9 +46,15 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+    ),
+    { provide: MessageService, useClass: MessageService },
     {
       provide: APP_CONFIG,
-      useValue: AppConfig,
+      useValue: configuration,
     },
+    { provide: NgErrorHandler, useClass: ErrorHandler },
+    { provide: HTTP_INTERCEPTORS, useClass: SessionInterceptor, multi: true },
   ],
 }

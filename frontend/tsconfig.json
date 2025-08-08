@@ -13,6 +13,9 @@
       "@shell-core/*": [
         "./projects/shell/src/app/core/*"
       ],
+      "@shell-env/*": [
+        "./projects/shell/src/environments/*"
+      ],
       "@shell-domains/*": [
         "./projects/shell/src/app/domains/*"
       ],
@@ -21,6 +24,9 @@
       ],
       "@support-core/*": [
         "./projects/support-app/src/app/core/*"
+      ],
+      "@support-env/*": [
+        "./projects/support-app/src/environments/*"
       ],
       "@support-domains/*": [
         "./projects/support-app/src/app/domains/*"
@@ -31,9 +37,6 @@
       "@ycyw/shared": [
         "./dist/shared"
       ],
-      "@themes": [
-        "./themes"
-      ]
     },
     "importHelpers": true,
     "target": "ES2022",

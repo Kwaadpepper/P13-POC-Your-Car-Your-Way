@@ -1,12 +1,12 @@
 import { ApplicationConfig, enableProdMode } from '@angular/core'
-import { provideRouter } from '@angular/router'
+import { provideRouter, withComponentInputBinding } from '@angular/router'
 import { APP_CONFIG, Configuration } from '@ycyw/shared'
 
 import { environment } from '../environments/environment'
 
 import { routes } from './app.routes'
 
-export const AppConfig: Configuration = {
+export const configuration: Configuration = {
   ...{
     appName: 'Support App',
     version: '1.0.0',
@@ -20,13 +20,13 @@ if (environment.env === 'production') {
   enableProdMode()
   configProvider.push({
     provide: APP_CONFIG,
-    useValue: AppConfig,
+    useValue: configuration,
   })
 }
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withComponentInputBinding()),
     ...configProvider,
   ],
 }

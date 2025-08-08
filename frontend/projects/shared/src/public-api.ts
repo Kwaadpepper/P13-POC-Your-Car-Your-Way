@@ -13,6 +13,11 @@ export {
   type Configuration,
 } from './config'
 
+// * THEMES
+export {
+  OpenClassrooms,
+} from './themes'
+
 // * SERVICES
 export {
   ConfigStore,

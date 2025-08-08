@@ -7,6 +7,9 @@
       "@shell-core/*": [
         "./src/app/core/*"
       ],
+      "@shell-env/*": [
+        "./src/environments/*"
+      ],
       "@shell-domains/*": [
         "./src/app/domains/*"
       ],
@@ -16,9 +19,6 @@
       "@ycyw/shared": [
         "../../dist/shared"
       ],
-      "@themes": [
-        "../../themes"
-      ]
     }
   },
   "include": [

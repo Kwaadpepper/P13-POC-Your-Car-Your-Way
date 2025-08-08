@@ -6,6 +6,8 @@
         [title]="'Logo ' + viewModel.appName()" />
     </a>
 
+    <shell-logout-button variant="text" severity="danger" [redirectUrl]="logoutUrl" title="Se déconnecter" />
+
     @if (onMobile()) {
 
     <shell-nav-menu />

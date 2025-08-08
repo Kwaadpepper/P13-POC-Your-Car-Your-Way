@@ -156,7 +156,98 @@ npm run build
 
 ---
 
-## 11. Commit & Push
+## 11. Configurer les environnements Angular
+
+Pour gérer des variables d’environnement (`production`, `development`, etc.) propres à chaque application du monorepo, Angular s’appuie sur le système de **fileReplacements** lors de la build.
+
+### Génération des fichiers d’environnement
+
+Vous pouvez générer les fichiers d’environment à l’aide de la CLI :
+```bash
+ng generate environments --project=<nom-du-projet>
+```
+> ⚠️ Cette commande génère parfois une structure incomplète ou non conforme avec les versions récentes d’Angular ou en monorepo. Il est donc recommandé de vérifier et d’ajuster manuellement les fichiers et leur emplacement.
+
+### Structure recommandée
+
+Créez (ou vérifiez) le dossier :
+```
+projects/<nom-du-projet>/src/environments/
+```
+
+Ajoutez les fichiers suivants :
+- `environment.ts` (valeurs par défaut / production)
+- `environment.development.ts` (valeurs spécifiques à l’environnement dev)
+
+**Exemple :**
+```typescript name=projects/support-app/src/environments/environment.ts
+export const environment = {
+  production: true,
+  apiUrl: 'https://api.monsite.com'
+};
+```
+```typescript name=projects/support-app/src/environments/environment.development.ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000'
+};
+```
+
+### Configuration du remplacement dans `angular.json`
+
+Dans la section `architect > esbuild > configurations > development` de votre projet, ajoutez :
+```json
+"fileReplacements": [
+  {
+    "replace": "projects/<nom-du-projet>/src/environments/environment.ts",
+    "with": "projects/<nom-du-projet>/src/environments/environment.development.ts"
+  }
+]
+```
+> ⚠️ Le bloc `fileReplacements` doit être placé dans la configuration `esbuild > configurations > development` (et non dans le builder federation).
+
+**Exemple pour `support-app` :**
+```json
+"esbuild": {
+  "builder": "@angular/build:application",
+  "options": { ... },
+  "configurations": {
+    "production": { ... },
+    "development": {
+      "optimization": false,
+      "extractLicenses": false,
+      "sourceMap": true,
+      "fileReplacements": [
+        {
+          "replace": "projects/support-app/src/environments/environment.ts",
+          "with": "projects/support-app/src/environments/environment.development.ts"
+        }
+      ]
+    }
+  },
+  "defaultConfiguration": "production"
+}
+```
+
+### Utilisation dans le code
+
+Dans votre application, importez toujours via :
+```typescript
+import { environment } from 'src/environments/environment';
+
+if (environment.production) {
+  // code spécifique à la prod
+}
+```
+L’import pointe toujours vers `environment.ts`, Angular remplacera automatiquement le fichier selon l’environnement lors de la build.
+
+> **Bonnes pratiques :**
+> - Ne stockez jamais de secrets dans ces fichiers (tout est accessible côté client après build).
+> - Les valeurs d’environnement doivent rester publiques ou non sensibles.
+
+---
+
+## 12. Commit & Push
 
 N’oubliez pas d’ajouter et de committer tous les nouveaux fichiers :
 ```bash
@@ -176,7 +267,10 @@ git push
 - [ ] Script `check:alias` OK
 - [ ] Styles partagés importés
 - [ ] PrimeNG installé et utilisé pour les composants
+- [ ] Fichiers d’environment créés et fileReplacements configurés
 - [ ] Lint OK
 - [ ] Build OK
 - [ ] Config spécifique adaptée (Native Federation, styles…)
 - [ ] Commit effectué
+
+---

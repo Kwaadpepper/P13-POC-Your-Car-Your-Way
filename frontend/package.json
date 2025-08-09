@@ -15,7 +15,7 @@
     "lint:css:ci": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" -f json",
     "lint:css:fix": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" --fix",
     "check:alias": "node scripts/check-alias.mjs",
-    "prepare": "husky install frontend/.husky",
+    "prepare": "export GIT_DIR=\"./..\" husky",
     "mock:ws": "node dev-mocks/mock-ws-server.mjs"
   },
   "prettier": {

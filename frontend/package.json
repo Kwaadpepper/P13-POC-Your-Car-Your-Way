@@ -14,7 +14,8 @@
     "lint:css": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\"",
     "lint:css:ci": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" -f json",
     "lint:css:fix": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" --fix",
-    "check:alias": "node scripts/check-alias.mjs"
+    "check:alias": "node scripts/check-alias.mjs",
+    "prepare": "husky install frontend/.husky"
   },
   "prettier": {
     "overrides": [
@@ -52,6 +53,8 @@
     "@angular/build": "^20.1.5",
     "@angular/cli": "^20.1.5",
     "@angular/compiler-cli": "^20.1.6",
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@eslint/js": "^9.32.0",
     "@stylistic/eslint-plugin": "^5.2.3",
     "@types/jasmine": "~5.1.8",
@@ -59,8 +62,8 @@
     "angular-eslint": "20.1.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
-    "eslint-import-resolver-typescript": "^3",
     "eslint-plugin-import": "^2.32.0",
+    "husky": "^9.1.7",
     "jasmine-core": "~5.8.0",
     "json5": "^2.2.3",
     "karma": "~6.4.4",
@@ -68,6 +71,7 @@
     "karma-coverage": "~2.2.1",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "lint-staged": "^16.1.5",
     "ng-packagr": "^20.1.0",
     "npm-run-all": "^4.1.5",
     "postcss": "^8.5.6",

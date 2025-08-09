@@ -15,7 +15,8 @@
     "lint:css:ci": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" -f json",
     "lint:css:fix": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" --fix",
     "check:alias": "node scripts/check-alias.mjs",
-    "prepare": "husky install frontend/.husky"
+    "prepare": "husky install frontend/.husky",
+    "mock:ws": "node dev-mocks/mock-ws-server.mjs"
   },
   "prettier": {
     "overrides": [
@@ -82,6 +83,7 @@
     "tailwindcss-primeui": "^0.6.1",
     "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "8.34.1"
+    "typescript-eslint": "8.34.1",
+    "ws": "^8.18.3"
   }
 }

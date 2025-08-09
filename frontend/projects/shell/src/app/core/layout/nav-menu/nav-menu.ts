@@ -1,6 +1,8 @@
 import { NgClass } from '@angular/common'
 import { Component, inject, input, output } from '@angular/core'
 import { RouterModule } from '@angular/router'
+import { redirectUrls } from '@shell-core/auth/routes'
+import { LogoutButton } from '@shell-shared/components'
 import { ButtonModule } from 'primeng/button'
 
 import { NavMenuViewModel } from './nav-menu.viewmodel'
@@ -11,6 +13,7 @@ import { NavMenuViewModel } from './nav-menu.viewmodel'
     RouterModule,
     NgClass,
     ButtonModule,
+    LogoutButton,
   ],
   providers: [NavMenuViewModel],
   templateUrl: './nav-menu.html',
@@ -21,6 +24,7 @@ export class NavMenu {
     transform: (v: string | boolean) => v !== false,
   })
 
+  readonly logoutUrl = redirectUrls.guestHomeUrl
   readonly closedMenu = output<boolean>()
 
   readonly viewModel = inject(NavMenuViewModel)

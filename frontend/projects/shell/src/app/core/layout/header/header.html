@@ -6,13 +6,11 @@
         [title]="'Logo ' + viewModel.appName()" />
     </a>
 
-    <shell-logout-button variant="text" severity="danger" [redirectUrl]="logoutUrl" title="Se déconnecter" />
-
     @if (onMobile()) {
-
-    <shell-nav-menu />
     <button pButton (click)="onShowDrawer()" icon="pi pi-bars" text severity="contrast" class="me-4" size="large"
       type="button" title="Afficher le menu"></button>
+    } @else {
+    <shell-nav-menu />
     }
 
   </div>

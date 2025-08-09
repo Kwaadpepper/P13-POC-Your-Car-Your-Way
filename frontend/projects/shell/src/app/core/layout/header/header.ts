@@ -1,7 +1,5 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core'
+import { Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core'
 import { Router, RouterEvent } from '@angular/router'
-import { redirectUrls } from '@shell-core/auth/routes'
-import { LogoutButton } from '@shell-shared/components'
 import { ButtonModule } from 'primeng/button'
 import { DrawerModule } from 'primeng/drawer'
 import { filter, Subject, takeUntil } from 'rxjs'
@@ -16,7 +14,6 @@ import { HeaderViewModel } from './header.viewmodel'
     ButtonModule,
     DrawerModule,
     NavMenu,
-    LogoutButton,
   ],
   providers: [HeaderViewModel],
   templateUrl: './header.html',
@@ -25,7 +22,6 @@ import { HeaderViewModel } from './header.viewmodel'
 export class Header implements OnInit, OnDestroy {
   private readonly mobileBreakpoint = 640
 
-  readonly logoutUrl = redirectUrls.guestHomeUrl
   readonly onMobile = signal(false)
   readonly drawerVisible = signal(false)
 
@@ -56,6 +52,7 @@ export class Header implements OnInit, OnDestroy {
     this.endObservables.complete()
   }
 
+  @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     const window = event.target as Window
     const width = window.innerWidth

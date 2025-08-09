@@ -1,83 +1,81 @@
 // @ts-check
-import eslint from "@eslint/js";
-import stylistic from "@stylistic/eslint-plugin";
-import angular from "angular-eslint";
-import importEslint from "eslint-plugin-import";
-import tseslint from "typescript-eslint";
+import eslint from "@eslint/js"
+import stylistic from "@stylistic/eslint-plugin"
+import angular from "angular-eslint"
+import importEslint from "eslint-plugin-import"
+import tseslint from "typescript-eslint"
 
 export default tseslint.config(
-  // Ignorer les fichiers qui ne doivent pas être lintés
   {
     ignores: [
       "**/node_modules/**",
       "dist/**",
       "projects/**/dist/**",
       "src/polyfills.ts",
-      "src/test.ts"
+      "src/test.ts",
     ],
   },
   {
     files: ["**/*.ts"],
     extends: [
-      // Règles générales d'ESLint
       eslint.configs.recommended,
-
-      // Règles recommandées pour TypeScript et de style
       ...tseslint.configs.recommended,
       ...tseslint.configs.stylistic,
-
-      // Règles de style @stylistic
       stylistic.configs["recommended"],
-
-      // Règles recommandées pour Angular TypeScript
       ...angular.configs.tsRecommended,
-
       importEslint.flatConfigs.typescript,
     ],
+    settings: {
+      // Résout les imports TypeScript pour tout le monorepo
+      "import/resolver": {
+        typescript: {
+          project: [
+            "./tsconfig.json",
+            "./projects/*/tsconfig*.json",
+          ],
+          alwaysTryTypes: true,
+        },
+      },
+      // Tout ce qui commence par "~" est "internal"
+      "import/internal-regex": "^~",
+    },
     processor: angular.processInlineTemplates,
     rules: {
-      // Assurez-vous que vos sélecteurs de directives sont cohérents
       "@typescript-eslint/no-explicit-any": "error",
       "@angular-eslint/directive-selector": [
         "error",
-        {
-          "type": "attribute",
-          "prefix": "app",
-          "style": "camelCase"
-        }
+        { type: "attribute", prefix: "app", style: "camelCase" },
       ],
       "@angular-eslint/component-selector": [
         "error",
-        {
-          "type": "element",
-          "prefix": "app",
-          "style": "kebab-case"
-        }
+        { type: "element", prefix: "app", style: "kebab-case" },
       ],
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_",
-          "caughtErrorsIgnorePattern": "^_"
-        }
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
       ],
-      "semi": ["error", "never"],
+      semi: ["error", "never"],
+
+      // Ordonne les imports: externals (avec @angular et primeng en tête), puis internes (~...), puis relatifs
       "import/order": [
         "error",
         {
-            "groups": [
-                "builtin",
-                "external",
-                "internal",
-                "parent",
-                "sibling",
-                "index"
-            ],
-            "newlines-between": "always"
-        }
-    ]
-    }
+          groups: ["builtin", "external", "internal", "parent", "sibling", "index"],
+          "newlines-between": "always",
+          alphabetize: { order: "asc", caseInsensitive: true },
+          pathGroups: [
+            { pattern: "@angular/**", group: "external", position: "before" },
+            { pattern: "primeng?(/**)", group: "external", position: "before" },
+            { pattern: "~**", group: "internal", position: "after" },
+          ],
+          pathGroupsExcludedImportTypes: ["builtin"],
+        },
+      ],
+    },
   },
   {
     files: ["**/*.html"],
@@ -93,4 +91,4 @@ export default tseslint.config(
       // "@angular-eslint/template/no-negated-async": "error"
     }
   }
-);
+)

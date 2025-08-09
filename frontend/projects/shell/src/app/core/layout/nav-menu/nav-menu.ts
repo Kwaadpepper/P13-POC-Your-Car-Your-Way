@@ -1,9 +1,11 @@
 import { NgClass } from '@angular/common'
 import { Component, inject, input, output } from '@angular/core'
 import { RouterModule } from '@angular/router'
-import { redirectUrls } from '@shell-core/auth/routes'
-import { LogoutButton } from '@shell-shared/components'
+
 import { ButtonModule } from 'primeng/button'
+
+import { redirectUrls } from '~shell-core/auth/routes'
+import { LogoutButton } from '~shell-shared/components'
 
 import { NavMenuViewModel } from './nav-menu.viewmodel'
 

@@ -1,6 +1,8 @@
-import { loadRemoteModule } from '@angular-architects/native-federation'
 import { Routes } from '@angular/router'
-import { AuthGuard } from '@shell-core/auth/guards'
+
+import { loadRemoteModule } from '@angular-architects/native-federation'
+
+import { AuthGuard } from '~shell-core/auth/guards'
 
 import { Dashboard } from './pages'
 

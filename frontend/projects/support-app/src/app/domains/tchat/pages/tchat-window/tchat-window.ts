@@ -1,7 +1,9 @@
 import { Component } from '@angular/core'
 import { RouterLink } from '@angular/router'
-import { BackButton } from '@support-shared/components'
+
 import { ButtonModule } from 'primeng/button'
+
+import { BackButton } from '~support-shared/components'
 
 @Component({
   selector: 'support-tchat-window',

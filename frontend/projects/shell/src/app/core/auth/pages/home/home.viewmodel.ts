@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core'
-import { ConfigStore } from '@ycyw/shared'
+
+import { ConfigStore } from '~ycyw/shared'
 
 @Injectable({
   providedIn: 'root',

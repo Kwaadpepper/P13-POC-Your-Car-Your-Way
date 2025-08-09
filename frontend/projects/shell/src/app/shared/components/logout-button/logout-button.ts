@@ -1,8 +1,10 @@
 import { Component, inject, input, OnDestroy } from '@angular/core'
 import { Router } from '@angular/router'
-import { ToastService } from '@shell-shared/services'
+
 import { Button, ButtonModule } from 'primeng/button'
 import { SubscriptionLike } from 'rxjs'
+
+import { ToastService } from '~shell-shared/services'
 
 import { LogoutButtonViewModel } from './logout-button-viewmodel'
 

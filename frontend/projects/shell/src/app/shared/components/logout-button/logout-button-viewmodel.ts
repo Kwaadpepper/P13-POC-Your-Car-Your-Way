@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core'
-import { AuthService } from '@shell-core/auth/services'
+
 import { map, Observable } from 'rxjs'
+
+import { AuthService } from '~shell-core/auth/services'
 
 @Injectable({
   providedIn: 'root',

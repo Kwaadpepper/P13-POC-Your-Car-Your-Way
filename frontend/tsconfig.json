@@ -10,33 +10,33 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "paths": {
-      "@shell-core/*": [
+      "~shell-core/*": [
         "./projects/shell/src/app/core/*"
       ],
-      "@shell-env/*": [
+      "~shell-env/*": [
         "./projects/shell/src/environments/*"
       ],
-      "@shell-domains/*": [
+      "~shell-domains/*": [
         "./projects/shell/src/app/domains/*"
       ],
-      "@shell-shared/*": [
+      "~shell-shared/*": [
         "./projects/shell/src/app/shared/*"
       ],
-      "@support-core/*": [
+      "~support-core/*": [
         "./projects/support-app/src/app/core/*"
       ],
-      "@support-env/*": [
+      "~support-env/*": [
         "./projects/support-app/src/environments/*"
       ],
-      "@support-domains/*": [
+      "~support-domains/*": [
         "./projects/support-app/src/app/domains/*"
       ],
-      "@support-shared/*": [
+      "~support-shared/*": [
         "./projects/support-app/src/app/shared/*"
       ],
-      "@ycyw/shared": [
+      "~ycyw/shared": [
         "./dist/shared"
-      ],
+      ]
     },
     "importHelpers": true,
     "target": "ES2022",
@@ -65,6 +65,6 @@
     },
     {
       "path": "./projects/support-app/tsconfig.spec.json"
-    },
+    }
   ]
 }

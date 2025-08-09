@@ -1,5 +1,6 @@
 import { computed, inject, Injectable } from '@angular/core'
-import { SessionStore } from '@shell-core/auth/stores'
+
+import { SessionStore } from '~shell-core/auth/stores'
 
 @Injectable({
   providedIn: 'root',

@@ -1,5 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core'
-import { User } from '@shell-core/auth/models'
+
+import { User } from '~shell-core/auth/models'
 
 @Injectable({
   providedIn: 'root',

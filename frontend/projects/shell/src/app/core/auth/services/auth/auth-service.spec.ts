@@ -1,7 +1,8 @@
 import { provideHttpClient } from '@angular/common/http'
 import { provideHttpClientTesting } from '@angular/common/http/testing'
 import { TestBed } from '@angular/core/testing'
-import { SessionStore } from '@shell-core/auth/stores'
+
+import { SessionStore } from '~shell-core/auth/stores'
 
 import { AuthService } from './auth-service'
 

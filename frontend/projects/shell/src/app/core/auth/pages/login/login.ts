@@ -1,13 +1,15 @@
 import { Component, OnDestroy, inject } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
-import { redirectUrls } from '@shell-core/auth/routes'
-import { BackButton } from '@shell-shared/components'
-import { ToastService } from '@shell-shared/services'
+
 import { ButtonModule } from 'primeng/button'
 import { InputTextModule } from 'primeng/inputtext'
 import { MessageModule } from 'primeng/message'
 import { Subject, takeUntil } from 'rxjs'
+
+import { redirectUrls } from '~shell-core/auth/routes'
+import { BackButton } from '~shell-shared/components'
+import { ToastService } from '~shell-shared/services'
 
 import { LoginViewModel } from './login-viewmodel'
 

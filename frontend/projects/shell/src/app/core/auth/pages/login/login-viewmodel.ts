@@ -1,9 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core'
-import { User } from '@shell-core/auth/models'
-import { AuthService } from '@shell-core/auth/services'
-import { LoginFailure } from '@shell-core/errors'
-import { ToastService } from '@shell-shared/services'
+
 import { catchError, EMPTY, finalize, Observable, tap, throwError } from 'rxjs'
+
+import { User } from '~shell-core/auth/models'
+import { AuthService } from '~shell-core/auth/services'
+import { LoginFailure } from '~shell-core/errors'
+import { ToastService } from '~shell-shared/services'
 
 @Injectable({
   providedIn: 'root',

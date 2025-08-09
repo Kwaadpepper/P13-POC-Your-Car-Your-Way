@@ -1,8 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core'
 import { Router } from '@angular/router'
-import { redirectUrls } from '@shell-core/auth/routes'
-import { SessionStore } from '@shell-core/auth/stores'
-import { ConfigStore } from '@ycyw/shared'
+
+import { redirectUrls } from '~shell-core/auth/routes'
+import { SessionStore } from '~shell-core/auth/stores'
+import { ConfigStore } from '~ycyw/shared'
 
 @Injectable({
   providedIn: 'root',

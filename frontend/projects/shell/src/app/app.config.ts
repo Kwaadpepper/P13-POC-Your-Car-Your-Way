@@ -8,10 +8,12 @@ import {
 } from '@angular/core'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { provideRouter, withComponentInputBinding } from '@angular/router'
-import { SessionInterceptor } from '@shell-core/auth/interceptors'
-import { ErrorHandler } from '@shell-core/error-handler'
-import { APP_CONFIG, Configuration, primeNgProvider } from '@ycyw/shared'
+
 import { MessageService } from 'primeng/api'
+
+import { SessionInterceptor } from '~shell-core/auth/interceptors'
+import { ErrorHandler } from '~shell-core/error-handler'
+import { APP_CONFIG, Configuration, primeNgProvider } from '~ycyw/shared'
 
 import { environment } from './../environments/environment'
 import { routes } from './app.routes'

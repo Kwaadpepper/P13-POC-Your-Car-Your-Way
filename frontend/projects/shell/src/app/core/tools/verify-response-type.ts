@@ -1,6 +1,7 @@
-import { BadResponse } from '@shell-core/errors'
 import { catchError, map, Observable, pipe, throwError, UnaryFunction } from 'rxjs'
 import { z, ZodError } from 'zod'
+
+import { BadResponse } from '~shell-core/errors'
 
 /**
  * Verify the response type.

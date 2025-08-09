@@ -1,7 +1,8 @@
 import { inject, Injectable, ErrorHandler as NgErrorHanlder } from '@angular/core'
 import { NotFoundError } from '@angular/core/primitives/di'
 import { Router } from '@angular/router'
-import { ToastService } from '@shell-shared/services'
+
+import { ToastService } from '~shell-shared/services'
 
 import { SessionExpired } from './errors'
 

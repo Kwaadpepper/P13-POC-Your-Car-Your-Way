@@ -1,7 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http'
-import { validationErrorSchema } from '@shell-core/auth/api/schemas'
-import { ValidationError } from '@shell-core/errors'
+
 import { catchError, Observable, pipe, throwError, UnaryFunction } from 'rxjs'
+
+import { validationErrorSchema } from '~shell-core/auth/api/schemas'
+import { ValidationError } from '~shell-core/errors'
 
 /**
  * Check the server response and throw an error if the response is not valid.

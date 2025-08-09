@@ -8,12 +8,14 @@ import {
 } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
 import { Router } from '@angular/router'
-import { redirectUrls } from '@shell-core/auth/routes'
-import { AuthService } from '@shell-core/auth/services'
-import { SessionStore } from '@shell-core/auth/stores'
-import { SessionExpired } from '@shell-core/errors'
-import { ToastService } from '@shell-shared/services'
+
 import { catchError, debounceTime, Observable, Subject, switchMap, takeWhile, throwError } from 'rxjs'
+
+import { redirectUrls } from '~shell-core/auth/routes'
+import { AuthService } from '~shell-core/auth/services'
+import { SessionStore } from '~shell-core/auth/stores'
+import { SessionExpired } from '~shell-core/errors'
+import { ToastService } from '~shell-shared/services'
 
 @Injectable({ providedIn: 'root' })
 /**

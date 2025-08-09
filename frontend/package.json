@@ -59,6 +59,7 @@
     "angular-eslint": "20.1.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
+    "eslint-import-resolver-typescript": "^3",
     "eslint-plugin-import": "^2.32.0",
     "jasmine-core": "~5.8.0",
     "json5": "^2.2.3",

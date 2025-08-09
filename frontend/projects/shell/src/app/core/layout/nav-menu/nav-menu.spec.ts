@@ -1,5 +1,5 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { signal } from '@angular/core'
+import { ComponentFixture, TestBed } from '@angular/core/testing'
 
 import { NavMenu } from './nav-menu'
 import { NavMenuViewModel } from './nav-menu.viewmodel'

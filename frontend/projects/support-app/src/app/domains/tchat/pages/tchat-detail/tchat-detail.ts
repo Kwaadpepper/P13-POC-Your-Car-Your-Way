@@ -1,8 +1,10 @@
 import { Component, inject } from '@angular/core'
 import { ActivatedRoute } from '@angular/router'
-import { SuperLabel } from '@support-domains/tchat/components'
-import { BackButton } from '@support-shared/components'
+
 import { ButtonModule } from 'primeng/button'
+
+import { SuperLabel } from '~support-domains/tchat/components'
+import { BackButton } from '~support-shared/components'
 
 @Component({
   selector: 'support-tchat-detail',

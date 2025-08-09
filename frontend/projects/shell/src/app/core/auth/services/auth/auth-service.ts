@@ -1,13 +1,15 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { inject, Injectable } from '@angular/core'
-import { LoginRequest, RegisterRequest } from '@shell-core/auth/api/requests'
-import { simpleMessageSchema, SimpleMessageZod, userSchema, UserZod } from '@shell-core/auth/api/schemas'
-import { User } from '@shell-core/auth/models'
-import { SessionStore } from '@shell-core/auth/stores'
-import { LoginFailure } from '@shell-core/errors'
-import { checkServerReponse, verifyResponseType } from '@shell-core/tools'
-import { environment } from '@shell-env/environment'
+
 import { catchError, first, map, Observable, throwError } from 'rxjs'
+
+import { LoginRequest, RegisterRequest } from '~shell-core/auth/api/requests'
+import { simpleMessageSchema, SimpleMessageZod, userSchema, UserZod } from '~shell-core/auth/api/schemas'
+import { User } from '~shell-core/auth/models'
+import { SessionStore } from '~shell-core/auth/stores'
+import { LoginFailure } from '~shell-core/errors'
+import { checkServerReponse, verifyResponseType } from '~shell-core/tools'
+import { environment } from '~shell-env/environment'
 
 @Injectable({
   providedIn: 'root',

@@ -3,20 +3,20 @@ import { ActivatedRoute } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
 
-import { SuperLabel } from '~support-domains/tchat/components'
+import { SuperLabel } from '~support-domains/chat/components'
 import { BackButton } from '~support-shared/components'
 
 @Component({
-  selector: 'support-tchat-detail',
+  selector: 'support-chat-detail',
   imports: [
     ButtonModule,
     SuperLabel,
     BackButton,
   ],
-  templateUrl: './tchat-detail.html',
-  styleUrl: './tchat-detail.css',
+  templateUrl: './chat-detail.html',
+  styleUrl: './chat-detail.css',
 })
-export class TchatDetail {
+export class ChatDetail {
   chatId = ''
   readonly route = inject(ActivatedRoute)
 

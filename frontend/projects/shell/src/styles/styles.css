@@ -1,4 +1,4 @@
-@import "./../../../shared/src/styles/shared.css";
+@import "~ycyw/styles";
 @import "./vars.css";
 @import "./titles.css";
 @import "./fonts.css";

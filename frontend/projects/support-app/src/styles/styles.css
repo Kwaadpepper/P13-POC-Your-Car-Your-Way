@@ -1,4 +1,5 @@
-@import "./../../../shared/src/styles/shared.css";
+/* stylelint-disable-next-line at-rule-no-unknown */
+@references "~ycyw/styles";
 
 html,
 body {

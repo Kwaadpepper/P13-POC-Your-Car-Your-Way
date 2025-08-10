@@ -1,18 +1,16 @@
 @import "tailwindcss";
 @import "primeicons/primeicons.css";
 
+/* Plugins Tailwind (v4, CSS-first) */
 /* stylelint-disable-next-line at-rule-no-unknown */
 @plugin "tailwindcss-primeui";
 
 /* stylelint-disable-next-line at-rule-no-unknown */
 @plugin "tailwind-bootstrap-grid" {
   container_max_widths:
-    'sm', '540px', 'md', '720px', 'lg', '960px', 'xl', '1140px', '2xl', '1320px';
-}
-
-@layer plugins;
-
-@layer plugins {
-  /* stylelint-disable-next-line at-rule-no-unknown */
-  @tailwind utilities;
+    'sm', '540px',
+    'md', '720px',
+    'lg', '960px',
+    'xl', '1140px',
+    '2xl', '1320px';
 }

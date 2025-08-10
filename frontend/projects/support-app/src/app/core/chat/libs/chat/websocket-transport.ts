@@ -1,6 +1,11 @@
 // Transport WebSocket minimal + auto-reconnexion avec ré-abonnement aux conversations
 
-import type { ChatTransport, ClientCommand, ServerEvent } from './chat-transport'
+import {
+  type ChatTransport,
+  type ClientCommand,
+  EventType,
+  type ServerEvent,
+} from './chat-transport'
 
 type Handler = (evt: ServerEvent) => void
 
@@ -33,7 +38,7 @@ export class WebSocketTransport implements ChatTransport {
       ws.onopen = () => {
         // Ré-adhère aux conversations après reconnexion
         for (const id of this.joinedConversations) {
-          this.safeSend({ type: 'join', payload: { conversation: id } })
+          this.safeSend({ type: EventType.JOIN, payload: { conversation: id } })
         }
         // Vide la file
         while (this.queue.length) {
@@ -88,6 +93,8 @@ export class WebSocketTransport implements ChatTransport {
   }
 
   send(cmd: ClientCommand): void {
+    console.log('send', cmd)
+    console.log('isConnected', this.isConnected())
     // Mémorise les joins pour ré-adhérer après reconnexion
     if (cmd.type === 'join') this.joinedConversations.add(cmd.payload.conversation)
     if (cmd.type === 'leave') this.joinedConversations.delete(cmd.payload.conversation)

@@ -16,7 +16,7 @@
     "lint:css:fix": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" --fix",
     "check:alias": "node scripts/check-alias.mjs",
     "prepare": "export GIT_DIR=\"./..\" husky",
-    "mock:ws": "node dev-mocks/mock-ws-server.mjs"
+    "mock:ws": "bunx tsx dev-mocks/mock-ws-server.ts"
   },
   "prettier": {
     "overrides": [
@@ -32,6 +32,7 @@
   "dependencies": {
     "@angular-architects/native-federation": "^20.1.2",
     "@angular/animations": "^20.1.6",
+    "@angular/cdk": "^20.1.5",
     "@angular/common": "^20.1.6",
     "@angular/compiler": "^20.1.6",
     "@angular/core": "^20.1.6",

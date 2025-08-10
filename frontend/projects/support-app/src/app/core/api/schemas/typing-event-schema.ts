@@ -6,7 +6,7 @@ const typingEventSchema = z.object({
   user: z.string().uuid(),
   role: z.nativeEnum(Role),
   conversation: z.string().uuid(),
-  typing: z.boolean(),
+  typing: z.coerce.boolean(),
 })
 
 export type TypingEventZod = z.infer<typeof typingEventSchema>

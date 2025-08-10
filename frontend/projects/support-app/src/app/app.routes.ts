@@ -1,12 +1,9 @@
 import { Routes } from '@angular/router'
 
-import { Dashboard } from '~support-core/home/pages'
+import { chatRoutes } from '~support-core/chat/routes'
 import { homeRoutes } from '~support-core/home/routes'
 
 export const routes: Routes = [
-  {
-    path: '',
-    component: Dashboard,
-  },
   ...homeRoutes,
+  ...chatRoutes,
 ]

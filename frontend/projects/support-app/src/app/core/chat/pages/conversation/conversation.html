@@ -1,0 +1,21 @@
+<div class="chat-window">
+  <p-toolbar>
+    <div class="p-toolbar-group-start">
+      <button pButton label="Conversations" (click)="backToList()">
+        <i class="pi pi-arrow-left"></i>
+      </button>
+    </div>
+    <div class="p-toolbar-group-center">
+      <span class="title">Conversation {{ viewModel.conversationId() }}</span>
+    </div>
+    <div class="p-toolbar-group-end">
+      <p-tag severity="success" [value]="onlineCount + ' en ligne'"></p-tag>
+    </div>
+  </p-toolbar>
+
+  <support-message-list class="flex-1" [messages]="viewModel.messages()" [currentUser]="currentUserId()" />
+
+  <support-typing-indicator [typingUsers]="viewModel.typingUsers()" />
+
+  <support-message-input (send)="onSend($event)" (typing)="onTyping($event)" />
+</div>

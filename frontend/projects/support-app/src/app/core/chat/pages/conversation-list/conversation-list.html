@@ -1,0 +1,30 @@
+<div class="page">
+  <header class="header">
+    <h2>Conversations</h2>
+    <button pButton label="Nouvelle" (click)="newConversation()">
+      <i class="pi pi-plus"></i>
+    </button>
+  </header>
+
+  <p-listbox [options]="conversations()" [optionLabel]="'title'" [style]="{ width: '100%' }" [filter]="true"
+    [filterPlaceHolder]="'Rechercher…'" (onChange)="open($event.value)" [metaKeySelection]="false"
+    [listStyle]="{ maxHeight: 'calc(100vh - 140px)' }">
+    <ng-template let-item pTemplate="item">
+      <div class="item">
+        <p-avatar [label]="avatarLabel(item)" class="mr-2" shape="circle"></p-avatar>
+        <div class="content">
+          <div class="row">
+            <span class="title">{{ item.title }}</span>
+            <span class="updated">{{ item.updatedAt | date:'short' }}</span>
+          </div>
+          <div class="row">
+            <span class="last">{{ item.lastMessage.content || '—' }}</span>
+            @if (item.unread > 0) {
+            <span class="badge p-badge p-badge-danger">{{ item.unread }}</span>
+            }
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-listbox>
+</div>

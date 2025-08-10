@@ -1,16 +1,22 @@
 import { inject, Injectable } from '@angular/core'
 
 import { Subject } from 'rxjs'
+import { z, ZodError, ZodSchema } from 'zod'
 
+import messageHistorySchema from '~support-core/api/schemas/message-history-schema'
 import messageSchema from '~support-core/api/schemas/message-schema'
 import presenceEventSchema from '~support-core/api/schemas/presence-event-schema'
 import typingEventSchema from '~support-core/api/schemas/typing-event-schema'
 import { ChatMessage, ConversationId } from '~support-domains/chat/models'
-import { PresenceEvent } from '~support-domains/events/presence-event'
-import { TypingEvent } from '~support-domains/events/typing-event'
+import { PresenceEvent, TypingEvent } from '~support-domains/events'
 
-import { ChatClient, Message } from '../libs'
-import { PresenceEvent as ChatPresenceEvent, TypingEvent as ChatTypingEvent } from '../libs/chat/events'
+import { ChatClient } from '../libs'
+import {
+  HistoryEventPayload,
+  MessageEventPayload,
+  PresenceEventPayload,
+  TypingEventPayload,
+} from '../libs/chat-client'
 import { CHAT_TRANSPORT } from '../tokens'
 
 @Injectable({ providedIn: 'root' })
@@ -34,7 +40,7 @@ export class ChatService {
     this.client.onMessage(m => this.messagesSub.next(this.mapToChatMessage(m)))
     this.client.onPresence(p => this.presenceSub.next(this.mapPresenceEvent(p)))
     this.client.onTyping(t => this.typingSub.next(this.mapTypingEvent(t)))
-    this.client.onHistory(h => this.historySub.next(h.map(this.mapToChatMessage)))
+    this.client.onHistory(h => this.historySub.next(this.mapToHistoryChatMessage(h)))
   }
 
   connect(token?: string) {
@@ -67,15 +73,81 @@ export class ChatService {
     this.client.getHistory(conversationId, limit)
   }
 
-  private mapToChatMessage(msg: Message): ChatMessage {
-    return messageSchema.parse(msg)
+  private mapToChatMessage(payload: MessageEventPayload): ChatMessage {
+    const parsed = this.validateRequest(messageSchema, payload)
+
+    if (parsed.errors !== null) {
+      console.error('Failed to parse message payload:', parsed.errors, payload)
+      throw new Error('Invalid message payload')
+    }
+
+    return parsed.validated
   }
 
-  private mapPresenceEvent(event: ChatPresenceEvent): PresenceEvent {
-    return presenceEventSchema.parse(event)
+  private mapToHistoryChatMessage(payload: HistoryEventPayload): ChatMessage[] {
+    const parsed = this.validateRequest(messageHistorySchema, payload.messages)
+
+    if (parsed.errors !== null) {
+      console.error('Failed to parse history message payload:', parsed.errors, payload)
+      throw new Error('Invalid message payload')
+    }
+
+    return parsed.validated
   }
 
-  private mapTypingEvent(event: ChatTypingEvent): TypingEvent {
-    return typingEventSchema.parse(event)
+  private mapPresenceEvent(payload: PresenceEventPayload): PresenceEvent {
+    const parsed = this.validateRequest(presenceEventSchema, payload)
+
+    if (parsed.errors !== null) {
+      console.error('Failed to parse presence payload:', parsed.errors, payload)
+      throw new Error('Invalid message payload')
+    }
+
+    return parsed.validated
+  }
+
+  private mapTypingEvent(payload: TypingEventPayload): TypingEvent {
+    const parsed = this.validateRequest(typingEventSchema, payload)
+
+    if (parsed.errors !== null) {
+      console.error('Failed to parse typing payload:', parsed.errors, payload)
+      throw new Error('Invalid message payload')
+    }
+
+    return parsed.validated
+  }
+
+  private validateRequest<SchemaT extends ZodSchema>(
+    schema: SchemaT,
+    payload: unknown,
+  ): {
+    validated: null
+    errors: Map<string, string>
+  } | {
+    validated: z.output<SchemaT>
+    errors: null
+  } {
+    const res = schema.safeParse(payload)
+    return res.success === true
+      ? { validated: res.data, errors: null }
+      : { validated: null, errors: this.zErrorToFieldsError(res.error) }
+  }
+
+  private zErrorToFieldsError<SchemaT extends ZodSchema>(
+    zError: ZodError<z.infer<SchemaT>>,
+  ): Map<string, string> {
+    const errors = Object.entries(zError.flatten().formErrors)
+      .concat(Object.entries(zError.flatten().fieldErrors))
+    const output = new Map<string, string>()
+
+    errors.forEach((entry) => {
+      const index = entry[0]
+      const errorMessages = entry[1]
+      if (errorMessages.length) {
+        output.set(index, errorMessages)
+      }
+    })
+
+    return output
   }
 }

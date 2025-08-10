@@ -1,9 +1,13 @@
 // Facade générique (sans Angular) pour manipuler le transport
 
-import { ChatTransport, EventType, Message, ServerEvent } from './chat/chat-transport'
-import { PresenceEvent, TypingEvent } from './chat/events'
+import { ChatTransport, Events, EventType, ServerEvent } from './chat/chat-transport'
 
 type Unsub = () => void
+
+export type MessageEventPayload = Events[EventType.MESSAGE]['server']
+export type PresenceEventPayload = Events[EventType.PRESENCE]['server']
+export type TypingEventPayload = Events[EventType.TYPING]['server']
+export type HistoryEventPayload = Events[EventType.HISTORY]['server']
 
 export class ChatClient {
   private readonly transport: ChatTransport
@@ -40,28 +44,30 @@ export class ChatClient {
     this.transport.send({ type: EventType.HISTORY, payload: { conversation, limit } })
   }
 
-  onMessage(cb: (msg: Message) => void): Unsub {
+  onMessage(cb: (m: MessageEventPayload) => void): Unsub {
     console.log('onMessage callback set')
     return this.transport.onEvent((evt: ServerEvent) => {
-      if (evt.type === 'message') cb(evt.payload)
+      console.log('Received event:', evt)
+      console.log('Event type:', evt.type)
+      if (evt.type === EventType.MESSAGE) cb(evt.payload)
     })
   }
 
-  onPresence(cb: (p: PresenceEvent) => void): Unsub {
+  onPresence(cb: (p: PresenceEventPayload) => void): Unsub {
     return this.transport.onEvent((evt: ServerEvent) => {
-      if (evt.type === 'presence') cb(evt.payload)
+      if (evt.type === EventType.PRESENCE) cb(evt.payload)
     })
   }
 
-  onTyping(cb: (t: TypingEvent) => void): Unsub {
+  onTyping(cb: (t: TypingEventPayload) => void): Unsub {
     return this.transport.onEvent((evt: ServerEvent) => {
-      if (evt.type === 'typing') cb(evt.payload)
+      if (evt.type === EventType.TYPING) cb(evt.payload)
     })
   }
 
-  onHistory(cb: (messages: Message[]) => void): Unsub {
+  onHistory(cb: (h: HistoryEventPayload) => void): Unsub {
     return this.transport.onEvent((evt: ServerEvent) => {
-      if (evt.type === 'history') cb(evt.payload.messages)
+      if (evt.type === EventType.HISTORY) cb(evt.payload)
     })
   }
 }

@@ -1,16 +1,3 @@
-import { PresenceEvent, TypingEvent } from './events'
-
-export interface Message {
-  id: string
-  conversation: string
-  from: {
-    id: string
-    role: string
-  }
-  text: string
-  sentAt: string
-}
-
 export enum EventType {
   MESSAGE = 'message',
   PRESENCE = 'presence',
@@ -21,31 +8,75 @@ export enum EventType {
   ERROR = 'error',
 }
 
+interface ErrorEventPayload {
+  code: string
+  message: string
+}
+
+interface HistoryEvent {
+  conversation: string
+  messages: MessageEventPayload[]
+}
+
+interface JoinEventPayload {
+  conversation: string
+  participants: {
+    user: string
+    role: string
+    status: string
+  }[]
+}
+
+interface MessageEventPayload {
+  id: string
+  conversation: string
+  from: {
+    id: string
+    role: string
+  }
+  text: string
+  sentAt: string
+}
+
+interface PresenceEventPayload {
+  user: string
+  role: string
+  status: string
+  conversation: string
+}
+
+interface TypingEventPayload {
+  user: string
+  role: string
+  conversation: string
+  typing: boolean
+}
+
 export interface Events {
   [EventType.LEAVE]: {
     client: { conversation: string }
   }
   [EventType.PRESENCE]: {
-    server: PresenceEvent
+    server: PresenceEventPayload
   }
   [EventType.MESSAGE]: {
-    server: Message
+    server: MessageEventPayload
     client: { conversation: string, text: string }
   }
   [EventType.TYPING]: {
-    server: TypingEvent
+    server: TypingEventPayload
     client: { conversation: string, isTyping: boolean }
   }
   [EventType.HISTORY]: {
-    server: { conversation: string, messages: Message[] }
+    server: HistoryEvent
     client: { conversation: string, limit?: number }
   }
   [EventType.JOIN]: {
-    server: { conversation: string, participants: { user: string, role: string, status: string }[] }
+    server: JoinEventPayload
     client: { conversation: string }
   }
   [EventType.ERROR]: {
-    server: { code: string, message: string }
+    server: ErrorEventPayload
   }
 }
 

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { ChatWindow } from './chat-window'
+import { MessageList } from './message-list'
 
-describe('ChatWindow', () => {
-  let component: ChatWindow
-  let fixture: ComponentFixture<ChatWindow>
+describe('MessageList', () => {
+  let component: MessageList
+  let fixture: ComponentFixture<MessageList>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChatWindow],
+      imports: [MessageList],
     })
       .compileComponents()
 
-    fixture = TestBed.createComponent(ChatWindow)
+    fixture = TestBed.createComponent(MessageList)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

@@ -1,0 +1,14 @@
+<div class="msg" [class.self]="self">
+  <div class="avatar">
+    <p-avatar [label]="initials" [style]="{ 'background-color': self ? '#22C55E' : '#64748B', color: '#fff' }"
+      shape="circle" size="large">
+    </p-avatar>
+  </div>
+  <div class="bubble" [class.self-bubble]="self">
+    <div class="text">{{ message.text }}</div>
+    <div class="meta">
+      <p-tag [value]="from.role" [severity]="from.isOperator ? 'info' : 'success'"></p-tag>
+      <span class="time">{{ message.sentAt | date:'shortTime' }}</span>
+    </div>
+  </div>
+</div>

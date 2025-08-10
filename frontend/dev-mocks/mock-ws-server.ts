@@ -7,9 +7,19 @@ import {
   type ClientCommand,
   Events,
   EventType,
-  type Message,
   type ServerEvent,
 } from './../projects/support-app/src/app/core/chat/libs/chat/chat-transport'
+
+interface Message {
+  id: string
+  conversation: string
+  from: {
+    id: string
+    role: Role
+  }
+  text: string
+  sentAt: string
+}
 
 type Role = 'operator' | 'client'
 type Client = {
@@ -29,7 +39,7 @@ function broadcast(roomId: string, msg: ServerEvent, excludeWs?: Client) {
   const clients = rooms.get(roomId)
   if (!clients) return
   for (const ws of clients) {
-    if (ws.readyState === ws.OPEN && ws !== excludeWs) {
+    if (ws.readyState === WebSocket.OPEN && ws !== excludeWs) {
       ws.send(JSON.stringify(msg))
     }
   }
@@ -43,9 +53,9 @@ function ensureRoom(roomId: string) {
 wss.on('connection', (ws: Client, req) => {
   const url = new URL(req.url || '', 'http://localhost')
   const token = url.searchParams.get('token') || ''
-  // Déduit le rôle via le token (ex: "client-123", "operator-42")
+  // Déduit le rôle via le token (ex: "client_7b8e42ff-4471-429d-9f1a-cb3b220cdb16", "operator_7b8e42ff-4471-429d-9f1a-cb3b220cdb16"
   const role = token.startsWith('operator') ? 'operator' : 'client'
-  const user = token || `user-${Math.floor(Math.random() * 1000)}`
+  const user = token.split('_')[1]
 
   ws.user = user
   ws.role = role
@@ -106,26 +116,25 @@ wss.on('connection', (ws: Client, req) => {
       const { conversation, text } = payload
       const roomId = conversation
       ensureRoom(roomId)
-      const roomMessages = messagesByRoom.get(roomId)!
 
       const chatMsg: Message = {
         id: randomUUID(),
         conversation: roomId,
-        from: {
-          id: user,
-          role,
-        },
+        from: { id: user, role },
         text,
         sentAt: new Date().toISOString(),
       }
-      roomMessages.push(chatMsg)
+      messagesByRoom.get(roomId)!.push(chatMsg)
 
-      const eventPayload: Events[EventType.MESSAGE]['server'] = chatMsg
-      const event: ServerEvent = { type: EventType.MESSAGE, payload: eventPayload }
+      const event: ServerEvent = { type: EventType.MESSAGE, payload: chatMsg }
 
       // Fanout à tous (y compris l'expéditeur pour avoir l'horodatage/uniformité)
-      broadcast(conversation, event)
-      if (ws.readyState === ws.OPEN) ws.send(JSON.stringify({ type: EventType.MESSAGE, payload: chatMsg }))
+      broadcast(roomId, event, ws)
+
+      // Envoie à l'expéditeur une seule fois
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(event))
+      }
     }
     else if (type === EventType.TYPING) {
       const { conversation, isTyping } = payload

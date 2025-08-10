@@ -1,0 +1,143 @@
+import { Injectable, Signal, computed, inject, signal } from '@angular/core'
+
+import { Subscription } from 'rxjs'
+
+import { ChatService } from '~support-core/chat/services'
+import { PresenceStatus, Role } from '~support-domains/chat/enums'
+import { ChatMessage, ConversationId, UserId } from '~support-domains/chat/models'
+import { PresenceEvent } from '~support-domains/events/presence-event'
+import { TypingEvent } from '~support-domains/events/typing-event'
+
+@Injectable()
+export class ConversationViewModel {
+  private readonly chat = inject(ChatService)
+
+  private readonly subs = new Subscription()
+  private connected = false
+
+  private readonly _conversationId = signal<ConversationId | null>(null)
+  private readonly _messages = signal<ChatMessage[]>([])
+  private readonly _participants = signal<{ user: UserId, role: Role, status: PresenceStatus }[]>([])
+  private readonly _typingUsers = signal<{ user: UserId, role: Role }[]>([])
+  private readonly _currentUserId = signal<string>('')
+
+  // Selectors (signals)
+  readonly conversationId = this._conversationId.asReadonly()
+  readonly messages = this._messages.asReadonly()
+  readonly participants = this._participants.asReadonly()
+  readonly typingUsers = this._typingUsers.asReadonly()
+  readonly currentUserId: Signal<string> = this._currentUserId.asReadonly()
+
+  // Dérivés utiles pour l'UI
+  readonly isEmpty = computed(() => this._messages().length === 0)
+  readonly onlineCount = computed(() => this._participants().filter(p => p.status === 'online').length)
+
+  // Connexion (à appeler une seule fois par page)
+  async init(token: string) {
+    if (!this.connected) {
+      console.log('Connecting to chat service...')
+      console.log('Token:', token)
+      await this.chat.connect(token)
+      this._currentUserId.set(token)
+      this.bindStreams()
+      this.connected = true
+    }
+  }
+
+  // Abonnement aux flux du ChatService
+  private bindStreams() {
+    this.subs.add(
+      this.chat.messages$.subscribe((m) => {
+        console.log('New message:', m)
+        const cid = this._conversationId()
+        if (cid && m.conversation === cid) {
+          this._messages.update(arr => [...arr, m])
+        }
+      }),
+    )
+
+    this.subs.add(
+      this.chat.history$.subscribe((list) => {
+        // Remplace l'historique lors d'un getHistory après join
+        this._messages.set(list)
+      }),
+    )
+
+    this.subs.add(
+      this.chat.presence$.subscribe((p: PresenceEvent) => {
+        const cid = this._conversationId()
+        // Si l'event concerne une autre conversation, on ignore
+        if (p.conversation && cid && p.conversation !== cid) return
+
+        const arr = [...this._participants()]
+        const idx = arr.findIndex(x => x.user === p.user)
+        if (idx >= 0) {
+          arr[idx] = { user: p.user, role: p.role, status: p.status }
+        }
+        else {
+          arr.push({ user: p.user, role: p.role, status: p.status })
+        }
+        this._participants.set(arr)
+      }),
+    )
+
+    this.subs.add(
+      this.chat.typing$.subscribe((t: TypingEvent) => {
+        const cid = this._conversationId()
+        if (!cid || t.conversation !== cid) return
+
+        const list = [...this._typingUsers()]
+        const idx = list.findIndex(x => x.user === t.user)
+        if (t.typing) {
+          if (idx === -1) list.push({ user: t.user, role: t.role })
+        }
+        else if (idx >= 0) {
+          list.splice(idx, 1)
+        }
+        this._typingUsers.set(list)
+      }),
+    )
+  }
+
+  // Navigation/gestion de conversation
+  join(conversationId: ConversationId) {
+    const prev = this._conversationId()
+    if (prev && prev !== conversationId) this.chat.leave(prev)
+
+    this._conversationId.set(conversationId)
+    // Reset état local
+    this._messages.set([])
+    this._typingUsers.set([])
+    this._participants.set([])
+
+    this.chat.join(conversationId)
+    this.chat.getHistory(conversationId, 50)
+  }
+
+  leave() {
+    const id = this._conversationId()
+    if (id) this.chat.leave(id)
+    this._conversationId.set(null)
+    this._messages.set([])
+    this._typingUsers.set([])
+    this._participants.set([])
+  }
+
+  // Actions utilisateur
+  sendMessage(text: string) {
+    const id = this._conversationId()
+    if (!id || !text.trim()) return
+    this.chat.sendMessage(id, text.trim())
+  }
+
+  setTyping(isTyping: boolean) {
+    const id = this._conversationId()
+    if (!id) return
+    this.chat.setTyping(id, isTyping)
+  }
+
+  // Nettoyage
+  destroy() {
+    this.subs.unsubscribe()
+  }
+}

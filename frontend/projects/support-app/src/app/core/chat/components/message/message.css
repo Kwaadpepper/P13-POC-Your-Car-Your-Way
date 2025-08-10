@@ -1,0 +1,26 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
+@reference "~ycyw/styles";
+
+.msg{
+  @apply flex items-end gap-2;
+}
+
+.msg.self{
+  @apply flex-row-reverse;
+}
+
+.bubble{
+  @apply max-w-[70%] bg-surface-200 dark:bg-surface-800 rounded-lg p-2.5;
+}
+
+.self .bubble{
+  @apply bg-green-100 dark:bg-green-900;
+}
+
+.meta{
+  @apply flex items-center mt-1 text-gray-700 dark:text-gray-300 text-xs gap-2;
+}
+
+.avatar{
+  @apply self-start;
+}

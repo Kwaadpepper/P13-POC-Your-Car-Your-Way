@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { SuperLabel } from './super-label'
+import { TypingIndicator } from './typing-indicator'
 
-describe('SuperLabel', () => {
-  let component: SuperLabel
-  let fixture: ComponentFixture<SuperLabel>
+describe('TypingIndicator', () => {
+  let component: TypingIndicator
+  let fixture: ComponentFixture<TypingIndicator>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SuperLabel],
+      imports: [TypingIndicator],
     })
       .compileComponents()
 
-    fixture = TestBed.createComponent(SuperLabel)
+    fixture = TestBed.createComponent(TypingIndicator)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

@@ -1,0 +1,38 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
+@reference "~ycyw/styles";
+
+.page {
+  @apply flex flex-col h-full;
+}
+
+.header {
+  @apply flex justify-between items-center p-3 border-b border-surface-200;
+}
+
+.item {
+  @apply flex items-center gap-2 w-full;
+}
+
+.content {
+  @apply flex flex-col flex-1 gap-1;
+}
+
+.row {
+  @apply flex items-center justify-between w-full;
+}
+
+.title {
+  @apply font-semibold;
+}
+
+.updated {
+  @apply text-gray-500 text-sm;
+}
+
+.last {
+  @apply overflow-hidden max-w-[60%] text-gray-500 text-ellipsis whitespace-nowrap;
+}
+
+.badge {
+  @apply min-w-[1.5rem] rounded-full text-center;
+}

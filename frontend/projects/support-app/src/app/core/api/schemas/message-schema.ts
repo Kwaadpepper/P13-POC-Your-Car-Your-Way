@@ -10,7 +10,7 @@ const messageSchema = z.object({
     role: z.nativeEnum(Role),
   }),
   text: z.string(),
-  sentAt: z.date(),
+  sentAt: z.coerce.date(),
 })
 
 export type MessageZod = z.infer<typeof messageSchema>

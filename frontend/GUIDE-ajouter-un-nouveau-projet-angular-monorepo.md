@@ -96,7 +96,7 @@ Règles à respecter :
 
 Dans le fichier de styles principal du projet (`projects/<nom-du-projet>/src/styles.css` ou `styles.scss`), ajoutez en haut :
 ```css
-@import "./../../../shared/src/styles/shared.css";
+@import "~ycyw/styles";
 ```
 Note :
 - Le chemin est relatif à `projects/<nom-du-projet>/src/`.
@@ -180,7 +180,7 @@ Afin d’uniformiser le partage des dépendances et d’éviter les doublons, ch
 Contenu type :
 ```js
 const { withNativeFederation } = require('@angular-architects/native-federation/config');
-const federationShared = require('../../shared/federation-shared.config.cjs');
+const federationShared = require('../../federation-shared.config.cjs');
 
 module.exports = withNativeFederation({
   shared: { ...federationShared.shared },

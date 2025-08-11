@@ -21,6 +21,7 @@ import { ConversationViewModel } from './conversation-viewmodel'
     MessageInput,
     TypingIndicator,
   ],
+  providers: [ConversationViewModel],
   templateUrl: './conversation.html',
   styleUrl: './conversation.css',
 })

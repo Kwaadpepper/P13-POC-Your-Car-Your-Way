@@ -47,9 +47,6 @@ export class ConversationViewModel {
     }
 
     const token = this.currentUserId()
-
-    console.log('Connecting to chat service...')
-    console.log('Token:', token)
     await this.chat.connect(token)
     this._currentUserId.set(token)
     this.bindStreams()
@@ -60,7 +57,6 @@ export class ConversationViewModel {
   private bindStreams() {
     this.subs.add(
       this.chat.messages$.subscribe((m) => {
-        console.log('New message:', m)
         const cid = this._conversationId()
         if (cid && m.conversation === cid) {
           this._messages.update(arr => [...arr, m])

@@ -70,7 +70,6 @@ export class ConversationViewModel {
 
     this.subs.add(
       this.chat.history$.subscribe((list) => {
-        // Remplace l'historique lors d'un getHistory après join
         this._messages.set(list)
       }),
     )

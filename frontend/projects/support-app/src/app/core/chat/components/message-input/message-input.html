@@ -1,6 +1,6 @@
 <div class="msg-input">
-  <textarea pInputTextarea [(ngModel)]="text" rows="2" placeholder="Écrire un message…" (focus)="emitTyping(true)"
-    (blur)="emitTyping(false)" (input)="onInput($event)" (keydown)="maybeSend($event)">
+  <textarea pInputTextarea [(ngModel)]="text" rows="2" placeholder="Écrire un message…" (blur)="emitTyping(false)"
+    (input)="onInput($event)" (keydown)="maybeSend($event)">
       </textarea>
   <button pButton label="Envoyer" (click)="submit()">
     <i class="pi pi-send"></i>

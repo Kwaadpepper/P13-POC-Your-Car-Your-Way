@@ -11,6 +11,11 @@ module.exports = withNativeFederation({
 
   shared: {
     ...federationShared.shared,
+       // ...shareAll({
+    //   singleton: true,
+    //   strictVersion: true,
+    //   requiredVersion: 'auto'
+    // }),
   },
 
   skip: [

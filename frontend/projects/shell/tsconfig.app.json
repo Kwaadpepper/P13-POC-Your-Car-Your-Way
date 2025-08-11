@@ -16,6 +16,9 @@
       "~shell-shared/*": [
         "./src/app/shared/*"
       ],
+      "~shell-tokens/*": [
+        "./src/app/tokens/*"
+      ],
       "~ycyw/shared": [
         "../../dist/shared"
       ]

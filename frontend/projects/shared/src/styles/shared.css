@@ -1,16 +1,33 @@
-@import "tailwindcss";
-@import "primeicons/primeicons.css";
+/* @import "primeicons/primeicons.css"; */
 
 /* Plugins Tailwind (v4, CSS-first) */
-/* stylelint-disable-next-line at-rule-no-unknown */
-@plugin "tailwindcss-primeui";
 
-/* stylelint-disable-next-line at-rule-no-unknown */
-@plugin "tailwind-bootstrap-grid" {
+/* @plugin "tailwindcss-primeui"; */
+
+
+/* @plugin "tailwind-bootstrap-grid" {
   container_max_widths:
     'sm', '540px',
     'md', '720px',
     'lg', '960px',
     'xl', '1140px',
     '2xl', '1320px';
+} */
+
+
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer tailwind-base {
+  /* stylelint-disable-next-line at-rule-no-unknown */
+  @tailwind base;
 }
+
+@layer primeng;
+
+@layer tailwind-utilities {
+  /* stylelint-disable-next-line at-rule-no-unknown */
+  @tailwind components;
+  /* stylelint-disable-next-line at-rule-no-unknown */
+  @tailwind utilities;
+}
+

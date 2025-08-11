@@ -1,3 +1,1 @@
-type UUID = string
-
-export default UUID
+export type UUID = string

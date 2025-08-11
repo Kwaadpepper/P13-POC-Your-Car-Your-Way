@@ -1,6 +1,8 @@
+import { Routes } from '@angular/router'
+
 import { Conversation, ConversationList } from './pages'
 
-export const chatRoutes = [
+export const chatRoutes: Routes = [
   {
     path: 'chats',
     component: ConversationList,

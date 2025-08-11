@@ -4,7 +4,9 @@ import { SessionStore } from '~shell-core/auth/stores'
 
 @Injectable({
   providedIn: 'root',
-  deps: [SessionStore],
+  deps: [
+    SessionStore,
+  ],
 })
 export class NavMenuViewModel {
   private readonly sessionStore = inject(SessionStore)

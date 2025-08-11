@@ -4,12 +4,16 @@
 
 // * LIB
 export {
-  Shared,
+  SessionBroadcastService,
+  SessionBroadcastType,
+  type LoginEvent,
+  type LogoutEvent,
+  type RefreshEvent,
+  type SharedUserProfile,
 } from './lib'
 
 // * CONFIG
 export {
-  APP_CONFIG,
   type Configuration,
 } from './config'
 
@@ -17,11 +21,6 @@ export {
 export {
   primeNgProvider,
 } from './providers'
-
-// * SERVICES
-export {
-  ConfigStore,
-} from './stores'
 
 // * TYPES
 export type {

@@ -11,7 +11,7 @@ export const primeNgProvider = [
         darkModeSelector: 'system',
         cssLayer: {
           name: 'primeng',
-          order: 'theme,base,components,utilities,plugins,primeng',
+          order: 'tailwind-base, primeng, tailwind-utilities',
         },
       },
     },

@@ -7,10 +7,18 @@ import { PresenceStatus, Role } from '~support-domains/chat/enums'
 import { ChatMessage, ConversationId, UserId } from '~support-domains/chat/models'
 import { PresenceEvent } from '~support-domains/events/presence-event'
 import { TypingEvent } from '~support-domains/events/typing-event'
+import { LoginEvent, SessionBroadcastService, SessionBroadcastType } from '~ycyw/shared'
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+  deps: [
+    ChatService,
+    SessionBroadcastService,
+  ],
+})
 export class ConversationViewModel {
   private readonly chat = inject(ChatService)
+  private readonly sessionBus = inject(SessionBroadcastService)
 
   private readonly subs = new Subscription()
   private connected = false
@@ -32,16 +40,20 @@ export class ConversationViewModel {
   readonly isEmpty = computed(() => this._messages().length === 0)
   readonly onlineCount = computed(() => this._participants().filter(p => p.status === 'online').length)
 
-  // Connexion (à appeler une seule fois par page)
-  async init(token: string) {
-    if (!this.connected) {
-      console.log('Connecting to chat service...')
-      console.log('Token:', token)
-      await this.chat.connect(token)
-      this._currentUserId.set(token)
-      this.bindStreams()
-      this.connected = true
+  // FIXME: Ici on devrais passer le JWT token de l'utilisateur connecté
+  async init() {
+    if (this.connected) {
+      return
     }
+
+    const token = this.currentUserId()
+
+    console.log('Connecting to chat service...')
+    console.log('Token:', token)
+    await this.chat.connect(token)
+    this._currentUserId.set(token)
+    this.bindStreams()
+    this.connected = true
   }
 
   // Abonnement aux flux du ChatService
@@ -95,6 +107,23 @@ export class ConversationViewModel {
           list.splice(idx, 1)
         }
         this._typingUsers.set(list)
+      }),
+    )
+
+    this.subs.add(
+      this.sessionBus.events$.subscribe((message) => {
+        switch (message.type) {
+          case SessionBroadcastType.LOGIN: {
+            const loginEvent = message.payload as LoginEvent
+            this._currentUserId.set(loginEvent.user.id)
+            break
+          }
+          case SessionBroadcastType.LOGOUT: {
+            this._currentUserId.set('')
+            this.leave()
+            break
+          }
+        }
       }),
     )
   }

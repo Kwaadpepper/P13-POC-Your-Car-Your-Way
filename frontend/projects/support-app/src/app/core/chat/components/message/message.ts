@@ -9,7 +9,6 @@ import { ChatMessage } from '~support-domains/chat/models'
 
 @Component({
   selector: 'support-message',
-  standalone: true,
   imports: [
     AvatarModule,
     TagModule,

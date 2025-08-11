@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 
-import { Shared } from './shared'
+import { SessionListener } from './session-listener'
 
-describe('Shared', () => {
-  let component: Shared
-  let fixture: ComponentFixture<Shared>
+describe('SessionListener', () => {
+  let component: SessionListener
+  let fixture: ComponentFixture<SessionListener>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Shared],
+      imports: [SessionListener],
     })
       .compileComponents()
 
-    fixture = TestBed.createComponent(Shared)
+    fixture = TestBed.createComponent(SessionListener)
     component = fixture.componentInstance
     fixture.detectChanges()
   })

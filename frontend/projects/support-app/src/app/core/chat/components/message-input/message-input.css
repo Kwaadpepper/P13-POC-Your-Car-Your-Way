@@ -1,5 +1,5 @@
 /* stylelint-disable-next-line at-rule-no-unknown */
-@reference "~ycyw/styles";
+@reference "./../../../../../styles/styles.css";
 
 .msg-input {
   @apply flex items-center p-2 border-t border-surface-200 gap-2;

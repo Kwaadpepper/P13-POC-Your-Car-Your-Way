@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common'
 import { Component, inject, OnInit, signal } from '@angular/core'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 
 import { AvatarModule } from 'primeng/avatar'
 import { BadgeModule } from 'primeng/badge'
@@ -21,6 +21,7 @@ import { Conversation } from '~support-domains/chat/models'
 })
 export class ConversationList implements OnInit {
   private readonly router = inject(Router)
+  private readonly route = inject(ActivatedRoute)
 
   readonly conversations = signal<Conversation[]>([])
 
@@ -55,13 +56,14 @@ export class ConversationList implements OnInit {
   }
 
   open(item: Conversation) {
-    this.router.navigate(['/chats', item.id])
+    console.log(this.route.snapshot)
+    this.router.navigate(['.', item.id], { relativeTo: this.route })
   }
 
   newConversation() {
     // TODO: logique d'ouverture/creation
     const id = 'conv-' + Math.floor(Math.random() * 1000)
-    this.router.navigate(['/chats', id])
+    this.router.navigate([id], { relativeTo: this.route })
   }
 
   avatarLabel(item: Conversation): string {

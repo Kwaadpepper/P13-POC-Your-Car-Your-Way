@@ -9,6 +9,7 @@ import presenceEventSchema from '~support-core/api/schemas/presence-event-schema
 import typingEventSchema from '~support-core/api/schemas/typing-event-schema'
 import { ChatMessage, ConversationId } from '~support-domains/chat/models'
 import { PresenceEvent, TypingEvent } from '~support-domains/events'
+import { CHAT_TRANSPORT } from '~support-tokens/chat-transport-token'
 
 import { ChatClient } from '../libs'
 import {
@@ -17,9 +18,13 @@ import {
   PresenceEventPayload,
   TypingEventPayload,
 } from '../libs/chat-client'
-import { CHAT_TRANSPORT } from '../tokens'
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+  deps: [
+    CHAT_TRANSPORT,
+  ],
+})
 export class ChatService {
   private readonly client: ChatClient
 

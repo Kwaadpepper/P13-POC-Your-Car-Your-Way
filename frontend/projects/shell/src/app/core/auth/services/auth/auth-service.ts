@@ -13,7 +13,10 @@ import { environment } from '~shell-env/environment'
 
 @Injectable({
   providedIn: 'root',
-  deps: [HttpClient, SessionStore],
+  deps: [
+    HttpClient,
+    SessionStore,
+  ],
 })
 export class AuthService {
   private readonly endpointUrl = environment.endpoint

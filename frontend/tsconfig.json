@@ -22,6 +22,9 @@
       "~shell-shared/*": [
         "./projects/shell/src/app/shared/*"
       ],
+      "~shell-tokens/*": [
+        "./projects/shell/src/app/tokens/*"
+      ],
       "~support-core/*": [
         "./projects/support-app/src/app/core/*"
       ],
@@ -33,6 +36,9 @@
       ],
       "~support-shared/*": [
         "./projects/support-app/src/app/shared/*"
+      ],
+      "~support-tokens/*": [
+        "./projects/support-app/src/app/tokens/*"
       ],
       "~ycyw/shared": [
         "./dist/shared"

@@ -1,5 +1,1 @@
-import OpenClassrooms from './OpenClassrooms'
-
-export {
-  OpenClassrooms,
-}
+export * from './OpenClassrooms'

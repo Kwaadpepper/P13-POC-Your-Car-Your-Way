@@ -6,7 +6,9 @@ import { AuthService } from '~shell-core/auth/services'
 
 @Injectable({
   providedIn: 'root',
-  deps: [AuthService],
+  deps: [
+    AuthService,
+  ],
 })
 export class LogoutButtonViewModel {
   private readonly authService = inject(AuthService)

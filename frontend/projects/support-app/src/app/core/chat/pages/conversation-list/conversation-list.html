@@ -20,7 +20,7 @@
           <div class="row">
             <span class="last">{{ item.lastMessage.content || '—' }}</span>
             @if (item.unread > 0) {
-            <span class="badge p-badge p-badge-danger">{{ item.unread }}</span>
+            <p-badge [value]="item.unread" severity="danger" />
             }
           </div>
         </div>

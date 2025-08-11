@@ -55,7 +55,7 @@ wss.on('connection', (ws: Client, req) => {
   const token = url.searchParams.get('token') || ''
   // Déduit le rôle via le token (ex: "client_7b8e42ff-4471-429d-9f1a-cb3b220cdb16", "operator_7b8e42ff-4471-429d-9f1a-cb3b220cdb16"
   const role = token.startsWith('operator') ? 'operator' : 'client'
-  const user = token.split('_')[1]
+  const user = token.split('_')[1] || randomUUID()
 
   ws.user = user
   ws.role = role

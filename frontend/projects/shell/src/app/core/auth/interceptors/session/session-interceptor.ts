@@ -17,16 +17,24 @@ import { SessionStore } from '~shell-core/auth/stores'
 import { SessionExpired } from '~shell-core/errors'
 import { ToastService } from '~shell-shared/services'
 
-@Injectable({ providedIn: 'root' })
 /**
-  * This is used to manage the session of the user
-  * It will :
-  * - refresh the token if it is expired
-  * - retry the request if the token is refreshed
-  * - notify the user that he is logged out
-  * - redirect the user to the login page if the session is expired
-  * - also debounce the notification to avoid multiple notifications
-  */
+* This is used to manage the session of the user
+* It will :
+* - refresh the token if it is expired
+* - retry the request if the token is refreshed
+* - notify the user that he is logged out
+* - redirect the user to the login page if the session is expired
+* - also debounce the notification to avoid multiple notifications
+*/
+@Injectable({
+  providedIn: 'root',
+  deps: [
+    Router,
+    AuthService,
+    SessionStore,
+    ToastService,
+  ],
+})
 export class SessionInterceptor implements HttpInterceptor {
   private readonly notifyForLogout = new Subject<boolean>()
   private readonly debounceTimeMs = 1000

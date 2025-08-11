@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core'
+import { Component, OnDestroy, OnInit, inject } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
@@ -7,14 +7,11 @@ import { TagModule } from 'primeng/tag'
 import { ToolbarModule } from 'primeng/toolbar'
 
 import { MessageInput, MessageList, TypingIndicator } from '~support-core/chat/components'
-import { UserId } from '~support-domains/chat/models'
 
 import { ConversationViewModel } from './conversation-viewmodel'
 
 @Component({
   selector: 'support-conversation',
-  standalone: true,
-  providers: [ConversationViewModel],
   imports: [
     ToolbarModule,
     ButtonModule,
@@ -33,15 +30,12 @@ export class Conversation implements OnInit, OnDestroy {
 
   readonly viewModel = inject(ConversationViewModel)
 
-  // TODO: récupère depuis l'auth
-  readonly currentUserId = signal<UserId>('client_7b8e42ff-4471-429d-9f1a-cb3b220cdb16').asReadonly()
-
   get onlineCount(): number {
     return this.viewModel.participants().filter(p => p.status === 'online').length
   }
 
   ngOnInit() {
-    this.viewModel.init(this.currentUserId())
+    this.viewModel.init()
 
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id')
@@ -63,6 +57,6 @@ export class Conversation implements OnInit, OnDestroy {
   }
 
   backToList() {
-    this.router.navigate(['/chats'])
+    this.router.navigate(['..'], { relativeTo: this.route })
   }
 }

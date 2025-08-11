@@ -7,7 +7,6 @@ import { UserId } from '~support-domains/chat/models'
 
 @Component({
   selector: 'support-typing-indicator',
-  standalone: true,
   imports: [
     ChipModule,
   ],

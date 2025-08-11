@@ -1,5 +1,5 @@
 /* stylelint-disable-next-line at-rule-no-unknown */
-@references "~ycyw/styles";
+@references "../../../../../styles/styles.css";
 
 :host {
   @apply flex flex-col h-full;

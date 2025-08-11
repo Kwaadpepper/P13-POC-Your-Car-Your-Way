@@ -18,6 +18,9 @@
       "~support-shared/*": [
         "./src/app/shared/*"
       ],
+      "~support-tokens/*": [
+        "./src/app/tokens/*"
+      ],
       "~ycyw/shared": [
         "../../dist/shared"
       ]

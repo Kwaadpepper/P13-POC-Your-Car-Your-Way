@@ -7,7 +7,6 @@ import { TextareaModule } from 'primeng/textarea'
 
 @Component({
   selector: 'support-message-input',
-  standalone: true,
   imports: [
     CommonModule,
     FormsModule,

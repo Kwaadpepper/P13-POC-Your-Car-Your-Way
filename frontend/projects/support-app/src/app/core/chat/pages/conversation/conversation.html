@@ -13,7 +13,7 @@
     </div>
   </p-toolbar>
 
-  <support-message-list class="flex-1" [messages]="viewModel.messages()" [currentUser]="currentUserId()" />
+  <support-message-list class="flex-1" [messages]="viewModel.messages()" [currentUser]="viewModel.currentUserId()" />
 
   <support-typing-indicator [typingUsers]="viewModel.typingUsers()" />
 

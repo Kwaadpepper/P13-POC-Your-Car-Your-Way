@@ -9,7 +9,10 @@ import { ToastService } from '~shell-shared/services'
 
 @Injectable({
   providedIn: 'root',
-  deps: [AuthService, ToastService],
+  deps: [
+    AuthService,
+    ToastService,
+  ],
 })
 export class LoginViewModel {
   public readonly formErrorMessage = signal('')

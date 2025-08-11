@@ -45,10 +45,7 @@ export class ChatClient {
   }
 
   onMessage(cb: (m: MessageEventPayload) => void): Unsub {
-    console.log('onMessage callback set')
     return this.transport.onEvent((evt: ServerEvent) => {
-      console.log('Received event:', evt)
-      console.log('Event type:', evt.type)
       if (evt.type === EventType.MESSAGE) cb(evt.payload)
     })
   }

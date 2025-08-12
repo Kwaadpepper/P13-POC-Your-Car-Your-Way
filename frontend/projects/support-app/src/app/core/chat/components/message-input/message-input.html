@@ -1,8 +1,7 @@
 <div class="msg-input">
   <textarea pInputTextarea [(ngModel)]="text" rows="2" placeholder="Écrire un message…" (blur)="emitTyping(false)"
-    (input)="onInput($event)" (keydown)="maybeSend($event)">
-      </textarea>
-  <button pButton label="Envoyer" (click)="submit()">
+    (input)="onInput($event)" (keydown)="maybeSend($event)" [disabled]="disabled"></textarea>
+  <button pButton label="Envoyer" (click)="submit()" [disabled]="!text.trim() || disabled">
     <i class="pi pi-send"></i>
   </button>
 </div>

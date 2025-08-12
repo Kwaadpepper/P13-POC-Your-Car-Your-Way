@@ -13,9 +13,17 @@
     </div>
   </p-toolbar>
 
-  <support-message-list class="flex-1" [messages]="viewModel.messages()" [currentUser]="viewModel.currentUserId()" />
+  @if(viewModel.currentUserId()) {
+  <support-message-input class="msg-input" (send)="onSend($event)" (typing)="onTyping($event)" />
+  } @else {
+  <p-message severity="warn">Vous devez être connecté pour envoyer des messages.</p-message>
+  }
+
+  <support-message-list class="flex-1" [messages]="viewModel.messages()"
+    [currentUser]="viewModel.currentUserId() ?? ''" />
 
   <support-typing-indicator [typingUsers]="viewModel.typingUsers()" />
 
-  <support-message-input (send)="onSend($event)" (typing)="onTyping($event)" />
+  <support-message-input (send)="onSend($event)" (typing)="onTyping($event)"
+    [disabled]="viewModel.currentUserId() === null" />
 </div>

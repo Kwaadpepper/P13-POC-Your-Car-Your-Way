@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
 import { DividerModule } from 'primeng/divider'
+import { MessageModule } from 'primeng/message'
 import { TagModule } from 'primeng/tag'
 import { ToolbarModule } from 'primeng/toolbar'
 
@@ -17,6 +18,7 @@ import { ConversationViewModel } from './conversation-viewmodel'
     ButtonModule,
     TagModule,
     DividerModule,
+    MessageModule,
     MessageList,
     MessageInput,
     TypingIndicator,

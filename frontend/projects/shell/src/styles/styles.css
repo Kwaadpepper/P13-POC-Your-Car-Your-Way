@@ -10,15 +10,6 @@
 
 html,
 body {
-  height: 100dvh;
-  margin: 0;
-
-  @apply bg-surface-0;
-
-  @media (prefers-color-scheme: dark) {
-    background-color: color-mix(in srgb, var(--p-surface-900) calc(100% * var(--tw-bg-opacity, 1)), transparent);
-  }
-
   shell-root {
     display: flex;
     height: 100%;

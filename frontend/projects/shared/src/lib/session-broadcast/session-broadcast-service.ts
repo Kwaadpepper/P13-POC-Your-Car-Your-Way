@@ -15,18 +15,25 @@ export class SessionBroadcastService {
   private readonly instanceId = crypto.randomUUID()
   private readonly channel = new BroadcastChannel(SESSION_BROADCAST_CHANNEL)
 
+  private currentUser: SharedUserProfile | null = null
   private readonly subject = new Subject<SessionBroadcastMessage<SessionBroadcastEvent>>()
   public readonly events$ = this.subject.asObservable()
+
+  get user(): SharedUserProfile | null {
+    return this.currentUser
+  }
 
   constructor() {
     this.channel.onmessage = this.onIncoming.bind(this)
   }
 
   public publishLogin(user: SharedUserProfile): void {
+    this.currentUser = user
     this.publish({ type: SessionBroadcastType.LOGIN, payload: user })
   }
 
   public publishLogout(): void {
+    this.currentUser = null
     this.publish({ type: SessionBroadcastType.LOGOUT })
   }
 

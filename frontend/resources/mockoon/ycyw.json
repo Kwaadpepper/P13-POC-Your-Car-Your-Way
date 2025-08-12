@@ -124,14 +124,14 @@
       "streamingInterval": 0
     },
     {
-      "uuid": "8d368b65-3e8b-4abc-90de-7fcd7e752222",
-      "type": "crud",
+      "uuid": "00e82c7e-e9eb-494f-aa05-d6eae0d85df6",
+      "type": "http",
       "documentation": "",
-      "method": "",
+      "method": "get",
       "endpoint": "support/faqs",
       "responses": [
         {
-          "uuid": "247dada3-ab01-4353-9a7b-3e1e71148a8b",
+          "uuid": "9e42332c-a101-465d-b82f-f12f735aa348",
           "body": "{}",
           "latency": 0,
           "statusCode": 200,
@@ -218,7 +218,7 @@
       "children": [
         {
           "type": "route",
-          "uuid": "8d368b65-3e8b-4abc-90de-7fcd7e752222"
+          "uuid": "00e82c7e-e9eb-494f-aa05-d6eae0d85df6"
         }
       ]
     },

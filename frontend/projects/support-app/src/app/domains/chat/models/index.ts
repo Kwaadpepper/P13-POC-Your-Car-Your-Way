@@ -1,3 +1,7 @@
 export * from './chat-message-type'
+export * from './client-info-type'
 export * from './conversation-type'
+export * from './faq-type'
+export * from './issue-type'
+export * from './reservation-info-type'
 export * from './user-type'

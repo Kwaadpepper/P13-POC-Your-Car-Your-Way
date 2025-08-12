@@ -27,7 +27,7 @@ export class Message {
     return (part[0] || '?').toUpperCase()
   }
 
-  get from(): { id: string, role: string, isOperator: boolean } {
+  get from(): { id: string, role: Role, isOperator: boolean } {
     return {
       id: this.message.from.id,
       role: this.message.from.role,

@@ -1,5 +1,5 @@
-import { Component, inject, Input } from '@angular/core'
-import { Router, RouterLink } from '@angular/router'
+import { Component, Input } from '@angular/core'
+import { RouterLink } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
 
@@ -16,5 +16,6 @@ export class BackButton {
   @Input({ required: true })
   public backUrl = ''
 
-  private readonly router = inject(Router)
+  @Input({ required: false })
+  public label = ''
 }

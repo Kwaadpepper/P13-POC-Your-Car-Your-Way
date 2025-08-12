@@ -3,7 +3,6 @@ import { RouterLink } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
 
-import { BackButton } from '~support-shared/components'
 import { APP_CONFIG } from '~support-tokens/config-token'
 
 @Component({
@@ -11,7 +10,6 @@ import { APP_CONFIG } from '~support-tokens/config-token'
   imports: [
     ButtonModule,
     RouterLink,
-    BackButton,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',

@@ -4,17 +4,23 @@ import { ActivatedRoute, Router } from '@angular/router'
 
 import { AvatarModule } from 'primeng/avatar'
 import { BadgeModule } from 'primeng/badge'
+import { ButtonModule } from 'primeng/button'
 import { ListboxModule } from 'primeng/listbox'
+import { MessageModule } from 'primeng/message'
 
 import { Conversation } from '~support-domains/chat/models'
+import { BackButton } from '~support-shared/components'
 
 @Component({
   selector: 'support-conversation-list',
   imports: [
     AvatarModule,
     BadgeModule,
+    ButtonModule,
     ListboxModule,
+    MessageModule,
     DatePipe,
+    BackButton,
   ],
   templateUrl: './conversation-list.html',
   styleUrl: './conversation-list.css',

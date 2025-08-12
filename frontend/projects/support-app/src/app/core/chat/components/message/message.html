@@ -1,7 +1,10 @@
 <div class="msg" [class.self]="self">
   <div class="avatar">
-    <p-avatar [label]="initials" [style]="{ 'background-color': self ? '#22C55E' : '#64748B', color: '#fff' }"
-      shape="circle" size="large">
+    <p-avatar [label]="initials" [class]="{
+      'bg-green-700': self,
+      'bg-orange-700': !self,
+      'text-stone-200': true
+    }" shape="circle" size="large">
     </p-avatar>
   </div>
   <div class="bubble" [class.self-bubble]="self">

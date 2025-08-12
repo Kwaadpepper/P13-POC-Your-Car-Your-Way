@@ -1,24 +1,8 @@
 /* stylelint-disable-next-line at-rule-no-unknown */
 @reference "./../../../../../styles/styles.css";
 
-.page {
-  @apply flex flex-col h-full;
-}
-
-.header {
-  @apply flex justify-between items-center p-3 border-b border-surface-200;
-}
-
 .item {
   @apply flex items-center gap-2 w-full;
-}
-
-.content {
-  @apply flex flex-col flex-1 gap-1;
-}
-
-.row {
-  @apply flex items-center justify-between w-full;
 }
 
 .title {

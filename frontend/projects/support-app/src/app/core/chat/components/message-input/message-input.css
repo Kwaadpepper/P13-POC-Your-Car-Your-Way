@@ -1,10 +1,6 @@
 /* stylelint-disable-next-line at-rule-no-unknown */
 @reference "./../../../../../styles/styles.css";
 
-.msg-input {
-  @apply flex items-center p-2 border-t border-surface-200 gap-2;
-}
-
-textarea {
-  @apply flex resize-none;
+:host {
+  @apply w-full;
 }

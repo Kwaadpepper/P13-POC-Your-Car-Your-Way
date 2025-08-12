@@ -2,6 +2,7 @@
 @import "./vars.css";
 @import "./titles.css";
 @import "./fonts.css";
+@import "primeicons/primeicons.css";
 
 * {
   font-family: var(--font-default);

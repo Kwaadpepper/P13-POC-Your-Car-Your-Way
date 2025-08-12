@@ -13,14 +13,15 @@
         "@angular/forms": "^20.1.6",
         "@angular/platform-browser": "^20.1.6",
         "@angular/router": "^20.1.6",
-        "@primeuix/themes": "^1.2.3",
+        "@primeng/themes": "^19.1.4",
         "es-module-shims": "^1.10.1",
         "postcss-nesting": "^13.0.2",
         "primeicons": "^7.0.0",
-        "primeng": "^20.0.1",
+        "primeng": "^19.1.4",
         "rxjs": "~7.8.2",
         "tailwind-bootstrap-grid": "^6.0.0",
         "tailwindcss": "^3.4.17",
+        "tailwindcss-primeui": "^0.6.1",
         "tslib": "^2.8.1",
         "zone.js": "~0.15.1",
         "~ycyw/styles": "file:projects/shared",
@@ -56,7 +57,6 @@
         "stylelint-actions-formatters": "^16.3.1",
         "stylelint-config-idiomatic-order": "^10.0.0",
         "stylelint-config-standard": "^39.0.0",
-        "tailwindcss-primeui": "^0.6.1",
         "ts-node": "^10.9.2",
         "typescript": "~5.8.3",
         "typescript-eslint": "8.34.1",
@@ -529,13 +529,11 @@
 
     "@pkgjs/parseargs": ["@pkgjs/parseargs@0.11.0", "", {}, ""],
 
-    "@primeuix/styled": ["@primeuix/styled@0.7.2", "", { "dependencies": { "@primeuix/utils": "^0.6.1" } }, ""],
+    "@primeng/themes": ["@primeng/themes@19.1.4", "", { "dependencies": { "@primeuix/styled": "^0.3.2" } }, "sha512-Hze5bBTjsLzZXb20qsm9apsFuzpZzXiU+Ulj/7R+2fwMmcQk0XpkQS7V88fsFw6xsTD7+R+hgqr7Rzy0Gf+4dw=="],
 
-    "@primeuix/styles": ["@primeuix/styles@1.2.3", "", { "dependencies": { "@primeuix/styled": "^0.7.2" } }, ""],
+    "@primeuix/styled": ["@primeuix/styled@0.3.2", "", { "dependencies": { "@primeuix/utils": "^0.3.2" } }, "sha512-ColZes0+/WKqH4ob2x8DyNYf1NENpe5ZguOvx5yCLxaP8EIMVhLjWLO/3umJiDnQU4XXMLkn2mMHHw+fhTX/mw=="],
 
-    "@primeuix/themes": ["@primeuix/themes@1.2.3", "", { "dependencies": { "@primeuix/styled": "^0.7.2" } }, ""],
-
-    "@primeuix/utils": ["@primeuix/utils@0.6.1", "", {}, ""],
+    "@primeuix/utils": ["@primeuix/utils@0.3.2", "", {}, "sha512-B+nphqTQeq+i6JuICLdVWnDMjONome2sNz0xI65qIOyeB4EF12CoKRiCsxuZ5uKAkHi/0d1LqlQ9mIWRSdkavw=="],
 
     "@rollup/plugin-json": ["@rollup/plugin-json@6.1.0", "", { "dependencies": { "@rollup/pluginutils": "^5.1.0" }, "peerDependencies": { "rollup": "^1.20.0||^2.0.0||^3.0.0||^4.0.0" } }, ""],
 
@@ -1753,7 +1751,7 @@
 
     "primeicons": ["primeicons@7.0.0", "", {}, ""],
 
-    "primeng": ["primeng@20.0.1", "", { "dependencies": { "@primeuix/styled": "^0.7.1", "@primeuix/styles": "^1.2.2", "@primeuix/utils": "^0.6.0", "tslib": "^2.3.0" }, "peerDependencies": { "@angular/animations": "^20.0.4", "@angular/common": "^20.0.4", "@angular/core": "^20.0.4", "@angular/forms": "^20.0.4", "@angular/platform-browser": "^20.0.4", "@angular/router": "^20.0.4", "rxjs": "^6.0.0 || ^7.8.1" } }, ""],
+    "primeng": ["primeng@19.1.4", "", { "dependencies": { "@primeuix/styled": "^0.3.2", "@primeuix/utils": "^0.3.2", "tslib": "^2.3.0" }, "peerDependencies": { "@angular/animations": "^19.0.0", "@angular/cdk": "^19.0.0", "@angular/common": "^19.0.0", "@angular/core": "^19.0.0", "@angular/forms": "^19.0.0", "@angular/platform-browser": "^19.0.0", "@angular/router": "^19.0.0", "rxjs": "^6.0.0 || ^7.8.1" } }, "sha512-l5l8SHTxopxxyyXZx1BvbQ11P7ndLv2Qp8H5k2/+OCi65jTZn4xmtrBDGDs7k2K5UMHSqAnGjBgtpbckyqQETg=="],
 
     "proc-log": ["proc-log@5.0.0", "", {}, ""],
 
@@ -2007,7 +2005,7 @@
 
     "tailwindcss": ["tailwindcss@3.4.17", "", { "dependencies": { "@alloc/quick-lru": "^5.2.0", "arg": "^5.0.2", "chokidar": "^3.6.0", "didyoumean": "^1.2.2", "dlv": "^1.1.3", "fast-glob": "^3.3.2", "glob-parent": "^6.0.2", "is-glob": "^4.0.3", "jiti": "^1.21.6", "lilconfig": "^3.1.3", "micromatch": "^4.0.8", "normalize-path": "^3.0.0", "object-hash": "^3.0.0", "picocolors": "^1.1.1", "postcss": "^8.4.47", "postcss-import": "^15.1.0", "postcss-js": "^4.0.1", "postcss-load-config": "^4.0.2", "postcss-nested": "^6.2.0", "postcss-selector-parser": "^6.1.2", "resolve": "^1.22.8", "sucrase": "^3.35.0" }, "bin": { "tailwind": "lib/cli.js", "tailwindcss": "lib/cli.js" } }, "sha512-w33E2aCvSDP0tW9RZuNXadXlkHXqFzSkQew/aIa2i/Sj8fThxwovwlXHSPXTbAHwEIhBFXAedUhP2tueAKP8Og=="],
 
-    "tailwindcss-primeui": ["tailwindcss-primeui@0.6.1", "", { "peerDependencies": { "tailwindcss": ">=3.1.0" } }, ""],
+    "tailwindcss-primeui": ["tailwindcss-primeui@0.6.1", "", { "peerDependencies": { "tailwindcss": ">=3.1.0" } }, "sha512-T69Rylcrmnt8zy9ik+qZvsLuRIrS9/k6rYJSIgZ1trnbEzGDDQSCIdmfyZknevqiHwpSJHSmQ9XT2C+S/hJY4A=="],
 
     "tapable": ["tapable@2.2.2", "", {}, ""],
 

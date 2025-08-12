@@ -1,4 +1,4 @@
-import { Injectable, Signal, computed, inject, signal } from '@angular/core'
+import { Injectable, computed, inject, signal } from '@angular/core'
 
 import { Subscription } from 'rxjs'
 
@@ -7,7 +7,7 @@ import { PresenceStatus, Role } from '~support-domains/chat/enums'
 import { ChatMessage, ConversationId, UserId } from '~support-domains/chat/models'
 import { PresenceEvent } from '~support-domains/events/presence-event'
 import { TypingEvent } from '~support-domains/events/typing-event'
-import { LoginEvent, SessionBroadcastService, SessionBroadcastType } from '~ycyw/shared'
+import { SessionBroadcastService, SessionBroadcastType } from '~ycyw/shared'
 
 @Injectable({
   providedIn: 'root',
@@ -27,28 +27,23 @@ export class ConversationViewModel {
   private readonly _messages = signal<ChatMessage[]>([])
   private readonly _participants = signal<{ user: UserId, role: Role, status: PresenceStatus }[]>([])
   private readonly _typingUsers = signal<{ user: UserId, role: Role }[]>([])
-  private readonly _currentUserId = signal<string>('')
 
   // Selectors (signals)
   readonly conversationId = this._conversationId.asReadonly()
   readonly messages = this._messages.asReadonly()
   readonly participants = this._participants.asReadonly()
   readonly typingUsers = this._typingUsers.asReadonly()
-  readonly currentUserId: Signal<string> = this._currentUserId.asReadonly()
 
   // Dérivés utiles pour l'UI
   readonly isEmpty = computed(() => this._messages().length === 0)
   readonly onlineCount = computed(() => this._participants().filter(p => p.status === 'online').length)
 
-  // FIXME: Ici on devrais passer le JWT token de l'utilisateur connecté
   async init() {
     if (this.connected) {
       return
     }
 
-    const token = this.currentUserId()
-    await this.chat.connect(token)
-    this._currentUserId.set(token)
+    await this.chat.connect()
     this.bindStreams()
     this.connected = true
   }
@@ -107,17 +102,8 @@ export class ConversationViewModel {
 
     this.subs.add(
       this.sessionBus.events$.subscribe((message) => {
-        switch (message.type) {
-          case SessionBroadcastType.LOGIN: {
-            const loginEvent = message.payload as LoginEvent
-            this._currentUserId.set(loginEvent.user.id)
-            break
-          }
-          case SessionBroadcastType.LOGOUT: {
-            this._currentUserId.set('')
-            this.leave()
-            break
-          }
+        if (message.type === SessionBroadcastType.LOGOUT) {
+          this.leave()
         }
       }),
     )

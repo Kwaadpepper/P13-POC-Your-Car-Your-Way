@@ -48,12 +48,12 @@ export class ChatService {
     this.client.onHistory(h => this.historySub.next(this.mapToHistoryChatMessage(h)))
   }
 
-  connect(token?: string) {
-    return this.client.connect(token)
+  async connect() {
+    this.client.connect()
   }
 
-  disconnect() {
-    return this.client.disconnect()
+  async disconnect() {
+    this.client.disconnect()
   }
 
   join(conversationId: ConversationId) {

@@ -96,7 +96,7 @@ export type ClientCommand
   | { type: EventType.JOIN, payload: Events[EventType.JOIN]['client'] }
 
 export interface ChatTransport {
-  connect(token?: string): Promise<void>
+  connect(): Promise<void>
   disconnect(): Promise<void>
   isConnected(): boolean
 

@@ -16,8 +16,8 @@ export class ChatClient {
     this.transport = transport
   }
 
-  async connect(token?: string) {
-    await this.transport.connect(token)
+  async connect() {
+    await this.transport.connect()
   }
 
   disconnect() {

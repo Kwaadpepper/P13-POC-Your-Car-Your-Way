@@ -11,73 +11,39 @@ type Handler = (evt: ServerEvent) => void
 
 export class WebSocketTransport implements ChatTransport {
   private readonly url: string
-  private token?: string
-  private ws?: WebSocket
   private readonly handlers = new Set<Handler>()
-  private intendedClose = false
-  private reconnectDelayMs = 500
   private readonly joinedConversations = new Set<string>()
   private readonly queue: ClientCommand[] = []
+  private ws?: WebSocket
+  private intendedClose = false
+  private reconnectDelayMs = 500 // Ms
 
   constructor(url: string) {
     this.url = url
   }
 
-  async connect(token?: string): Promise<void> {
-    this.token = token
+  async connect() {
     this.intendedClose = false
     await this.open()
   }
 
-  private open(): Promise<void> {
-    return new Promise((resolve) => {
-      const qs = this.token ? `?token=${encodeURIComponent(this.token)}` : ''
-      const ws = new WebSocket(`${this.url}${qs}`)
+  private async open() {
+    return new Promise<void>((resolve) => {
+      const ws = new WebSocket(this.url)
       this.ws = ws
 
       ws.onopen = () => {
-        // Ré-adhère aux conversations après reconnexion
-        for (const id of this.joinedConversations) {
-          this.safeSend({ type: EventType.JOIN, payload: { conversation: id } })
-        }
-        // Vide la file
-        while (this.queue.length) {
-          const cmd = this.queue.shift()!
-          this.safeSend(cmd)
-        }
-        this.reconnectDelayMs = 500
+        this.onOpen()
         resolve()
       }
 
-      ws.onmessage = (ev) => {
-        try {
-          const evt = JSON.parse(ev.data) as ServerEvent
-          this.handlers.forEach(h => h(evt))
-        }
-        catch {
-          // ignore
-        }
-      }
-
-      ws.onerror = () => {
-        // Laisse onclose gérer la reconnexion
-      }
-
-      ws.onclose = () => {
-        this.ws = undefined
-        if (!this.intendedClose) {
-          setTimeout(() => {
-            this.reconnectDelayMs = Math.min(this.reconnectDelayMs * 2, 8000)
-            this.open().catch(() => {
-              // Retentes
-            })
-          }, this.reconnectDelayMs)
-        }
-      }
+      ws.onmessage = this.onMessage.bind(this)
+      ws.onclose = this.onClose.bind(this)
+      ws.onerror = err => console.error('WebSocket error:', err)
     })
   }
 
-  async disconnect(): Promise<void> {
+  async disconnect() {
     this.intendedClose = true
     this.ws?.close()
     this.ws = undefined
@@ -87,17 +53,19 @@ export class WebSocketTransport implements ChatTransport {
     return !!this.ws && this.ws.readyState === WebSocket.OPEN
   }
 
-  onEvent(cb: (evt: ServerEvent) => void): () => void {
+  onEvent(cb: (evt: ServerEvent) => void) {
     this.handlers.add(cb)
     return () => this.handlers.delete(cb)
   }
 
-  send(cmd: ClientCommand): void {
-    console.log('send', cmd)
-    console.log('isConnected', this.isConnected())
+  send(cmd: ClientCommand) {
     // Mémorise les joins pour ré-adhérer après reconnexion
-    if (cmd.type === 'join') this.joinedConversations.add(cmd.payload.conversation)
-    if (cmd.type === 'leave') this.joinedConversations.delete(cmd.payload.conversation)
+    if (cmd.type === 'join') {
+      this.joinedConversations.add(cmd.payload.conversation)
+    }
+    if (cmd.type === 'leave') {
+      this.joinedConversations.delete(cmd.payload.conversation)
+    }
 
     if (this.isConnected()) {
       this.safeSend(cmd)
@@ -113,5 +81,33 @@ export class WebSocketTransport implements ChatTransport {
       return
     }
     this.ws.send(JSON.stringify(cmd))
+  }
+
+  private onOpen() {
+    // Ré-adhère aux conversations après reconnexion
+    for (const id of this.joinedConversations) {
+      this.safeSend({ type: EventType.JOIN, payload: { conversation: id } })
+    }
+    // Vide la file
+    while (this.queue.length) {
+      const cmd = this.queue.shift()!
+      this.safeSend(cmd)
+    }
+    this.reconnectDelayMs = 500
+  }
+
+  private onMessage(evt: MessageEvent) {
+    const event = JSON.parse(evt.data) as ServerEvent
+    this.handlers.forEach(handler => handler(event))
+  }
+
+  private onClose() {
+    this.ws = undefined
+    if (!this.intendedClose) {
+      setTimeout(() => {
+        this.reconnectDelayMs = Math.min(this.reconnectDelayMs * 2, 8000)
+        this.open().catch(this.onClose.bind(this))
+      }, this.reconnectDelayMs)
+    }
   }
 }

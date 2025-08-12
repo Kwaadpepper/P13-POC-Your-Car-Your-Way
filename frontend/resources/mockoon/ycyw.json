@@ -122,6 +122,37 @@
       "responseMode": null,
       "streamingMode": null,
       "streamingInterval": 0
+    },
+    {
+      "uuid": "8d368b65-3e8b-4abc-90de-7fcd7e752222",
+      "type": "crud",
+      "documentation": "",
+      "method": "",
+      "endpoint": "support/faqs",
+      "responses": [
+        {
+          "uuid": "247dada3-ab01-4353-9a7b-3e1e71148a8b",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "pxqq",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "proxyMode": false,
@@ -171,16 +202,49 @@
       "value": ""
     }
   ],
-  "data": [],
-  "folders": [],
-  "rootChildren": [
+  "data": [
     {
-      "type": "route",
-      "uuid": "f5164abe-efa9-44f1-8dee-54ba19bfdd4d"
+      "uuid": "7601f19d-c3ce-4760-b760-e987e50b73e4",
+      "id": "pxqq",
+      "name": "Faqs",
+      "documentation": "",
+      "value": "[\n    {\n        \"id\": \"5b0a4684-698a-4194-80f6-db43a70806ab\",\n        \"question\": \"What is Angular?\",\n        \"answer\": \"Angular is a platform for building mobile and desktop web applications.\",\n        \"type\": \"general\"\n    },\n    {\n        \"id\": \"a4513576-f30c-4c4c-b67e-4e83641361ff\",\n        \"question\": \"What is RxJS?\",\n        \"answer\": \"RxJS is a library for reactive programming using Observables.\",\n        \"type\": \"general\"\n    }\n]"
+    }
+  ],
+  "folders": [
+    {
+      "uuid": "4b7c9792-2a96-4191-b716-4201535c8142",
+      "name": "support",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "8d368b65-3e8b-4abc-90de-7fcd7e752222"
+        }
+      ]
     },
     {
-      "type": "route",
-      "uuid": "ce3d54bb-8664-4df8-8f35-b753cfb577f1"
+      "uuid": "dda8082f-d7e0-459e-ad8f-c27836877802",
+      "name": "shell",
+      "children": [
+        {
+          "type": "route",
+          "uuid": "f5164abe-efa9-44f1-8dee-54ba19bfdd4d"
+        },
+        {
+          "type": "route",
+          "uuid": "ce3d54bb-8664-4df8-8f35-b753cfb577f1"
+        }
+      ]
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "folder",
+      "uuid": "dda8082f-d7e0-459e-ad8f-c27836877802"
+    },
+    {
+      "type": "folder",
+      "uuid": "4b7c9792-2a96-4191-b716-4201535c8142"
     }
   ],
   "callbacks": []

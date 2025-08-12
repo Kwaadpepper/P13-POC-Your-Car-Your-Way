@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const validationErrorSchema = z.object({
+export const validationErrorSchema = z.object({
   timestamp: z.date({ coerce: true }),
   message: z.string().min(1),
   errors: z.record(z.string().min(1), z.string().min(1)),
@@ -8,5 +8,3 @@ const validationErrorSchema = z.object({
 })
 
 export type ValidationErrorZod = z.infer<typeof validationErrorSchema>
-
-export default validationErrorSchema

@@ -2,11 +2,23 @@
  * Public API Surface of shared
  */
 
+// * SCHEMAS
+export {
+  validationErrorSchema,
+  type ValidationErrorZod,
+} from './schemas'
+
 // * LIB
 export {
   AcrissCode,
+  BadResponseError,
+  checkServerReponse,
+  retryMultipleTimes,
   SessionBroadcastService,
   SessionBroadcastType,
+  SessionExpiredError,
+  ValidationError,
+  verifyResponseType,
   type DecodedAcrissInfo,
   type LoginEvent,
   type LogoutEvent,

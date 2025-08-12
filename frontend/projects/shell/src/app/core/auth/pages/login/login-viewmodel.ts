@@ -4,7 +4,7 @@ import { catchError, EMPTY, finalize, Observable, tap, throwError } from 'rxjs'
 
 import { User } from '~shell-core/auth/models'
 import { AuthService } from '~shell-core/auth/services'
-import { LoginFailure } from '~shell-core/errors'
+import { LoginFailureError } from '~shell-core/errors'
 import { ToastService } from '~shell-shared/services'
 
 @Injectable({
@@ -39,7 +39,7 @@ export class LoginViewModel {
           this.toastService.success('Connexion réussie')
         }),
         catchError((error) => {
-          if (error instanceof LoginFailure) {
+          if (error instanceof LoginFailureError) {
             this.formErrorMessage.set('Identifiants incorrects')
             return EMPTY
           }

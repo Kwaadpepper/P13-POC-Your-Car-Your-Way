@@ -25,7 +25,12 @@
     }
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "../shared/src/lib/errors/bad-response-error.ts",
+    "../shared/src/lib/errors/session-expired-error.ts",
+    "../shared/src/lib/utils/check-server-response.ts",
+    "../shared/src/lib/utils/verify-response-type.ts",
+    "../shared/src/schemas/validation-error-schema.ts"
   ],
   "exclude": [
     "src/**/*.spec.ts"

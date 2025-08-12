@@ -1,7 +1,7 @@
 import { catchError, map, Observable, pipe, throwError, UnaryFunction } from 'rxjs'
 import { z, ZodError } from 'zod'
 
-import { BadResponse } from '~shell-core/errors'
+import { BadResponseError } from '../errors'
 
 /**
  * Verify the response type.
@@ -15,7 +15,7 @@ export function verifyResponseType<T extends z.ZodTypeAny>(zodObj: T): UnaryFunc
     }),
     catchError((error) => {
       if (error instanceof ZodError) {
-        return throwError(() => new BadResponse(error))
+        return throwError(() => new BadResponseError(error))
       }
       return throwError(() => error)
     }),

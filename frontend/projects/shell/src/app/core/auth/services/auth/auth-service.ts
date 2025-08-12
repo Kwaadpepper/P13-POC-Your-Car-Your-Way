@@ -7,9 +7,9 @@ import { LoginRequest, RegisterRequest } from '~shell-core/auth/api/requests'
 import { simpleMessageSchema, SimpleMessageZod, userSchema, UserZod } from '~shell-core/auth/api/schemas'
 import { User } from '~shell-core/auth/models'
 import { SessionStore } from '~shell-core/auth/stores'
-import { LoginFailure } from '~shell-core/errors'
-import { checkServerReponse, verifyResponseType } from '~shell-core/tools'
+import { LoginFailureError } from '~shell-core/errors'
 import { environment } from '~shell-env/environment'
+import { checkServerReponse, verifyResponseType } from '~ycyw/shared'
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +45,7 @@ export class AuthService {
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
           this.sessionStore.setLoggedOut()
-          return throwError(() => new LoginFailure())
+          return throwError(() => new LoginFailureError())
         }
         return throwError(() => error)
       }),
@@ -113,7 +113,7 @@ export class AuthService {
     ).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {
-          return throwError(() => new LoginFailure())
+          return throwError(() => new LoginFailureError())
         }
         return throwError(() => error)
       }),

@@ -4,8 +4,10 @@
 
 // * LIB
 export {
+  AcrissCode,
   SessionBroadcastService,
   SessionBroadcastType,
+  type DecodedAcrissInfo,
   type LoginEvent,
   type LogoutEvent,
   type RefreshEvent,

@@ -1,2 +1,7 @@
+export * from './acriss/acriss-code'
+export * from './acriss/enums/category-enum'
+export * from './acriss/enums/fuel-enum'
+export * from './acriss/enums/transmission-enum'
+export * from './acriss/enums/type-enum'
 export * from './session-broadcast/session-broadcast-service'
 export * from './session-broadcast/types'

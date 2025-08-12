@@ -1,7 +1,7 @@
 import { Inject, signal } from '@angular/core'
 
-import { IssueStatus } from '~support-domains/chat/enums'
-import { Issue } from '~support-domains/chat/models'
+import { IssueStatus } from '~support-domains/issue/enums'
+import { Issue } from '~support-domains/issue/models'
 import { AcrissCode } from '~ycyw/shared'
 
 @Inject({

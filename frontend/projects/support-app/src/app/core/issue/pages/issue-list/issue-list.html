@@ -6,29 +6,41 @@
       <h1 class="ms-20 mt-4 inline-block">Tickets</h1>
     </div>
   </div>
-  @if(issues().length < 1) { <div class="row">
-    <div class="col">
-      Aucune ticket trouvé.
+  @if (issues().length < 1) {
+    <div class="row">
+      <div class="col">Aucune ticket trouvé.</div>
     </div>
-</div>
-} @else {
-<div class="row">
-  <div class="col">
-    <p-listbox [options]="issues()" [optionLabel]="'title'" [filter]="true" [filterPlaceHolder]="'Rechercher…'"
-      (onChange)="open($event.value)" [metaKeySelection]="false" class="block w-full h-screen">
-      <ng-template let-item pTemplate="item">
-        <div class="item">
-          <p-avatar [label]="avatarLabel(item)" class="mr-2" shape="circle"></p-avatar>
-          <div class="content">
-            <div class="row">
-              <span class="title">{{ item.subject }}</span>
-              <span class="updated">{{ item.updatedAt | date:'short' }}</span>
+  } @else {
+    <div class="row">
+      <div class="col">
+        <p-listbox
+          [options]="issues()"
+          [optionLabel]="'title'"
+          [filter]="true"
+          [filterPlaceHolder]="'Rechercher…'"
+          (onChange)="open($event.value)"
+          [metaKeySelection]="false"
+          class="block w-full h-screen"
+        >
+          <ng-template let-item pTemplate="item">
+            <div class="item">
+              <p-avatar
+                [label]="avatarLabel(item)"
+                class="mr-2"
+                shape="circle"
+              ></p-avatar>
+              <div class="content">
+                <div class="row">
+                  <span class="title">{{ item.subject }}</span>
+                  <span class="updated">{{
+                    item.updatedAt | date: "short"
+                  }}</span>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </ng-template>
-    </p-listbox>
-  </div>
-</div>
-}
+          </ng-template>
+        </p-listbox>
+      </div>
+    </div>
+  }
 </div>

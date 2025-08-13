@@ -14,6 +14,7 @@ module.exports = {
       '@angular/forms': { singleton: true },
       '@angular/cdk': { singleton: false },
       "primeng": { singleton: true },
+      "primeng/icons": { singleton: true },
       "primeicons": { singleton: true },
       'rxjs': { singleton: true  },
       'rxjs/operators': { singleton: true  },

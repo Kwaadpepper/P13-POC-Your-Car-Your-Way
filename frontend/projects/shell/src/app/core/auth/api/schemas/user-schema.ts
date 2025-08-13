@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const userSchema = z.object({
+export const userSchema = z.object({
   id: z.string().uuid(),
   name: z.string().min(1),
   email: z.string().email(),
@@ -9,5 +9,3 @@ const userSchema = z.object({
 })
 
 export type UserZod = z.infer<typeof userSchema>
-
-export default userSchema

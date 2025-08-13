@@ -3,8 +3,7 @@ import { NotFoundError } from '@angular/core/primitives/di'
 import { Router } from '@angular/router'
 
 import { ToastService } from '~shell-shared/services'
-
-import { SessionExpired } from './errors'
+import { SessionExpiredError } from '~ycyw/shared'
 
 /**
 * This allows to manage errors in a centralized way
@@ -28,7 +27,7 @@ export class ErrorHandler implements NgErrorHanlder {
       return
     }
 
-    if (error instanceof SessionExpired) {
+    if (error instanceof SessionExpiredError) {
       this.router.navigateByUrl('/login')
       return
     }

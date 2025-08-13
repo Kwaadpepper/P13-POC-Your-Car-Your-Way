@@ -14,8 +14,8 @@ import { catchError, debounceTime, Observable, Subject, switchMap, takeWhile, th
 import { redirectUrls } from '~shell-core/auth/routes'
 import { AuthService } from '~shell-core/auth/services'
 import { SessionStore } from '~shell-core/auth/stores'
-import { SessionExpired } from '~shell-core/errors'
 import { ToastService } from '~shell-shared/services'
+import { SessionExpiredError } from '~ycyw/shared'
 
 /**
 * This is used to manage the session of the user
@@ -74,7 +74,7 @@ export class SessionInterceptor implements HttpInterceptor {
               this.notifyForLogout.next(!wasLoginRequest)
               this.sessionService.setLoggedOut()
               this.rooter.navigateByUrl(this.redirectUrl)
-              return throwError(() => new SessionExpired())
+              return throwError(() => new SessionExpiredError())
             }),
             // * If the refresh token is successful, we retry the request
             switchMap(() => next.handle(request)),

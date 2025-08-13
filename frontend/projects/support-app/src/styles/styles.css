@@ -1,1 +1,30 @@
-@import "./../../../shared/src/styles/shared.css";
+@import "~ycyw/styles";
+@import "primeicons/primeicons.css";
+
+html,
+body {
+  height: 100dvh;
+  margin: 0;
+
+  support-root {
+    display: flex;
+    height: 100%;
+    min-height: 100dvh;
+    flex-direction: column;
+    margin: 0;
+
+    > main {
+      position: relative;
+      flex-grow: 1;
+
+      > * {
+        display: block;
+        height: 100%;
+      }
+
+      > router-outlet {
+        display: none;
+      }
+    }
+  }
+}

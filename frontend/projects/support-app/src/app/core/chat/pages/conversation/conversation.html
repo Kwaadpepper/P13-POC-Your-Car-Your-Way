@@ -1,0 +1,46 @@
+<div class="container flex flex-col min-h-full">
+  <div class="row">
+    <div class="col">
+      <p-toolbar>
+        <div class="p-toolbar-group-start">
+          <button pButton label="Conversations" (click)="backToList()">
+            <i class="pi pi-arrow-left"></i>
+          </button>
+        </div>
+        <div class="p-toolbar-group-center">
+          <span class="title">Conversation {{ viewModel.conversationId() }}</span>
+        </div>
+        <div class="p-toolbar-group-end">
+          <p-tag severity="success" [value]="onlineCount + ' en ligne'"></p-tag>
+        </div>
+      </p-toolbar>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col">
+      @if(viewModel.currentUserId()) {
+      <support-message-input class="msg-input" (send)="onSend($event)" (typing)="onTyping($event)" />
+      } @else {
+      <p-message severity="warn">Vous devez être connecté pour envoyer des messages.</p-message>
+      }
+    </div>
+  </div>
+
+  <div class="row flex-grow">
+    <div class="col">
+      <support-message-list class="flex-1" [messages]="viewModel.messages()"
+        [currentUser]="viewModel.currentUserId() ?? ''" />
+    </div>
+  </div>
+
+  <div class="row border-t border-surface-200">
+    <div class="col-12">
+      <support-typing-indicator [typingUsers]="viewModel.typingUsers()" />
+    </div>
+    <div class="col flex justify-center">
+      <support-message-input (send)="onSend($event)" (typing)="onTyping($event)"
+        [disabled]="viewModel.currentUserId() === null" />
+    </div>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Entity } from '@ycyw/shared'
+import { Entity } from '~ycyw/shared'
 
 export interface User extends Entity {
   name: string

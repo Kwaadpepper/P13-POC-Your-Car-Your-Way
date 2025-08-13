@@ -1,16 +1,15 @@
-import { inject, Injectable, signal } from '@angular/core'
-import { ConfigStore } from '@ycyw/shared'
+import { inject, Injectable } from '@angular/core'
+
+import { APP_CONFIG } from '~shell-tokens/config-token'
 
 @Injectable({
   providedIn: 'root',
+  deps: [APP_CONFIG],
 })
 export class HomeViewModel {
-  public readonly appName = signal<string>('')
-  private readonly configStore = inject(ConfigStore)
+  private readonly appConfig = inject(APP_CONFIG)
 
-  constructor() {
-    const appConfig = this.configStore.config
-
-    this.appName.set(appConfig.appName)
+  get appName() {
+    return this.appConfig.appName
   }
 }

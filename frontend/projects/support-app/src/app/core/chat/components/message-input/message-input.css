@@ -1,0 +1,6 @@
+/* stylelint-disable-next-line at-rule-no-unknown */
+@reference "./../../../../../styles/styles.css";
+
+:host {
+  @apply w-full;
+}

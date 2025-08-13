@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { provideRouter } from '@angular/router'
-import { ToastService } from '@shell-shared/services'
+
 import { of } from 'rxjs'
+
+import { ToastService } from '~shell-shared/services'
 
 import { LogoutButton } from './logout-button'
 import { LogoutButtonViewModel } from './logout-button-viewmodel'

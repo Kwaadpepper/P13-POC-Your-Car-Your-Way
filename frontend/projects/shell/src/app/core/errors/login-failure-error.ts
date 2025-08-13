@@ -1,4 +1,4 @@
-export class LoginFailure extends Error {
+export class LoginFailureError extends Error {
   public constructor() {
     super('Bad credentials')
   }

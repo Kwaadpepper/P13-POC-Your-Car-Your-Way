@@ -1,0 +1,34 @@
+<div class="container">
+  <div class="row h-14">
+    <div class="col relative">
+      <support-back-button backUrl=".." label="Support"></support-back-button>
+
+      <h1 class="ms-20 mt-4 inline-block">Tickets</h1>
+    </div>
+  </div>
+  @if(issues().length < 1) { <div class="row">
+    <div class="col">
+      Aucune ticket trouvé.
+    </div>
+</div>
+} @else {
+<div class="row">
+  <div class="col">
+    <p-listbox [options]="issues()" [optionLabel]="'title'" [filter]="true" [filterPlaceHolder]="'Rechercher…'"
+      (onChange)="open($event.value)" [metaKeySelection]="false" class="block w-full h-screen">
+      <ng-template let-item pTemplate="item">
+        <div class="item">
+          <p-avatar [label]="avatarLabel(item)" class="mr-2" shape="circle"></p-avatar>
+          <div class="content">
+            <div class="row">
+              <span class="title">{{ item.subject }}</span>
+              <span class="updated">{{ item.updatedAt | date:'short' }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-listbox>
+  </div>
+</div>
+}
+</div>

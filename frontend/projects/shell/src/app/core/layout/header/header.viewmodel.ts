@@ -1,25 +1,26 @@
-import { computed, inject, Injectable, signal } from '@angular/core'
+import { computed, inject, Injectable } from '@angular/core'
 import { Router } from '@angular/router'
-import { redirectUrls } from '@shell-core/auth/routes'
-import { SessionStore } from '@shell-core/auth/stores'
-import { ConfigStore } from '@ycyw/shared'
+
+import { redirectUrls } from '~shell-core/auth/routes'
+import { SessionStore } from '~shell-core/auth/stores'
+import { APP_CONFIG } from '~shell-tokens/config-token'
 
 @Injectable({
   providedIn: 'root',
-  deps: [Router, SessionStore],
+  deps: [
+    Router,
+    SessionStore,
+    APP_CONFIG,
+  ],
 })
 export class HeaderViewModel {
-  public readonly appName = signal<string>('')
-
   public readonly loggedIn = computed(() => this.sessionService.isLoggedIn())
 
-  private readonly configService = inject(ConfigStore)
+  private readonly appConfig = inject(APP_CONFIG)
   private readonly sessionService = inject(SessionStore)
 
-  constructor() {
-    const appConfig = this.configService.config
-
-    this.appName.set(appConfig.appName)
+  get appName() {
+    return this.appConfig.appName
   }
 
   public isHomePage(url: string): boolean {

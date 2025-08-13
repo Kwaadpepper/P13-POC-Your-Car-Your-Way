@@ -2,26 +2,39 @@
  * Public API Surface of shared
  */
 
+// * SCHEMAS
+export {
+  validationErrorSchema,
+  type ValidationErrorZod,
+} from './schemas'
+
 // * LIB
 export {
-  Shared,
+  AcrissCode,
+  BadResponseError,
+  checkServerReponse,
+  retryMultipleTimes,
+  SessionBroadcastService,
+  SessionBroadcastType,
+  SessionExpiredError,
+  ValidationError,
+  verifyResponseType,
+  type DecodedAcrissInfo,
+  type LoginEvent,
+  type LogoutEvent,
+  type RefreshEvent,
+  type SharedUserProfile,
 } from './lib'
 
 // * CONFIG
 export {
-  APP_CONFIG,
   type Configuration,
 } from './config'
 
-// * THEMES
+// * PROVIDERS
 export {
-  OpenClassrooms,
-} from './themes'
-
-// * SERVICES
-export {
-  ConfigStore,
-} from './stores'
+  primeNgProvider,
+} from './providers'
 
 // * TYPES
 export type {

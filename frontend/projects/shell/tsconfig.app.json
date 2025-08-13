@@ -4,25 +4,33 @@
     "outDir": "../../out-tsc/app",
     "types": [],
     "paths": {
-      "@shell-core/*": [
+      "~shell-core/*": [
         "./src/app/core/*"
       ],
-      "@shell-env/*": [
+      "~shell-env/*": [
         "./src/environments/*"
       ],
-      "@shell-domains/*": [
+      "~shell-domains/*": [
         "./src/app/domains/*"
       ],
-      "@shell-shared/*": [
+      "~shell-shared/*": [
         "./src/app/shared/*"
       ],
-      "@ycyw/shared": [
-        "../../dist/shared"
+      "~shell-tokens/*": [
+        "./src/app/tokens/*"
       ],
+      "~ycyw/shared": [
+        "../../dist/shared"
+      ]
     }
   },
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "../shared/src/lib/errors/bad-response-error.ts",
+    "../shared/src/lib/errors/session-expired-error.ts",
+    "../shared/src/lib/utils/check-server-response.ts",
+    "../shared/src/lib/utils/verify-response-type.ts",
+    "../shared/src/schemas/validation-error-schema.ts"
   ],
   "exclude": [
     "src/**/*.spec.ts"

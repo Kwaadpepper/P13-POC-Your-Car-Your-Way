@@ -1,5 +1,6 @@
 import { Component, inject, Input } from '@angular/core'
 import { Router } from '@angular/router'
+
 import { Button } from 'primeng/button'
 
 @Component({

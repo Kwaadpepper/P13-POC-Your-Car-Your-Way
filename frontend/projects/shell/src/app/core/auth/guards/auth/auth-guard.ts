@@ -1,12 +1,17 @@
 import { inject, Injectable } from '@angular/core'
 import { CanActivate, GuardResult, MaybeAsync, RedirectCommand, Router } from '@angular/router'
-import { redirectUrls } from '@shell-core/auth/routes'
-import { SessionStore } from '@shell-core/auth/stores'
 
+import { redirectUrls } from '~shell-core/auth/routes'
+import { SessionStore } from '~shell-core/auth/stores'
+
+/** This is used to make sure that a non logged in user cannot access protected routes */
 @Injectable({
   providedIn: 'root',
+  deps: [
+    Router,
+    SessionStore,
+  ],
 })
-/** This is used to make sure that a non logged in user cannot access protected routes */
 export class AuthGuard implements CanActivate {
   private readonly redirectUrl = redirectUrls.guestHomeUrl
 

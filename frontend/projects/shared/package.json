@@ -3,10 +3,16 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^20.1.0",
-    "@angular/core": "^20.1.0"
+    "@angular/core": "^20.1.0",
+    "tailwindcss": "^4.1.11",
+    "tailwindcss-primeui": "^0.6.1",
+    "@primeuix/themes": "^1.2.3"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "style": "src/styles/shared.css",
+  "sideEffects": [
+    "./styles/shared.css"
+  ]
 }

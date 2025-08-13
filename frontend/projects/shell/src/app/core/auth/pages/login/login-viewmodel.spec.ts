@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing'
-import { AuthService } from '@shell-core/auth/services'
-import { ToastService } from '@shell-shared/services'
+
+import { AuthService } from '~shell-core/auth/services'
+import { ToastService } from '~shell-shared/services'
 
 import { LoginViewModel } from './login-viewmodel'
 

@@ -1,0 +1,47 @@
+<div class="container">
+  <div class="row h-14">
+    <div class="col relative">
+      <support-back-button backUrl=".." label="Support"></support-back-button>
+
+      <h1 class="ms-20 mt-4 inline-block">Conversations</h1>
+      <button pButton (click)="newConversation()" size="small" class="float-end mt-2">
+        <i class="pi pi-plus"></i>
+      </button>
+    </div>
+  </div>
+  @if(conversations().length < 1) { <div class="row">
+    <div class="col">
+      Aucune conversation trouvée.
+      <p-message severity="info">Commencez une nouvelle conversation.</p-message>
+      <button pButton label="Nouvelle" (click)="newConversation()">
+        <i class="pi pi-plus"></i>
+      </button>
+    </div>
+</div>
+} @else {
+<div class="row">
+  <div class="col">
+    <p-listbox [options]="conversations()" [optionLabel]="'title'" [filter]="true" [filterPlaceHolder]="'Rechercher…'"
+      (onChange)="open($event.value)" [metaKeySelection]="false" class="block w-full h-screen">
+      <ng-template let-item pTemplate="item">
+        <div class="item">
+          <p-avatar [label]="avatarLabel(item)" class="mr-2" shape="circle"></p-avatar>
+          <div class="content">
+            <div class="row">
+              <span class="title">{{ item.title }}</span>
+              <span class="updated">{{ item.updatedAt | date:'short' }}</span>
+            </div>
+            <div class="row">
+              <span class="last">{{ item.lastMessage.content || '—' }}</span>
+              @if (item.unread > 0) {
+              <p-badge [value]="item.unread" severity="danger" />
+              }
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-listbox>
+  </div>
+</div>
+}
+</div>

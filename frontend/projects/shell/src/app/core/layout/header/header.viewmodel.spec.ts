@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing'
 import { Router } from '@angular/router'
-import { SessionStore } from '@shell-core/auth/stores'
+
 import { of } from 'rxjs'
+
+import { SessionStore } from '~shell-core/auth/stores'
 
 import { HeaderViewModel } from './header.viewmodel'
 

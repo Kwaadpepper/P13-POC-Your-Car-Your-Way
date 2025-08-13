@@ -1,18 +1,53 @@
-@import "tailwindcss";
-@import "primeicons/primeicons.css";
+@layer tailwind-base, primeng, tailwind-utilities;
 
-/* stylelint-disable-next-line at-rule-no-unknown */
-@plugin "tailwindcss-primeui";
-
-/* stylelint-disable-next-line at-rule-no-unknown */
-@plugin "tailwind-bootstrap-grid" {
-  container_max_widths:
-    'sm', '540px', 'md', '720px', 'lg', '960px', 'xl', '1140px', '2xl', '1320px';
+@layer tailwind-base {
+  /* stylelint-disable-next-line at-rule-no-unknown */
+  @tailwind base;
 }
 
-@layer plugins;
+@layer primeng;
 
-@layer plugins {
+@layer tailwind-utilities {
+  /* stylelint-disable-next-line at-rule-no-unknown */
+  @tailwind components;
   /* stylelint-disable-next-line at-rule-no-unknown */
   @tailwind utilities;
 }
+
+html,
+body {
+  height: 100dvh;
+  margin: 0;
+
+  @apply bg-surface-0;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: color-mix(in srgb, var(--p-surface-900) calc(100% * var(--tw-bg-opacity, 1)), transparent);
+  }
+}
+
+
+.h1,h1 {
+  @apply text-2xl mb-3;
+}
+
+.h2,h2 {
+  @apply text-xl mb-3;
+}
+
+.h3,h3 {
+  @apply text-lg mb-3;
+}
+
+.h4,h4 {
+  @apply text-base mb-3;
+}
+
+.h5,h5 {
+  @apply text-sm mb-3;
+}
+
+.h6,h6 {
+  @apply text-xs mb-2;
+}
+

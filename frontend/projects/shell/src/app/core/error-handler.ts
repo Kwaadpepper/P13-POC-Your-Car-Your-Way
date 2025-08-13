@@ -1,14 +1,21 @@
 import { inject, Injectable, ErrorHandler as NgErrorHanlder } from '@angular/core'
 import { NotFoundError } from '@angular/core/primitives/di'
 import { Router } from '@angular/router'
-import { ToastService } from '@shell-shared/services'
+
+import { ToastService } from '~shell-shared/services'
 
 import { SessionExpired } from './errors'
 
-@Injectable()
 /**
-   * This allows to manage errors in a centralized way
-   */
+* This allows to manage errors in a centralized way
+*/
+@Injectable({
+  providedIn: 'root',
+  deps: [
+    ToastService,
+    Router,
+  ],
+})
 export class ErrorHandler implements NgErrorHanlder {
   private readonly toastService = inject(ToastService)
   private readonly router = inject(Router)

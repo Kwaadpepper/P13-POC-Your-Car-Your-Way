@@ -1,10 +1,13 @@
 import { Component } from '@angular/core'
-import { Main } from '@support-core/layout'
+import { RouterModule } from '@angular/router'
+
+import { SessionListener } from '~support-shared/components'
 
 @Component({
   selector: 'support-root',
   imports: [
-    Main,
+    RouterModule,
+    SessionListener,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',

@@ -8,20 +8,15 @@ import {
 } from '@angular/core'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { provideRouter, withComponentInputBinding } from '@angular/router'
-import { SessionInterceptor } from '@shell-core/auth/interceptors'
-import { ErrorHandler } from '@shell-core/error-handler'
-import { APP_CONFIG, Configuration, OpenClassrooms } from '@ycyw/shared'
+
 import { MessageService } from 'primeng/api'
-import { providePrimeNG } from 'primeng/config'
 
-import { environment } from './../environments/environment'
+import { SessionInterceptor } from '~shell-core/auth/interceptors'
+import { ErrorHandler } from '~shell-core/error-handler'
+import { configuration } from '~shell-tokens/config-token'
+import { primeNgProvider } from '~ycyw/shared'
+
 import { routes } from './app.routes'
-import config from './application.json'
-
-export const configuration: Configuration = {
-  ...config,
-  environment: environment.env as Configuration['environment'],
-}
 
 if (configuration.environment === 'production') {
   enableProdMode()
@@ -29,31 +24,20 @@ if (configuration.environment === 'production') {
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    // Angular providers
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes, withComponentInputBinding()),
     provideAnimationsAsync(),
-    providePrimeNG({
-      ripple: false,
-      theme: {
-        preset: OpenClassrooms,
-        options: {
-          darkModeSelector: 'system',
-          cssLayer: {
-            name: 'primeng',
-            order: 'theme,base,components,utilities,plugins,primeng',
-          },
-        },
-      },
-    }),
     provideHttpClient(
       withInterceptorsFromDi(),
     ),
+
+    // Shared providers
+    primeNgProvider,
+
+    // Custom providers
     { provide: MessageService, useClass: MessageService },
-    {
-      provide: APP_CONFIG,
-      useValue: configuration,
-    },
     { provide: NgErrorHandler, useClass: ErrorHandler },
     { provide: HTTP_INTERCEPTORS, useClass: SessionInterceptor, multi: true },
   ],

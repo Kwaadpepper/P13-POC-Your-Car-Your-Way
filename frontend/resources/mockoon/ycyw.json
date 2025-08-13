@@ -179,7 +179,7 @@
     },
     {
       "key": "Access-Control-Allow-Origin",
-      "value": "http://localhost:4202"
+      "value": "http://localhost:4200"
     },
     {
       "key": "Access-Control-Allow-Methods",

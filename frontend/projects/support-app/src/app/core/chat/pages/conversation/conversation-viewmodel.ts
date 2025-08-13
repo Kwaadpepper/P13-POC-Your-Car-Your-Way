@@ -2,7 +2,7 @@ import { Injectable, computed, inject, signal } from '@angular/core'
 
 import { Subscription } from 'rxjs'
 
-import { ChatService } from '~support-core/chat/services'
+import { ChatServiceInjector } from '~support-core/chat/services'
 import { PresenceStatus, Role } from '~support-domains/chat/enums'
 import { ChatMessage, ConversationId, UserId } from '~support-domains/chat/models'
 import { PresenceEvent } from '~support-domains/events/presence-event'
@@ -12,12 +12,12 @@ import { LoginEvent, SessionBroadcastService, SessionBroadcastType } from '~ycyw
 @Injectable({
   providedIn: 'root',
   deps: [
-    ChatService,
+    ChatServiceInjector,
     SessionBroadcastService,
   ],
 })
 export class ConversationViewModel {
-  private readonly chat = inject(ChatService)
+  private readonly chat = inject(ChatServiceInjector)
   private readonly sessionBus = inject(SessionBroadcastService)
 
   private readonly subs = new Subscription()

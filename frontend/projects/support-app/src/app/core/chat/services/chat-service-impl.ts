@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core'
+import { inject, InjectionToken } from '@angular/core'
 
 import { Subject } from 'rxjs'
 import { z, ZodError, ZodSchema } from 'zod'
@@ -8,6 +8,7 @@ import messageSchema from '~support-core/api/schemas/message-schema'
 import presenceEventSchema from '~support-core/api/schemas/presence-event-schema'
 import typingEventSchema from '~support-core/api/schemas/typing-event-schema'
 import { ChatMessage, ConversationId } from '~support-domains/chat/models'
+import { ChatService } from '~support-domains/chat/services'
 import { PresenceEvent, TypingEvent } from '~support-domains/events'
 import { CHAT_TRANSPORT } from '~support-tokens/chat-transport-token'
 
@@ -19,13 +20,12 @@ import {
   TypingEventPayload,
 } from '../libs/chat-client'
 
-@Injectable({
+export const ChatServiceInjector = new InjectionToken<ChatService>('ChatServiceInjector', {
   providedIn: 'root',
-  deps: [
-    CHAT_TRANSPORT,
-  ],
+  factory: () => new ChatServiceImpl(),
 })
-export class ChatService {
+
+export class ChatServiceImpl implements ChatService {
   private readonly client: ChatClient
 
   private readonly messagesSub = new Subject<ChatMessage>()

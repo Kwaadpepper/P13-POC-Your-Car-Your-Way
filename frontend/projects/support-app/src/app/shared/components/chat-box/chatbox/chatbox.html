@@ -1,0 +1,34 @@
+<div class="flex flex-col gap-3 w-full">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <h3 class="text-sm font-semibold m-0">Chat</h3>
+      <p-tag severity="success" [value]="onlineCount() + ' en ligne'"></p-tag>
+    </div>
+  </div>
+
+  <!-- Liste des messages -->
+  <support-message-list
+    class="border rounded-md bg-white dark:bg-surface-900 h-96 flex flex-col"
+    [messages]="messages()"
+    [currentUser]="user.id"
+  >
+  </support-message-list>
+
+  <!-- Typing indicator -->
+  <support-typing-indicator
+    *ngIf="typingUsers().length > 0"
+    [typingUsers]="typingUsers()"
+  >
+  </support-typing-indicator>
+
+  <p-divider class="my-0"></p-divider>
+
+  <!-- Zone d'entrée -->
+  <support-message-input
+    [disabled]="!conversation"
+    (send)="onSend($event)"
+    (typing)="onTyping($event)"
+  >
+  </support-message-input>
+</div>

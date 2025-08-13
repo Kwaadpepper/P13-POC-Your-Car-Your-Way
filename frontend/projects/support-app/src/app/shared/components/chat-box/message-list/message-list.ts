@@ -2,7 +2,8 @@ import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, 
 
 import { ScrollPanelModule } from 'primeng/scrollpanel'
 
-import { ChatMessage, UserId } from '~support-domains/chat/models'
+import { ChatMessage } from '~support-domains/chat/models'
+import { UUID } from '~ycyw/shared'
 
 import { Message } from '../message/message'
 
@@ -17,7 +18,7 @@ import { Message } from '../message/message'
 })
 export class MessageList implements AfterViewInit, OnChanges {
   @Input() messages: ChatMessage[] = []
-  @Input() currentUser!: UserId
+  @Input() currentUser!: UUID
   @ViewChild('panel') panel?: ElementRef
 
   ngAfterViewInit(): void {

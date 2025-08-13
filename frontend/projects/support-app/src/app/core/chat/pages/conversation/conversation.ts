@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core'
-import { ActivatedRoute, Router } from '@angular/router'
+import { Component, OnInit, inject, signal } from '@angular/core'
+import { ActivatedRoute } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
 import { DividerModule } from 'primeng/divider'
@@ -7,7 +7,7 @@ import { MessageModule } from 'primeng/message'
 import { TagModule } from 'primeng/tag'
 import { ToolbarModule } from 'primeng/toolbar'
 
-import { MessageInput, MessageList, TypingIndicator } from '~support-core/chat/components'
+import { BackButton, ChatBox } from '~support-shared/components'
 
 import { ConversationViewModel } from './conversation-viewmodel'
 
@@ -19,47 +19,25 @@ import { ConversationViewModel } from './conversation-viewmodel'
     TagModule,
     DividerModule,
     MessageModule,
-    MessageList,
-    MessageInput,
-    TypingIndicator,
+    ChatBox,
+    BackButton,
   ],
   providers: [ConversationViewModel],
   templateUrl: './conversation.html',
   styleUrl: './conversation.css',
 })
-export class Conversation implements OnInit, OnDestroy {
+export class Conversation implements OnInit {
   private readonly route = inject(ActivatedRoute)
-  private readonly router = inject(Router)
 
-  readonly viewModel = inject(ConversationViewModel)
+  readonly vm = inject(ConversationViewModel)
 
-  get onlineCount(): number {
-    return this.viewModel.participants().filter(p => p.status === 'online').length
-  }
+  readonly _conversationId = signal<string | null>(null)
+  readonly conversationId = this._conversationId.asReadonly()
 
-  ngOnInit() {
-    this.viewModel.init()
-
+  ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id')
-      if (id) this.viewModel.join(id)
+      this._conversationId.set(id)
     })
-  }
-
-  ngOnDestroy(): void {
-    this.viewModel.leave()
-    this.viewModel.destroy()
-  }
-
-  onSend(text: string) {
-    this.viewModel.sendMessage(text)
-  }
-
-  onTyping(isTyping: boolean) {
-    this.viewModel.setTyping(isTyping)
-  }
-
-  backToList() {
-    this.router.navigate(['..'], { relativeTo: this.route })
   }
 }

@@ -14,23 +14,19 @@
     class="border rounded-md bg-white dark:bg-surface-900 min-h-80 flex flex-col p-2 overflow-y-auto"
     [messages]="messages()"
     [currentUser]="user.id"
-  >
-  </support-message-list>
+  />
 
   <!-- Typing indicator -->
-  <support-typing-indicator
-    *ngIf="typingUsers().length > 0"
-    [typingUsers]="typingUsers()"
-  >
-  </support-typing-indicator>
+  @if (typingUsers().length > 0) {
+    <support-typing-indicator [typingUsers]="typingUsers()" />
+  }
 
-  <p-divider class="my-0"></p-divider>
+  <p-divider class="my-0" />
 
   <!-- Zone d'entrée -->
   <support-message-input
     [disabled]="!conversation"
     (send)="onSend($event)"
     (typing)="onTyping($event)"
-  >
-  </support-message-input>
+  />
 </div>

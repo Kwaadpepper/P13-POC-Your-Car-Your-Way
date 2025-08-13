@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { Role } from '~support-domains/chat/enums'
+import { Role } from '~support-shared/enums'
 
 const typingEventSchema = z.object({
   user: z.string().uuid(),

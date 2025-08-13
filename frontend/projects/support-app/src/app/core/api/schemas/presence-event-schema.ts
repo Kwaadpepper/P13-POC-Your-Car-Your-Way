@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { PresenceStatus, Role } from '~support-domains/chat/enums'
+import { PresenceStatus, Role } from '~support-shared/enums'
 
 const presenceEventSchema = z.object({
   user: z.string().uuid(),

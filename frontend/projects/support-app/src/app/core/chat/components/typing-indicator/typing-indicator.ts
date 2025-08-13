@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core'
 
 import { ChipModule } from 'primeng/chip'
 
-import { Role } from '~support-domains/chat/enums'
 import { UserId } from '~support-domains/chat/models'
+import { Role } from '~support-shared/enums'
 
 @Component({
   selector: 'support-typing-indicator',

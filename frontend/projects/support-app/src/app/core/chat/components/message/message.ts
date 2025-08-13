@@ -4,8 +4,8 @@ import { Component, Input } from '@angular/core'
 import { AvatarModule } from 'primeng/avatar'
 import { TagModule } from 'primeng/tag'
 
-import { Role } from '~support-domains/chat/enums'
 import { ChatMessage } from '~support-domains/chat/models'
+import { Role } from '~support-shared/enums'
 
 @Component({
   selector: 'support-message',

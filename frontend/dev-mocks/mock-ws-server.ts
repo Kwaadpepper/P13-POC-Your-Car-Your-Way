@@ -15,6 +15,7 @@ interface Message {
   conversation: string
   from: {
     id: string
+    name: string
     role: Role
   }
   text: string
@@ -149,7 +150,7 @@ wss.on('connection', (ws: Client, req) => {
       const chatMsg: Message = {
         id: randomUUID(),
         conversation: roomId,
-        from: { id: user, role },
+        from: { id: user, name: role === 'operator' ? 'Randy' : 'Susy', role },
         text,
         sentAt: new Date().toISOString(),
       }

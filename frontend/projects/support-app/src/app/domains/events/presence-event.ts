@@ -1,5 +1,5 @@
-import { PresenceStatus, Role } from '~support-domains/chat/enums'
 import { ConversationId, UserId } from '~support-domains/chat/models'
+import { PresenceStatus, Role } from '~support-shared/enums'
 
 export interface PresenceEvent {
   user: UserId

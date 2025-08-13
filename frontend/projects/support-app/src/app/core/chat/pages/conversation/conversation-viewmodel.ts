@@ -3,10 +3,10 @@ import { Injectable, computed, inject, signal } from '@angular/core'
 import { Subscription } from 'rxjs'
 
 import { ChatServiceInjector } from '~support-core/chat/services'
-import { PresenceStatus, Role } from '~support-domains/chat/enums'
 import { ChatMessage, ConversationId, UserId } from '~support-domains/chat/models'
 import { PresenceEvent } from '~support-domains/events/presence-event'
 import { TypingEvent } from '~support-domains/events/typing-event'
+import { PresenceStatus, Role } from '~support-shared/enums'
 import { LoginEvent, SessionBroadcastService, SessionBroadcastType } from '~ycyw/shared'
 
 @Injectable({

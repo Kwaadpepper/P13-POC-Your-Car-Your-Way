@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { inject, InjectionToken } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 
 import { catchError, Observable, throwError } from 'rxjs'
 
@@ -9,11 +9,9 @@ import { FaqRepository } from '~support-domains/faq/repositories'
 import { environment } from '~support-env/environment'
 import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
 
-export const FaqRepositoryInjector = new InjectionToken<FaqRepository>('FaqRepositoryInjector', {
+@Injectable({
   providedIn: 'root',
-  factory: () => new FaqRepositoryImpl(),
 })
-
 export class FaqRepositoryImpl implements FaqRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.supportWebServer

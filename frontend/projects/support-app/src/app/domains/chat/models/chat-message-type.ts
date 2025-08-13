@@ -1,11 +1,11 @@
+import { Role } from '~support-shared/enums'
 import { Entity, UUID } from '~ycyw/shared'
-
-import { Role } from '../enums'
 
 export interface ChatMessage extends Entity {
   conversation: UUID
   from: {
     id: UUID
+    name: string
     role: Role
   }
   text: string

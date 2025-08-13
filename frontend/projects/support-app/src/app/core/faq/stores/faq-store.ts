@@ -3,15 +3,14 @@ import { Injectable, computed, inject, resource } from '@angular/core'
 import { firstValueFrom } from 'rxjs'
 
 import { Faq, FaqId } from '~support-domains/faq/models'
-
-import { FaqRepositoryInjector } from '../repositories'
+import { FAQ_REPOSITORY } from '~support-tokens/faq-repository-token'
 
 @Injectable({
   providedIn: 'root',
-  deps: [FaqRepositoryInjector],
+  deps: [FAQ_REPOSITORY],
 })
 export class FaqStore {
-  private readonly repository = inject(FaqRepositoryInjector)
+  private readonly repository = inject(FAQ_REPOSITORY)
   private readonly _faqs = resource({
     defaultValue: [],
     loader: this.loadFaqs.bind(this),

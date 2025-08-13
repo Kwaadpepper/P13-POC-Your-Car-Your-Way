@@ -1,6 +1,5 @@
+import { Role } from '~support-shared/enums'
 import { Entity } from '~ycyw/shared'
-
-import { Role } from '../enums'
 
 export interface User extends Entity {
   name: string

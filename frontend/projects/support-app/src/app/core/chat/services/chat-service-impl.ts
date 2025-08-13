@@ -1,4 +1,4 @@
-import { inject, InjectionToken } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 
 import { Subject } from 'rxjs'
 import { z, ZodError, ZodSchema } from 'zod'
@@ -20,11 +20,10 @@ import {
   TypingEventPayload,
 } from '../libs/chat-client'
 
-export const ChatServiceInjector = new InjectionToken<ChatService>('ChatServiceInjector', {
+@Injectable({
   providedIn: 'root',
-  factory: () => new ChatServiceImpl(),
+  deps: [CHAT_TRANSPORT],
 })
-
 export class ChatServiceImpl implements ChatService {
   private readonly client: ChatClient
 

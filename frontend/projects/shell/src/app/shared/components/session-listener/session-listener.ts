@@ -35,7 +35,6 @@ export class SessionListener {
         const cfg = snap.routeConfig
 
         if (!cfg) {
-          console.warn('No route config found for current route')
           return false
         }
 

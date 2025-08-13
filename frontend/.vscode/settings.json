@@ -32,6 +32,12 @@
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "file"
   },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
+  },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#cdc411",
     "activityBar.background": "#cdc411",

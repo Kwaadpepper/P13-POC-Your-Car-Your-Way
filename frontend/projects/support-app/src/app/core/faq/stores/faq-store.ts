@@ -1,4 +1,4 @@
-import { Injectable, inject, resource } from '@angular/core'
+import { Injectable, computed, inject, resource } from '@angular/core'
 
 import { firstValueFrom } from 'rxjs'
 
@@ -11,25 +11,24 @@ export class FaqStore {
   private readonly repository = inject(FaqRepositoryInjector)
   private readonly _faqs = resource({
     defaultValue: [],
-    loader: this.reloadAll.bind(this),
+    loader: this.loadFaqs.bind(this),
   })
 
   readonly faqs = this._faqs.value.asReadonly()
+  readonly loading = computed(() => this._faqs.isLoading())
+  readonly error = computed(() => this._faqs.error())
 
   async getFaq(id: FaqId): Promise<Faq | null> {
     const faq = this._faqs.value().find(f => f.id === id)
-      ?? (await this.reloadAll()).find(f => f.id === id) ?? null
+      ?? (await this.loadFaqs()).find(f => f.id === id) ?? null
     return faq
   }
 
-  async reloadAll() {
-    try {
-      const faqs = await firstValueFrom(this.repository.getFaqs())
-      return faqs
-    }
-    catch (error) {
-      console.error('Failed to reload FAQs:', error)
-      return []
-    }
+  reloadAll() {
+    this._faqs.reload()
+  }
+
+  private async loadFaqs() {
+    return await firstValueFrom(this.repository.getFaqs())
   }
 }

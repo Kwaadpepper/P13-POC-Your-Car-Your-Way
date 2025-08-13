@@ -15,7 +15,7 @@
       "responses": [
         {
           "uuid": "c6fb6692-c05f-4aac-8af0-69e8647d368b",
-          "body": "{\n  \"id\": \"ebfbddf1-6679-4caf-8223-012118e07047\",\n  \"name\": \"John Doe\",\n  \"email\": \"user@example.net\",\n  \"createdAt\": \"2025-08-07T19:52:07.000Z\",\n  \"updatedAt\": \"2025-08-07T19:52:07.000Z\"\n}",
+          "body": "{\n  \"id\": \"ebfbddf1-6679-4caf-8223-012118e07047\",\n  \"name\": \"John Doe\",\n  \"role\": \"client\",\n  \"email\": \"user@example.net\",\n  \"createdAt\": \"2025-08-07T19:52:07.000Z\",\n  \"updatedAt\": \"2025-08-07T19:52:07.000Z\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",

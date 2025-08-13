@@ -33,5 +33,6 @@ export interface SessionBroadcastMessage<T> {
 export interface SharedUserProfile {
   id: UUID
   name: string
+  role: string
   email: string
 }

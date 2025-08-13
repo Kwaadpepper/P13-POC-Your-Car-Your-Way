@@ -84,9 +84,10 @@ export class SessionStore implements OnDestroy {
   }
 
   private mapToSharedUser(user: User): SharedUserProfile {
-    const { id, name, email } = user
+    const { id, name, role, email } = user
     return {
       id,
+      role,
       name,
       email,
     }

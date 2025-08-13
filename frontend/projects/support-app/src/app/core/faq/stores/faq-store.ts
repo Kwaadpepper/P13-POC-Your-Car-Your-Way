@@ -6,7 +6,10 @@ import { Faq, FaqId } from '~support-domains/faq/models'
 
 import { FaqRepositoryInjector } from '../repositories'
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+  deps: [FaqRepositoryInjector],
+})
 export class FaqStore {
   private readonly repository = inject(FaqRepositoryInjector)
   private readonly _faqs = resource({

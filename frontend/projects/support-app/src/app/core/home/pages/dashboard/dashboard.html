@@ -7,15 +7,33 @@
   <div class="row mb-3">
     <div class="col text-end">
       <nav>
-        <a pButton routerLink="faqs" class="me-2" text="true">
+        <a
+          pButton
+          routerLink="faqs"
+          class="me-2"
+          text="true"
+          severity="secondary"
+        >
           <i class="pi pi-question"></i>
           Faq
         </a>
-        <a pButton routerLink="issues" class="me-2" text="true">
+        <a
+          pButton
+          routerLink="issues"
+          class="me-2"
+          text="true"
+          severity="secondary"
+        >
           <i class="pi pi-comment"></i>
           Mes tickets
         </a>
-        <a pButton routerLink="chats" class="me-2" text="true">
+        <a
+          pButton
+          routerLink="chats"
+          class="me-2"
+          text="true"
+          severity="secondary"
+        >
           <i class="pi pi-file-edit"></i>
           Échanges avec le support
         </a>
@@ -25,7 +43,9 @@
   <div class="row mb-5">
     <div class="col">
       <h3>Vous recontrez des problèmes ?</h3>
-      <span>Vous pouvez joindre notre support par différents moyens&nbsp;:</span>
+      <span
+        >Vous pouvez joindre notre support par différents moyens&nbsp;:</span
+      >
     </div>
   </div>
   <div class="row mb-5">
@@ -33,9 +53,14 @@
       <p class="m-2">
         <span class="block font-bold">Par chat&nbsp;:</span>
         <span class="flex flex-col gap-2 ms-2">
-          @for (businessHour of supportChatBusinessHours(); track businessHour.day) {
-          <span class="badge bg-secondary">{{ businessHour.day }} de {{ businessHour.from }} à {{ businessHour.to
-            }}</span>
+          @for (
+            businessHour of supportChatBusinessHours();
+            track businessHour.day
+          ) {
+            <span class="badge bg-secondary"
+              >{{ businessHour.day }} de {{ businessHour.from }} à
+              {{ businessHour.to }}</span
+            >
           }
         </span>
       </p>
@@ -48,13 +73,23 @@
       <p class="m-2">
         <span class="block font-bold">Par téléphone&nbsp;:</span>
         <span class="flex flex-col gap-2 ms-2">
-          @for (businessHour of supportPhoneBusinessHours(); track businessHour.day) {
-          <span class="badge bg-secondary">{{ businessHour.day }} de {{ businessHour.from }} à {{ businessHour.to
-            }}</span>
+          @for (
+            businessHour of supportPhoneBusinessHours();
+            track businessHour.day
+          ) {
+            <span class="badge bg-secondary"
+              >{{ businessHour.day }} de {{ businessHour.from }} à
+              {{ businessHour.to }}</span
+            >
           }
         </span>
       </p>
-      <a pButton [href]="`tel:${supportPhoneNumber()}`" text="true" severity="info">
+      <a
+        pButton
+        [href]="`tel:${supportPhoneNumber()}`"
+        text="true"
+        severity="info"
+      >
         <i class="pi pi-phone"></i>
         Appeler le support
       </a>
@@ -68,7 +103,12 @@
           <span class="badge bg-secondary">{{ supportEmail() }}</span>
         </span>
       </p>
-      <a pButton [href]="`mailto:${supportEmail()}`" text="true" severity="contrast">
+      <a
+        pButton
+        [href]="`mailto:${supportEmail()}`"
+        text="true"
+        severity="contrast"
+      >
         <i class="pi pi-envelope"></i>
         Envoyer un email au support
       </a>

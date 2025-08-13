@@ -9,30 +9,20 @@ export enum SessionBroadcastType {
 }
 
 export interface LoginEvent {
-  type: SessionBroadcastType.LOGIN
   user: SharedUserProfile
 }
 
-export interface LogoutEvent {
-  type: SessionBroadcastType.LOGOUT
-}
+export type LogoutEvent = Readonly<Record<never, never>>
+export type RefreshEvent = Readonly<Record<never, never>>
 
-export interface RefreshEvent {
-  type: SessionBroadcastType.REFRESH
-}
-
-export type SessionBroadcastEvent = LoginEvent | LogoutEvent | RefreshEvent
-
-export interface SessionBroadcastMessage<T> {
-  type: SessionBroadcastType
-  payload?: T
-  sourceId: string
-  timestamp: number
-}
+export type SessionBroadcastMessage
+  = | { type: SessionBroadcastType.LOGIN, payload: LoginEvent, sourceId: string, timestamp: number }
+    | { type: SessionBroadcastType.LOGOUT, payload: LogoutEvent, sourceId: string, timestamp: number }
+    | { type: SessionBroadcastType.REFRESH, payload: RefreshEvent, sourceId: string, timestamp: number }
 
 export interface SharedUserProfile {
-  id: UUID
-  name: string
-  role: string
-  email: string
+  readonly id: UUID
+  readonly name: string
+  readonly role: string
+  readonly email: string
 }

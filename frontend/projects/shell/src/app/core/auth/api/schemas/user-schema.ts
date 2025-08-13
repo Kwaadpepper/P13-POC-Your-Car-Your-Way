@@ -1,9 +1,10 @@
 import { z } from 'zod'
 
 import { Role } from '~shell-shared/enums'
+import { uuidSchema } from '~ycyw/shared'
 
 export const userSchema = z.object({
-  id: z.string().uuid(),
+  id: uuidSchema,
   name: z.string().min(1),
   role: z.nativeEnum(Role),
   email: z.string().email(),

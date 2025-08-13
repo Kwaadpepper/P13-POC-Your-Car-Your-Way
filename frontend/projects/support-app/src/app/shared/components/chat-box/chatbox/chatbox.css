@@ -1,4 +1,5 @@
-@import "./../../../../../styles/styles.css";
+/* stylelint-disable-next-line at-rule-no-unknown */
+@reference "./../../../../../styles/styles.css";
 
 :host {
   @apply block;

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
 import { IssueStatus } from '~support-domains/issue/enums'
-import { AcrissCode } from '~ycyw/shared'
+import { AcrissCode, uuidSchema } from '~ycyw/shared'
 
 const addressSchema = z.object({
   line1: z.string().nonempty(),
@@ -62,7 +62,7 @@ const reservationInfoSchema = z.object({
 })
 
 export const issueSchema = z.object({
-  id: z.string().uuid(),
+  id: uuidSchema,
   subject: z.string().nonempty(),
   description: z.string().nonempty(),
   status: z.nativeEnum(IssueStatus),

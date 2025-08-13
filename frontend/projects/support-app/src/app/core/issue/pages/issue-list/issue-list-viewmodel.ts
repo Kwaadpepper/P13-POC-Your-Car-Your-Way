@@ -1,6 +1,7 @@
 import { inject, Inject } from '@angular/core'
 
 import { IssueStore } from '~support-core/issue/stores/issue-store'
+import { UUID } from '~ycyw/shared'
 
 @Inject({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class IssueListViewModel {
     this.store.reloadAll()
   }
 
-  getFaq(id: string) {
+  getFaq(id: UUID) {
     return this.store.getFaq(id)
   }
 }

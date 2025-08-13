@@ -1,11 +1,12 @@
 import { z } from 'zod'
 
 import { Role } from '~support-shared/enums'
+import { uuidSchema } from '~ycyw/shared'
 
 const typingEventSchema = z.object({
-  user: z.string().uuid(),
+  user: uuidSchema,
   role: z.nativeEnum(Role),
-  conversation: z.string().uuid(),
+  conversation: uuidSchema,
   typing: z.coerce.boolean(),
 })
 

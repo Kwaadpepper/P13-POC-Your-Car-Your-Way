@@ -13,6 +13,7 @@ export class ConversationViewModel {
   private readonly sessionBus = inject(SessionBroadcastService)
 
   readonly currentUser = computed(() => {
+    console.log(this.sessionBus)
     const u = this.sessionBus.user
     if (!u) return null
     const name = u.name

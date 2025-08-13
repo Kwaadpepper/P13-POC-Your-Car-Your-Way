@@ -4,6 +4,7 @@ import { RouterOutlet } from '@angular/router'
 import { ToastModule } from 'primeng/toast'
 
 import { Header } from '~shell-core/layout'
+import { SessionListener } from '~shell-shared/components'
 
 @Component({
   selector: 'shell-root',
@@ -13,6 +14,7 @@ import { Header } from '~shell-core/layout'
     RouterOutlet,
     Header,
     ToastModule,
+    SessionListener,
   ],
 })
 export class App {

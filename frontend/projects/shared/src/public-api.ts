@@ -4,7 +4,9 @@
 
 // * SCHEMAS
 export {
+  uuidSchema,
   validationErrorSchema,
+  type UUIDZod,
   type ValidationErrorZod,
 } from './schemas'
 
@@ -23,6 +25,7 @@ export {
   type LoginEvent,
   type LogoutEvent,
   type RefreshEvent,
+  type SessionBroadcastMessage,
   type SharedUserProfile,
 } from './lib'
 

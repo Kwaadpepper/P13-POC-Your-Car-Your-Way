@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core'
 
 import { FaqStore } from '~support-core/faq/stores/faq-store'
+import { UUID } from '~ycyw/shared'
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +17,7 @@ export class FaqListViewModel {
     this.store.reloadAll()
   }
 
-  getFaq(id: string) {
+  getFaq(id: UUID) {
     return this.store.getFaq(id)
   }
 }

@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): MaybeAsync<GuardResult> {
     // * If the user is not logged in, redirect
-    if (!this.sessionStore.isLoggedIn()) {
+    if (!this.sessionStore.session().isLoggedIn) {
       const loginRoute = this.router.parseUrl(this.redirectUrl)
 
       return new RedirectCommand(loginRoute)

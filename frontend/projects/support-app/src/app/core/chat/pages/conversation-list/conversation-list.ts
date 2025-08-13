@@ -10,6 +10,7 @@ import { MessageModule } from 'primeng/message'
 
 import { Conversation } from '~support-domains/chat/models'
 import { BackButton } from '~support-shared/components'
+import { UUID } from '~ycyw/shared'
 
 @Component({
   selector: 'support-conversation-list',
@@ -35,7 +36,7 @@ export class ConversationList implements OnInit {
     // TODO: remplacer par ton ConversationsRepository (Mockoon)
     this.conversations.set([
       {
-        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb17',
+        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb17' as UUID,
         subject: 'Support Request 1',
         lastMessage: {
           content: 'Hello, I need help with my account.',
@@ -43,7 +44,7 @@ export class ConversationList implements OnInit {
         },
       },
       {
-        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb18',
+        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb18' as UUID,
         subject: 'Support Request 2',
         lastMessage: {
           content: 'I have a question about my order.',
@@ -51,7 +52,7 @@ export class ConversationList implements OnInit {
         },
       },
       {
-        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb18 ',
+        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb19' as UUID,
         subject: 'Support Request 3',
         lastMessage: {
           content: 'Can you assist me with a technical issue?',
@@ -62,7 +63,6 @@ export class ConversationList implements OnInit {
   }
 
   open(item: Conversation) {
-    console.log(this.route.snapshot)
     this.router.navigate(['.', item.id], { relativeTo: this.route })
   }
 

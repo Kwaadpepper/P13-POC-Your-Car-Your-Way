@@ -1,5 +1,6 @@
 import { DatePipe } from '@angular/common'
 import { Component, OnInit, inject } from '@angular/core'
+import { NotFoundError } from '@angular/core/primitives/di'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
@@ -9,6 +10,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import { TagModule } from 'primeng/tag'
 
 import { BackButton } from '~support-shared/components'
+import { UUID, uuidSchema } from '~ycyw/shared'
 
 import { IssuePageViewModel } from './issue-page-viewmodel'
 
@@ -35,10 +37,15 @@ export class IssuePage implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
-      const id = params.get('id')
-      this.viewModel.setIssueId(id)
-      if (id && !this.viewModel.issue()) {
-        await this.viewModel.getIssue(id)
+      try {
+        const id: UUID = uuidSchema.parse(params.get('id'))
+        this.viewModel.setIssueId(id)
+        if (id && !this.viewModel.issue()) {
+          await this.viewModel.getIssue(id)
+        }
+      }
+      catch {
+        throw new NotFoundError('No conversation found')
       }
     })
   }

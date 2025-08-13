@@ -1,4 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core'
+import { NotFoundError } from '@angular/core/primitives/di'
 import { ActivatedRoute } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
@@ -8,6 +9,7 @@ import { TagModule } from 'primeng/tag'
 import { ToolbarModule } from 'primeng/toolbar'
 
 import { BackButton, ChatBox } from '~support-shared/components'
+import { UUID, uuidSchema } from '~ycyw/shared'
 
 import { ConversationViewModel } from './conversation-viewmodel'
 
@@ -29,15 +31,20 @@ import { ConversationViewModel } from './conversation-viewmodel'
 export class Conversation implements OnInit {
   private readonly route = inject(ActivatedRoute)
 
-  readonly vm = inject(ConversationViewModel)
+  readonly viewmodel = inject(ConversationViewModel)
 
-  readonly _conversationId = signal<string | null>(null)
+  readonly _conversationId = signal<UUID | null>(null)
   readonly conversationId = this._conversationId.asReadonly()
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const id = params.get('id')
-      this._conversationId.set(id)
+      try {
+        const id: UUID = uuidSchema.parse(params.get('id'))
+        this._conversationId.set(id)
+      }
+      catch {
+        throw new NotFoundError('No conversation found')
+      }
     })
   }
 }

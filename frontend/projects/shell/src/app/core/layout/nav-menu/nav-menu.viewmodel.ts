@@ -11,5 +11,5 @@ import { SessionStore } from '~shell-core/auth/stores'
 export class NavMenuViewModel {
   private readonly sessionStore = inject(SessionStore)
 
-  public readonly loggedIn = computed(() => this.sessionStore.isLoggedIn())
+  public readonly loggedIn = computed(() => this.sessionStore.session().isLoggedIn)
 }

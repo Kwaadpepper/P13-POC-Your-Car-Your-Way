@@ -14,7 +14,7 @@ import { APP_CONFIG } from '~shell-tokens/config-token'
   ],
 })
 export class HeaderViewModel {
-  public readonly loggedIn = computed(() => this.sessionService.isLoggedIn())
+  public readonly loggedIn = computed(() => this.sessionService.session().isLoggedIn)
 
   private readonly appConfig = inject(APP_CONFIG)
   private readonly sessionService = inject(SessionStore)

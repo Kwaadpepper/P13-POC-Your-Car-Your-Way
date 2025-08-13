@@ -53,7 +53,7 @@ export class ChatBox implements OnInit, OnDestroy {
 
   // State (signals locaux)
   private readonly _connected = signal(false)
-  private readonly _conversationId = signal<string | null>(null)
+  private readonly _conversationId = signal<UUID | null>(null)
   private readonly _messages = signal<ChatBoxMessage[]>([])
   private readonly _participants = signal<ChatBoxParticipant[]>([])
   private readonly _typingUsers = signal<ChatBoxTypingUser[]>([])
@@ -151,7 +151,7 @@ export class ChatBox implements OnInit, OnDestroy {
   }
 
   /* Join / Leave */
-  private join(conversationId: string) {
+  private join(conversationId: UUID) {
     const prev = this._conversationId()
     if (prev && prev !== conversationId) {
       this.chatService.leave(prev)

@@ -20,7 +20,7 @@ export class GuestGuard implements CanActivate {
 
   canActivate(): MaybeAsync<GuardResult> {
     // * If the user is logged in, redirect
-    if (this.sessionStore.isLoggedIn()) {
+    if (this.sessionStore.session().isLoggedIn) {
       const loginRoute = this.router.parseUrl(this.redirectUrl)
 
       return new RedirectCommand(loginRoute)

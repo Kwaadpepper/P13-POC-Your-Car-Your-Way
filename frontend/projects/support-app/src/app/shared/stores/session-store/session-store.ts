@@ -3,7 +3,6 @@ import { toObservable } from '@angular/core/rxjs-interop'
 
 import { Subscription } from 'rxjs'
 
-import { User } from '~shell-core/auth/models'
 import {
   SessionBroadcastMessage,
   SessionBroadcastService,
@@ -16,11 +15,8 @@ export interface SessionSnapshot {
   user: SharedUserProfile | null
 }
 
-@Injectable({
-  providedIn: 'root',
-  deps: [SessionBroadcastService],
-})
-export class SessionStore implements OnDestroy {
+@Injectable({ providedIn: 'root' })
+export class MfeSessionStore implements OnDestroy {
   // Source de vérité unique
   private readonly _session = signal<SessionSnapshot>({ isLoggedIn: false, user: null })
 
@@ -32,25 +28,28 @@ export class SessionStore implements OnDestroy {
   private readonly bus = inject(SessionBroadcastService)
   private readonly busSub?: Subscription
 
-  // Persistence
+  // Persistence (mêmes clés que le shell)
   private readonly LS_FLAG_KEY = 'loggedin'
   private readonly LS_USER_KEY = 'session:user'
 
   constructor() {
-    this.restoreFromPersistence()
+    // Etat initial depuis la persistence
+    this.bootstrapFromPersistence()
 
-    // Broadcast inter‑onglets
+    // Synchronisation inter‑onglets
     this.busSub = this.bus.events$.subscribe((msg: SessionBroadcastMessage) => {
       switch (msg.type) {
         case SessionBroadcastType.LOGIN: {
-          this.setSessionInternal(msg.payload.user, { persist: true })
+          this.setUser(msg.payload.user)
           break
         }
         case SessionBroadcastType.LOGOUT: {
-          this.setSessionInternal(null, { persist: true })
+          this.setUser(null)
           break
         }
         case SessionBroadcastType.REFRESH: {
+          // Le shell met à jour son état local à partir de la persistence.
+          // Ici on relit la persistence pour se réaligner.
           this.restoreUserOnly()
           break
         }
@@ -58,85 +57,33 @@ export class SessionStore implements OnDestroy {
     })
   }
 
-  // API publique
-  setLoggedIn(user: User): void {
-    const profile = this.mapToSharedUser(user)
-    this.setSessionInternal(profile, { persist: true, broadcast: true })
-  }
-
-  setLoggedOut(): void {
-    this.setSessionInternal(null, { persist: true, broadcast: true })
-  }
-
-  forceRefresh(): void {
-    this.bus.publishRefresh()
-    this.restoreUserOnly()
-  }
-
-  snapshot(): SessionSnapshot {
-    return this.session()
-  }
-
   ngOnDestroy(): void {
     this.busSub?.unsubscribe()
   }
 
   // Impl interne
-  private setSessionInternal(
-    user: SharedUserProfile | null,
-    options: { persist?: boolean, broadcast?: boolean } = {},
-  ): void {
-    const { persist, broadcast } = options
+  private setUser(user: SharedUserProfile | null): void {
     const current = this._session().user
     if (this.usersEqual(current, user)) return
-
     this._session.set({ isLoggedIn: !!user, user })
-
-    if (persist) {
-      if (user) this.persistUser(user)
-      else this.clearPersistence()
-    }
-
-    if (broadcast) {
-      if (user) this.bus.publishLogin(user)
-      else this.bus.publishLogout()
-    }
   }
 
-  // Persistence
-  private persistUser(user: SharedUserProfile) {
-    try {
-      localStorage.setItem(this.LS_FLAG_KEY, '1')
-      localStorage.setItem(this.LS_USER_KEY, JSON.stringify(user))
-    }
-    catch { /* noop */ }
-  }
-
-  private clearPersistence() {
-    localStorage.removeItem(this.LS_FLAG_KEY)
-    localStorage.removeItem(this.LS_USER_KEY)
-  }
-
-  private restoreFromPersistence() {
+  private bootstrapFromPersistence(): void {
     if (!this.hasFlag()) {
-      this.clearPersistence()
       this._session.set({ isLoggedIn: false, user: null })
       return
     }
     const user = this.readPersistedUser()
-    if (user) {
-      this._session.set({ isLoggedIn: true, user })
-    }
-    else {
-      this.clearPersistence()
-      this._session.set({ isLoggedIn: false, user: null })
-    }
+    this._session.set({ isLoggedIn: !!user, user })
   }
 
-  private restoreUserOnly() {
+  private restoreUserOnly(): void {
     const user = this.readPersistedUser()
-    if (!user) return
-    if (!this.usersEqual(this._session().user, user)) {
+    if (!user && this._session().isLoggedIn) {
+      this._session.set({ isLoggedIn: false, user: null })
+      return
+    }
+    if (user && !this.usersEqual(this._session().user, user)) {
       this._session.set({ isLoggedIn: true, user })
     }
   }
@@ -160,15 +107,9 @@ export class SessionStore implements OnDestroy {
   private usersEqual(a: SharedUserProfile | null, b: SharedUserProfile | null): boolean {
     if (a === b) return true
     if (!a || !b) return false
-    // Id suffit souvent; on laisse rôle/email/name pour prudence
     return a.id === b.id
       && a.role === b.role
       && a.name === b.name
       && a.email === b.email
-  }
-
-  private mapToSharedUser(user: User): SharedUserProfile {
-    const { id, name, role, email } = user
-    return { id, name, role, email }
   }
 }

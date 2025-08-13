@@ -15,12 +15,12 @@
   <!-- Chatbox -->
   <div class="row">
     <div class="col">
-      @if (conversationId() && vm.currentUser()) {
+      @if (conversationId() && viewmodel.currentUser()) {
         <support-chatbox
-          [user]="vm.currentUser()!"
+          [user]="viewmodel.currentUser()!"
           [conversation]="conversationId()!"
         />
-      } @else if (!vm.currentUser()) {
+      } @else if (!viewmodel.currentUser()) {
         <p-message
           severity="warn"
           text="Vous devez être connecté pour accéder au chat."

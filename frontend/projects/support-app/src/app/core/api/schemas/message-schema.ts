@@ -1,12 +1,13 @@
 import { z } from 'zod'
 
 import { Role } from '~support-shared/enums'
+import { uuidSchema } from '~ycyw/shared'
 
 const messageSchema = z.object({
-  id: z.string().uuid(),
-  conversation: z.string().uuid(),
+  id: uuidSchema,
+  conversation: uuidSchema,
   from: z.object({
-    id: z.string().uuid(),
+    id: uuidSchema,
     name: z.string().nonempty(),
     role: z.nativeEnum(Role),
   }),

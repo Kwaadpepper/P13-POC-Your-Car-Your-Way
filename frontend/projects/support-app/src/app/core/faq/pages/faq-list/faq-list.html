@@ -62,20 +62,6 @@
             (onChange)="toggleGroupByType()"
           />
         </div>
-
-        <!-- Bloc actions droite -->
-        <div class="flex gap-3">
-          <button
-            pButton
-            type="button"
-            icon="pi pi-refresh"
-            (click)="reloadAll()"
-            [disabled]="viewModel.loading()"
-            class="btn-refresh"
-          >
-            Rafraîchir
-          </button>
-        </div>
       </div>
     </div>
   </div>

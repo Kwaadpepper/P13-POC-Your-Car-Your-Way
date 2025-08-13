@@ -85,8 +85,4 @@ export class FaqList {
   toggleGroupByType() {
     this.groupByType.update(x => !x)
   }
-
-  reloadAll() {
-    this.viewModel.reloadAll()
-  }
 }

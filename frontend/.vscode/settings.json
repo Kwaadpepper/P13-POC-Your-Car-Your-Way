@@ -6,6 +6,12 @@
     "frontend-shared"
   ],
   "editor.formatOnSave": true,
+  "[html]": {
+    "html.format.enable": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[javascript]": {
     "editor.autoIndent": "full",
     "editor.codeActionsOnSave": {

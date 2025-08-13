@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs'
 
 import { User } from '~shell-core/auth/models'
 import {
+  SESSION_USER_STORAGE_KEY,
   SessionBroadcastMessage,
   SessionBroadcastService,
   SessionBroadcastType,
@@ -16,49 +17,33 @@ export interface SessionSnapshot {
   user: SharedUserProfile | null
 }
 
-@Injectable({
-  providedIn: 'root',
-  deps: [SessionBroadcastService],
-})
+@Injectable({ providedIn: 'root', deps: [SessionBroadcastService] })
 export class SessionStore implements OnDestroy {
-  // Source de vérité unique
   private readonly _session = signal<SessionSnapshot>({ isLoggedIn: false, user: null })
-
-  // API publique minimale
   readonly session = this._session.asReadonly()
   readonly session$ = toObservable(this.session)
 
-  // Services
   private readonly bus = inject(SessionBroadcastService)
   private readonly busSub?: Subscription
-
-  // Persistence
-  private readonly LS_FLAG_KEY = 'loggedin'
-  private readonly LS_USER_KEY = 'session:user'
 
   constructor() {
     this.restoreFromPersistence()
 
-    // Broadcast inter‑onglets
     this.busSub = this.bus.events$.subscribe((msg: SessionBroadcastMessage) => {
       switch (msg.type) {
-        case SessionBroadcastType.LOGIN: {
+        case SessionBroadcastType.LOGIN:
           this.setSessionInternal(msg.payload.user, { persist: true })
           break
-        }
-        case SessionBroadcastType.LOGOUT: {
+        case SessionBroadcastType.LOGOUT:
           this.setSessionInternal(null, { persist: true })
           break
-        }
-        case SessionBroadcastType.REFRESH: {
+        case SessionBroadcastType.REFRESH:
           this.restoreUserOnly()
           break
-        }
       }
     })
   }
 
-  // API publique
   setLoggedIn(user: User): void {
     const profile = this.mapToSharedUser(user)
     this.setSessionInternal(profile, { persist: true, broadcast: true })
@@ -81,7 +66,6 @@ export class SessionStore implements OnDestroy {
     this.busSub?.unsubscribe()
   }
 
-  // Impl interne
   private setSessionInternal(
     user: SharedUserProfile | null,
     options: { persist?: boolean, broadcast?: boolean } = {},
@@ -103,50 +87,35 @@ export class SessionStore implements OnDestroy {
     }
   }
 
-  // Persistence
   private persistUser(user: SharedUserProfile) {
     try {
-      localStorage.setItem(this.LS_FLAG_KEY, '1')
-      localStorage.setItem(this.LS_USER_KEY, JSON.stringify(user))
+      localStorage.setItem(SESSION_USER_STORAGE_KEY, JSON.stringify(user))
     }
     catch { /* noop */ }
   }
 
   private clearPersistence() {
-    localStorage.removeItem(this.LS_FLAG_KEY)
-    localStorage.removeItem(this.LS_USER_KEY)
+    localStorage.removeItem(SESSION_USER_STORAGE_KEY)
   }
 
   private restoreFromPersistence() {
-    if (!this.hasFlag()) {
-      this.clearPersistence()
-      this._session.set({ isLoggedIn: false, user: null })
-      return
-    }
     const user = this.readPersistedUser()
-    if (user) {
-      this._session.set({ isLoggedIn: true, user })
-    }
-    else {
-      this.clearPersistence()
-      this._session.set({ isLoggedIn: false, user: null })
-    }
+    this._session.set({ isLoggedIn: !!user, user })
   }
 
   private restoreUserOnly() {
     const user = this.readPersistedUser()
-    if (!user) return
-    if (!this.usersEqual(this._session().user, user)) {
+    if (!user && this._session().isLoggedIn) {
+      this._session.set({ isLoggedIn: false, user: null })
+      return
+    }
+    if (user && !this.usersEqual(this._session().user, user)) {
       this._session.set({ isLoggedIn: true, user })
     }
   }
 
-  private hasFlag(): boolean {
-    return localStorage.getItem(this.LS_FLAG_KEY) !== null
-  }
-
   private readPersistedUser(): SharedUserProfile | null {
-    const raw = localStorage.getItem(this.LS_USER_KEY)
+    const raw = localStorage.getItem(SESSION_USER_STORAGE_KEY)
     if (!raw) return null
     try {
       return JSON.parse(raw) as SharedUserProfile
@@ -156,15 +125,10 @@ export class SessionStore implements OnDestroy {
     }
   }
 
-  // Helpers
   private usersEqual(a: SharedUserProfile | null, b: SharedUserProfile | null): boolean {
     if (a === b) return true
     if (!a || !b) return false
-    // Id suffit souvent; on laisse rôle/email/name pour prudence
     return a.id === b.id
-      && a.role === b.role
-      && a.name === b.name
-      && a.email === b.email
   }
 
   private mapToSharedUser(user: User): SharedUserProfile {

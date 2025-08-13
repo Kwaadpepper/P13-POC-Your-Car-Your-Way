@@ -2,6 +2,11 @@
  * Public API Surface of shared
  */
 
+// * CONSTANTS
+export {
+  SESSION_USER_STORAGE_KEY,
+} from './lib'
+
 // * SCHEMAS
 export {
   uuidSchema,
@@ -26,6 +31,8 @@ export {
   type LogoutEvent,
   type RefreshEvent,
   type SessionBroadcastMessage,
+  type SessionSnapshot,
+  type SessionStoreReadonly,
   type SharedUserProfile,
 } from './lib'
 

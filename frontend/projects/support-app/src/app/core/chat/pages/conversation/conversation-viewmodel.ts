@@ -1,6 +1,7 @@
 import { Injectable, computed, inject } from '@angular/core'
 
 import { Role } from '~support-shared/enums'
+import { SessionStore } from '~support-shared/stores'
 import { SessionBroadcastService } from '~ycyw/shared'
 
 @Injectable({
@@ -10,16 +11,15 @@ import { SessionBroadcastService } from '~ycyw/shared'
   ],
 })
 export class ConversationViewModel {
-  private readonly sessionBus = inject(SessionBroadcastService)
+  private readonly bus = inject(SessionStore)
 
   readonly currentUser = computed(() => {
-    console.log(this.sessionBus)
-    const u = this.sessionBus.user
-    if (!u) return null
-    const name = u.name
-    const isOperator = u.role === Role.OPERATOR
+    const user = this.bus.session().user
+    if (!user) return null
+    const name = user.name
+    const isOperator = user.role === Role.OPERATOR
     return {
-      id: u.id,
+      id: user.id,
       name,
       isOperator,
     }

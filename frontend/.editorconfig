@@ -8,10 +8,6 @@ indent_size = 2
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.html]
-indent_size = 2
-indent_style = space
-
 [*.ts]
 quote_type = single
 ij_typescript_use_double_quotes = false

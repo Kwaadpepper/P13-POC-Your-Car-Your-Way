@@ -1,5 +1,7 @@
 export * from './faq-list-schema'
 export * from './faq-schema'
+export * from './issue-list-schema'
+export * from './issue-schema'
 export * from './message-history-schema'
 export * from './message-schema'
 export * from './presence-event-schema'

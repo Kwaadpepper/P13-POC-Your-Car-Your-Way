@@ -17,10 +17,7 @@ import { BackButton } from '~support-shared/components'
 import { FaqListViewModel } from './faq-list-viewmodel'
 
 @Component({
-  standalone: true,
   selector: 'support-faq-page',
-  templateUrl: './faq-list.html',
-  styleUrl: './faq-list.css',
   imports: [
     CommonModule,
     FormsModule,
@@ -38,6 +35,8 @@ import { FaqListViewModel } from './faq-list-viewmodel'
     FaqListViewModel,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './faq-list.html',
+  styleUrl: './faq-list.css',
 })
 export class FaqList {
   readonly viewModel = inject(FaqListViewModel)

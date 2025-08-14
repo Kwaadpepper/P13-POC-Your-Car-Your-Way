@@ -1,10 +1,10 @@
 {
   "editor.tabSize": 2,
   "conventionalCommits.scopes": [
-    "frontend",
-    "frontend-support",
-    "frontend-shell",
-    "frontend-shared"
+    "front",
+    "front-support",
+    "front-shell",
+    "front-shared"
   ],
   "editor.formatOnSave": true,
   "[html]": {

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common'
-import { Component, inject, input } from '@angular/core'
+import { Component, computed, inject, input } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
@@ -9,13 +9,12 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner'
 import { TagModule } from 'primeng/tag'
 
 import { Issue } from '~support-domains/issue/models'
-import { BackButton } from '~support-shared/components'
+import { BackButton, ChatBox } from '~support-shared/components'
 
 import { IssuePageViewModel } from './issue-page-viewmodel'
 
 @Component({
   selector: 'support-issue-page',
-  standalone: true,
   imports: [
     DatePipe,
     ButtonModule,
@@ -24,6 +23,7 @@ import { IssuePageViewModel } from './issue-page-viewmodel'
     ProgressSpinnerModule,
     DividerModule,
     BackButton,
+    ChatBox,
   ],
   providers: [IssuePageViewModel],
   templateUrl: './issue-page.html',
@@ -35,6 +35,7 @@ export class IssuePage {
   readonly viewModel = inject(IssuePageViewModel)
 
   readonly issue = input.required<Issue>()
+  readonly conversation = computed(() => this.issue().conversation)
 
   openChat() {
     this.router.navigate(

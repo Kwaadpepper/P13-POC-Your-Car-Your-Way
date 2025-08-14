@@ -24,14 +24,6 @@
     </div>
     <div class="col-12 md:col flex flex-wrap space-x-2 space-y-2">
       <p-tag [value]="issue().status" severity="info"></p-tag>
-      <button
-        pButton
-        title="Ouvrir le chat"
-        class="p-button-outlined"
-        (click)="openChat()"
-      >
-        <i class="pi pi-comments"></i>
-      </button>
     </div>
   </div>
 
@@ -86,6 +78,28 @@
           }
         </ul>
       </section>
+    </div>
+  </div>
+
+  <!-- CHATBOX -->
+  <div class="row">
+    <div class="col">
+      @if (viewModel.currentUser() && conversation()) {
+        <support-chatbox
+          [user]="viewModel.currentUser()!"
+          [conversation]="conversation()!"
+        />
+      } @else if (!conversation()) {
+        <p-message
+          severity="warn"
+          text="Aucune conversation engagée."
+        ></p-message>
+      } @else {
+        <p-message
+          severity="warn"
+          text="Vous devez être connecté pour accéder au chat."
+        ></p-message>
+      }
     </div>
   </div>
 </div>

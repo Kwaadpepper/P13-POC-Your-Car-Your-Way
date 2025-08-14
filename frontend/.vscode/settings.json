@@ -2,6 +2,7 @@
   "editor.tabSize": 2,
   "conventionalCommits.scopes": [
     "front",
+    "front-backoffice",
     "front-support",
     "front-shell",
     "front-shared"

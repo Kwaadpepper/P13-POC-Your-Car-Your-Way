@@ -25,6 +25,21 @@
       "~shell-tokens/*": [
         "./projects/shell/src/app/tokens/*"
       ],
+      "~backoffice-core/*": [
+        "./projects/app-backoffice/src/app/core/*"
+      ],
+      "~backoffice-env/*": [
+        "./projects/app-backoffice/src/environments/*"
+      ],
+      "~backoffice-domains/*": [
+        "./projects/app-backoffice/src/app/domains/*"
+      ],
+      "~backoffice-shared/*": [
+        "./projects/app-backoffice/src/app/shared/*"
+      ],
+      "~backoffice-tokens/*": [
+        "./projects/app-backoffice/src/app/tokens/*"
+      ],
       "~support-core/*": [
         "./projects/app-support/src/app/core/*"
       ],
@@ -65,6 +80,12 @@
     },
     {
       "path": "./projects/shell/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/app-backoffice/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/app-backoffice/tsconfig.spec.json"
     },
     {
       "path": "./projects/app-support/tsconfig.app.json"

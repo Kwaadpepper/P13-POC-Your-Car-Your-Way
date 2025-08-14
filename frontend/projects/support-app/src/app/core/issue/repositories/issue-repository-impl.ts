@@ -16,10 +16,12 @@ import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
 export class IssueRepositoryImpl implements IssueRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.supportWebServer
-  private readonly supportServiceUrl = `${this.serviceUrl}/api/support`
-  private readonly faqListUrl = `${this.supportServiceUrl}/issues`
 
-  getIssues(): Observable<Issue[]> {
+  readonly resourceUrl = `${this.serviceUrl}/api/support`
+
+  private readonly faqListUrl = `${this.resourceUrl}/issues`
+
+  getAll(): Observable<Issue[]> {
     return this.http.get<IssueListZod>(
       this.faqListUrl,
       {},

@@ -30,6 +30,7 @@ export {
   type LoginEvent,
   type LogoutEvent,
   type RefreshEvent,
+  type Repository,
   type SessionBroadcastMessage,
   type SessionSnapshot,
   type SessionStoreReadonly,

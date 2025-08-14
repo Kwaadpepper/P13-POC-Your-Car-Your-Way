@@ -1,7 +1,9 @@
 import { Observable } from 'rxjs'
 
+import { Repository } from '~ycyw/shared'
+
 import { Conversation } from '../models'
 
-export interface ConversationRepository {
-  getConversations(): Observable<Conversation[]>
+export interface ConversationRepository extends Repository<Conversation> {
+  getAll(): Observable<Conversation[]>
 }

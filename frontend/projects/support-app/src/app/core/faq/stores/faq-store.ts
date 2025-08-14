@@ -31,6 +31,6 @@ export class FaqStore {
   }
 
   private async loadFaqs() {
-    return await firstValueFrom(this.repository.getFaqs())
+    return await firstValueFrom(this.repository.getAll())
   }
 }

@@ -16,10 +16,12 @@ import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
 export class ConversationRepositoryImpl implements ConversationRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.supportWebServer
-  private readonly supportServiceUrl = `${this.serviceUrl}/api/support`
-  private readonly conversationListUrl = `${this.supportServiceUrl}/conversations`
 
-  getConversations(): Observable<Conversation[]> {
+  readonly resourceUrl = `${this.serviceUrl}/api/support`
+
+  private readonly conversationListUrl = `${this.resourceUrl}/conversations`
+
+  getAll(): Observable<Conversation[]> {
     return this.http.get<ConversationListZod>(
       this.conversationListUrl,
       {},

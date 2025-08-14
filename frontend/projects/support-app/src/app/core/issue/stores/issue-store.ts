@@ -31,6 +31,6 @@ export class IssueStore {
   }
 
   private async loadIssues() {
-    return await firstValueFrom(this.repository.getIssues())
+    return await firstValueFrom(this.repository.getAll())
   }
 }

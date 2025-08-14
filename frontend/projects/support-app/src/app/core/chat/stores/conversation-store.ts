@@ -31,6 +31,6 @@ export class ConversationStore {
   }
 
   private async loadConversations() {
-    return await firstValueFrom(this.repository.getConversations())
+    return await firstValueFrom(this.repository.getAll())
   }
 }

@@ -15,10 +15,12 @@ import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
 export class FaqRepositoryImpl implements FaqRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.supportWebServer
-  private readonly supportServiceUrl = `${this.serviceUrl}/api/support`
-  private readonly faqListUrl = `${this.supportServiceUrl}/faqs`
 
-  getFaqs(): Observable<Faq[]> {
+  readonly resourceUrl = `${this.serviceUrl}/api/support`
+
+  private readonly faqListUrl = `${this.resourceUrl}/faqs`
+
+  getAll(): Observable<Faq[]> {
     return this.http.get<FaqListZod>(
       this.faqListUrl,
       {},

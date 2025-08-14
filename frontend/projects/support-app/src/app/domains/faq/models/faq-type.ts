@@ -5,7 +5,7 @@ export type FaqType = string
 export interface Faq extends Entity {
   question: string
   answer: string
-  type: FaqType
+  category: FaqType
 }
 
 export type FaqId = Faq['id']

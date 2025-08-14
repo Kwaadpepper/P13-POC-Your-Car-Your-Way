@@ -6,7 +6,7 @@ const faqSchema = z.object({
   id: uuidSchema,
   question: z.string().nonempty(),
   answer: z.string().nonempty(),
-  type: z.string().nonempty(),
+  category: z.string().nonempty(),
 })
 
 export type FaqZod = z.infer<typeof faqSchema>

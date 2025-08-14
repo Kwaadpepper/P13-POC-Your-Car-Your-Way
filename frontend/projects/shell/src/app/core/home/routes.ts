@@ -2,20 +2,24 @@ import { Routes } from '@angular/router'
 
 import { loadRemoteModule } from '@angular-architects/native-federation'
 
-import { AuthGuard } from '~shell-shared/guards'
+import { AuthClientGuard, AuthOperatorGuard } from '~shell-shared/guards'
 
 export const homeRoutes: Routes = [
   {
-    path: 'dashboard',
-    canActivate: [AuthGuard],
-    loadComponent: () => import('./pages').then(c => c.Dashboard),
-  },
-  {
-    path: 'support',
-    canActivate: [AuthGuard],
+    path: 'backoffice',
+    canActivate: [AuthOperatorGuard],
     loadChildren: () =>
       loadRemoteModule({
-        remoteName: 'app-support',
+        remoteName: 'app-backoffice',
+        exposedModule: './routes',
+      }).then(m => m.routes),
+  },
+  {
+    path: 'reservation',
+    canActivate: [AuthClientGuard],
+    loadChildren: () =>
+      loadRemoteModule({
+        remoteName: 'app-reservation',
         exposedModule: './routes',
       }).then(m => m.routes),
   },

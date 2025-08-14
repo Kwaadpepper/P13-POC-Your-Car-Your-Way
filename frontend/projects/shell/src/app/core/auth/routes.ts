@@ -6,7 +6,8 @@ import { Login } from './pages'
 
 export const redirectUrls = {
   guestHomeUrl: '',
-  authHomeUrl: '/dashboard',
+  authBackofficeHomeUrl: '/backoffice',
+  authReservationHomeUrl: '/reservation',
   login: '/login',
   register: '/register',
 }

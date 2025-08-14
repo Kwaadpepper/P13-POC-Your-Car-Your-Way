@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button'
 import { DialogModule } from 'primeng/dialog'
 import { filter, map, startWith } from 'rxjs'
 
-import { AuthGuard } from '~shell-shared/guards'
+import { AuthClientGuard, AuthOperatorGuard } from '~shell-shared/guards'
 import { SessionStore } from '~shell-shared/stores'
 
 @Component({
@@ -59,6 +59,6 @@ export class SessionListener {
       ...route.canActivate ?? [],
       ...route.canActivateChild ?? [],
       ...route.canMatch ?? [],
-    ].some(guard => guard === AuthGuard)
+    ].some(guard => guard === AuthOperatorGuard || guard === AuthClientGuard)
   }
 }

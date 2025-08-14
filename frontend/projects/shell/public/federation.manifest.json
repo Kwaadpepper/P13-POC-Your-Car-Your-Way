@@ -1,3 +1,5 @@
 {
-  "app-support": "http://localhost:4202/remoteEntry.json"
+  "app-backoffice": "http://localhost:4201/remoteEntry.json",
+  "app-support": "http://localhost:4202/remoteEntry.json",
+  "app-reservation": "http://localhost:4204/remoteEntry.json"
 }

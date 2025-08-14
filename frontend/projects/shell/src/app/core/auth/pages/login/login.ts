@@ -8,7 +8,6 @@ import { InputTextModule } from 'primeng/inputtext'
 import { MessageModule } from 'primeng/message'
 import { Subject, takeUntil } from 'rxjs'
 
-import { redirectUrls } from '~shell-core/auth/routes'
 import { BackButton } from '~shell-shared/components'
 import { ToastService } from '~shell-shared/services'
 
@@ -74,7 +73,7 @@ export class Login implements OnDestroy {
       .pipe(takeUntil(this.endObservables))
       .subscribe({
         next: () => {
-          this.router.navigateByUrl(redirectUrls.authHomeUrl)
+          this.router.navigateByUrl('/')
         },
       })
   }

@@ -3,46 +3,49 @@
   <div class="row align-items-center">
     <div class="col">
       <h1 class="ms-20">Bienvenue {{ currentUserName() | titlecase }}</h1>
-      <p class="ms-20 my-4 text-muted">
-        Your Car Your Way — Agence internationale de location de voiture
+      <p class="ms-20 text-muted">
+        Your Car Your Way — Location de voiture internationale, simple et
+        flexible.
       </p>
     </div>
   </div>
 
-  <!-- Bandeau hero -->
+  <!-- Bandeau de bienvenue -->
   <div class="row mb-4">
     <div class="col">
       <p-card styleClass="w-full">
-        <div class="grid align-items-center">
+        <div class="grid items-center">
           <div class="col-12 md:col-8">
-            <h2>Gérez vos opérations au quotidien</h2>
+            <h2 class="m-0">Votre tableau de bord client</h2>
             <p class="mt-2 mb-3">
-              Suivez vos réservations, la disponibilité de la flotte et répondez
-              aux clients depuis un point d’entrée unique.
+              Retrouvez ici vos informations essentielles: prochaines
+              réservations, avantages fidélité et aide en cas de besoin.
             </p>
-            <div class="flex gap-2 flex-wrap">
+            <div class="flex flex-wrap space-x-2 space-y-2">
               <a
                 pButton
-                [routerLink]="['/support']"
-                label="Aller sur le support"
+                [routerLink]="['/reservation/support']"
+                label="Accéder au support"
               >
                 <i class="pi pi-comments"></i>
               </a>
               <button
                 pButton
                 type="button"
-                label="Créer une réservation"
+                label="Voir mes réservations"
                 disabled="true"
+                aria-disabled="true"
               >
-                <i class="pi pi-plus"></i>
+                <i class="pi pi-calendar"></i>
               </button>
               <button
                 pButton
                 type="button"
-                label="Voir la flotte"
+                label="Nouvelle réservation"
                 disabled="true"
+                aria-disabled="true"
               >
-                <i class="pi pi-car"></i>
+                <i class="pi pi-calendar"></i>
               </button>
             </div>
           </div>
@@ -51,9 +54,9 @@
               ngSrc="assets/pictures/logo-transparent.png"
               width="250"
               height="250"
-              alt="Votre flotte partout dans le monde"
+              alt="Voyagez partout avec Your Car Your Way "
               class="border-round"
-              priority="true"
+              priority
             />
           </div>
         </div>
@@ -63,86 +66,78 @@
 
   <!-- Indicateurs (placeholders statiques) -->
   <div class="row g-3 mb-4">
-    <div class="col-12 md:col-3">
+    <div class="col-12 md:col-4">
       <p-card>
         <div class="flex align-items-center justify-content-between">
           <div>
             <div class="text-2xl font-bold">—</div>
-            <div class="text-sm text-muted">Réservations du jour</div>
+            <div class="text-sm text-muted">Prochain retrait</div>
           </div>
-          <i class="pi pi-calendar text-2xl"></i>
+          <i class="pi pi-clock text-2xl" aria-hidden="true"></i>
         </div>
       </p-card>
     </div>
-    <div class="col-12 md:col-3">
+    <div class="col-12 md:col-4">
       <p-card>
         <div class="flex align-items-center justify-content-between">
           <div>
             <div class="text-2xl font-bold">—</div>
-            <div class="text-sm text-muted">Véhicules disponibles</div>
+            <div class="text-sm text-muted">Réservations actives</div>
           </div>
-          <i class="pi pi-car text-2xl"></i>
+          <i class="pi pi-calendar text-2xl" aria-hidden="true"></i>
         </div>
       </p-card>
     </div>
-    <div class="col-12 md:col-3">
+    <div class="col-12 md:col-4">
       <p-card>
         <div class="flex align-items-center justify-content-between">
           <div>
             <div class="text-2xl font-bold">—</div>
-            <div class="text-sm text-muted">Agences ouvertes</div>
+            <div class="text-sm text-muted">Crédits fidélité</div>
           </div>
-          <i class="pi pi-building text-2xl"></i>
-        </div>
-      </p-card>
-    </div>
-    <div class="col-12 md:col-3">
-      <p-card>
-        <div class="flex align-items-center justify-content-between">
-          <div>
-            <div class="text-2xl font-bold">—</div>
-            <div class="text-sm text-muted">Satisfaction client</div>
-          </div>
-          <i class="pi pi-heart text-2xl"></i>
+          <i class="pi pi-star text-2xl" aria-hidden="true"></i>
         </div>
       </p-card>
     </div>
   </div>
 
-  <!-- Raccourcis -->
+  <!-- Cartes principales -->
   <div class="row g-3 mb-4">
-    <div class="col-12 md:col-4">
-      <p-card header="Support client" subheader="Assistance 24/5">
-        <p class="mb-3">
-          Consultez et répondez aux tickets de support. Engagez la conversation
-          avec vos clients.
-        </p>
-        <a pButton [routerLink]="['/support']" label="Aller sur le support">
-          <i class="pi pi-comments"></i>
-        </a>
+    <div class="col-12 md:col-6">
+      <p-card header="Ma prochaine réservation" subheader="Détails (exemple)">
+        <ul class="list-none p-0 m-0 text-sm">
+          <li class="mb-1"><strong>Ville:</strong> Paris</li>
+          <li class="mb-1"><strong>Retrait:</strong> Ven. 18:00 (CDG)</li>
+          <li class="mb-1">
+            <strong>Retour:</strong> Dim. 10:00 (Centre-ville)
+          </li>
+          <li class="mb-1"><strong>Véhicule:</strong> Catégorie Compacte</li>
+        </ul>
+        <div class="mt-3">
+          <button pButton type="button" label="Voir le détail" disabled="true">
+            <i class="pi pi-external-link"></i>
+          </button>
+        </div>
       </p-card>
     </div>
 
-    <div class="col-12 md:col-4">
-      <p-card header="Réseau international" subheader="120+ pays (exemple)">
-        <p class="mb-3">
-          Déployez votre flotte et gérez vos agences dans le monde entier grâce
-          à nos outils.
+    <div class="col-12 md:col-6">
+      <p-card header="Mon statut fidélité" subheader="Programme YCYW">
+        <div class="flex align-items-center gap-2 mb-2">
+          <p-tag value="Silver" severity="info"></p-tag>
+          <span class="text-sm text-muted">(exemple)</span>
+        </div>
+        <p class="mb-3 text-sm">
+          Cumulez des crédits à chaque location et profitez d’avantages
+          exclusifs: surclassements, conducteurs additionnels offerts, etc.
         </p>
-        <button pButton type="button" label="Gérer les agences" disabled="true">
-          <i class="pi pi-globe"></i>
-        </button>
-      </p-card>
-    </div>
-
-    <div class="col-12 md:col-4">
-      <p-card header="Flotte et maintenance" subheader="Suivi centralisé">
-        <p class="mb-3">
-          Surveillez l’état de vos véhicules, planifiez la maintenance et
-          optimisez les rotations.
-        </p>
-        <button pButton type="button" label="Voir la flotte" disabled="true">
-          <i class="pi pi-car"></i>
+        <button
+          pButton
+          type="button"
+          label="Voir mes avantages"
+          disabled="true"
+        >
+          <i class="pi pi-gift"></i>
         </button>
       </p-card>
     </div>
@@ -150,45 +145,85 @@
 
   <p-divider></p-divider>
 
-  <!-- Annonces / Infos -->
-  <div class="row mb-5">
+  <!-- Conseils / Aide -->
+  <div class="row g-3 mb-5">
     <div class="col-12 md:col-8">
-      <p-card header="Annonces">
-        <ul class="list-none p-0 m-0">
-          <li class="mb-3">
-            <p-tag value="Nouveau" severity="success" styleClass="me-2"></p-tag>
-            Lancement du module Support — répondez aux tickets et discutez en
-            direct avec vos clients.
+      <p-card header="Conseils pour votre location">
+        <ul class="list-disc ps-3 m-0 text-sm">
+          <li class="mb-2">
+            Présentez une pièce d’identité et votre permis de conduire en cours
+            de validité.
           </li>
-          <li class="mb-3">
-            <p-tag value="À venir" severity="info" styleClass="me-2"></p-tag>
-            Tableaux de bord Réservations et Flotte (statistiques en temps
-            réel).
+          <li class="mb-2">
+            Vérifiez l’état du véhicule au départ et au retour (photos
+            conseillées).
+          </li>
+          <li class="mb-2">
+            Choisissez l’assurance qui correspond à votre besoin et votre
+            destination.
           </li>
           <li>
-            <p-tag value="Info" severity="warning" styleClass="me-2"></p-tag>
-            Maintenance planifiée dimanche 02:00–03:00 UTC.
+            Anticipez le carburant et le stationnement, surtout en centre-ville.
           </li>
         </ul>
       </p-card>
     </div>
 
     <div class="col-12 md:col-4">
-      <p-card header="Contact interne">
+      <p-card header="Besoin d’aide ?">
         <ul class="list-none p-0 m-0">
           <li class="mb-2">
-            <i class="pi pi-phone me-2"></i>
-            Support: +33 1 23 45 67 89 (Lun–Ven 09:00–18:00)
+            <i class="pi pi-comments me-2" aria-hidden="true"></i>
+            <a [routerLink]="['/support']">Ouvrir le support</a>
           </li>
           <li class="mb-2">
-            <i class="pi pi-envelope me-2"></i>
+            <i class="pi pi-envelope me-2" aria-hidden="true"></i>
             support&#64;example.net
           </li>
           <li>
-            <i class="pi pi-comments me-2"></i>
-            Chat disponible depuis la page Support
+            <i class="pi pi-phone me-2" aria-hidden="true"></i>
+            +33 1 23 45 67 89 (Lun–Ven 09:00–18:00)
           </li>
         </ul>
+      </p-card>
+    </div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <!-- Présence internationale -->
+  <div class="row g-3 mb-5">
+    <div class="col-12">
+      <p-card>
+        <div
+          class="flex align-items-center justify-content-between flex-column md:flex-row gap-3"
+        >
+          <div>
+            <h3 class="m-0">Présence internationale</h3>
+            <p class="mt-2 mb-0 text-sm text-muted">
+              Des agences dans plus de 120 pays pour vous accompagner partout, à
+              tout moment.
+            </p>
+          </div>
+          <div class="flex gap-2">
+            <button
+              pButton
+              type="button"
+              label="Agences à proximité"
+              disabled="true"
+            >
+              <i class="pi pi-map-marker"></i>
+            </button>
+            <button
+              pButton
+              type="button"
+              label="Nos destinations"
+              disabled="true"
+            >
+              <i class="pi pi-globe"></i>
+            </button>
+          </div>
+        </div>
       </p-card>
     </div>
   </div>

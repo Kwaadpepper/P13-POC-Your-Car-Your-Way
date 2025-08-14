@@ -1,5 +1,3 @@
-import { Dashboard } from './dashboard/dashboard'
-
-export {
-  Dashboard,
-}
+export * from './dashboard/dashboard'
+export * from './not-found/not-found'
+export * from './not-found/not-found-viewmodel'

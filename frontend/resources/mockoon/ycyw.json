@@ -15,14 +15,14 @@
       "responses": [
         {
           "uuid": "c6fb6692-c05f-4aac-8af0-69e8647d368b",
-          "body": "{\n  \"id\": \"ebfbddf1-6679-4caf-8223-012118e07047\",\n  \"name\": \"John Doe\",\n  \"role\": \"client\",\n  \"email\": \"user@example.net\",\n  \"createdAt\": \"2025-08-07T19:52:07.000Z\",\n  \"updatedAt\": \"2025-08-07T19:52:07.000Z\"\n}",
+          "body": "{\n  \"id\": \"ebfbddf1-6679-4caf-8223-012118e07000\",\n  \"name\": \"John Doe\",\n  \"role\": \"client\",\n  \"email\": \"user@example.net\",\n  \"createdAt\": \"2025-08-07T19:52:07.000Z\",\n  \"updatedAt\": \"2025-08-07T19:52:07.000Z\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
           "headers": [
             {
               "key": "Set-Cookie",
-              "value": "jwt_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Tue, 12 Aug 2026 07:43:43 GMT"
+              "value": "jwt_token=client; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Tue, 12 Aug 2027 07:43:43 GMT"
             }
           ],
           "filePath": "",
@@ -31,7 +31,7 @@
             {
               "target": "body",
               "modifier": "login",
-              "value": "user@example.net",
+              "value": "client@example.net",
               "invert": false,
               "operator": "equals"
             },
@@ -46,9 +46,48 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": true,
-          "default": true,
+          "default": false,
           "databucketID": "",
           "bodyType": "INLINE",
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "06115a2c-2e57-4e05-9f9e-d79f5500d8fd",
+          "body": "{\n  \"id\": \"ebfbddf1-6679-4caf-8223-012118e07000\",\n  \"name\": \"Operator Jane\",\n  \"role\": \"operator\",\n  \"email\": \"operator@example.net\",\n  \"createdAt\": \"2025-08-07T19:52:07.000Z\",\n  \"updatedAt\": \"2025-08-07T19:52:07.000Z\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Set-Cookie",
+              "value": "jwt_token=operator; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Tue, 12 Aug 2027 07:43:43 GMT"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "login",
+              "value": "operator@example.net",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "password",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
           "crudKey": "id",
           "callbacks": []
         },
@@ -80,7 +119,7 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": false,
+          "default": true,
           "databucketID": "",
           "bodyType": "INLINE",
           "crudKey": "id",
@@ -105,7 +144,12 @@
           "latency": 0,
           "statusCode": 200,
           "label": "",
-          "headers": [],
+          "headers": [
+            {
+              "key": "Set-Cookie",
+              "value": "jwt_token=; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",

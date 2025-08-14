@@ -328,6 +328,155 @@
         }
       }
     },
+    "app-reservation": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "standalone": false
+        },
+        "@schematics/angular:directive": {
+          "standalone": false
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        }
+      },
+      "root": "projects/app-reservation",
+      "sourceRoot": "projects/app-reservation/src",
+      "prefix": "reservation",
+      "architect": {
+        "build": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {},
+          "configurations": {
+            "production": {
+              "target": "app-reservation:esbuild:production"
+            },
+            "development": {
+              "target": "app-reservation:esbuild:development"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-architects/native-federation:build",
+          "options": {
+            "target": "app-reservation:serve-original:development",
+            "rebuildDelay": 0,
+            "dev": true,
+            "port": 0
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular/build:extract-i18n"
+        },
+        "test": {
+          "builder": "@angular/build:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/app-reservation/tsconfig.spec.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/app-reservation/public"
+              }
+            ],
+            "styles": [
+              "projects/app-reservation/src/styles/styles.css"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/app-reservation/src",
+                "node_modules"
+              ]
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/app-reservation/**/*.ts",
+              "projects/app-reservation/**/*.html"
+            ],
+            "eslintConfig": "projects/app-reservation/eslint.config.mjs"
+          }
+        },
+        "esbuild": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "projects/app-reservation/src/main.ts",
+            "polyfills": [
+              "zone.js",
+              "es-module-shims"
+            ],
+            "tsConfig": "projects/app-reservation/tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "projects/app-reservation/public"
+              }
+            ],
+            "styles": [
+              "projects/app-reservation/src/styles/styles.css"
+            ],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "projects/app-reservation/src",
+                "node_modules"
+              ]
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/app-reservation/src/environments/environment.ts",
+                  "with": "projects/app-reservation/src/environments/environment.development.ts"
+                }
+              ]
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-original": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "app-reservation:esbuild:production"
+            },
+            "development": {
+              "buildTarget": "app-reservation:esbuild:development"
+            }
+          },
+          "defaultConfiguration": "development",
+          "options": {
+            "port": 4204
+          }
+        }
+      }
+    },
     "app-support": {
       "projectType": "application",
       "schematics": {

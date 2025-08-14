@@ -26,19 +26,19 @@
         "./projects/shell/src/app/tokens/*"
       ],
       "~support-core/*": [
-        "./projects/support-app/src/app/core/*"
+        "./projects/app-support/src/app/core/*"
       ],
       "~support-env/*": [
-        "./projects/support-app/src/environments/*"
+        "./projects/app-support/src/environments/*"
       ],
       "~support-domains/*": [
-        "./projects/support-app/src/app/domains/*"
+        "./projects/app-support/src/app/domains/*"
       ],
       "~support-shared/*": [
-        "./projects/support-app/src/app/shared/*"
+        "./projects/app-support/src/app/shared/*"
       ],
       "~support-tokens/*": [
-        "./projects/support-app/src/app/tokens/*"
+        "./projects/app-support/src/app/tokens/*"
       ],
       "~ycyw/shared": [
         "./dist/shared"
@@ -67,10 +67,10 @@
       "path": "./projects/shell/tsconfig.spec.json"
     },
     {
-      "path": "./projects/support-app/tsconfig.app.json"
+      "path": "./projects/app-support/tsconfig.app.json"
     },
     {
-      "path": "./projects/support-app/tsconfig.spec.json"
+      "path": "./projects/app-support/tsconfig.spec.json"
     }
   ]
 }

@@ -179,7 +179,7 @@
         }
       }
     },
-    "support-app": {
+    "app-support": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -192,8 +192,8 @@
           "standalone": false
         }
       },
-      "root": "projects/support-app",
-      "sourceRoot": "projects/support-app/src",
+      "root": "projects/app-support",
+      "sourceRoot": "projects/app-support/src",
       "prefix": "support",
       "architect": {
         "build": {
@@ -201,10 +201,10 @@
           "options": {},
           "configurations": {
             "production": {
-              "target": "support-app:esbuild:production"
+              "target": "app-support:esbuild:production"
             },
             "development": {
-              "target": "support-app:esbuild:development"
+              "target": "app-support:esbuild:development"
             }
           },
           "defaultConfiguration": "production"
@@ -212,7 +212,7 @@
         "serve": {
           "builder": "@angular-architects/native-federation:build",
           "options": {
-            "target": "support-app:serve-original:development",
+            "target": "app-support:serve-original:development",
             "rebuildDelay": 0,
             "dev": true,
             "port": 0
@@ -228,19 +228,19 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "projects/support-app/tsconfig.spec.json",
+            "tsConfig": "projects/app-support/tsconfig.spec.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/support-app/public"
+                "input": "projects/app-support/public"
               }
             ],
             "styles": [
-              "projects/support-app/src/styles/styles.css"
+              "projects/app-support/src/styles/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/support-app/src",
+                "projects/app-support/src",
                 "node_modules"
               ]
             }
@@ -250,33 +250,33 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/support-app/**/*.ts",
-              "projects/support-app/**/*.html"
+              "projects/app-support/**/*.ts",
+              "projects/app-support/**/*.html"
             ],
-            "eslintConfig": "projects/support-app/eslint.config.mjs"
+            "eslintConfig": "projects/app-support/eslint.config.mjs"
           }
         },
         "esbuild": {
           "builder": "@angular/build:application",
           "options": {
-            "browser": "projects/support-app/src/main.ts",
+            "browser": "projects/app-support/src/main.ts",
             "polyfills": [
               "zone.js",
               "es-module-shims"
             ],
-            "tsConfig": "projects/support-app/tsconfig.app.json",
+            "tsConfig": "projects/app-support/tsconfig.app.json",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "projects/support-app/public"
+                "input": "projects/app-support/public"
               }
             ],
             "styles": [
-              "projects/support-app/src/styles/styles.css"
+              "projects/app-support/src/styles/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "projects/support-app/src",
+                "projects/app-support/src",
                 "node_modules"
               ]
             }
@@ -303,8 +303,8 @@
               "sourceMap": true,
               "fileReplacements": [
                 {
-                  "replace": "projects/support-app/src/environments/environment.ts",
-                  "with": "projects/support-app/src/environments/environment.development.ts"
+                  "replace": "projects/app-support/src/environments/environment.ts",
+                  "with": "projects/app-support/src/environments/environment.development.ts"
                 }
               ]
             }
@@ -315,10 +315,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "support-app:esbuild:production"
+              "buildTarget": "app-support:esbuild:production"
             },
             "development": {
-              "buildTarget": "support-app:esbuild:development"
+              "buildTarget": "app-support:esbuild:development"
             }
           },
           "defaultConfiguration": "development",

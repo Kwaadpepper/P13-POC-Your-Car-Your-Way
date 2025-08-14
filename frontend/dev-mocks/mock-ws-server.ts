@@ -8,7 +8,7 @@ import {
   Events,
   EventType,
   type ServerEvent,
-} from './../projects/support-app/src/app/core/chat/libs/chat/chat-transport'
+} from './../projects/app-support/src/app/core/chat/libs/chat/chat-transport'
 
 interface Message {
   id: string

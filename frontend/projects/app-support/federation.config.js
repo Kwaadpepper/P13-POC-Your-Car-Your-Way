@@ -3,10 +3,10 @@ const federationShared = require('../../federation-shared.config.cjs');
 
 module.exports = withNativeFederation({
 
-  name: 'support-app',
+  name: 'app-support',
 
   exposes: {
-    "./routes": "./projects/support-app/src/app/app.routes.ts",
+    "./routes": "./projects/app-support/src/app/app.routes.ts",
   },
 
   shared: {

@@ -15,7 +15,7 @@ export const homeRoutes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () =>
       loadRemoteModule({
-        remoteName: 'support-app',
+        remoteName: 'app-support',
         exposedModule: './routes',
       }).then(m => m.routes),
   },

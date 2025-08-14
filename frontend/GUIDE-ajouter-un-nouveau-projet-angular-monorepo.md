@@ -220,13 +220,13 @@ Fichiers :
 - `environment.development.ts` (valeurs spécifiques à l’environnement dev)
 
 Exemples :
-```typescript name=projects/support-app/src/environments/environment.ts
+```typescript name=projects/app-support/src/environments/environment.ts
 export const environment = {
   production: true,
   apiUrl: 'https://api.monsite.com'
 };
 ```
-```typescript name=projects/support-app/src/environments/environment.development.ts
+```typescript name=projects/app-support/src/environments/environment.development.ts
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:3000'
@@ -245,7 +245,7 @@ Sous `architect > esbuild > configurations > development` :
 ```
 ⚠️ Placez `fileReplacements` dans `esbuild > configurations > development` (pas dans le builder federation).
 
-Exemple pour `support-app` :
+Exemple pour `app-support` :
 ```json
 "esbuild": {
   "builder": "@angular/build:application",
@@ -258,8 +258,8 @@ Exemple pour `support-app` :
       "sourceMap": true,
       "fileReplacements": [
         {
-          "replace": "projects/support-app/src/environments/environment.ts",
-          "with": "projects/support-app/src/environments/environment.development.ts"
+          "replace": "projects/app-support/src/environments/environment.ts",
+          "with": "projects/app-support/src/environments/environment.development.ts"
         }
       ]
     }

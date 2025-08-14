@@ -68,6 +68,7 @@ export const issueSchema = z.object({
   status: z.nativeEnum(IssueStatus),
   client: clientInfoSchema,
   reservation: reservationInfoSchema,
+  conversation: uuidSchema.nullable(),
   updatedAt: z.coerce.date(),
 })
 

@@ -1,4 +1,4 @@
-import { Entity } from '~ycyw/shared'
+import { Entity, UUID } from '~ycyw/shared'
 
 import { IssueStatus } from '../enums'
 
@@ -11,6 +11,7 @@ export interface Issue extends Entity {
   status: IssueStatus
   client: ClientInfo
   reservation: ReservationInfo
+  conversation: UUID | null
   updatedAt: Date
 }
 

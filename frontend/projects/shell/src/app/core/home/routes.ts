@@ -4,13 +4,11 @@ import { loadRemoteModule } from '@angular-architects/native-federation'
 
 import { AuthGuard } from '~shell-core/auth/guards'
 
-import { Dashboard } from './pages'
-
 export const homeRoutes: Routes = [
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
-    component: Dashboard,
+    loadComponent: () => import('./pages/dashboard/dashboard').then(c => c.Dashboard),
   },
   {
     path: 'support',

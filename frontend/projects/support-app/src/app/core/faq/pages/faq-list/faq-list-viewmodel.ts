@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core'
 
-import { FaqStore } from '~support-core/faq/stores/faq-store'
+import { FaqStore } from '~support-core/faq/stores'
 import { UUID } from '~ycyw/shared'
 
 @Injectable({

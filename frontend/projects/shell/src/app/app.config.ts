@@ -11,8 +11,8 @@ import { provideRouter, withComponentInputBinding } from '@angular/router'
 
 import { MessageService } from 'primeng/api'
 
-import { SessionInterceptor } from '~shell-core/auth/interceptors'
 import { ErrorHandler } from '~shell-core/error-handler'
+import { SessionInterceptor } from '~shell-core/interceptors'
 import { configuration } from '~shell-tokens/config-token'
 import { primeNgProvider } from '~ycyw/shared'
 

@@ -12,9 +12,9 @@ import { Router } from '@angular/router'
 import { catchError, debounceTime, Observable, Subject, switchMap, takeWhile, throwError } from 'rxjs'
 
 import { redirectUrls } from '~shell-core/auth/routes'
-import { AuthService } from '~shell-core/auth/services'
-import { SessionStore } from '~shell-core/auth/stores'
 import { ToastService } from '~shell-shared/services'
+import { SessionStore } from '~shell-shared/stores'
+import { AUTH_SERVICE } from '~shell-tokens/auth-service-token'
 import { SessionExpiredError } from '~ycyw/shared'
 
 /**
@@ -30,7 +30,7 @@ import { SessionExpiredError } from '~ycyw/shared'
   providedIn: 'root',
   deps: [
     Router,
-    AuthService,
+    AUTH_SERVICE,
     SessionStore,
     ToastService,
   ],
@@ -41,7 +41,7 @@ export class SessionInterceptor implements HttpInterceptor {
   private readonly redirectUrl = redirectUrls.login
 
   private readonly rooter = inject(Router)
-  private readonly authService = inject(AuthService)
+  private readonly authService = inject(AUTH_SERVICE)
   private readonly sessionService = inject(SessionStore)
   private readonly toastService = inject(ToastService)
 

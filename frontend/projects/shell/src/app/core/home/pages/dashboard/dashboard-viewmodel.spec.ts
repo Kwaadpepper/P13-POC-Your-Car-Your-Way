@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing'
 
-import { LogoutButtonViewModel } from './logout-button-viewmodel'
+import { DashboardViewModel } from './dashboard-viewmodel'
 
-describe('LogoutButtonViewModel', () => {
-  let viewModel: LogoutButtonViewModel
+describe('DashboardViewModel', () => {
+  let viewModel: DashboardViewModel
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
     })
 
-    viewModel = TestBed.inject(LogoutButtonViewModel)
+    viewModel = TestBed.inject(DashboardViewModel)
   })
 
   it('should create', () => {

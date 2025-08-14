@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common'
 import { Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core'
 import { Router, RouterEvent, RouterLink } from '@angular/router'
 
@@ -16,6 +17,7 @@ import { HeaderViewModel } from './header.viewmodel'
     ButtonModule,
     DrawerModule,
     NavMenu,
+    NgOptimizedImage,
   ],
   providers: [HeaderViewModel],
   templateUrl: './header.html',

@@ -7,8 +7,8 @@ import { ButtonModule } from 'primeng/button'
 import { DialogModule } from 'primeng/dialog'
 import { filter, map, startWith } from 'rxjs'
 
-import { AuthGuard } from '~shell-core/auth/guards'
-import { SessionStore } from '~shell-core/auth/stores'
+import { AuthGuard } from '~shell-shared/guards'
+import { SessionStore } from '~shell-shared/stores'
 
 @Component({
   selector: 'shell-session-listener',

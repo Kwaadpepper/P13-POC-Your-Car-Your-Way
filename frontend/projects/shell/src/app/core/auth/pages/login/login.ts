@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common'
 import { Component, OnDestroy, inject } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
@@ -19,6 +20,7 @@ import { LoginViewModel } from './login-viewmodel'
     ButtonModule, BackButton,
     InputTextModule, ReactiveFormsModule,
     MessageModule,
+    NgOptimizedImage,
   ],
   providers: [LoginViewModel],
   templateUrl: './login.html',

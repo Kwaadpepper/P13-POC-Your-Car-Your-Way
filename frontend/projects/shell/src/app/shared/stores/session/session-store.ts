@@ -3,7 +3,7 @@ import { toObservable } from '@angular/core/rxjs-interop'
 
 import { Subscription } from 'rxjs'
 
-import { User } from '~shell-core/auth/models'
+import { User } from '~shell-domains/auth/models'
 import {
   SESSION_USER_STORAGE_KEY,
   SessionBroadcastMessage,

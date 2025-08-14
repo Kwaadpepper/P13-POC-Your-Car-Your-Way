@@ -2,7 +2,7 @@ import { Routes } from '@angular/router'
 
 import { loadRemoteModule } from '@angular-architects/native-federation'
 
-import { AuthGuard } from '~shell-core/auth/guards'
+import { AuthGuard } from '~shell-shared/guards'
 
 export const homeRoutes: Routes = [
   {

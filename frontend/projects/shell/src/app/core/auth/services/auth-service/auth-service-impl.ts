@@ -3,12 +3,13 @@ import { inject, Injectable } from '@angular/core'
 
 import { catchError, first, map, Observable, throwError } from 'rxjs'
 
-import { LoginRequest, RegisterRequest } from '~shell-core/auth/api/requests'
-import { simpleMessageSchema, SimpleMessageZod, userSchema, UserZod } from '~shell-core/auth/api/schemas'
-import { User } from '~shell-core/auth/models'
-import { SessionStore } from '~shell-core/auth/stores'
+import { LoginRequest, RegisterRequest } from '~shell-core/api/requests'
+import { simpleMessageSchema, SimpleMessageZod, userSchema, UserZod } from '~shell-core/api/schemas'
 import { LoginFailureError } from '~shell-core/errors'
+import { User } from '~shell-domains/auth/models'
+import { AuthService } from '~shell-domains/auth/services'
 import { environment } from '~shell-env/environment'
+import { SessionStore } from '~shell-shared/stores'
 import { checkServerReponse, verifyResponseType } from '~ycyw/shared'
 
 @Injectable({
@@ -18,12 +19,13 @@ import { checkServerReponse, verifyResponseType } from '~ycyw/shared'
     SessionStore,
   ],
 })
-export class AuthService {
-  private readonly endpointUrl = environment.endpoint
-  private readonly loginUrl = `${this.endpointUrl}/api/auth/login`
-  private readonly refreshUrl = `${this.endpointUrl}/api/auth/refresh-token`
-  private readonly registerUrl = `${this.endpointUrl}/api/auth/register`
-  private readonly logoutUrl = `${this.endpointUrl}/api/auth/logout`
+export class AuthServiceImpl implements AuthService {
+  readonly resourceUrl = `${environment.endpoint}/api/auth`
+
+  private readonly loginUrl = `${this.resourceUrl}/login`
+  private readonly refreshUrl = `${this.resourceUrl}/refresh-token`
+  private readonly registerUrl = `${this.resourceUrl}/register`
+  private readonly logoutUrl = `${this.resourceUrl}/logout`
 
   private readonly http = inject(HttpClient)
   private readonly sessionStore = inject(SessionStore)
@@ -62,7 +64,7 @@ export class AuthService {
    * Refresh the session and so return a simple message.
    * @returns a simple message.
    */
-  public refreshSession(): Observable<SimpleMessageZod> {
+  public refreshSession(): Observable<void> {
     return this.http.post<SimpleMessageZod>(
       this.refreshUrl,
       {},
@@ -71,6 +73,10 @@ export class AuthService {
       },
     ).pipe(
       verifyResponseType(simpleMessageSchema),
+      map(() => {
+        this.sessionStore.forceRefresh()
+      }),
+      first(),
     )
   }
 
@@ -103,7 +109,7 @@ export class AuthService {
    * Removes the session from the cookies.
    * @returns a simple message.
    */
-  public logout(): Observable<SimpleMessageZod> {
+  public logout(): Observable<void> {
     return this.http.post<SimpleMessageZod>(
       this.logoutUrl,
       {},
@@ -118,9 +124,8 @@ export class AuthService {
         return throwError(() => error)
       }),
       verifyResponseType(simpleMessageSchema),
-      map((response) => {
+      map(() => {
         this.sessionStore.setLoggedOut()
-        return response
       }),
       first(),
     )

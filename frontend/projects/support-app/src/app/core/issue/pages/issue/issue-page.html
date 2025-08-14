@@ -41,6 +41,20 @@
     </div>
   </div>
 
+  <!-- Réponse -->
+  @if (issue().answer) {
+    <div class="row mb-4">
+      <div class="col">
+        <section class="p-3 border rounded bg-lime-900/20 dark:bg-lime-200/20">
+          <h3 class="h6 mb-2">Réponse</h3>
+          <p class="small mb-0" style="white-space: pre-line">
+            {{ issue().answer }}
+          </p>
+        </section>
+      </div>
+    </div>
+  }
+
   <!-- Infos client / réservation -->
   <div class="row g-4 mb-4">
     <div class="col-12 md:col-6 mb-3">

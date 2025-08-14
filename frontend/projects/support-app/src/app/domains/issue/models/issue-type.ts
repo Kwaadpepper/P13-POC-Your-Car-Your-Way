@@ -8,6 +8,7 @@ import { ReservationInfo } from './reservation-info-type'
 export interface Issue extends Entity {
   subject: string
   description: string
+  answer: string | null
   status: IssueStatus
   client: ClientInfo
   reservation: ReservationInfo

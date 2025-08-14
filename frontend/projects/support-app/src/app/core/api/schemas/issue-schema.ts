@@ -64,6 +64,7 @@ const reservationInfoSchema = z.object({
 export const issueSchema = z.object({
   id: uuidSchema,
   subject: z.string().nonempty(),
+  answer: z.string().nullable(),
   description: z.string().nonempty(),
   status: z.nativeEnum(IssueStatus),
   client: clientInfoSchema,

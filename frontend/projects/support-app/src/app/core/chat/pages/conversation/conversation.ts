@@ -28,7 +28,7 @@ import { ConversationViewModel } from './conversation-viewmodel'
   templateUrl: './conversation.html',
   styleUrl: './conversation.css',
 })
-export class Conversation implements OnInit {
+export class ConversationPage implements OnInit {
   private readonly route = inject(ActivatedRoute)
 
   readonly viewmodel = inject(ConversationViewModel)

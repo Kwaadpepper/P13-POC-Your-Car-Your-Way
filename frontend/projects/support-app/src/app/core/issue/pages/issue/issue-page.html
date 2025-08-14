@@ -11,109 +11,81 @@
     </div>
   </div>
 
-  <!-- Loading -->
-  @if (viewModel.loading() && !viewModel.issue()) {
-    <div class="row mb-3">
-      <div
-        class="col flex justify-center items-center space-x-2 space-y-2 text-secondary"
+  <!-- En-tête ticket -->
+  <div class="row gy-3 items-start md:items-center mb-3">
+    <div class="col-12 md:col text-center">
+      <h2 class="h3 m-0">
+        {{ issue().subject }}
+      </h2>
+      <p class="text-muted-color text-sm mb-0">
+        Dernière mise à jour :
+        {{ issue().updatedAt | date: "short" }}
+      </p>
+    </div>
+    <div class="col-12 md:col flex flex-wrap space-x-2 space-y-2">
+      <p-tag [value]="issue().status" severity="info"></p-tag>
+      <button
+        pButton
+        title="Ouvrir le chat"
+        class="p-button-outlined"
+        (click)="openChat()"
       >
-        <p-progressSpinner
-          styleClass="w-2rem h-2rem"
-          strokeWidth="6"
-        ></p-progressSpinner>
-        <span>Chargement du ticket…</span>
-      </div>
+        <i class="pi pi-comments"></i>
+      </button>
     </div>
-  }
+  </div>
 
-  <!-- Contenu principal -->
-  @if (viewModel.issue()) {
-    <!-- En-tête ticket -->
-    <div class="row gy-3 items-start md:items-center mb-3">
-      <div class="col-12 md:col text-center">
-        <h2 class="h3 m-0">
-          {{ viewModel.issue()!.subject }}
-        </h2>
-        <p class="text-muted-color text-sm mb-0">
-          Dernière mise à jour :
-          {{ viewModel.issue()!.updatedAt | date: "short" }}
+  <p-divider class="my-2"></p-divider>
+
+  <!-- Description -->
+  <div class="row mb-4">
+    <div class="col">
+      <section class="p-3 border rounded bg-surface-100/20">
+        <h3 class="h6 mb-2">Description</h3>
+        <p class="small mb-0" style="white-space: pre-line">
+          {{ issue().description }}
         </p>
-      </div>
-      <div class="col-12 md:col flex flex-wrap space-x-2 space-y-2">
-        <p-tag [value]="viewModel.issue()!.status" severity="info"></p-tag>
-        <button
-          pButton
-          title="Ouvrir le chat"
-          class="p-button-outlined"
-          (click)="openChat()"
-        >
-          <i class="pi pi-comments"></i>
-        </button>
-      </div>
+      </section>
     </div>
+  </div>
 
-    <p-divider class="my-2"></p-divider>
-
-    <!-- Description -->
-    <div class="row mb-4">
-      <div class="col">
-        <section class="p-3 border rounded bg-surface-100/20">
-          <h3 class="h6 mb-2">Description</h3>
-          <p class="small mb-0" style="white-space: pre-line">
-            {{ viewModel.issue()!.description }}
-          </p>
-        </section>
-      </div>
+  <!-- Infos client / réservation -->
+  <div class="row g-4 mb-4">
+    <div class="col-12 md:col-6 mb-3">
+      <section class="p-3 border rounded">
+        <h3 class="h6 mb-2">Client</h3>
+        <ul class="list-none text-sm mb-0">
+          <li>
+            {{ issue().client.first_name }}
+            {{ issue().client.last_name }}
+          </li>
+          <li class="text-muted">{{ issue().client.email }}</li>
+          <li class="text-muted">{{ issue().client.phone }}</li>
+        </ul>
+      </section>
     </div>
-
-    <!-- Infos client / réservation -->
-    <div class="row g-4 mb-4">
-      <div class="col-12 md:col-6 mb-3">
-        <section class="p-3 border rounded">
-          <h3 class="h6 mb-2">Client</h3>
-          <ul class="list-none text-sm mb-0">
+    <div class="col-12 md:col-6 mb-3">
+      <section class="p-3 border rounded">
+        <h3 class="h6 mb-2">Réservation</h3>
+        <ul class="list-none text-sm mb-0">
+          <li>Status réservation : {{ issue().reservation.status }}</li>
+          @if (issue().reservation.from.at) {
             <li>
-              {{ viewModel.issue()!.client.first_name }}
-              {{ viewModel.issue()!.client.last_name }}
+              Début :
+              {{ issue().reservation.from.at | date: "short" }}
             </li>
-            <li class="text-muted">{{ viewModel.issue()!.client.email }}</li>
-            <li class="text-muted">{{ viewModel.issue()!.client.phone }}</li>
-          </ul>
-        </section>
-      </div>
-      <div class="col-12 md:col-6 mb-3">
-        <section class="p-3 border rounded">
-          <h3 class="h6 mb-2">Réservation</h3>
-          <ul class="list-none text-sm mb-0">
+          }
+          @if (issue().reservation.to.at) {
+            <li>Fin : {{ issue().reservation.to.at | date: "short" }}</li>
+          }
+          @if (issue().reservation.vehicle.category.code) {
             <li>
-              Status réservation : {{ viewModel.issue()!.reservation.status }}
+              Catégorie véhicule :
+              {{ issue().reservation.vehicle.category.code }}
             </li>
-            @if (viewModel.issue()!.reservation.from.at) {
-              <li>
-                Début :
-                {{ viewModel.issue()!.reservation.from.at | date: "short" }}
-              </li>
-            }
-            @if (viewModel.issue()!.reservation.to.at) {
-              <li>
-                Fin : {{ viewModel.issue()!.reservation.to.at | date: "short" }}
-              </li>
-            }
-            @if (viewModel.issue()!.reservation.vehicle.category.code) {
-              <li>
-                Catégorie véhicule :
-                {{ viewModel.issue()!.reservation.vehicle.category.code }}
-              </li>
-            }
-          </ul>
-        </section>
-      </div>
+          }
+        </ul>
+      </section>
     </div>
-  } @else if (!viewModel.loading()) {
-    <div class="row">
-      <div class="col">
-        <p-message severity="info" text="Aucun ticket à afficher."></p-message>
-      </div>
-    </div>
-  }
+  </div>
 </div>

@@ -21,7 +21,7 @@ export class IssueStore {
   readonly loading = computed(() => this._issues.isLoading())
   readonly error = computed(() => this._issues.error())
 
-  async getFaq(id: IssueId): Promise<Issue | null> {
+  async getIssue(id: IssueId): Promise<Issue | null> {
     const faq = this._issues.value().find(f => f.id === id)
       ?? (await this.loadIssues()).find(f => f.id === id) ?? null
     return faq

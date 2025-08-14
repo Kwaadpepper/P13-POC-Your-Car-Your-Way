@@ -1,2 +1,2 @@
 export { ConversationList } from './conversation-list/conversation-list'
-export { Conversation } from './conversation/conversation'
+export { ConversationPage } from './conversation/conversation'

@@ -1,14 +1,12 @@
 import { Routes } from '@angular/router'
 
-import { Conversation, ConversationList } from './pages'
-
 export const chatRoutes: Routes = [
   {
     path: 'chats',
-    component: ConversationList,
+    loadComponent: () => import('./pages').then(c => c.ConversationList),
   },
   {
     path: 'chats/:id',
-    component: Conversation,
+    loadComponent: () => import('./pages').then(c => c.ConversationPage),
   },
 ]

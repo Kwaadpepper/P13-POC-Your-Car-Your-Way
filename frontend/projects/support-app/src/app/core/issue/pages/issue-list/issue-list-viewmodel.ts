@@ -17,6 +17,6 @@ export class IssueListViewModel {
   }
 
   getFaq(id: UUID) {
-    return this.store.getFaq(id)
+    return this.store.getIssue(id)
   }
 }

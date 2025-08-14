@@ -1,6 +1,5 @@
-// mypreset.ts
-import { definePreset } from '@primeuix/themes'
-import Aura from '@primeuix/themes/aura'
+import { definePreset } from '@primeng/themes'
+import Aura from '@primeng/themes/aura'
 
 export const OpenClassrooms = definePreset({
   ...Aura,
@@ -2092,9 +2091,7 @@ export const OpenClassrooms = definePreset({
         dropPoint: {
           color: '{primary.color}',
         },
-        columnResizer: {
-          width: '0.5rem',
-        },
+        columnResizerWidth: '0.5rem',
         resizeIndicator: {
           width: '1px',
           color: '{primary.color}',
@@ -3801,18 +3798,18 @@ export const OpenClassrooms = definePreset({
         colorScheme: {
           light: {
             root: {
-              colorOne: '{red.500}',
-              colorTwo: '{blue.500}',
-              colorThree: '{green.500}',
-              colorFour: '{yellow.500}',
+              'color.1': '{red.500}',
+              'color.2': '{blue.500}',
+              'color.3': '{green.500}',
+              'color.4': '{yellow.500}',
             },
           },
           dark: {
             root: {
-              colorOne: '{red.400}',
-              colorTwo: '{blue.400}',
-              colorThree: '{green.400}',
-              colorFour: '{yellow.400}',
+              'color.1': '{red.400}',
+              'color.2': '{blue.400}',
+              'color.3': '{green.400}',
+              'color.4': '{yellow.400}',
             },
           },
         },
@@ -4069,16 +4066,12 @@ export const OpenClassrooms = definePreset({
         colorScheme: {
           light: {
             handle: {
-              content: {
-                background: '{surface.0}',
-              },
+              contentBackground: '{surface.0}',
             },
           },
           dark: {
             handle: {
-              content: {
-                background: '{surface.950}',
-              },
+              contentBackground: '{surface.950}',
             },
           },
         },
@@ -4599,7 +4592,8 @@ export const OpenClassrooms = definePreset({
           disabledColor: '{form.field.disabled.color}',
         },
         content: {
-          padding: '0.25rem 0.25rem',
+          left: '0.25rem',
+          top: '0.25rem',
           checkedShadow: '0px 1px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 2px 0px rgba(0, 0, 0, 0.04)',
         },
         colorScheme: {
@@ -4899,9 +4893,7 @@ export const OpenClassrooms = definePreset({
           borderWidth: '0 0 1px 0',
           padding: '0.75rem 1rem',
         },
-        columnResizer: {
-          width: '0.5rem',
-        },
+        columnResizerWidth: '0.5rem',
         resizeIndicator: {
           width: '1px',
           color: '{primary.color}',
@@ -4997,9 +4989,7 @@ export const OpenClassrooms = definePreset({
         },
         colorScheme: {
           light: {
-            root: {
-              blur: '1.5px',
-            },
+            blur: '1.5px',
             info: {
               background: 'color-mix(in srgb, {blue.50}, transparent 5%)',
               borderColor: '{blue.200}',
@@ -5086,9 +5076,7 @@ export const OpenClassrooms = definePreset({
             },
           },
           dark: {
-            root: {
-              blur: '10px',
-            },
+            blur: '10px',
             info: {
               background: 'color-mix(in srgb, {blue.500}, transparent 84%)',
               borderColor: 'color-mix(in srgb, {blue.700}, transparent 64%)',

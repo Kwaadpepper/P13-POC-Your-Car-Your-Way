@@ -15,6 +15,6 @@ export const routes: Routes = [
   ...homeRoutes,
   {
     path: '**',
-    loadComponent: () => import('./core/home/pages/not-found/not-found').then(c => c.NotFound),
+    loadComponent: () => import('~shell-core/home/pages').then(c => c.NotFound),
   },
 ]

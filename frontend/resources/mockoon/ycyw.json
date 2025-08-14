@@ -215,6 +215,37 @@
       "responseMode": null,
       "streamingMode": null,
       "streamingInterval": 0
+    },
+    {
+      "uuid": "b7b4930e-3fa9-432a-a0de-95f78868ef3f",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "support",
+      "responses": [
+        {
+          "uuid": "d78fba9e-3f11-42e5-9638-4baf731aa78f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "kbdu",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "proxyMode": false,
@@ -285,6 +316,13 @@
       "name": "Conversations",
       "documentation": "",
       "value": "[\n  {\n    \"id\": \"7b8e42ff-4471-429d-9f1a-cb3b220cdb12\",\n    \"subject\": \"I need help with my account\",\n    \"lastMessage\": {\n      \"content\": \"Hello, I need help with my account.\",\n      \"sentAt\": \"2025-08-14T04:12:44.000Z\"\n    }\n  }\n]"
+    },
+    {
+      "uuid": "e13b77d0-cb5d-412b-bac4-3e65b635068f",
+      "id": "kbdu",
+      "name": "Support",
+      "documentation": "",
+      "value": "{\n    \"phone\": {\n        \"number\": \"+33823455689\",\n        \"businessHours\": {\n            \"monday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            },\n            \"tuesday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            },\n            \"wednesday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            },\n            \"thursday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            },\n            \"friday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            }\n        }\n    },\n    \"chat\": {\n        \"businessHours\": {\n            \"monday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            },\n            \"tuesday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            },\n            \"wednesday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            },\n            \"thursday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            },\n            \"friday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            }\n        }\n    },\n    \"email\": \"support@example.net\",\n    \"address\": {\n        \"line1\": \"123 rue de la Paix\",\n        \"line2\": \"Rez-de-chauss\\u00e9e\",\n        \"line3\": \"B\\u00e2timent A\",\n        \"city\": \"Paris\",\n        \"zip\": \"75001\",\n        \"country\": \"France\"\n    }\n}"
     }
   ],
   "folders": [
@@ -303,6 +341,10 @@
         {
           "type": "route",
           "uuid": "3c9161cc-285c-4f58-83a4-974d1aab5055"
+        },
+        {
+          "type": "route",
+          "uuid": "b7b4930e-3fa9-432a-a0de-95f78868ef3f"
         }
       ]
     },

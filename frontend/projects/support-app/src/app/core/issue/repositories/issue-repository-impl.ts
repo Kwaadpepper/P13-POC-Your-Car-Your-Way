@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http'
-import { inject, InjectionToken } from '@angular/core'
+import { inject, Injectable } from '@angular/core'
 
 import { catchError, Observable, throwError } from 'rxjs'
 
@@ -10,11 +10,9 @@ import { IssueRepository } from '~support-domains/issue/repositories/issue-repos
 import { environment } from '~support-env/environment'
 import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
 
-export const IssueRepositoryInjector = new InjectionToken<IssueRepository>('IssueRepositoryInjector', {
+@Injectable({
   providedIn: 'root',
-  factory: () => new IssueRepositoryImpl(),
 })
-
 export class IssueRepositoryImpl implements IssueRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.supportWebServer

@@ -3,15 +3,14 @@ import { Injectable, computed, inject, resource } from '@angular/core'
 import { firstValueFrom } from 'rxjs'
 
 import { Issue, IssueId } from '~support-domains/issue/models'
-
-import { IssueRepositoryInjector } from '../repositories'
+import { ISSUE_REPOSITORY } from '~support-tokens/issue-repository-token'
 
 @Injectable({
   providedIn: 'root',
-  deps: [IssueRepositoryInjector],
+  deps: [ISSUE_REPOSITORY],
 })
 export class IssueStore {
-  private readonly repository = inject(IssueRepositoryInjector)
+  private readonly repository = inject(ISSUE_REPOSITORY)
   private readonly _issues = resource({
     defaultValue: [],
     loader: this.loadIssues.bind(this),

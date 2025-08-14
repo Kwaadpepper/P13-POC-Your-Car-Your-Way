@@ -1,5 +1,6 @@
+import { NgOptimizedImage } from '@angular/common'
 import { Component, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core'
-import { Router, RouterEvent } from '@angular/router'
+import { Router, RouterEvent, RouterLink } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
 import { DrawerModule } from 'primeng/drawer'
@@ -12,9 +13,11 @@ import { HeaderViewModel } from './header.viewmodel'
 @Component({
   selector: 'shell-header',
   imports: [
+    RouterLink,
     ButtonModule,
     DrawerModule,
     NavMenu,
+    NgOptimizedImage,
   ],
   providers: [HeaderViewModel],
   templateUrl: './header.html',

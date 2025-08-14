@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common'
 import { Component, inject } from '@angular/core'
 import { RouterModule } from '@angular/router'
 
@@ -10,6 +11,7 @@ import { HomeViewModel } from './home.viewmodel'
   imports: [
     RouterModule,
     ButtonModule,
+    NgOptimizedImage,
   ],
   providers: [HomeViewModel],
   templateUrl: './home.html',

@@ -2,15 +2,15 @@ import { inject, Injectable, signal } from '@angular/core'
 
 import { catchError, EMPTY, finalize, Observable, tap, throwError } from 'rxjs'
 
-import { User } from '~shell-core/auth/models'
-import { AuthService } from '~shell-core/auth/services'
 import { LoginFailureError } from '~shell-core/errors'
+import { User } from '~shell-domains/auth/models'
 import { ToastService } from '~shell-shared/services'
+import { AUTH_SERVICE } from '~shell-tokens/auth-service-token'
 
 @Injectable({
   providedIn: 'root',
   deps: [
-    AuthService,
+    AUTH_SERVICE,
     ToastService,
   ],
 })
@@ -21,7 +21,7 @@ export class LoginViewModel {
 
   public readonly loading = signal(false)
 
-  private readonly authService = inject(AuthService)
+  private readonly authService = inject(AUTH_SERVICE)
   private readonly toastService = inject(ToastService)
 
   /**

@@ -1,11 +1,13 @@
 import { Routes } from '@angular/router'
 
-import { GuestGuard } from './guards'
+import { GuestGuard } from '../../shared/guards'
+
 import { Login } from './pages'
 
 export const redirectUrls = {
   guestHomeUrl: '',
-  authHomeUrl: '/dashboard',
+  authBackofficeHomeUrl: '/backoffice',
+  authReservationHomeUrl: '/reservation',
   login: '/login',
   register: '/register',
 }

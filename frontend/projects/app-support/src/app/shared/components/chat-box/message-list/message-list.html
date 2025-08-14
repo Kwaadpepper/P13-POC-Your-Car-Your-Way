@@ -1,0 +1,7 @@
+<p-scroll-panel class="h-full" #panel>
+  <div class="flex flex-col gap-2">
+    @for (m of messages; track m.id) {
+      <support-message [message]="m" [self]="m.from.id === currentUser" />
+    }
+  </div>
+</p-scroll-panel>

@@ -1,5 +1,1 @@
-import { AuthService } from './auth/auth-service'
-
-export {
-  AuthService,
-}
+export * from './auth-service/auth-service-impl'

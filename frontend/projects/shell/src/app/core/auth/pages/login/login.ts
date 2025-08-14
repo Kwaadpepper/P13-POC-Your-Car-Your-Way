@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common'
 import { Component, OnDestroy, inject } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
@@ -7,7 +8,6 @@ import { InputTextModule } from 'primeng/inputtext'
 import { MessageModule } from 'primeng/message'
 import { Subject, takeUntil } from 'rxjs'
 
-import { redirectUrls } from '~shell-core/auth/routes'
 import { BackButton } from '~shell-shared/components'
 import { ToastService } from '~shell-shared/services'
 
@@ -19,6 +19,7 @@ import { LoginViewModel } from './login-viewmodel'
     ButtonModule, BackButton,
     InputTextModule, ReactiveFormsModule,
     MessageModule,
+    NgOptimizedImage,
   ],
   providers: [LoginViewModel],
   templateUrl: './login.html',
@@ -72,7 +73,7 @@ export class Login implements OnDestroy {
       .pipe(takeUntil(this.endObservables))
       .subscribe({
         next: () => {
-          this.router.navigateByUrl(redirectUrls.authHomeUrl)
+          this.router.navigateByUrl('/')
         },
       })
   }

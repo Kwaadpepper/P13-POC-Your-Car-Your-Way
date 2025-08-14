@@ -15,14 +15,14 @@
       "responses": [
         {
           "uuid": "c6fb6692-c05f-4aac-8af0-69e8647d368b",
-          "body": "{\n  \"id\": \"ebfbddf1-6679-4caf-8223-012118e07047\",\n  \"name\": \"John Doe\",\n  \"email\": \"user@example.net\",\n  \"createdAt\": \"2025-08-07T19:52:07.000Z\",\n  \"updatedAt\": \"2025-08-07T19:52:07.000Z\"\n}",
+          "body": "{\n  \"id\": \"ebfbddf1-6679-4caf-8223-012118e07000\",\n  \"name\": \"John Doe\",\n  \"role\": \"client\",\n  \"email\": \"user@example.net\",\n  \"createdAt\": \"2025-08-07T19:52:07.000Z\",\n  \"updatedAt\": \"2025-08-07T19:52:07.000Z\"\n}",
           "latency": 0,
           "statusCode": 200,
           "label": "",
           "headers": [
             {
               "key": "Set-Cookie",
-              "value": "jwt_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Tue, 12 Aug 2026 07:43:43 GMT"
+              "value": "jwt_token=client; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Tue, 12 Aug 2027 07:43:43 GMT"
             }
           ],
           "filePath": "",
@@ -31,7 +31,7 @@
             {
               "target": "body",
               "modifier": "login",
-              "value": "user@example.net",
+              "value": "client@example.net",
               "invert": false,
               "operator": "equals"
             },
@@ -46,9 +46,48 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": true,
-          "default": true,
+          "default": false,
           "databucketID": "",
           "bodyType": "INLINE",
+          "crudKey": "id",
+          "callbacks": []
+        },
+        {
+          "uuid": "06115a2c-2e57-4e05-9f9e-d79f5500d8fd",
+          "body": "{\n  \"id\": \"ebfbddf1-6679-4caf-8223-012118e07000\",\n  \"name\": \"Operator Jane\",\n  \"role\": \"operator\",\n  \"email\": \"operator@example.net\",\n  \"createdAt\": \"2025-08-07T19:52:07.000Z\",\n  \"updatedAt\": \"2025-08-07T19:52:07.000Z\"\n}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [
+            {
+              "key": "Set-Cookie",
+              "value": "jwt_token=operator; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Tue, 12 Aug 2027 07:43:43 GMT"
+            }
+          ],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [
+            {
+              "target": "body",
+              "modifier": "login",
+              "value": "operator@example.net",
+              "invert": false,
+              "operator": "equals"
+            },
+            {
+              "target": "body",
+              "modifier": "password",
+              "value": "password",
+              "invert": false,
+              "operator": "equals"
+            }
+          ],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": false,
           "crudKey": "id",
           "callbacks": []
         },
@@ -80,7 +119,7 @@
           "rulesOperator": "AND",
           "disableTemplating": false,
           "fallbackTo404": false,
-          "default": false,
+          "default": true,
           "databucketID": "",
           "bodyType": "INLINE",
           "crudKey": "id",
@@ -105,7 +144,12 @@
           "latency": 0,
           "statusCode": 200,
           "label": "",
-          "headers": [],
+          "headers": [
+            {
+              "key": "Set-Cookie",
+              "value": "jwt_token=; HttpOnly; Secure; SameSite=Strict; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+            }
+          ],
           "bodyType": "INLINE",
           "filePath": "",
           "databucketID": "",
@@ -153,6 +197,99 @@
       "responseMode": null,
       "streamingMode": null,
       "streamingInterval": 0
+    },
+    {
+      "uuid": "46617e23-3982-41dc-a0a4-9e5d91d4ac58",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "support/issues",
+      "responses": [
+        {
+          "uuid": "cd6a4c79-1dd5-4995-baf9-71901dac7d64",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "lb7a",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "3c9161cc-285c-4f58-83a4-974d1aab5055",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "support/conversations",
+      "responses": [
+        {
+          "uuid": "2fd5e27b-e66c-47cd-b967-89d1bad3f01b",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "uxav",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "b7b4930e-3fa9-432a-a0de-95f78868ef3f",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "support",
+      "responses": [
+        {
+          "uuid": "d78fba9e-3f11-42e5-9638-4baf731aa78f",
+          "body": "{}",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "DATABUCKET",
+          "filePath": "",
+          "databucketID": "kbdu",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "proxyMode": false,
@@ -179,7 +316,7 @@
     },
     {
       "key": "Access-Control-Allow-Origin",
-      "value": "http://localhost:4202"
+      "value": "http://localhost:4200"
     },
     {
       "key": "Access-Control-Allow-Methods",
@@ -208,7 +345,28 @@
       "id": "pxqq",
       "name": "Faqs",
       "documentation": "",
-      "value": "[\n  {\n    \"id\": \"3bd812a4-1c1a-44e6-b716-d615eba29934\",\n    \"question\": \"Quels sont les documents nécessaires pour louer une voiture ?\",\n    \"answer\": \"Vous devez présenter un permis de conduire valide, une pièce d'identité (carte ou passeport) et une carte de crédit à votre nom pour le dépôt de garantie.\",\n    \"type\": \"general\"\n  },\n  {\n    \"id\": \"11cad4ad-b58e-487c-84e5-24b47b41d30d\",\n    \"question\": \"Quel est l'âge minimum requis pour louer un véhicule ?\",\n    \"answer\": \"L'âge minimum est de 21 ans. Des frais jeunes conducteurs peuvent s'appliquer jusqu'à 25 ans selon le pays.\",\n    \"type\": \"general\"\n  },\n  {\n    \"id\": \"635cbddc-9894-46bb-858c-69ac8c995563\",\n    \"question\": \"Offrez-vous des tarifs entreprises ou corporate ?\",\n    \"answer\": \"Oui, des tarifs négociés et des portails dédiés sont disponibles pour les comptes professionnels après validation de l'entreprise.\",\n    \"type\": \"general\"\n  },\n  {\n    \"id\": \"2dcebb3c-c9ae-4655-977b-b18c228f8504\",\n    \"question\": \"Puis-je ajouter un conducteur supplémentaire ?\",\n    \"answer\": \"Oui. Chaque conducteur additionnel doit remplir les mêmes conditions (âge, permis valide) et être physiquement présent lors de la signature du contrat.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"14621af9-5267-43c3-ad8d-216d98697111\",\n    \"question\": \"Quelles options d'assurance proposez-vous ?\",\n    \"answer\": \"Nous proposons responsabilité civile, protection collision (CDW), protection contre le vol (TP) et options de réduction de franchise ou couverture totale selon le pays.\",\n    \"type\": \"assurance\"\n  },\n  {\n    \"id\": \"d72d4b41-f9ee-46ec-b0e0-44046842e2ed\",\n    \"question\": \"Puis-je restituer la voiture dans une autre ville ou un autre pays ?\",\n    \"answer\": \"Oui, le retour dans une autre agence est possible selon disponibilité. Des frais d'abandon s'appliquent et sont affichés lors de la réservation.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"ae20c3b8-28df-4f02-829f-80c62b2f9c92\",\n    \"question\": \"Proposez-vous des sièges enfants et rehausseurs ?\",\n    \"answer\": \"Oui, divers équipements (sièges bébé, enfant, rehausseur) sont disponibles en option, à réserver à l'avance surtout en haute saison.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"d68581d0-0fe9-4918-a696-17f94a4f100e\",\n    \"question\": \"Comment modifier ou annuler ma réservation ?\",\n    \"answer\": \"Connectez-vous à votre espace client ou utilisez le lien dans l'email de confirmation. Les conditions et frais d'annulation varient selon le tarif choisi (flexible ou non-remboursable).\",\n    \"type\": \"reservation\"\n  },\n  {\n    \"id\": \"10b91d36-fe33-4b43-a400-440966c85b2f\",\n    \"question\": \"Puis-je prolonger ma location en cours ?\",\n    \"answer\": \"Oui, sous réserve de disponibilité. Faites la demande via votre compte ou contactez le service client avant la date et l'heure de retour prévues.\",\n    \"type\": \"reservation\"\n  },\n  {\n    \"id\": \"5aaec44c-5a8b-4d46-8d1c-7379da3def52\",\n    \"question\": \"Quelles cartes de crédit acceptez-vous pour le dépôt ?\",\n    \"answer\": \"Visa, Mastercard et American Express sont acceptées. Les cartes de débit ou prépayées ne couvrent généralement pas le dépôt de garantie.\",\n    \"type\": \"paiement\"\n  },\n  {\n    \"id\": \"3ad0ad9d-38de-4eda-9b6f-e31941d9c44a\",\n    \"question\": \"Puis-je payer le solde avec une carte de débit ?\",\n    \"answer\": \"Oui, dans la plupart des pays vous pouvez régler le solde avec une carte de débit, mais le dépôt initial doit rester sur une carte de crédit.\",\n    \"type\": \"paiement\"\n  },\n  {\n    \"id\": \"123dff65-5f38-4f37-ab9d-579556adb4a9\",\n    \"question\": \"Le dépôt de garantie est-il immédiatement débité ?\",\n    \"answer\": \"Le montant est préautorisé (bloqué) sur votre carte. Il est libéré automatiquement après la clôture du contrat si aucune charge additionnelle n'est due.\",\n    \"type\": \"paiement\"\n  },\n  {\n    \"id\": \"6220808e-67c7-4a3c-acd5-2839882da2b0\",\n    \"question\": \"Comment fonctionnent les frais de péage et de stationnement ?\",\n    \"answer\": \"Ils ne sont pas inclus. Tout ticket ou péage enregistré ultérieurement peut générer une facturation post-location avec frais administratifs.\",\n    \"type\": \"frais\"\n  },\n  {\n    \"id\": \"0f96e826-f8c3-4258-87fa-f9bc05ce3d37\",\n    \"question\": \"Quelle est votre politique de carburant ?\",\n    \"answer\": \"Politique standard 'plein à plein'. Si le véhicule n'est pas restitué avec le plein, carburant manquant + frais de service sont facturés.\",\n    \"type\": \"frais\"\n  },\n  {\n    \"id\": \"90cf3b31-e65e-4a4e-b471-63b6dd06b0e9\",\n    \"question\": \"Y a-t-il une limite de kilométrage ?\",\n    \"answer\": \"Certains tarifs incluent un kilométrage illimité, d'autres un quota journalier. Le dépassement entraîne des frais par kilomètre.\",\n    \"type\": \"frais\"\n  },\n  {\n    \"id\": \"bfc9de82-9bc6-4034-a6e2-389958820969\",\n    \"question\": \"Que se passe-t-il en cas de retour tardif ?\",\n    \"answer\": \"Un retard peut entraîner la facturation d'une journée supplémentaire ou de frais horaires. Prévenez-nous si un imprévu survient pour limiter les surcoûts.\",\n    \"type\": \"frais\"\n  },\n  {\n    \"id\": \"ddb6dd12-f9c6-46bc-b9d6-7e7d031facee\",\n    \"question\": \"Appliquez-vous des frais de nettoyage ?\",\n    \"answer\": \"Un nettoyage standard est inclus. Des frais supplémentaires peuvent s'appliquer en cas d'odeurs fortes, taches persistantes ou transport inapproprié d'animaux.\",\n    \"type\": \"frais\"\n  },\n  {\n    \"id\": \"abb64ce9-5451-4afc-b9f6-f13a4c4f34db\",\n    \"question\": \"Comment déclarer une contravention reçue après la location ?\",\n    \"answer\": \"Si vous recevez la contravention, suivez les instructions de l'autorité locale. Nous pouvons facturer des frais administratifs si elle nous est transmise d'abord.\",\n    \"type\": \"frais\"\n  },\n  {\n    \"id\": \"90435be2-55f8-41b6-bb3e-32c1fc0d1d9a\",\n    \"question\": \"Que faire en cas d'accident ou de panne ?\",\n    \"answer\": \"Assurez d'abord votre sécurité, appelez les services d'urgence si nécessaire, puis contactez notre assistance 24/7 au numéro figurant sur votre contrat.\",\n    \"type\": \"urgence\"\n  },\n  {\n    \"id\": \"b932ed16-91fc-40f9-bfab-3ebaf3ea4fe0\",\n    \"question\": \"Que faire en cas de crevaison ?\",\n    \"answer\": \"Si un kit de réparation est fourni, suivez les instructions. Sinon, contactez l'assistance. Ne conduisez pas avec un pneu gravement endommagé.\",\n    \"type\": \"urgence\"\n  },\n  {\n    \"id\": \"bb7d9410-c5e4-436f-8b47-bab7545a5ea9\",\n    \"question\": \"Comment signaler un vol ou un vandalisme ?\",\n    \"answer\": \"Prévenez immédiatement la police locale pour un rapport officiel, puis notre assistance afin de préparer la suite (remplacement, déclaration).\",\n    \"type\": \"urgence\"\n  },\n  {\n    \"id\": \"154315ef-91c1-4218-80fa-2e7fc8ab1e81\",\n    \"question\": \"Les véhicules sont-ils équipés de GPS ?\",\n    \"answer\": \"Le GPS est une option payante. Certains modèles premium l'intègrent d'origine; l'information est visible dans les détails du véhicule.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"e9750236-f739-4aed-a564-59e3fee3d875\",\n    \"question\": \"Puis-je voyager avec mon animal de compagnie ?\",\n    \"answer\": \"Oui, à condition de protéger les sièges et de respecter l’hygiène. Des frais de nettoyage peuvent s'appliquer si le véhicule est rendu en mauvais état.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"96fd27c8-e860-49ef-8895-097628c1a643\",\n    \"question\": \"Proposez-vous des véhicules électriques ou hybrides ?\",\n    \"answer\": \"Oui, la flotte inclut des modèles électriques et hybrides. Les détails d'autonomie et conditions de recharge sont affichés lors de la sélection.\",\n    \"type\": \"electrique\"\n  },\n  {\n    \"id\": \"132e5156-c96c-4887-8a54-8863d2f15308\",\n    \"question\": \"La recharge des véhicules électriques est-elle incluse ?\",\n    \"answer\": \"La recharge n'est généralement pas incluse. Vous devez restituer le niveau de batterie proche de celui du départ ou des frais peuvent s'appliquer.\",\n    \"type\": \"electrique\"\n  },\n  {\n    \"id\": \"30e2f023-bd5a-4546-88a2-ef4c48952d04\",\n    \"question\": \"Puis-je traverser des frontières internationales ?\",\n    \"answer\": \"Possible selon les pays et la catégorie. Une autorisation préalable et des assurances additionnelles peuvent être requises.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"0f3dd6f8-a7b1-464d-8ffc-0077f620f462\",\n    \"question\": \"Que se passe-t-il si j'oublie un objet dans le véhicule ?\",\n    \"answer\": \"Contactez l'agence de restitution dès que possible. Nous ferons de notre mieux pour localiser l'objet mais ne garantissons pas sa récupération.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"78b503eb-32a2-4f47-b6c8-b5de40cf6750\",\n    \"question\": \"Comment créer un compte client ?\",\n    \"answer\": \"Cliquez sur 'Mon compte' puis 'Inscription'. Remplissez le formulaire, validez l'email de confirmation et connectez-vous pour gérer vos réservations.\",\n    \"type\": \"compte\"\n  },\n  {\n    \"id\": \"e15781b1-ca86-446a-84a3-7d6fa19588d7\",\n    \"question\": \"Comment réinitialiser mon mot de passe ?\",\n    \"answer\": \"Utilisez le lien 'Mot de passe oublié' sur la page de connexion. Un email de réinitialisation vous sera envoyé.\",\n    \"type\": \"compte\"\n  },\n  {\n    \"id\": \"4151c96e-0732-4cc1-afca-09363b18171b\",\n    \"question\": \"Avez-vous un programme de fidélité ?\",\n    \"answer\": \"Oui. Chaque location crédite des points échangeables contre des surclassements, remises ou options gratuites après un certain seuil.\",\n    \"type\": \"fidelite\"\n  },\n  {\n    \"id\": \"bedafa56-107e-4196-a81a-3ccd49a0414f\",\n    \"question\": \"Comment utiliser mes points fidélité ?\",\n    \"answer\": \"Connectez-vous, sélectionnez une réservation admissible, puis appliquez vos points lors de l'étape de récapitulatif avant paiement.\",\n    \"type\": \"fidelite\"\n  },\n  {\n    \"id\": \"ef72d6f2-5b86-4a3c-8543-394ab43b5bf5\",\n    \"question\": \"Puis-je obtenir une facture détaillée après la location ?\",\n    \"answer\": \"Oui, téléchargeable dans votre espace client ou envoyée par email sur demande auprès du service comptabilité.\",\n    \"type\": \"paiement\"\n  },\n  {\n    \"id\": \"dcc44c30-435a-4920-ba8a-0ea101005b96\",\n    \"question\": \"Que couvre la protection contre le vol ?\",\n    \"answer\": \"Elle limite votre responsabilité financière en cas de vol du véhicule ou de tentative, sous réserve de respect des conditions du contrat (clés rendues, déclaration).\",\n    \"type\": \"assurance\"\n  },\n  {\n    \"id\": \"1a3cf6da-9400-4c04-939d-f187608cc207\",\n    \"question\": \"Puis-je choisir une transmission automatique ou manuelle ?\",\n    \"answer\": \"Oui, le type de transmission est indiqué pour chaque catégorie. Les disponibilités varient selon l'agence et le pays.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"0a18ca90-9672-46ba-b80a-a27306cb8532\",\n    \"question\": \"Acceptez-vous les cartes virtuelles ou digitales ?\",\n    \"answer\": \"En règle générale non pour le dépôt. Une carte physique au nom du conducteur principal est requise à l'agence.\",\n    \"type\": \"paiement\"\n  },\n  {\n    \"id\": \"612bbca8-8016-45d5-828c-00fe46650534\",\n    \"question\": \"Quand la caution est-elle libérée ?\",\n    \"answer\": \"Elle est libérée dès la clôture du contrat, le délai d'apparition sur votre relevé dépend de votre banque (souvent 3 à 7 jours ouvrés).\",\n    \"type\": \"paiement\"\n  },\n  {\n    \"id\": \"61017f04-da8c-4dd0-a8a4-631d291dacca\",\n    \"question\": \"Comment signaler un problème de propreté au départ ?\",\n    \"answer\": \"Prenez des photos et signalez-le immédiatement à l'agent d'accueil pour annotation au contrat afin d'éviter tout malentendu au retour.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"2018f434-627f-4368-9e8c-816e733e0f20\",\n    \"question\": \"Les pneus neige ou chaînes sont-ils fournis ?\",\n    \"answer\": \"Selon la région et la saison, ils peuvent être obligatoires ou optionnels. Réservez-les à l'avance, surtout en zones montagneuses.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"4efa13d5-8276-4b58-9075-b38d04641195\",\n    \"question\": \"Proposez-vous des surclassements ?\",\n    \"answer\": \"Un surclassement gratuit peut être offert selon disponibilité. Sinon il peut être proposé avec un coût additionnel affiché clairement.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"b6bfd7ec-5285-4592-816f-90c0bd5b4d96\",\n    \"question\": \"Comment réduire ma franchise ?\",\n    \"answer\": \"En ajoutant une couverture complémentaire (réduction ou suppression de franchise) lors de la réservation ou à l'agence avant le départ.\",\n    \"type\": \"assurance\"\n  },\n  {\n    \"id\": \"a9a143f2-3cd9-4c23-a9f1-3e960344702b\",\n    \"question\": \"Que faire si j'ai saisi une mauvaise date de réservation ?\",\n    \"answer\": \"Modifiez la réservation depuis votre espace client. Des différences tarifaires ou restrictions d'annulation peuvent s'appliquer.\",\n    \"type\": \"reservation\"\n  },\n  {\n    \"id\": \"3015a747-87f6-4ed7-b979-c68ddd973036\",\n    \"question\": \"Proposez-vous des véhicules adaptés aux personnes à mobilité réduite ?\",\n    \"answer\": \"Oui, sur demande préalable. Contactez le service client pour organiser les adaptations disponibles selon la région.\",\n    \"type\": \"services\"\n  },\n  {\n    \"id\": \"1bd9fba1-e7c1-484f-b0f3-e615a3616eb5\",\n    \"question\": \"Offrez-vous des conseils éco-conduite ?\",\n    \"answer\": \"Oui, un guide de conduite efficiente et de réduction des émissions est disponible dans votre espace client et dans l'application.\",\n    \"type\": \"environnement\"\n  },\n  {\n    \"id\": \"c9bf8c7e-bb17-4622-ae55-102dfcfe9ac9\",\n    \"question\": \"Puis-je ajouter un conducteur après le départ ?\",\n    \"answer\": \"Oui, il doit se présenter avec ses documents dans une agence pour être ajouté officiellement au contrat afin que l'assurance reste valide.\",\n    \"type\": \"services\"\n  }\n]"
+      "value": "[\n  {\n    \"id\": \"3bd812a4-1c1a-44e6-b716-d615eba29934\",\n    \"question\": \"Quels sont les documents nécessaires pour louer une voiture ?\",\n    \"answer\": \"Vous devez présenter un permis de conduire valide, une pièce d'identité (carte ou passeport) et une carte de crédit à votre nom pour le dépôt de garantie.\",\n    \"category\": \"general\"\n  },\n  {\n    \"id\": \"11cad4ad-b58e-487c-84e5-24b47b41d30d\",\n    \"question\": \"Quel est l'âge minimum requis pour louer un véhicule ?\",\n    \"answer\": \"L'âge minimum est de 21 ans. Des frais jeunes conducteurs peuvent s'appliquer jusqu'à 25 ans selon le pays.\",\n    \"category\": \"general\"\n  },\n  {\n    \"id\": \"635cbddc-9894-46bb-858c-69ac8c995563\",\n    \"question\": \"Offrez-vous des tarifs entreprises ou corporate ?\",\n    \"answer\": \"Oui, des tarifs négociés et des portails dédiés sont disponibles pour les comptes professionnels après validation de l'entreprise.\",\n    \"category\": \"general\"\n  },\n  {\n    \"id\": \"2dcebb3c-c9ae-4655-977b-b18c228f8504\",\n    \"question\": \"Puis-je ajouter un conducteur supplémentaire ?\",\n    \"answer\": \"Oui. Chaque conducteur additionnel doit remplir les mêmes conditions (âge, permis valide) et être physiquement présent lors de la signature du contrat.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"14621af9-5267-43c3-ad8d-216d98697111\",\n    \"question\": \"Quelles options d'assurance proposez-vous ?\",\n    \"answer\": \"Nous proposons responsabilité civile, protection collision (CDW), protection contre le vol (TP) et options de réduction de franchise ou couverture totale selon le pays.\",\n    \"category\": \"assurance\"\n  },\n  {\n    \"id\": \"d72d4b41-f9ee-46ec-b0e0-44046842e2ed\",\n    \"question\": \"Puis-je restituer la voiture dans une autre ville ou un autre pays ?\",\n    \"answer\": \"Oui, le retour dans une autre agence est possible selon disponibilité. Des frais d'abandon s'appliquent et sont affichés lors de la réservation.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"ae20c3b8-28df-4f02-829f-80c62b2f9c92\",\n    \"question\": \"Proposez-vous des sièges enfants et rehausseurs ?\",\n    \"answer\": \"Oui, divers équipements (sièges bébé, enfant, rehausseur) sont disponibles en option, à réserver à l'avance surtout en haute saison.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"d68581d0-0fe9-4918-a696-17f94a4f100e\",\n    \"question\": \"Comment modifier ou annuler ma réservation ?\",\n    \"answer\": \"Connectez-vous à votre espace client ou utilisez le lien dans l'email de confirmation. Les conditions et frais d'annulation varient selon le tarif choisi (flexible ou non-remboursable).\",\n    \"category\": \"reservation\"\n  },\n  {\n    \"id\": \"10b91d36-fe33-4b43-a400-440966c85b2f\",\n    \"question\": \"Puis-je prolonger ma location en cours ?\",\n    \"answer\": \"Oui, sous réserve de disponibilité. Faites la demande via votre compte ou contactez le service client avant la date et l'heure de retour prévues.\",\n    \"category\": \"reservation\"\n  },\n  {\n    \"id\": \"5aaec44c-5a8b-4d46-8d1c-7379da3def52\",\n    \"question\": \"Quelles cartes de crédit acceptez-vous pour le dépôt ?\",\n    \"answer\": \"Visa, Mastercard et American Express sont acceptées. Les cartes de débit ou prépayées ne couvrent généralement pas le dépôt de garantie.\",\n    \"category\": \"paiement\"\n  },\n  {\n    \"id\": \"3ad0ad9d-38de-4eda-9b6f-e31941d9c44a\",\n    \"question\": \"Puis-je payer le solde avec une carte de débit ?\",\n    \"answer\": \"Oui, dans la plupart des pays vous pouvez régler le solde avec une carte de débit, mais le dépôt initial doit rester sur une carte de crédit.\",\n    \"category\": \"paiement\"\n  },\n  {\n    \"id\": \"123dff65-5f38-4f37-ab9d-579556adb4a9\",\n    \"question\": \"Le dépôt de garantie est-il immédiatement débité ?\",\n    \"answer\": \"Le montant est préautorisé (bloqué) sur votre carte. Il est libéré automatiquement après la clôture du contrat si aucune charge additionnelle n'est due.\",\n    \"category\": \"paiement\"\n  },\n  {\n    \"id\": \"6220808e-67c7-4a3c-acd5-2839882da2b0\",\n    \"question\": \"Comment fonctionnent les frais de péage et de stationnement ?\",\n    \"answer\": \"Ils ne sont pas inclus. Tout ticket ou péage enregistré ultérieurement peut générer une facturation post-location avec frais administratifs.\",\n    \"category\": \"frais\"\n  },\n  {\n    \"id\": \"0f96e826-f8c3-4258-87fa-f9bc05ce3d37\",\n    \"question\": \"Quelle est votre politique de carburant ?\",\n    \"answer\": \"Politique standard 'plein à plein'. Si le véhicule n'est pas restitué avec le plein, carburant manquant + frais de service sont facturés.\",\n    \"category\": \"frais\"\n  },\n  {\n    \"id\": \"90cf3b31-e65e-4a4e-b471-63b6dd06b0e9\",\n    \"question\": \"Y a-t-il une limite de kilométrage ?\",\n    \"answer\": \"Certains tarifs incluent un kilométrage illimité, d'autres un quota journalier. Le dépassement entraîne des frais par kilomètre.\",\n    \"category\": \"frais\"\n  },\n  {\n    \"id\": \"bfc9de82-9bc6-4034-a6e2-389958820969\",\n    \"question\": \"Que se passe-t-il en cas de retour tardif ?\",\n    \"answer\": \"Un retard peut entraîner la facturation d'une journée supplémentaire ou de frais horaires. Prévenez-nous si un imprévu survient pour limiter les surcoûts.\",\n    \"category\": \"frais\"\n  },\n  {\n    \"id\": \"ddb6dd12-f9c6-46bc-b9d6-7e7d031facee\",\n    \"question\": \"Appliquez-vous des frais de nettoyage ?\",\n    \"answer\": \"Un nettoyage standard est inclus. Des frais supplémentaires peuvent s'appliquer en cas d'odeurs fortes, taches persistantes ou transport inapproprié d'animaux.\",\n    \"category\": \"frais\"\n  },\n  {\n    \"id\": \"abb64ce9-5451-4afc-b9f6-f13a4c4f34db\",\n    \"question\": \"Comment déclarer une contravention reçue après la location ?\",\n    \"answer\": \"Si vous recevez la contravention, suivez les instructions de l'autorité locale. Nous pouvons facturer des frais administratifs si elle nous est transmise d'abord.\",\n    \"category\": \"frais\"\n  },\n  {\n    \"id\": \"90435be2-55f8-41b6-bb3e-32c1fc0d1d9a\",\n    \"question\": \"Que faire en cas d'accident ou de panne ?\",\n    \"answer\": \"Assurez d'abord votre sécurité, appelez les services d'urgence si nécessaire, puis contactez notre assistance 24/7 au numéro figurant sur votre contrat.\",\n    \"category\": \"urgence\"\n  },\n  {\n    \"id\": \"b932ed16-91fc-40f9-bfab-3ebaf3ea4fe0\",\n    \"question\": \"Que faire en cas de crevaison ?\",\n    \"answer\": \"Si un kit de réparation est fourni, suivez les instructions. Sinon, contactez l'assistance. Ne conduisez pas avec un pneu gravement endommagé.\",\n    \"category\": \"urgence\"\n  },\n  {\n    \"id\": \"bb7d9410-c5e4-436f-8b47-bab7545a5ea9\",\n    \"question\": \"Comment signaler un vol ou un vandalisme ?\",\n    \"answer\": \"Prévenez immédiatement la police locale pour un rapport officiel, puis notre assistance afin de préparer la suite (remplacement, déclaration).\",\n    \"category\": \"urgence\"\n  },\n  {\n    \"id\": \"154315ef-91c1-4218-80fa-2e7fc8ab1e81\",\n    \"question\": \"Les véhicules sont-ils équipés de GPS ?\",\n    \"answer\": \"Le GPS est une option payante. Certains modèles premium l'intègrent d'origine; l'information est visible dans les détails du véhicule.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"e9750236-f739-4aed-a564-59e3fee3d875\",\n    \"question\": \"Puis-je voyager avec mon animal de compagnie ?\",\n    \"answer\": \"Oui, à condition de protéger les sièges et de respecter l’hygiène. Des frais de nettoyage peuvent s'appliquer si le véhicule est rendu en mauvais état.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"96fd27c8-e860-49ef-8895-097628c1a643\",\n    \"question\": \"Proposez-vous des véhicules électriques ou hybrides ?\",\n    \"answer\": \"Oui, la flotte inclut des modèles électriques et hybrides. Les détails d'autonomie et conditions de recharge sont affichés lors de la sélection.\",\n    \"category\": \"electrique\"\n  },\n  {\n    \"id\": \"132e5156-c96c-4887-8a54-8863d2f15308\",\n    \"question\": \"La recharge des véhicules électriques est-elle incluse ?\",\n    \"answer\": \"La recharge n'est généralement pas incluse. Vous devez restituer le niveau de batterie proche de celui du départ ou des frais peuvent s'appliquer.\",\n    \"category\": \"electrique\"\n  },\n  {\n    \"id\": \"30e2f023-bd5a-4546-88a2-ef4c48952d04\",\n    \"question\": \"Puis-je traverser des frontières internationales ?\",\n    \"answer\": \"Possible selon les pays et la catégorie. Une autorisation préalable et des assurances additionnelles peuvent être requises.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"0f3dd6f8-a7b1-464d-8ffc-0077f620f462\",\n    \"question\": \"Que se passe-t-il si j'oublie un objet dans le véhicule ?\",\n    \"answer\": \"Contactez l'agence de restitution dès que possible. Nous ferons de notre mieux pour localiser l'objet mais ne garantissons pas sa récupération.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"78b503eb-32a2-4f47-b6c8-b5de40cf6750\",\n    \"question\": \"Comment créer un compte client ?\",\n    \"answer\": \"Cliquez sur 'Mon compte' puis 'Inscription'. Remplissez le formulaire, validez l'email de confirmation et connectez-vous pour gérer vos réservations.\",\n    \"category\": \"compte\"\n  },\n  {\n    \"id\": \"e15781b1-ca86-446a-84a3-7d6fa19588d7\",\n    \"question\": \"Comment réinitialiser mon mot de passe ?\",\n    \"answer\": \"Utilisez le lien 'Mot de passe oublié' sur la page de connexion. Un email de réinitialisation vous sera envoyé.\",\n    \"category\": \"compte\"\n  },\n  {\n    \"id\": \"4151c96e-0732-4cc1-afca-09363b18171b\",\n    \"question\": \"Avez-vous un programme de fidélité ?\",\n    \"answer\": \"Oui. Chaque location crédite des points échangeables contre des surclassements, remises ou options gratuites après un certain seuil.\",\n    \"category\": \"fidelite\"\n  },\n  {\n    \"id\": \"bedafa56-107e-4196-a81a-3ccd49a0414f\",\n    \"question\": \"Comment utiliser mes points fidélité ?\",\n    \"answer\": \"Connectez-vous, sélectionnez une réservation admissible, puis appliquez vos points lors de l'étape de récapitulatif avant paiement.\",\n    \"category\": \"fidelite\"\n  },\n  {\n    \"id\": \"ef72d6f2-5b86-4a3c-8543-394ab43b5bf5\",\n    \"question\": \"Puis-je obtenir une facture détaillée après la location ?\",\n    \"answer\": \"Oui, téléchargeable dans votre espace client ou envoyée par email sur demande auprès du service comptabilité.\",\n    \"category\": \"paiement\"\n  },\n  {\n    \"id\": \"dcc44c30-435a-4920-ba8a-0ea101005b96\",\n    \"question\": \"Que couvre la protection contre le vol ?\",\n    \"answer\": \"Elle limite votre responsabilité financière en cas de vol du véhicule ou de tentative, sous réserve de respect des conditions du contrat (clés rendues, déclaration).\",\n    \"category\": \"assurance\"\n  },\n  {\n    \"id\": \"1a3cf6da-9400-4c04-939d-f187608cc207\",\n    \"question\": \"Puis-je choisir une transmission automatique ou manuelle ?\",\n    \"answer\": \"Oui, le type de transmission est indiqué pour chaque catégorie. Les disponibilités varient selon l'agence et le pays.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"0a18ca90-9672-46ba-b80a-a27306cb8532\",\n    \"question\": \"Acceptez-vous les cartes virtuelles ou digitales ?\",\n    \"answer\": \"En règle générale non pour le dépôt. Une carte physique au nom du conducteur principal est requise à l'agence.\",\n    \"category\": \"paiement\"\n  },\n  {\n    \"id\": \"612bbca8-8016-45d5-828c-00fe46650534\",\n    \"question\": \"Quand la caution est-elle libérée ?\",\n    \"answer\": \"Elle est libérée dès la clôture du contrat, le délai d'apparition sur votre relevé dépend de votre banque (souvent 3 à 7 jours ouvrés).\",\n    \"category\": \"paiement\"\n  },\n  {\n    \"id\": \"61017f04-da8c-4dd0-a8a4-631d291dacca\",\n    \"question\": \"Comment signaler un problème de propreté au départ ?\",\n    \"answer\": \"Prenez des photos et signalez-le immédiatement à l'agent d'accueil pour annotation au contrat afin d'éviter tout malentendu au retour.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"2018f434-627f-4368-9e8c-816e733e0f20\",\n    \"question\": \"Les pneus neige ou chaînes sont-ils fournis ?\",\n    \"answer\": \"Selon la région et la saison, ils peuvent être obligatoires ou optionnels. Réservez-les à l'avance, surtout en zones montagneuses.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"4efa13d5-8276-4b58-9075-b38d04641195\",\n    \"question\": \"Proposez-vous des surclassements ?\",\n    \"answer\": \"Un surclassement gratuit peut être offert selon disponibilité. Sinon il peut être proposé avec un coût additionnel affiché clairement.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"b6bfd7ec-5285-4592-816f-90c0bd5b4d96\",\n    \"question\": \"Comment réduire ma franchise ?\",\n    \"answer\": \"En ajoutant une couverture complémentaire (réduction ou suppression de franchise) lors de la réservation ou à l'agence avant le départ.\",\n    \"category\": \"assurance\"\n  },\n  {\n    \"id\": \"a9a143f2-3cd9-4c23-a9f1-3e960344702b\",\n    \"question\": \"Que faire si j'ai saisi une mauvaise date de réservation ?\",\n    \"answer\": \"Modifiez la réservation depuis votre espace client. Des différences tarifaires ou restrictions d'annulation peuvent s'appliquer.\",\n    \"category\": \"reservation\"\n  },\n  {\n    \"id\": \"3015a747-87f6-4ed7-b979-c68ddd973036\",\n    \"question\": \"Proposez-vous des véhicules adaptés aux personnes à mobilité réduite ?\",\n    \"answer\": \"Oui, sur demande préalable. Contactez le service client pour organiser les adaptations disponibles selon la région.\",\n    \"category\": \"services\"\n  },\n  {\n    \"id\": \"1bd9fba1-e7c1-484f-b0f3-e615a3616eb5\",\n    \"question\": \"Offrez-vous des conseils éco-conduite ?\",\n    \"answer\": \"Oui, un guide de conduite efficiente et de réduction des émissions est disponible dans votre espace client et dans l'application.\",\n    \"category\": \"environnement\"\n  },\n  {\n    \"id\": \"c9bf8c7e-bb17-4622-ae55-102dfcfe9ac9\",\n    \"question\": \"Puis-je ajouter un conducteur après le départ ?\",\n    \"answer\": \"Oui, il doit se présenter avec ses documents dans une agence pour être ajouté officiellement au contrat afin que l'assurance reste valide.\",\n    \"category\": \"services\"\n  }\n]"
+    },
+    {
+      "uuid": "9027e0b8-a4fe-41bc-8ac2-b7ce28953794",
+      "id": "lb7a",
+      "name": "Issues",
+      "documentation": "",
+      "value": "[\n  {\n    \"id\": \"7b8e42ff-4471-429d-9f1a-cb3b220cdb17\",\n    \"subject\": \"Support Request 1\",\n    \"description\": \"I need help with my account.\",\n    \"answer\": null,\n    \"status\": \"OPENNED\",\n    \"client\": {\n      \"first_name\": \"Super\",\n      \"last_name\": \"Client\",\n      \"email\": \"client@example.net\",\n      \"phone\": \"+33123456789\",\n      \"birthdate\": \"1990-01-01T00:00:00.000Z\",\n      \"address\": {\n        \"line1\": \"123 Main St\",\n        \"city\": \"Paris\",\n        \"post_code\": \"75001\",\n        \"country\": \"France\"\n      }\n    },\n    \"reservation\": {\n      \"status\": \"confirmed\",\n      \"from\": {\n        \"agency\": {\n          \"label\": \"Agency Name\",\n            \"phone\": \"+33123456789\",\n            \"email\": \"agency@example.net\",\n            \"address\": {\n              \"line1\": \"123 Main St\",\n              \"city\": \"Paris\",\n              \"post_code\": \"75001\",\n              \"country\": \"France\"\n            },\n            \"coordinates\": {\n              \"lat\": 48.8566,\n              \"long\": 2.3522\n            }\n        },\n        \"at\": \"2023-10-01T10:00:00.000Z\"\n      },\n      \"to\": {\n        \"agency\": {\n          \"label\": \"Agency Name\",\n          \"phone\": \"+33123456789\",\n          \"email\": \"agency@example.net\",\n          \"address\": {\n            \"line1\": \"123 Main St\",\n            \"city\": \"Paris\",\n            \"post_code\": \"75001\",\n            \"country\": \"France\"\n          },\n          \"coordinates\": {\n            \"lat\": 48.8566,\n            \"long\": 2.3522\n          }\n        },\n        \"at\": \"2023-10-01T12:00:00.000Z\"\n      },\n      \"vehicle\": {\n        \"category\": \"CDMR\"\n      },\n      \"payment\": \"accepted\"\n    },\n    \"conversation\": \"7b8e42ff-4471-429d-9f1a-cb3b220cdb12\",\n    \"updatedAt\": \"2023-10-01T12:00:00.000Z\"\n  },\n  {\n    \"id\": \"8c9f3b2d-5a1e-4c3b-8f1a-dc3b220cdb18\",\n    \"subject\": \"Support Request 2\",\n    \"description\": \"I have an issue with my booking.\",\n    \"answer\": \"The issue has been resolved in shop by the customer.\",\n    \"status\": \"CLOSED\",\n    \"client\": {\n      \"first_name\": \"Another\",\n      \"last_name\": \"Client\",\n      \"email\": \"user@example.net\",\n      \"phone\": \"+33123456780\",\n      \"birthdate\": \"1992-02-02T00:00:00.000Z\",\n      \"address\": {\n        \"line1\": \"456 Another St\",\n        \"city\": \"Lyon\",\n        \"post_code\": \"69001\",\n        \"country\": \"France\"\n      }\n    },\n    \"reservation\": {\n      \"status\": \"cancelled\",\n      \"from\": {\n        \"agency\": {\n          \"label\": \"Another Agency\",\n          \"phone\": \"+33123456780\",\n          \"email\": \"agency@example.net\",\n          \"address\": {\n            \"line1\": \"456 Another St\",\n            \"city\": \"Lyon\",\n            \"post_code\": \"69001\",\n            \"country\": \"France\"\n          },\n          \"coordinates\": {\n            \"lat\": 45.764,\n            \"long\": 4.8357\n          }\n        },\n        \"at\": \"2023-10-02T11:00:00.000Z\"\n      },\n      \"to\": {\n        \"agency\": {\n          \"label\": \"Another Agency\",\n          \"phone\": \"+33123456780\",\n          \"email\": \"agency2@example.net\",\n          \"address\": {\n            \"line1\": \"789 Different St\",\n            \"city\": \"Marseille\",\n            \"post_code\": \"13001\",\n            \"country\": \"France\"\n          },\n          \"coordinates\": {\n            \"lat\": 43.2965,\n            \"long\": 5.3698\n          }\n        },\n        \"at\": \"2023-10-02T13:00:00.000Z\"\n      },\n      \"vehicle\": {\n        \"category\": \"EDMR\"\n      },\n      \"payment\": \"refunded\"\n    },\n    \"conversation\": null,\n    \"updatedAt\": \"2023-10-02T14:00:00.000Z\"\n  }\n]"
+    },
+    {
+      "uuid": "10c0ec2a-7d89-43a5-9277-49003b0cec71",
+      "id": "uxav",
+      "name": "Conversations",
+      "documentation": "",
+      "value": "[\n  {\n    \"id\": \"7b8e42ff-4471-429d-9f1a-cb3b220cdb12\",\n    \"subject\": \"I need help with my account\",\n    \"lastMessage\": {\n      \"content\": \"Hello, I need help with my account.\",\n      \"sentAt\": \"2025-08-14T04:12:44.000Z\"\n    }\n  }\n]"
+    },
+    {
+      "uuid": "e13b77d0-cb5d-412b-bac4-3e65b635068f",
+      "id": "kbdu",
+      "name": "Support",
+      "documentation": "",
+      "value": "{\n    \"phone\": {\n        \"number\": \"+33823455689\",\n        \"businessHours\": {\n            \"monday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            },\n            \"tuesday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            },\n            \"wednesday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            },\n            \"thursday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            },\n            \"friday\": {\n                \"from\": \"09:00\",\n                \"to\": \"18:00\"\n            }\n        }\n    },\n    \"chat\": {\n        \"businessHours\": {\n            \"monday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            },\n            \"tuesday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            },\n            \"wednesday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            },\n            \"thursday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            },\n            \"friday\": {\n                \"from\": \"08:00\",\n                \"to\": \"19:00\"\n            }\n        }\n    },\n    \"email\": \"support@example.net\",\n    \"address\": {\n        \"line1\": \"123 rue de la Paix\",\n        \"line2\": \"Rez-de-chauss\\u00e9e\",\n        \"line3\": \"B\\u00e2timent A\",\n        \"city\": \"Paris\",\n        \"zip\": \"75001\",\n        \"country\": \"France\"\n    }\n}"
     }
   ],
   "folders": [
@@ -219,6 +377,18 @@
         {
           "type": "route",
           "uuid": "00e82c7e-e9eb-494f-aa05-d6eae0d85df6"
+        },
+        {
+          "type": "route",
+          "uuid": "46617e23-3982-41dc-a0a4-9e5d91d4ac58"
+        },
+        {
+          "type": "route",
+          "uuid": "3c9161cc-285c-4f58-83a4-974d1aab5055"
+        },
+        {
+          "type": "route",
+          "uuid": "b7b4930e-3fa9-432a-a0de-95f78868ef3f"
         }
       ]
     },

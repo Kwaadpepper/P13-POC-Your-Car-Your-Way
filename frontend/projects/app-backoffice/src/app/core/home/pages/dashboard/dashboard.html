@@ -1,0 +1,195 @@
+<div class="container-fluid">
+  <!-- En-tête -->
+  <div class="row align-items-center">
+    <div class="col">
+      <h1 class="ms-20">Bienvenue {{ currentUserName() | titlecase }}</h1>
+      <p class="ms-20 my-4 text-muted">
+        Your Car Your Way — Agence internationale de location de voiture
+      </p>
+    </div>
+  </div>
+
+  <!-- Bandeau hero -->
+  <div class="row mb-4">
+    <div class="col">
+      <p-card styleClass="w-full">
+        <div class="grid align-items-center">
+          <div class="col-12 md:col-8">
+            <h2>Gérez vos opérations au quotidien</h2>
+            <p class="mt-2 mb-3">
+              Suivez vos réservations, la disponibilité de la flotte et répondez
+              aux clients depuis un point d’entrée unique.
+            </p>
+            <div class="flex gap-2 flex-wrap">
+              <a
+                pButton
+                [routerLink]="['/backoffice/support']"
+                label="Aller sur le support"
+              >
+                <i class="pi pi-comments"></i>
+              </a>
+              <button
+                pButton
+                type="button"
+                label="Créer une réservation"
+                disabled="true"
+              >
+                <i class="pi pi-plus"></i>
+              </button>
+              <button
+                pButton
+                type="button"
+                label="Voir la flotte"
+                disabled="true"
+              >
+                <i class="pi pi-car"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-12 md:col-4 text-center">
+            <img
+              ngSrc="assets/pictures/logo-transparent.png"
+              width="250"
+              height="250"
+              alt="Votre flotte partout dans le monde"
+              class="border-round"
+              priority
+            />
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Indicateurs (placeholders statiques) -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 md:col-3">
+      <p-card>
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <div class="text-2xl font-bold">—</div>
+            <div class="text-sm text-muted">Réservations du jour</div>
+          </div>
+          <i class="pi pi-calendar text-2xl"></i>
+        </div>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-3">
+      <p-card>
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <div class="text-2xl font-bold">—</div>
+            <div class="text-sm text-muted">Véhicules disponibles</div>
+          </div>
+          <i class="pi pi-car text-2xl"></i>
+        </div>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-3">
+      <p-card>
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <div class="text-2xl font-bold">—</div>
+            <div class="text-sm text-muted">Agences ouvertes</div>
+          </div>
+          <i class="pi pi-building text-2xl"></i>
+        </div>
+      </p-card>
+    </div>
+    <div class="col-12 md:col-3">
+      <p-card>
+        <div class="flex align-items-center justify-content-between">
+          <div>
+            <div class="text-2xl font-bold">—</div>
+            <div class="text-sm text-muted">Satisfaction client</div>
+          </div>
+          <i class="pi pi-heart text-2xl"></i>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Raccourcis -->
+  <div class="row g-3 mb-4">
+    <div class="col-12 md:col-4">
+      <p-card header="Support client" subheader="Assistance 24/5">
+        <p class="mb-3">
+          Consultez et répondez aux tickets de support. Engagez la conversation
+          avec vos clients.
+        </p>
+        <a pButton [routerLink]="['/support']" label="Aller sur le support">
+          <i class="pi pi-comments"></i>
+        </a>
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-4">
+      <p-card header="Réseau international" subheader="120+ pays (exemple)">
+        <p class="mb-3">
+          Déployez votre flotte et gérez vos agences dans le monde entier grâce
+          à nos outils.
+        </p>
+        <button pButton type="button" label="Gérer les agences" disabled="true">
+          <i class="pi pi-globe"></i>
+        </button>
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-4">
+      <p-card header="Flotte et maintenance" subheader="Suivi centralisé">
+        <p class="mb-3">
+          Surveillez l’état de vos véhicules, planifiez la maintenance et
+          optimisez les rotations.
+        </p>
+        <button pButton type="button" label="Voir la flotte" disabled="true">
+          <i class="pi pi-car"></i>
+        </button>
+      </p-card>
+    </div>
+  </div>
+
+  <p-divider></p-divider>
+
+  <!-- Annonces / Infos -->
+  <div class="row mb-5">
+    <div class="col-12 md:col-8">
+      <p-card header="Annonces">
+        <ul class="list-none p-0 m-0">
+          <li class="mb-3">
+            <p-tag value="Nouveau" severity="success" styleClass="me-2"></p-tag>
+            Lancement du module Support — répondez aux tickets et discutez en
+            direct avec vos clients.
+          </li>
+          <li class="mb-3">
+            <p-tag value="À venir" severity="info" styleClass="me-2"></p-tag>
+            Tableaux de bord Réservations et Flotte (statistiques en temps
+            réel).
+          </li>
+          <li>
+            <p-tag value="Info" severity="warning" styleClass="me-2"></p-tag>
+            Maintenance planifiée dimanche 02:00–03:00 UTC.
+          </li>
+        </ul>
+      </p-card>
+    </div>
+
+    <div class="col-12 md:col-4">
+      <p-card header="Contact interne">
+        <ul class="list-none p-0 m-0">
+          <li class="mb-2">
+            <i class="pi pi-phone me-2"></i>
+            Support: +33 1 23 45 67 89 (Lun–Ven 09:00–18:00)
+          </li>
+          <li class="mb-2">
+            <i class="pi pi-envelope me-2"></i>
+            support&#64;example.net
+          </li>
+          <li>
+            <i class="pi pi-comments me-2"></i>
+            Chat disponible depuis la page Support
+          </li>
+        </ul>
+      </p-card>
+    </div>
+  </div>
+</div>

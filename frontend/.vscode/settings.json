@@ -1,9 +1,12 @@
 {
+  "editor.tabSize": 2,
   "conventionalCommits.scopes": [
-    "frontend",
-    "frontend-support",
-    "frontend-shell",
-    "frontend-shared"
+    "front",
+    "front-backoffice",
+    "front-support",
+    "front-reservation",
+    "front-shell",
+    "front-shared"
   ],
   "editor.formatOnSave": true,
   "[html]": {
@@ -30,6 +33,12 @@
     "editor.detectIndentation": false,
     "editor.formatOnSave": true,
     "editor.formatOnSaveMode": "file"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html"
   },
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#cdc411",

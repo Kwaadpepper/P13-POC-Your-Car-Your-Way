@@ -25,20 +25,50 @@
       "~shell-tokens/*": [
         "./projects/shell/src/app/tokens/*"
       ],
+      "~backoffice-core/*": [
+        "./projects/app-backoffice/src/app/core/*"
+      ],
+      "~backoffice-env/*": [
+        "./projects/app-backoffice/src/environments/*"
+      ],
+      "~backoffice-domains/*": [
+        "./projects/app-backoffice/src/app/domains/*"
+      ],
+      "~backoffice-shared/*": [
+        "./projects/app-backoffice/src/app/shared/*"
+      ],
+      "~backoffice-tokens/*": [
+        "./projects/app-backoffice/src/app/tokens/*"
+      ],
+      "~reservation-core/*": [
+        "./projects/app-reservation/src/app/core/*"
+      ],
+      "~reservation-env/*": [
+        "./projects/app-reservation/src/environments/*"
+      ],
+      "~reservation-domains/*": [
+        "./projects/app-reservation/src/app/domains/*"
+      ],
+      "~reservation-shared/*": [
+        "./projects/app-reservation/src/app/shared/*"
+      ],
+      "~reservation-tokens/*": [
+        "./projects/app-reservation/src/app/tokens/*"
+      ],
       "~support-core/*": [
-        "./projects/support-app/src/app/core/*"
+        "./projects/app-support/src/app/core/*"
       ],
       "~support-env/*": [
-        "./projects/support-app/src/environments/*"
+        "./projects/app-support/src/environments/*"
       ],
       "~support-domains/*": [
-        "./projects/support-app/src/app/domains/*"
+        "./projects/app-support/src/app/domains/*"
       ],
       "~support-shared/*": [
-        "./projects/support-app/src/app/shared/*"
+        "./projects/app-support/src/app/shared/*"
       ],
       "~support-tokens/*": [
-        "./projects/support-app/src/app/tokens/*"
+        "./projects/app-support/src/app/tokens/*"
       ],
       "~ycyw/shared": [
         "./dist/shared"
@@ -67,10 +97,22 @@
       "path": "./projects/shell/tsconfig.spec.json"
     },
     {
-      "path": "./projects/support-app/tsconfig.app.json"
+      "path": "./projects/app-backoffice/tsconfig.app.json"
     },
     {
-      "path": "./projects/support-app/tsconfig.spec.json"
+      "path": "./projects/app-backoffice/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/app-reservation/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/app-reservation/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/app-support/tsconfig.app.json"
+    },
+    {
+      "path": "./projects/app-support/tsconfig.spec.json"
     }
   ]
 }

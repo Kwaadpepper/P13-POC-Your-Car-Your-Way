@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row min-h-14 mb-3">
+    <div class="col flex flex-col md:flex-row">
+      <support-back-button
+        backUrl=".."
+        label="Conversations"
+      ></support-back-button>
+
+      <h1
+        class="!m-4 text-ellipsis whitespace-nowrap overflow-hidden max-w-full"
+      >
+        Conversation {{ conversation().subject }}
+      </h1>
+    </div>
+  </div>
+
+  <!-- Chatbox -->
+  <div class="row">
+    <div class="col">
+      @if (viewmodel.currentUser()) {
+        <support-chatbox
+          [user]="viewmodel.currentUser()!"
+          [conversation]="conversation().id"
+        />
+      } @else {
+        <p-message
+          severity="warn"
+          text="Vous devez être connecté pour accéder au chat."
+        ></p-message>
+      }
+    </div>
+  </div>
+</div>

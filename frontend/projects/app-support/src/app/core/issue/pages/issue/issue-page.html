@@ -1,0 +1,135 @@
+<div class="container">
+  <div class="row min-h-14 mb-3">
+    <div class="col flex flex-col md:flex-row">
+      <support-back-button backUrl=".." label="Tickets"></support-back-button>
+
+      <h1
+        class="!m-4 text-ellipsis whitespace-nowrap overflow-hidden max-w-full"
+      >
+        Ticket
+      </h1>
+    </div>
+  </div>
+
+  <!-- En-tête ticket -->
+  <div class="row gy-3 items-start md:items-center mb-3">
+    <div class="col-12 md:col text-center">
+      <h2 class="h3 m-0">
+        {{ issue().subject }}
+      </h2>
+      <p class="text-muted-color text-sm mb-0">
+        Dernière mise à jour : {{ issue().updatedAt | date: "short" }}
+      </p>
+    </div>
+    <div class="col-12 md:col flex flex-wrap gap-2">
+      <p-tag [value]="issue().status" severity="info"></p-tag>
+    </div>
+  </div>
+
+  <p-divider class="my-2"></p-divider>
+
+  <!-- Contenu en onglets (PrimeNG 19) -->
+  <p-tabs
+    [lazy]="true"
+    [value]="activeTab()"
+    (valueChange)="onTabChange($event.toString())"
+  >
+    <p-tablist>
+      <p-tab [value]="detailsTabIndex">Détails</p-tab>
+      <p-tab [value]="chatTabIndex">Chat</p-tab>
+    </p-tablist>
+
+    <p-tabpanels>
+      <p-tabpanel [value]="detailsTabIndex">
+        <!-- Description -->
+        <div class="row mb-4">
+          <div class="col">
+            <section class="p-3 border rounded bg-surface-100/20">
+              <h3 class="h6 mb-2">Description</h3>
+              <p class="small mb-0" style="white-space: pre-line">
+                {{ issue().description }}
+              </p>
+            </section>
+          </div>
+        </div>
+
+        <!-- Réponse -->
+        @if (issue().answer) {
+          <div class="row mb-4">
+            <div class="col">
+              <section
+                class="p-3 border rounded bg-lime-900/20 dark:bg-lime-200/20"
+              >
+                <h3 class="h6 mb-2">Réponse</h3>
+                <p class="small mb-0" style="white-space: pre-line">
+                  {{ issue().answer }}
+                </p>
+              </section>
+            </div>
+          </div>
+        }
+
+        <!-- Infos client / réservation -->
+        <div class="row g-4 mb-4">
+          <div class="col-12 md:col-6 mb-3">
+            <section class="p-3 border rounded">
+              <h3 class="h6 mb-2">Client</h3>
+              <ul class="list-none text-sm mb-0">
+                <li>
+                  {{ issue().client.first_name }} {{ issue().client.last_name }}
+                </li>
+                <li class="text-muted">{{ issue().client.email }}</li>
+                <li class="text-muted">{{ issue().client.phone }}</li>
+              </ul>
+            </section>
+          </div>
+          <div class="col-12 md:col-6 mb-3">
+            <section class="p-3 border rounded">
+              <h3 class="h6 mb-2">Réservation</h3>
+              <ul class="list-none text-sm mb-0">
+                <li>Status réservation : {{ issue().reservation.status }}</li>
+                @if (issue().reservation.from.at) {
+                  <li>
+                    Début : {{ issue().reservation.from.at | date: "short" }}
+                  </li>
+                }
+                @if (issue().reservation.to.at) {
+                  <li>Fin : {{ issue().reservation.to.at | date: "short" }}</li>
+                }
+                @if (issue().reservation.vehicle.category.code) {
+                  <li>
+                    Catégorie véhicule :
+                    {{ issue().reservation.vehicle.category.code }}
+                  </li>
+                }
+              </ul>
+            </section>
+          </div>
+        </div>
+      </p-tabpanel>
+
+      <p-tabpanel [value]="chatTabIndex">
+        <div class="row">
+          <div class="col">
+            @if (viewModel.currentUser() && conversation()) {
+              <support-chatbox
+                [user]="viewModel.currentUser()!"
+                [conversation]="conversation()!"
+              />
+            } @else if (!conversation()) {
+              <p-message
+                severity="warn"
+                text="Aucune conversation engagée."
+              ></p-message>
+            } @else {
+              <p-message
+                severity="warn"
+                text="Vous devez être connecté pour accéder au chat."
+              ></p-message>
+            }
+          </div>
+        </div>
+      </p-tabpanel>
+    </p-tabpanels>
+  </p-tabs>
+</div>

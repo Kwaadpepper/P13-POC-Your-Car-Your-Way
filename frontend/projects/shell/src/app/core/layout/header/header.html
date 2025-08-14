@@ -1,20 +1,41 @@
 @if (displayHeader()) {
-<div class="w-full border-b-2 border-b-gray-400 sm:flex" [class.hidden]="isOnAuthPage()">
-  <div class="flex flex-grow flex-row justify-end items-center">
-    <a class="ms-3 mt-2 me-auto inline-block cursor-pointer" routerLink="/" title="Retourner sur la page d'accueil">
-      <img class="img-fluid w-8 sm:w-12" src="/assets/pictures/logo-transparent.png" [alt]="viewModel.appName"
-        [title]="'Logo ' + viewModel.appName" />
-    </a>
+  <div
+    class="w-full border-b-2 border-b-gray-400 sm:flex"
+    [class.hidden]="isOnAuthPage()"
+  >
+    <div class="flex flex-grow flex-row justify-end items-center">
+      <a
+        class="ms-3 mt-2 me-auto inline-block cursor-pointer"
+        routerLink="/"
+        title="Retourner sur la page d'accueil"
+      >
+        <img
+          class="img-fluid w-8 sm:w-12"
+          ngSrc="/assets/pictures/logo-transparent.png"
+          width="48"
+          height="48"
+          [alt]="viewModel.appName"
+          [title]="'Logo ' + viewModel.appName"
+        />
+      </a>
 
-    @if (onMobile()) {
-    <button pButton (click)="onShowDrawer()" icon="pi pi-bars" text severity="contrast" class="me-4" size="large"
-      type="button" title="Afficher le menu"></button>
-    } @else {
-    <shell-nav-menu />
-    }
-
+      @if (onMobile()) {
+        <button
+          pButton
+          (click)="onShowDrawer()"
+          icon="pi pi-bars"
+          text
+          severity="contrast"
+          class="me-4"
+          size="large"
+          type="button"
+          title="Afficher le menu"
+        ></button>
+      } @else {
+        <shell-nav-menu />
+      }
+    </div>
   </div>
-</div>
 }
 
 <p-drawer [(visible)]="drawerVisible" position="right">

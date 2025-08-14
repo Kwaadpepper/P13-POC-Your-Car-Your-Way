@@ -1,6 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core'
 
-import { SessionStore } from '~shell-core/auth/stores'
+import { Role } from '~shell-shared/enums'
+import { SessionStore } from '~shell-shared/stores'
 
 @Injectable({
   providedIn: 'root',
@@ -11,5 +12,12 @@ import { SessionStore } from '~shell-core/auth/stores'
 export class NavMenuViewModel {
   private readonly sessionStore = inject(SessionStore)
 
-  public readonly loggedIn = computed(() => this.sessionStore.isLoggedIn())
+  public readonly loggedIn = computed(() => this.sessionStore.session().isLoggedIn)
+
+  public readonly supportUrl = computed(() => {
+    const session = this.sessionStore.session()
+    return this.loggedIn() && session.user!.role === Role.CLIENT
+      ? '/reservation/support'
+      : '/backoffice/support'
+  })
 }

@@ -3,25 +3,27 @@ import { createServer } from 'http'
 
 import WebSocket, { RawData, WebSocketServer } from 'ws'
 
+import { Role } from '../projects/app-support/src/app/shared/enums'
+
 import {
   type ClientCommand,
   Events,
   EventType,
   type ServerEvent,
-} from './../projects/support-app/src/app/core/chat/libs/chat/chat-transport'
+} from './../projects/app-support/src/app/core/chat/libs/chat/chat-transport'
 
 interface Message {
   id: string
   conversation: string
   from: {
     id: string
+    name: string
     role: Role
   }
   text: string
   sentAt: string
 }
 
-type Role = 'operator' | 'client'
 type Client = {
   user: string
   role: Role
@@ -34,6 +36,8 @@ const wss = new WebSocketServer({ server })
 /** Mémoire */
 const rooms = new Map<string, Set<Client>>()
 const messagesByRoom = new Map<string, Message[]>()
+
+const cookieRegex = /jwt_token=([^;]+)/
 
 function broadcast(roomId: string, msg: ServerEvent, excludeWs?: Client) {
   const clients = rooms.get(roomId)
@@ -51,11 +55,14 @@ function ensureRoom(roomId: string) {
 }
 
 wss.on('connection', (ws: Client, req) => {
-  const url = new URL(req.url || '', 'http://localhost')
-  const token = url.searchParams.get('token') || ''
+  const sessionCookie = req.headers.cookie || ''
+  const bearerToken = sessionCookie.match(cookieRegex)?.[1] || Role.CLIENT
   // Déduit le rôle via le token (ex: "client_...", "operator_...")
-  const role = token.startsWith('operator') ? 'operator' : 'client'
-  const user = token.split('_')[1] || randomUUID()
+  const role = bearerToken === Role.OPERATOR ? Role.OPERATOR : Role.CLIENT
+  const user = randomUUID()
+  const userName = role === Role.OPERATOR ? 'Operator Jane' : 'John Doe'
+  console.log(`bearerToken: ${bearerToken}`)
+  console.log(`New connection: ${user} (${role})`)
 
   ws.user = user
   ws.role = role
@@ -149,7 +156,7 @@ wss.on('connection', (ws: Client, req) => {
       const chatMsg: Message = {
         id: randomUUID(),
         conversation: roomId,
-        from: { id: user, role },
+        from: { id: user, name: userName, role },
         text,
         sentAt: new Date().toISOString(),
       }

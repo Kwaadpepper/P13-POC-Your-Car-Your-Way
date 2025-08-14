@@ -1,0 +1,32 @@
+<div class="flex flex-col gap-3 w-full max-h-96 h-full">
+  <!-- Header -->
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-2 space-y-2">
+      <h3 class="text-sm font-semibold !m-0 !mx-2">Chat</h3>
+      <p-tag class="!m-0 !mx-2" severity="success"
+        >{{ onlineCount() }} en ligne</p-tag
+      >
+    </div>
+  </div>
+
+  <!-- Liste des messages -->
+  <support-message-list
+    class="border rounded-md bg-white dark:bg-surface-900 min-h-80 flex flex-col p-2 overflow-y-auto"
+    [messages]="messages()"
+    [currentUser]="user.id"
+  />
+
+  <!-- Typing indicator -->
+  @if (typingUsers().length > 0) {
+    <support-typing-indicator [typingUsers]="typingUsers()" />
+  }
+
+  <p-divider class="my-0" />
+
+  <!-- Zone d'entrée -->
+  <support-message-input
+    [disabled]="!conversation"
+    (send)="onSend($event)"
+    (typing)="onTyping($event)"
+  />
+</div>

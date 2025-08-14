@@ -31,6 +31,8 @@ export class NavMenu {
 
   readonly viewModel = inject(NavMenuViewModel)
 
+  readonly supportUrl = this.viewModel.supportUrl()
+
   onCloseMenu(): void {
     this.closedMenu.emit(true)
   }

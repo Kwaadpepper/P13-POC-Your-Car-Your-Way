@@ -1,6 +1,4 @@
-import { Component, OnInit, inject, signal } from '@angular/core'
-import { NotFoundError } from '@angular/core/primitives/di'
-import { ActivatedRoute } from '@angular/router'
+import { Component, inject, input } from '@angular/core'
 
 import { ButtonModule } from 'primeng/button'
 import { DividerModule } from 'primeng/divider'
@@ -8,8 +6,8 @@ import { MessageModule } from 'primeng/message'
 import { TagModule } from 'primeng/tag'
 import { ToolbarModule } from 'primeng/toolbar'
 
+import { Conversation } from '~support-domains/chat/models'
 import { BackButton, ChatBox } from '~support-shared/components'
-import { UUID, uuidSchema } from '~ycyw/shared'
 
 import { ConversationViewModel } from './conversation-viewmodel'
 
@@ -28,23 +26,8 @@ import { ConversationViewModel } from './conversation-viewmodel'
   templateUrl: './conversation.html',
   styleUrl: './conversation.css',
 })
-export class ConversationPage implements OnInit {
-  private readonly route = inject(ActivatedRoute)
-
+export class ConversationPage {
   readonly viewmodel = inject(ConversationViewModel)
 
-  readonly _conversationId = signal<UUID | null>(null)
-  readonly conversationId = this._conversationId.asReadonly()
-
-  ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      try {
-        const id: UUID = uuidSchema.parse(params.get('id'))
-        this._conversationId.set(id)
-      }
-      catch {
-        throw new NotFoundError('No conversation found')
-      }
-    })
-  }
+  readonly conversation = input.required<Conversation>()
 }

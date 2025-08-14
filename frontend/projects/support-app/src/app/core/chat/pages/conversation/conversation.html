@@ -9,7 +9,7 @@
       <h1
         class="!m-4 text-ellipsis whitespace-nowrap overflow-hidden max-w-full"
       >
-        Conversation {{ conversationId() || "—" }}
+        Conversation {{ conversation().subject }}
       </h1>
     </div>
   </div>
@@ -17,20 +17,15 @@
   <!-- Chatbox -->
   <div class="row">
     <div class="col">
-      @if (conversationId() && viewmodel.currentUser()) {
+      @if (viewmodel.currentUser()) {
         <support-chatbox
           [user]="viewmodel.currentUser()!"
-          [conversation]="conversationId()!"
+          [conversation]="conversation().id"
         />
-      } @else if (!viewmodel.currentUser()) {
+      } @else {
         <p-message
           severity="warn"
           text="Vous devez être connecté pour accéder au chat."
-        ></p-message>
-      } @else {
-        <p-message
-          severity="info"
-          text="Aucune conversation sélectionnée."
         ></p-message>
       }
     </div>

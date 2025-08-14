@@ -1,3 +1,5 @@
+export * from './conversation-list-schema'
+export * from './conversation-schema'
 export * from './faq-list-schema'
 export * from './faq-schema'
 export * from './issue-list-schema'

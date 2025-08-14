@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common'
-import { Component, inject, OnInit, signal } from '@angular/core'
+import { Component, computed, inject } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { AvatarModule } from 'primeng/avatar'
@@ -10,7 +10,8 @@ import { MessageModule } from 'primeng/message'
 
 import { Conversation } from '~support-domains/chat/models'
 import { BackButton } from '~support-shared/components'
-import { UUID } from '~ycyw/shared'
+
+import { ConversationListViewModel } from './conversation-list-viewmodel'
 
 @Component({
   selector: 'support-conversation-list',
@@ -23,53 +24,19 @@ import { UUID } from '~ycyw/shared'
     DatePipe,
     BackButton,
   ],
+  providers: [ConversationListViewModel],
   templateUrl: './conversation-list.html',
   styleUrl: './conversation-list.css',
 })
-export class ConversationList implements OnInit {
+export class ConversationList {
   private readonly router = inject(Router)
   private readonly route = inject(ActivatedRoute)
 
-  readonly conversations = signal<Conversation[]>([])
-
-  ngOnInit(): void {
-    // TODO: remplacer par ton ConversationsRepository (Mockoon)
-    this.conversations.set([
-      {
-        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb17' as UUID,
-        subject: 'Support Request 1',
-        lastMessage: {
-          content: 'Hello, I need help with my account.',
-          date: new Date(),
-        },
-      },
-      {
-        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb18' as UUID,
-        subject: 'Support Request 2',
-        lastMessage: {
-          content: 'I have a question about my order.',
-          date: new Date(),
-        },
-      },
-      {
-        id: '7b8e42ff-4471-429d-9f1a-cb3b220cdb19' as UUID,
-        subject: 'Support Request 3',
-        lastMessage: {
-          content: 'Can you assist me with a technical issue?',
-          date: new Date(),
-        },
-      },
-    ])
-  }
+  private readonly viewModel = inject(ConversationListViewModel)
+  readonly conversations = computed(() => this.viewModel.conversations())
 
   open(item: Conversation) {
     this.router.navigate(['.', item.id], { relativeTo: this.route })
-  }
-
-  newConversation() {
-    // TODO: logique d'ouverture/creation
-    const id = 'conv-' + Math.floor(Math.random() * 1000)
-    this.router.navigate([id], { relativeTo: this.route })
   }
 
   avatarLabel(item: Conversation): string {

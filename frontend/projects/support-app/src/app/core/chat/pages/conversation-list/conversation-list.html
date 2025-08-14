@@ -11,22 +11,13 @@
         >
           Conversations
         </h1>
-        <button pButton (click)="newConversation()" size="small">
-          <i class="pi pi-plus"></i>
-        </button>
       </div>
     </div>
   </div>
   @if (conversations().length < 1) {
     <div class="row">
       <div class="col">
-        Aucune conversation trouvée.
-        <p-message severity="info"
-          >Commencez une nouvelle conversation.</p-message
-        >
-        <button pButton label="Nouvelle" (click)="newConversation()">
-          <i class="pi pi-plus"></i>
-        </button>
+        <p-message severity="info">Aucune conversation trouvée.</p-message>
       </div>
     </div>
   } @else {

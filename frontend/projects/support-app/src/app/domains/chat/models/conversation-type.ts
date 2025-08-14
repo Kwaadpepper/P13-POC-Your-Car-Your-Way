@@ -2,9 +2,9 @@ import { Entity } from '~ycyw/shared'
 
 export interface Conversation extends Entity {
   subject: string
-  lastMessage: {
+  lastMessage?: {
     content: string
-    date: Date
+    sentAt: Date
   }
 }
 

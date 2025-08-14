@@ -8,6 +8,10 @@
     hideTransitionOptions="350ms"
     [breakpoints]="{ '620px': { width: '90%', right: '0', left: '10' } }"
   />
+
+  @if (isNavigating()) {
+    <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" />
+  }
 </header>
 <main>
   <router-outlet

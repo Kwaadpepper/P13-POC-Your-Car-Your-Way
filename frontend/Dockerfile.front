@@ -19,10 +19,12 @@ RUN bun install --frozen-lockfile
 
 # ===== Builder la librairie shared une fois =====
 FROM base AS shared-builder
+ARG CONFIG="production"
+
 # Code pour la librairie
 COPY . .
 # 1) Build de la lib shared
-RUN bun x ng build shared --configuration production
+RUN bun x ng build shared --configuration "$CONFIG"
 
 # ===== Builder Angular pour les apps =====
 FROM base AS ng-builder

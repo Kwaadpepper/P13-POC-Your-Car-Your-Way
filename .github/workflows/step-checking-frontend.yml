@@ -1,0 +1,63 @@
+name: Checking Frontend
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Récupère seulement le dernier commit
+          fetch-depth: 1
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          registry-url: https://registry.npmjs.org/
+          bun-version: "1.2.19"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Check alias
+        run: bun run check:alias
+
+  build:
+    needs: [lint]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    strategy:
+      fail-fast: false
+      matrix:
+        project: ["shell", "app-backoffice", "app-reservation", "app-support"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Récupère seulement le dernier commit
+          fetch-depth: 1
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          registry-url: https://registry.npmjs.org/
+          bun-version: "1.2.19"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build ${{ matrix.project }}
+        run: bun x ng build ${{ matrix.project }} --configuration production

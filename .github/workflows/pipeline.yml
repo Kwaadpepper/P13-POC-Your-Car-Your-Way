@@ -39,6 +39,10 @@ jobs:
     # avec succès avant de commencer
     needs:
       - checking-frontend
+    # Donne au workflow appelé les permissions nécessaires
+    permissions:
+      contents: read
+      packages: write
     # Utilise le workflow de construction et de publication d'images Docker
     uses: ./.github/workflows/step-docker-images.yml
     with:

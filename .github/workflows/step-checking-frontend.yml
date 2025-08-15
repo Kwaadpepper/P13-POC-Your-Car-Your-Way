@@ -41,7 +41,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: ["shell", "app-backoffice", "app-reservation", "app-support"]
+        project:
+          [
+            "shared",
+            "shell",
+            "app-backoffice",
+            "app-reservation",
+            "app-support",
+          ]
 
     steps:
       - name: Checkout

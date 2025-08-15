@@ -18,7 +18,6 @@ permissions:
   packages: write
 
 jobs:
-  # 1) Seed le cache Docker avec le build de 'shared'
   build-shared-cache:
     runs-on: ubuntu-latest
     concurrency:
@@ -38,7 +37,7 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/Dockerfile.front
-          target: ng-runtime
+          target: shared-builder
           push: false
           build-args: |
             PROJECT=shared
@@ -46,7 +45,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # 2) Build & Push des apps en réutilisant le cache de 'shared'
   build-and-push:
     needs: [build-shared-cache]
     runs-on: ubuntu-latest
@@ -88,7 +86,6 @@ jobs:
           IMAGE_BASE=${{ env.REGISTRY }}/${OWNER_SAFE}/${{ env.REPO }}-${{ matrix.name }}
           echo "tags=${IMAGE_BASE}:${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
 
-      # Phase 1: Build only (populate cache)
       - name: Build frontend (cache only)
         if: matrix.type == 'frontend'
         uses: docker/build-push-action@v6
@@ -112,7 +109,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           logout: true
 
-      # Phase 2: Reuse cache and push
       - name: Push frontend image (reuse cache)
         if: matrix.type == 'frontend'
         uses: docker/build-push-action@v6

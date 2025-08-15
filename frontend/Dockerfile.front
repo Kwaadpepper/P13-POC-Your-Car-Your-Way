@@ -1,6 +1,5 @@
 # ===== Base (deps + bun) =====
 FROM node:22.12-alpine AS base
-RUN apk add --no-cache bash jq
 WORKDIR /workspace
 
 # Bun depuis l'image officielle (couche en cache)

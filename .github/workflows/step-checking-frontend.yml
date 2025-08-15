@@ -24,7 +24,7 @@ jobs:
           bun-version: "1.2.19"
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun ci --silent --frozen-lockfile
 
       - name: Lint
         run: bun run lint
@@ -32,8 +32,39 @@ jobs:
       - name: Check alias
         run: bun run check:alias
 
-  build:
+  build-shared:
     needs: [lint]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          registry-url: https://registry.npmjs.org/
+          bun-version: "1.2.19"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build shared
+        run: bun x ng build shared --configuration production
+
+      - name: Upload shared dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: shared-dist
+          # IMPORTANT: chemin relatif au workspace, pas au working-directory
+          path: frontend/dist/shared
+
+  build:
+    needs: [lint, build-shared]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -58,6 +89,19 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Download shared dist
+        uses: actions/download-artifact@v4
+        with:
+          name: shared-dist
+          # IMPORTANT: chemin relatif au workspace, pas au working-directory
+          path: frontend/dist/shared
+
+      # Optionnel: sanity check pour éviter les faux positifs
+      - name: Check shared dist presence
+        run: |
+          ls -la dist || true
+          ls -la dist/shared || (echo "dist/shared manquant" && exit 1)
 
       - name: Build ${{ matrix.project }}
         run: bun x ng build ${{ matrix.project }} --configuration production

@@ -1,6 +1,5 @@
 # ===== Base (deps + bun) =====
 FROM node:22.12-alpine AS base
-RUN apk add --no-cache bash jq
 WORKDIR /workspace
 
 # Bun depuis l'image officielle (couche en cache)
@@ -16,6 +15,9 @@ COPY projects/shared ./projects/shared
 
 # Installer les deps
 RUN bun install --frozen-lockfile
+
+# Désactive la télémétrie Angular en CI
+ENV NG_CLI_ANALYTICS=false
 
 # ===== Builder la librairie shared une fois =====
 FROM base AS shared-builder

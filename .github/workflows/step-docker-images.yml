@@ -1,76 +1,73 @@
-name: Checking Frontend
+name: Front Images - Build & Push
 
 on:
   workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
+        description: "Le tag à utiliser pour l'image Docker (ex: 1.0.0, sha, etc.)"
+
+env:
+  REGISTRY: ghcr.io
+  OWNER: ${{ github.repository_owner }}
+  REPO: p13-poc-your-car-your-way
+
+permissions:
+  contents: read
+  packages: write
 
 jobs:
-  lint:
+  build-shared-cache:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
+    concurrency:
+      group: front-images-shared
+      cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build shared (cache only)
+        uses: docker/build-push-action@v6
         with:
-          registry-url: https://registry.npmjs.org/
-          bun-version: "1.2.19"
+          context: ./frontend
+          file: ./frontend/Dockerfile.front
+          target: shared-builder
+          push: false
+          build-args: |
+            PROJECT=shared
+            CONFIG=production
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Lint
-        run: bun run lint
-
-      - name: Check alias
-        run: bun run check:alias
-
-  build-shared:
-    needs: [lint]
+  build-and-push:
+    needs: [build-shared-cache]
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          registry-url: https://registry.npmjs.org/
-          bun-version: "1.2.19"
-
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Build shared
-        run: bun x ng build shared --configuration production
-
-      - name: Upload shared dist
-        uses: actions/upload-artifact@v4
-        with:
-          name: shared-dist
-          # IMPORTANT: chemin relatif au workspace, pas au working-directory
-          path: frontend/dist/shared
-
-  build:
-    needs: [lint, build-shared]
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
     strategy:
       fail-fast: false
       matrix:
-        project: ["shell", "app-backoffice", "app-reservation", "app-support"]
+        include:
+          - name: shell
+            type: frontend
+            project: shell
+          - name: app-backoffice
+            type: frontend
+            project: app-backoffice
+          - name: app-reservation
+            type: frontend
+            project: app-reservation
+          - name: app-support
+            type: frontend
+            project: app-support
+
+    concurrency:
+      group: front-images-${{ matrix.name }}
+      cancel-in-progress: true
 
     steps:
       - name: Checkout
@@ -78,27 +75,51 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          registry-url: https://registry.npmjs.org/
-          bun-version: "1.2.19"
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
-      - name: Download shared dist
-        uses: actions/download-artifact@v4
-        with:
-          name: shared-dist
-          # IMPORTANT: chemin relatif au workspace, pas au working-directory
-          path: frontend/dist/shared
-
-      # Optionnel: sanity check pour éviter les faux positifs
-      - name: Check shared dist presence
+      - name: Compute image tag
+        id: meta
+        shell: bash
         run: |
-          ls -la dist || true
-          ls -la dist/shared || (echo "dist/shared manquant" && exit 1)
+          OWNER_SAFE=$(echo "${{ env.OWNER }}" | tr '[:upper:]' '[:lower:]')
+          IMAGE_BASE=${{ env.REGISTRY }}/${OWNER_SAFE}/${{ env.REPO }}-${{ matrix.name }}
+          echo "tags=${IMAGE_BASE}:${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
 
-      - name: Build ${{ matrix.project }}
-        run: bun x ng build ${{ matrix.project }} --configuration production
+      - name: Build frontend (cache only)
+        if: matrix.type == 'frontend'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile.front
+          target: ng-runtime
+          push: false
+          build-args: |
+            PROJECT=${{ matrix.project }}
+            CONFIG=production
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          logout: true
+
+      - name: Push frontend image (reuse cache)
+        if: matrix.type == 'frontend'
+        uses: docker/build-push-action@v6
+        with:
+          context: ./frontend
+          file: ./frontend/Dockerfile.front
+          target: ng-runtime
+          push: true
+          build-args: |
+            PROJECT=${{ matrix.project }}
+            CONFIG=production
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

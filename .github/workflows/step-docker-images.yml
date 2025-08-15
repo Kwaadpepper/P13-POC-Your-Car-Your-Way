@@ -7,9 +7,6 @@ on:
         type: string
         required: true
         description: "Le tag à utiliser pour l'image Docker (ex: 1.0.0, sha, etc.)"
-    secrets:
-      GITHUB_TOKEN:
-        required: true
 
 env:
   REGISTRY: ghcr.io

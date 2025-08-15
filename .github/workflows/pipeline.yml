@@ -1,0 +1,51 @@
+name: Pipeline
+
+on:
+  # Déclenche le workflow sur les événements de push et de pull request
+  # sur les branches main, staging et release
+  # sur les tags de type vX.Y.Z
+  # et sur les tags pre-release (vX.Y.Z-rc.N, etc.)
+  push:
+    tags:
+      - "v*.*.*" # Déclenche le workflow sur les tags de type vX.Y.Z
+      - "v*.*.*-*" # Déclenche le workflow sur les tags pre-release (vX.Y.Z-rc.N, etc.)
+    branches:
+      - main
+      - staging
+      - release
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+  # Permet de déclencher le workflow manuellement via l'interface de GitHub
+  # Cela permet de tester le workflow sans faire de push
+  # ou de pull request
+  workflow_dispatch:
+
+# Définition des jobs à exécuter dans ce workflow
+jobs:
+  # Exécute le lint du frontend
+  checking-frontend:
+    uses: ./.github/workflows/step-checking-frontend.yml
+
+  # Construit et pousse les images Docker
+  docker-images:
+    name: Docker Images
+    # Se déclenche que si le job de test et d'analyse réussissent
+    # et que la branche est staging ou release, ou si c'est un tag
+    if: ${{ startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/release' }}
+    # Requiert que le job de test et d'analyse soient terminés
+    # avec succès avant de commencer
+    needs:
+      - checking-frontend
+    # Utilise le workflow de construction et de publication d'images Docker
+    uses: ./.github/workflows/step-docker-images.yml
+    with:
+      # Tag de l'image à pousser
+      # Si la branche est 'release', on tag l'image avec 'latest'
+      # Sinon, on utilise le nom de la branche ou le nom du tag
+      tag: >
+        ${{ startsWith(github.ref, 'refs/heads/release') && 'latest' ||
+            startsWith(github.ref, 'refs/tags/') && github.ref_name ||
+            github.ref_name }}

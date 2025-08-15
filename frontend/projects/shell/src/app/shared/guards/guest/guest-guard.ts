@@ -25,8 +25,6 @@ export class GuestGuard implements CanActivate {
     // * If the user is logged in, allow access
     if (!session.isLoggedIn) return true
 
-    console.log(session.user)
-
     // * If the user is logged in, redirect
     const loginRoute = session.user!.role === Role.CLIENT
       ? this.router.parseUrl(this.redirectUrlClient)

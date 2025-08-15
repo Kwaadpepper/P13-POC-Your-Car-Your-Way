@@ -1,4 +1,4 @@
 export const environment = {
-  env: 'development',
+  env: 'production',
   backofficeWebServer: 'http://localhost:3001',
 }

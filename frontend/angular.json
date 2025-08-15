@@ -22,6 +22,9 @@
             },
             "development": {
               "tsConfig": "projects/shared/tsconfig.lib.json"
+            },
+            "development-docker": {
+              "tsConfig": "projects/shared/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -153,7 +156,6 @@
               ]
             },
             "development-docker": {
-              "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
               "fileReplacements": [
@@ -329,7 +331,6 @@
               ]
             },
             "development-docker": {
-              "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
               "fileReplacements": [
@@ -495,7 +496,6 @@
               ]
             },
             "development-docker": {
-              "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
               "fileReplacements": [
@@ -661,7 +661,6 @@
               ]
             },
             "development-docker": {
-              "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
               "fileReplacements": [

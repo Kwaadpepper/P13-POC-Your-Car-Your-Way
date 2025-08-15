@@ -16,6 +16,9 @@ COPY projects/shared ./projects/shared
 # Installer les deps
 RUN bun install --frozen-lockfile
 
+# Désactive la télémétrie Angular en CI
+ENV NG_CLI_ANALYTICS=false
+
 # ===== Builder la librairie shared une fois =====
 FROM base AS shared-builder
 ARG CONFIG="production"

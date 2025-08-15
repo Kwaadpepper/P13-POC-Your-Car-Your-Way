@@ -523,7 +523,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4204
+            "port": 4202
           }
         }
       }
@@ -689,7 +689,7 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4202
+            "port": 4203
           }
         }
       }

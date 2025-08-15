@@ -1,10 +1,13 @@
+# ===== Stage Bun (référence stable) =====
+ARG BUN_VERSION=1.2.19
+FROM oven/bun:${BUN_VERSION}-alpine AS bun
+
 # ===== Base (deps + bun) =====
 FROM node:22.12-alpine AS base
 WORKDIR /workspace
 
-# Bun depuis l'image officielle (couche en cache)
-ARG BUN_VERSION=1.2.19
-COPY --from=oven/bun:${BUN_VERSION}-alpine /usr/local/bin/bun /usr/local/bin/bun
+# Bun depuis le stage "bun"
+COPY --from=bun /usr/local/bin/bun /usr/local/bin/bun
 
 # Manifeste + lockfiles (max cache)
 COPY package.json ./

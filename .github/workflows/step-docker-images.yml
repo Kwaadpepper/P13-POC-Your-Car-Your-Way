@@ -95,6 +95,7 @@ jobs:
           target: ng-runtime
           push: false
           build-args: |
+            BUN_VERSION: '1.2.19'
             PROJECT=${{ matrix.project }}
             CONFIG=production
           tags: ${{ steps.meta.outputs.tags }}
@@ -118,6 +119,7 @@ jobs:
           target: ng-runtime
           push: true
           build-args: |
+            BUN_VERSION: '1.2.19'
             PROJECT=${{ matrix.project }}
             CONFIG=production
           tags: ${{ steps.meta.outputs.tags }}

@@ -1,7 +1,7 @@
 {
   "uuid": "7bd3e9f8-63b1-4862-98a8-f4f4cf4806a0",
   "lastMigration": 33,
-  "name": "Rental oc",
+  "name": "Your Car Your Way",
   "endpointPrefix": "api",
   "latency": 0,
   "port": 3001,

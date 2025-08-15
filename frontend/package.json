@@ -17,7 +17,7 @@
     "lint:css:fix": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" --fix",
     "check:alias": "node scripts/check-alias.mjs",
     "prepare": "export GIT_DIR=\"./..\" husky",
-    "mock:ws": "bunx tsx dev-mocks/mock-ws-server.ts"
+    "mock:ws": "bun dev-mocks/mock-ws-server.ts"
   },
   "prettier": {
     "overrides": [
@@ -67,6 +67,7 @@
     "angular-eslint": "20.1.1",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "husky": "^9.1.7",
     "jasmine-core": "~5.8.0",
@@ -87,7 +88,6 @@
     "stylelint-config-standard": "^39.0.0",
     "ts-node": "^10.9.2",
     "typescript": "~5.8.3",
-    "typescript-eslint": "8.34.1",
-    "ws": "^8.18.3"
+    "typescript-eslint": "8.34.1"
   }
 }

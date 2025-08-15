@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  # Shell (host)
+  shell:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+      target: ng-runtime
+      args:
+        PROJECT: shell
+        CONFIG: development-docker
+    image: ycyw/shell:dev-docker
+    ports:
+      - "4200:80"
+    depends_on:
+      - mockoon
+      - mock-ws
+
+  # Backoffice
+  app-backoffice:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+      target: ng-runtime
+      args:
+        PROJECT: app-backoffice
+        CONFIG: development-docker
+    image: ycyw/app-backoffice:dev-docker
+    ports:
+      - "4201:80"
+    depends_on:
+      - mockoon
+      - mock-ws
+
+        # Reservation
+  app-reservation:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+      target: ng-runtime
+      args:
+        PROJECT: app-reservation
+        CONFIG: development-docker
+    image: ycyw/app-reservation:dev-docker
+    ports:
+      - "4202:80"
+    depends_on:
+      - mockoon
+      - mock-ws
+
+  # Support
+  app-support:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+      target: ng-runtime
+      args:
+        PROJECT: app-support
+        CONFIG: development-docker
+    image: ycyw/app-support:dev-docker
+    ports:
+      - "4203:80"
+    depends_on:
+      - mockoon
+      - mock-ws
+
+  # HTTP mocks via Mockoon CLI
+  mockoon:
+    build:
+      context: .
+      dockerfile: Dockerfile.front.mockoon
+    image: ycyw/mockoon-server:dev-docker
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+  # WebSocket mock via Bun (no image publish; uses repo script "mock:ws")
+  mock-ws:
+    build:
+      context: .
+      dockerfile: Dockerfile.front.mock-ws
+    image: ycyw/mock-ws-server:dev-docker
+    ports:
+      - "3002:3002"
+    restart: unless-stopped

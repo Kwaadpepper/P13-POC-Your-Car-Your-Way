@@ -22,6 +22,9 @@
             },
             "development": {
               "tsConfig": "projects/shared/tsconfig.lib.json"
+            },
+            "development-docker": {
+              "tsConfig": "projects/shared/tsconfig.lib.json"
             }
           },
           "defaultConfiguration": "production"
@@ -56,6 +59,9 @@
             },
             "development": {
               "target": "shell:esbuild:development"
+            },
+            "development-docker": {
+              "target": "shell:esbuild:development-docker"
             }
           },
           "defaultConfiguration": "production"
@@ -148,6 +154,16 @@
                   "with": "projects/shell/src/environments/environment.development.ts"
                 }
               ]
+            },
+            "development-docker": {
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/shell/src/environments/environment.ts",
+                  "with": "projects/shell/src/environments/environment.development-docker.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -160,6 +176,9 @@
             },
             "development": {
               "buildTarget": "shell:esbuild:development"
+            },
+            "development-docker": {
+              "buildTarget": "shell:esbuild:development-docker"
             }
           },
           "defaultConfiguration": "development",
@@ -205,6 +224,9 @@
             },
             "development": {
               "target": "app-backoffice:esbuild:development"
+            },
+            "development-docker": {
+              "target": "app-backoffice:esbuild:development-docker"
             }
           },
           "defaultConfiguration": "production"
@@ -307,6 +329,16 @@
                   "with": "projects/app-backoffice/src/environments/environment.development.ts"
                 }
               ]
+            },
+            "development-docker": {
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/app-backoffice/src/environments/environment.ts",
+                  "with": "projects/app-backoffice/src/environments/environment.development-docker.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -319,6 +351,9 @@
             },
             "development": {
               "buildTarget": "app-backoffice:esbuild:development"
+            },
+            "development-docker": {
+              "buildTarget": "app-backoffice:esbuild:development-docker"
             }
           },
           "defaultConfiguration": "development",
@@ -354,6 +389,9 @@
             },
             "development": {
               "target": "app-reservation:esbuild:development"
+            },
+            "development-docker": {
+              "target": "app-reservation:esbuild:development-docker"
             }
           },
           "defaultConfiguration": "production"
@@ -456,6 +494,16 @@
                   "with": "projects/app-reservation/src/environments/environment.development.ts"
                 }
               ]
+            },
+            "development-docker": {
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/app-reservation/src/environments/environment.ts",
+                  "with": "projects/app-reservation/src/environments/environment.development-docker.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -468,11 +516,14 @@
             },
             "development": {
               "buildTarget": "app-reservation:esbuild:development"
+            },
+            "development-docker": {
+              "buildTarget": "app-reservation:esbuild:development-docker"
             }
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4204
+            "port": 4202
           }
         }
       }
@@ -503,6 +554,9 @@
             },
             "development": {
               "target": "app-support:esbuild:development"
+            },
+            "development-docker": {
+              "target": "app-support:esbuild:development-docker"
             }
           },
           "defaultConfiguration": "production"
@@ -605,6 +659,16 @@
                   "with": "projects/app-support/src/environments/environment.development.ts"
                 }
               ]
+            },
+            "development-docker": {
+              "extractLicenses": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "projects/app-support/src/environments/environment.ts",
+                  "with": "projects/app-support/src/environments/environment.development-docker.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -617,11 +681,14 @@
             },
             "development": {
               "buildTarget": "app-support:esbuild:development"
+            },
+            "development-docker": {
+              "buildTarget": "app-support:esbuild:development-docker"
             }
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4202
+            "port": 4203
           }
         }
       }

@@ -14,7 +14,7 @@ import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
 })
 export class FaqRepositoryImpl implements FaqRepository {
   private readonly http = inject(HttpClient)
-  private readonly serviceUrl = environment.supportWebServer
+  private readonly serviceUrl = environment.endpoint
 
   readonly resourceUrl = `${this.serviceUrl}/api/support`
 

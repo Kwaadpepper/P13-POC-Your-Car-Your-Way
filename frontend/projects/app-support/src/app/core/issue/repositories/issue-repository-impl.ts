@@ -15,7 +15,7 @@ import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
 })
 export class IssueRepositoryImpl implements IssueRepository {
   private readonly http = inject(HttpClient)
-  private readonly serviceUrl = environment.supportWebServer
+  private readonly serviceUrl = environment.endpoint
 
   readonly resourceUrl = `${this.serviceUrl}/api/support`
 

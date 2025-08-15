@@ -15,7 +15,7 @@ import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
 })
 export class ConversationRepositoryImpl implements ConversationRepository {
   private readonly http = inject(HttpClient)
-  private readonly serviceUrl = environment.supportWebServer
+  private readonly serviceUrl = environment.endpoint
 
   readonly resourceUrl = `${this.serviceUrl}/api/support`
 

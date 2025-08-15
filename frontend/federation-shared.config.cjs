@@ -17,11 +17,7 @@ module.exports = {
       "primeng/icons": { singleton: true },
       "primeicons": { singleton: true },
       'rxjs': { singleton: true  },
-      'rxjs/operators': { singleton: true  },
-      "@primeuix/styles": { singleton: true },
-      "@primeuix/styled": { singleton: true },
-      "@primeuix/themes": { singleton: true },
-      "@primeuix/utils": { singleton: true },
+      'rxjs/operators': { singleton: true  }
     }),
   },
   skip: [

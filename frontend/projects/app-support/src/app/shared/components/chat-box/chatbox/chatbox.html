@@ -25,7 +25,7 @@
 
   <!-- Zone d'entrée -->
   <support-message-input
-    [disabled]="!conversation"
+    [disabled]="!conversation()"
     (send)="onSend($event)"
     (typing)="onTyping($event)"
   />

@@ -14,7 +14,7 @@
     pButton
     label="Envoyer"
     (click)="submit()"
-    [disabled]="!text.trim() || disabled"
+    [disabled]="!text.trim() || disabled()"
     class="mx-3"
   >
     <i class="pi pi-send"></i>

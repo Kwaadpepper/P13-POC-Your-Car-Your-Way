@@ -91,7 +91,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
-          file: ./frontend/Dockerfile.front
+          file: ./docker/frontend/Dockerfile.front
           target: ng-runtime
           push: false
           build-args: |
@@ -115,7 +115,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
-          file: ./frontend/Dockerfile.front
+          file: ./frontend/docker/Dockerfile.front
           target: ng-runtime
           push: true
           build-args: |

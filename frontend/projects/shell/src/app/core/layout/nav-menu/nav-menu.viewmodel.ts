@@ -14,10 +14,13 @@ export class NavMenuViewModel {
 
   public readonly loggedIn = computed(() => this.sessionStore.session().isLoggedIn)
 
-  public readonly supportUrl = computed(() => {
+  public readonly routePrefix = computed(() => {
     const session = this.sessionStore.session()
     return this.loggedIn() && session.user!.role === Role.CLIENT
-      ? '/reservation/support'
-      : '/backoffice/support'
+      ? '/reservation'
+      : '/backoffice'
   })
+
+  public readonly dashboardUrl = computed(() => `${this.routePrefix()}/dashboard`)
+  public readonly supportUrl = computed(() => `${this.routePrefix()}/support`)
 }

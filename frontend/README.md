@@ -1,201 +1,160 @@
-# Frontend
+# Guide : Ajouter un nouveau projet à votre monorepo Angular
 
-Ce projet est un monorepo Angular (version 20) orienté micro-frontends, conçu pour l’authentification et le support dans une architecture scalable.
-
----
-
-## 1. Prérequis
-
-- **Node.js** (>=18 recommandé)
-- **bun** (optionnel mais recommandé) [https://bun.sh/](https://bun.sh/)
-- Un navigateur moderne (Chrome, Firefox, Edge…)
+Ce guide détaille les étapes pour intégrer proprement un nouveau projet (application ou librairie) dans votre workspace Angular, selon les conventions du monorepo et les meilleures pratiques Angular/TypeScript.
 
 ---
 
-## 2. Architecture du projet
+## 0. Prérequis repo (post-clone)
 
-- Le dossier `projects/` contient les différentes applications et librairies.
-- Les styles partagés sont mutualisés dans `shared/src/styles/shared.css`.
-- Chaque projet possède son propre préfixe pour les composants.
-- Les conventions de nommage et d’organisation facilitent l’intégration de micro-frontends (Native Federation).
-
----
-
-## 3. Configuration / Variables d’environnement
-
-Les variables d’environnement sont gérées via les fichiers `environment.*.ts` dans chaque projet.
-Pour personnaliser la configuration :
-- Modifiez les fichiers `projects/<nom-du-projet>/src/environments/`.
-- Exemple : pour changer l’URL de l’API, éditez `environment.ts`.
-
----
-
-## 4. Gestion des styles
-
-Dans chaque projet, le fichier de styles principal doit importer les styles partagés :
-
-```css
-@import "./../../../shared/src/styles/shared.css";
-```
-
-Cela permet d’uniformiser l’apparence et d’éviter la duplication.
-
----
-
-## 5. Convention de nommage
-
-Chaque projet Angular définit un préfixe unique dans `angular.json`.
-Tous les tags de composants générés utilisent ce préfixe (ex : `shell-dashboard`, `support-dashboard`), ce qui évite les collisions lors de l’utilisation de Native Federation.
-
----
-
-## 6. Bonnes pratiques Angular & TypeScript
-
-- Utilisez **standalone components** (pas de NgModules).
-- Utilisez **signals** pour le state local.
-- Préférez les **composants petits et spécialisés**.
-- Utilisez `input()` et `output()` au lieu des décorateurs.
-- Préférez **Reactive Forms**.
-- Utilisez les **structures de contrôle natives** (`@if`, `@for`, `@switch`).
-- Utilisez `NgOptimizedImage` pour les images statiques.
-- Respectez la **single responsibility** pour les services.
-- Utilisez `inject()` au lieu de l’injection par constructeur.
-- Évitez `ngClass`/`ngStyle`, utilisez des bindings `class`/`style`.
-- Activez `changeDetection: ChangeDetectionStrategy.OnPush` dans les composants.
-- Privilégiez le typage strict TypeScript, évitez le type `any`.
-
----
-
-## 7. Utilisation des librairies
-
-La bibliothèque principale est **PrimeNG**.
-
-**Installation :**
+Après un clone, activez Husky/commitlint côté frontend :
 ```bash
-ng add primeng
-# ou
-npm install primeng primeicons
+cd frontend
+bun install
+bun run prepare
+```
+Vérifiez les hooks git :
+```bash
+git config --get core.hooksPath
+# doit renvoyer: frontend/.husky
+```
+---
+
+## 1. Générer le projet Angular
+
+Application :
+```bash
+bun x ng generate application <nom-du-projet>
+```
+Librairie :
+```bash
+bun x ng generate library <nom-de-la-lib>
+```
+Le projet est créé dans le dossier `projects/`.
+
+---
+
+## 2. Configurer le préfixe du projet
+
+Ouvrez `angular.json` et vérifiez que le préfixe du projet est unique (utile pour Native Federation, vérifié par ESLint).
+
+---
+
+## 3. Ajouter ESLint au projet
+
+```bash
+bun x ng g angular-eslint:add-eslint-to-project <nom-du-projet>
+```
+Si besoin, renommez le fichier de config en `.mjs` pour éviter le warning Node.
+
+---
+
+## 4. Générer les composants avec préfixe
+
+```bash
+bun x ng generate component <nom-du-composant> --project=<nom-du-projet>
+```
+Astuce : le préfixe est appliqué automatiquement au selector.
+
+---
+
+## 5. Définir les alias TypeScript
+
+Dans le `tsconfig.json` racine et celui du projet, ajoutez les alias nécessaires :
+```json
+"@ycyw/mon-alias/*": ["./projects/<nom-du-projet>/src/app/mon-dossier/*"]
+```
+Respectez la séparation entre alias globaux et spécifiques.
+
+---
+
+## 6. Importer les styles partagés
+
+Dans le fichier de styles du projet (`projects/<nom-du-projet>/src/styles.css`), ajoutez en haut :
+```css
+@import "@ycyw/styles";
+```
+Respectez l’ordre d’import attendu par Tailwind.
+
+---
+
+## 7. Installer et utiliser PrimeNG
+
+```bash
+bun x ng add primeng
 # ou
 bun add primeng primeicons
 ```
-
-Importez les modules nécessaires selon la [documentation officielle PrimeNG](https://primeng.org/).
-
----
-
-## 8. Scripts d’automatisation
-
-Des scripts personnalisés (alias, formatage, vérifications) sont en cours d’ajout dans le dossier `scripts/`.  
-Consultez les scripts disponibles dans `package.json`.
+Importez les modules nécessaires dans votre projet.
 
 ---
 
-## 9. Déploiement
+## 8. Configurer Native Federation
 
-Les artefacts de build sont générés dans le dossier `dist/`.
-
-**Déploiement local :**
-- Compiler en production :
-  ```bash
-  npm run build --project=shell
-  # ou
-  bun run build --project=shell
-  ```
-- Copier le contenu de `dist/<nom-du-projet>` sur le serveur cible.
-
-**Automatisation** : à venir (scripts et CI/CD).
+- Utilisez la config partagée : `frontend/shared/federation-shared.config.cjs`
+- Dans chaque projet, créez : `projects/<nom-du-projet>/federation.config.js`
+- Gardez la syntaxe CommonJS (`require`/`module.exports`), pas de `"type": "module"` dans le frontend.
 
 ---
 
-## 10. Contribution
+## 9. Configurer les environnements Angular
 
-- Forkez le dépôt et créez une branche dédiée (`feature/<votre-nom>/<description>`).
-- Respectez la convention de nommage et les bonnes pratiques Angular/TypeScript.
-- Décrivez clairement vos Pull Requests.
-- Vérifiez le lint et les tests avant toute PR.
-
----
-
-## 🖥️ Développement local
-
-Pour lancer le serveur de développement sur un projet spécifique :
-
+Générez les fichiers d’environnement :
 ```bash
-npm run start --project=shell
-# ou
-bun run start --project=shell
+bun x ng generate environments --project=<nom-du-projet>
 ```
-
-Ouvrez [http://localhost:4200/](http://localhost:4200/).
+Ajoutez la configuration de `fileReplacements` dans `angular.json` pour le dev/prod.
 
 ---
 
-## 🧹 Linter le code
+## 10. Vérifier les alias
 
-Pour lancer le lint sur un projet précis :
+Lancez :
 ```bash
-ng lint <nom-du-projet>
+bun run check:alias
 ```
+Corrigez les erreurs jusqu’à obtention d’un message de succès.
 
-Pour tous les projets :
+---
+
+## 11. Lancer le lint et la build
+
 ```bash
-npm run lint
-# ou
-bun run lint
+bun run lint <nom-du-projet>
+bun run build <nom-du-projet>
 ```
 
 ---
 
-## ⚙️ Construire le projet
+## 12. Conventional Commits (scopes)
 
-Pour compiler en production :
-```bash
-npm run build --project=shell
-# ou
-bun run build --project=shell
-```
-
-Pour tous les projets :
-```bash
-npm run build
-# ou
-bun run build
-```
-
-Les artefacts se trouvent dans `dist/`.
+Ajoutez/maintenez les scopes dans `.vscode/settings.json` pour l’extension Conventional Commits.
 
 ---
 
-## 👁️ Build en mode watch
+## 13. Commit & Push
 
-Pour builder en mode « watch » :
 ```bash
-npm run watch --project=shell
-# ou
-bun run watch --project=shell
+git add .
+git commit -m "feat(<scope>): ajout du projet <nom-du-projet>"
+git push
 ```
 
 ---
 
-## 🧪 Tester
+## Checklist rapide
 
-Pour exécuter les tests unitaires :
-```bash
-npm run test --project=shell
-# ou
-bun run test --project=shell
-```
+- [ ] Projet généré dans `projects/`
+- [ ] Préfixe unique configuré
+- [ ] ESLint installé et configuré
+- [ ] Composants générés avec préfixe
+- [ ] Alias TypeScript définis et valides
+- [ ] Styles partagés importés
+- [ ] PrimeNG installé et utilisé
+- [ ] Native Federation branchée sur la config partagée
+- [ ] Fichiers d’environnement créés et fileReplacements configurés
+- [ ] Lint OK
+- [ ] Build OK
+- [ ] Scopes Conventional Commits mis à jour dans `.vscode/settings.json`
+- [ ] Commit effectué
 
 ---
-
-## 📚 Guide d’ajout de projet
-
-Consultez le guide détaillé :
-➡️ [GUIDE-ajouter-un-nouveau-projet-angular-monorepo.md](./GUIDE-ajouter-un-nouveau-projet-angular-monorepo.md)
-
----
-
-## 🔗 Ressources complémentaires
-
-- [Documentation Angular CLI](https://angular.dev/tools/cli)
-- [Documentation PrimeNG](https://primeng.org/)

@@ -26,8 +26,12 @@ on:
 # Définition des jobs à exécuter dans ce workflow
 jobs:
   # Exécute le lint du frontend
-  checking-frontend:
-    uses: ./.github/workflows/step-checking-frontend.yml
+  linting-frontend:
+    uses: ./.github/workflows/step-linting-frontend.yml
+
+  # Exécute le build du frontend
+  building-frontend:
+    uses: ./.github/workflows/step-building-frontend.yml
 
   # Construit et pousse les images Docker
   docker-images:
@@ -38,7 +42,8 @@ jobs:
     # Requiert que le job de test et d'analyse soient terminés
     # avec succès avant de commencer
     needs:
-      - checking-frontend
+      - linting-frontend
+      - building-frontend
     # Donne au workflow appelé les permissions nécessaires
     permissions:
       contents: read

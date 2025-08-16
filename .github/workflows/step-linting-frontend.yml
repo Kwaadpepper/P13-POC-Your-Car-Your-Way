@@ -1,0 +1,32 @@
+name: Lint & Check Frontend
+
+on:
+  workflow_call:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          registry-url: https://registry.npmjs.org/
+          bun-version: "1.2.19"
+
+      - name: Install dependencies
+        run: bun ci --silent --frozen-lockfile
+
+      - name: Lint
+        run: bun run lint
+
+      - name: Check alias
+        run: bun run check:alias

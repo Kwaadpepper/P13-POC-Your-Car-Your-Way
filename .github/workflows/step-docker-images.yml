@@ -1,4 +1,4 @@
-name: Front Images - Build & Push
+name: Docker Images - Build & Push
 
 on:
   workflow_call:

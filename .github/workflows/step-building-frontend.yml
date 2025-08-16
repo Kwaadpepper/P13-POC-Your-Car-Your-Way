@@ -1,39 +1,10 @@
-name: Checking Frontend
+name: Build Frontend
 
 on:
   workflow_call:
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: frontend
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          # Récupère seulement le dernier commit
-          fetch-depth: 1
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          registry-url: https://registry.npmjs.org/
-          bun-version: "1.2.19"
-
-      - name: Install dependencies
-        run: bun ci --silent --frozen-lockfile
-
-      - name: Lint
-        run: bun run lint
-
-      - name: Check alias
-        run: bun run check:alias
-
   build-shared:
-    needs: [lint]
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -60,11 +31,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: shared-dist
-          # IMPORTANT: chemin relatif au workspace, pas au working-directory
           path: frontend/dist/shared
 
   build:
-    needs: [lint, build-shared]
+    needs: build-shared
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -78,7 +48,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # Récupère seulement le dernier commit
           fetch-depth: 1
 
       - name: Setup Bun
@@ -94,10 +63,8 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: shared-dist
-          # IMPORTANT: chemin relatif au workspace, pas au working-directory
           path: frontend/dist/shared
 
-      # Optionnel: sanity check pour éviter les faux positifs
       - name: Check shared dist presence
         run: |
           ls -la dist || true
@@ -105,3 +72,9 @@ jobs:
 
       - name: Build ${{ matrix.project }}
         run: bun x ng build ${{ matrix.project }} --configuration production
+
+      - name: Upload ${{ matrix.project }} dist
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.project }}
+          path: frontend/dist/${{ matrix.project }}

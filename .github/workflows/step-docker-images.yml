@@ -36,7 +36,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
-          file: ./frontend/Dockerfile.front
+          file: ./frontend/docker/Dockerfile.front
           target: shared-builder
           push: false
           build-args: |

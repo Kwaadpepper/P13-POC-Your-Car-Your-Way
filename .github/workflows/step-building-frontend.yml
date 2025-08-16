@@ -30,7 +30,7 @@ jobs:
       - name: Upload shared dist
         uses: actions/upload-artifact@v4
         with:
-          name: shared-dist
+          name: dist-front-shared
           path: frontend/dist/shared
 
   build:
@@ -62,7 +62,7 @@ jobs:
       - name: Download shared dist
         uses: actions/download-artifact@v4
         with:
-          name: shared-dist
+          name: dist-front-shared
           path: frontend/dist/shared
 
       - name: Check shared dist presence
@@ -76,5 +76,5 @@ jobs:
       - name: Upload ${{ matrix.project }} dist
         uses: actions/upload-artifact@v4
         with:
-          name: dist-${{ matrix.project }}
+          name: dist-front-${{ matrix.project }}
           path: frontend/dist/${{ matrix.project }}

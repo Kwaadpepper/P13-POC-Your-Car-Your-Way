@@ -1,0 +1,20 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          # Vu depuis backend/platform/config-server vers backend/config
+          search-locations: file:../../config
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

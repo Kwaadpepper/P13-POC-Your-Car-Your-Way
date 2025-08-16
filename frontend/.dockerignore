@@ -16,7 +16,7 @@ yarn-error.log*
 pnpm-debug.log*
 *.log
 
-# Env files (gardez un .env.example si besoin)
+# Env files
 .env
 .env.*
 
@@ -29,7 +29,7 @@ pnpm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Tests (si non nécessaires au build)
+# Tests
 **/__tests__/
 **/*.spec.ts
 **/*.spec.js
@@ -41,9 +41,6 @@ tmp
 temp
 npm-packages-offline-cache
 
-# S’assurer que ces fichiers restent inclus
-!Dockerfile.front
-!nginx.conf
-
-# Conserver la lib locale utilisée via "file:"
+# Conserver les fichiers Docker et la lib locale
+!docker/**
 !projects/shared/**

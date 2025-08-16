@@ -1,7 +1,7 @@
 FROM node:18-alpine
 
 RUN npm install -g @mockoon/cli@9.3.0
-COPY ./resources/mockoon/ycyw.json ./ycyw.json
+COPY ../resources/mockoon/ycyw.json ./ycyw.json
 
 # Install curl for healthcheck and tzdata for timezone support.
 RUN apk --no-cache add curl tzdata

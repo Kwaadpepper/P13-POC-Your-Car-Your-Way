@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 
-import { Repository } from '~ycyw/shared'
+import { Repository } from '@ycyw/shared'
 
 import { Conversation } from '../models'
 

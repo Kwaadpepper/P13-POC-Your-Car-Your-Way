@@ -3,8 +3,7 @@ import { inject, Injectable } from '@angular/core'
 
 import { catchError, Observable, throwError } from 'rxjs'
 
-import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
-
+import { SessionExpiredError, verifyResponseType } from '@ycyw/shared'
 import { ConversationListZod } from '@ycyw/support-core/api/schemas'
 import conversationListSchema from '@ycyw/support-core/api/schemas/conversation-list-schema'
 import { Conversation } from '@ycyw/support-domains/chat/models'

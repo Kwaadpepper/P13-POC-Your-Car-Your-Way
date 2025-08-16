@@ -1,4 +1,4 @@
-import { Entity, UUID } from '~ycyw/shared'
+import { Entity, UUID } from '@ycyw/shared'
 
 import { IssueStatus } from '../enums'
 

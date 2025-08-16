@@ -9,7 +9,7 @@ import {
   SessionSnapshot,
   SessionStoreReadonly,
   SharedUserProfile,
-} from '~ycyw/shared'
+} from '@ycyw/shared'
 
 @Injectable({ providedIn: 'root' })
 export class SessionStore implements SessionStoreReadonly {

@@ -1,7 +1,6 @@
 import { inject, Inject } from '@angular/core'
 
-import { UUID } from '~ycyw/shared'
-
+import { UUID } from '@ycyw/shared'
 import { ConversationStore } from '@ycyw/support-core/chat/stores'
 
 @Inject({

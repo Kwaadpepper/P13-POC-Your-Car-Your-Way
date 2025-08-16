@@ -1,0 +1,8 @@
+{
+  "**/*.{ts,html}": [
+    "cd frontend && sh -c 'npm run lint:ts:fix'"
+  ],
+  "**/*.css": [
+    "cd frontend && sh -c 'npm run lint:css:fix'"
+  ]
+}

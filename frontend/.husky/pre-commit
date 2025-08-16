@@ -1,7 +1,0 @@
-#!/usr/bin/env sh
-# Exécute lint-staged depuis le dossier frontend
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-cd "$REPO_ROOT/frontend" || exit 1
-
-echo "Husky (pre-commit): lint-staged dans $(pwd)"
-npx --no-install lint-staged -c .lintstagedrc.json

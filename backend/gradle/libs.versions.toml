@@ -1,0 +1,21 @@
+[versions]
+java = "21"
+spring_boot = "3.4.4"
+spring_cloud = "2024.0.2"
+jspecify = "1.0.0"
+error_prone = "2.29.2"
+nullaway = "0.10.24"
+errorprone_plugin = "4.1.0"
+
+[libraries]
+spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring_boot" }
+spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring_cloud" }
+jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
+errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "error_prone" }
+nullaway = { module = "com.uber.nullaway:nullaway", version.ref = "nullaway" }
+micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
+postgresql = { module = "org.postgresql:postgresql" }
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring_boot" }
+errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone_plugin" }

@@ -1,11 +1,49 @@
+# OS / Editor backups
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+spring.log
+
+# Environment files (keep examples)
+.env
+.env.*.local
+.env.local
+.envrc
+!.env.example
+
+# Java
+*.class
+*.ctxt
+hs_err_pid*
+replay_pid*
+
 # Maven
 HELP.md
-target/
+**/target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-### STS ###
+# Gradle
+**/.gradle/
+**/build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+# Keep the Gradle wrapper (must be committed)
+# gradle/wrapper/gradle-wrapper.jar
+
+# Databases (local dev)
+*.h2.db
+*.mv.db
+*.db
+*.sqlite
+
+# Eclipse / STS
 .apt_generated
 .classpath
 .factorypath
@@ -13,22 +51,27 @@ target/
 .settings
 .springBeans
 .sts4-cache
+bin/
 
-### IntelliJ IDEA ###
+# IntelliJ IDEA
 .idea
 *.iws
 *.iml
 *.ipr
+out/
 
-### NetBeans ###
+# NetBeans
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# VS Code
 .vscode/
+
+# Node / Frontend (if present)
+node_modules/
+dist/
+coverage/
+.eslintcache

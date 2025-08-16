@@ -15,6 +15,8 @@
     <spring-boot.version>3.4.4</spring-boot.version>
     <spring-cloud.version>2024.0.2</spring-cloud.version>
     <maven.compiler.release>${java.version}</maven.compiler.release>
+    <error-prone.version>2.27.0</error-prone.version>
+    <jspecify.version>0.3.0</jspecify.version>
   </properties>
 
   <dependencyManagement>
@@ -32,6 +34,11 @@
         <version>${spring-cloud.version}</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.google.jspecify</groupId>
+        <artifactId>jspecify</artifactId>
+        <version>${jspecify.version}</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -62,4 +69,45 @@
     <module>platform/gateway</module>
     <module>services/user-service</module>
   </modules>
+
+  <profiles>
+    <profile>
+      <id>error-prone</id>
+      <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                <compilerArgs>
+                  <arg>-Xplugin:ErrorProne</arg>
+                  <arg>-Xep:Nullness:ERROR</arg>
+                  <arg>-Xep:JSpecify:ERROR</arg>
+                </compilerArgs>
+                <annotationProcessorPaths>
+                  <path>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_core</artifactId>
+                    <version>${error-prone.version}</version>
+                  </path>
+                  <path>
+                    <groupId>com.google.errorprone</groupId>
+                    <artifactId>error_prone_annotations</artifactId>
+                    <version>${error-prone.version}</version>
+                  </path>
+                </annotationProcessorPaths>
+              </configuration>
+            </plugin>
+          </plugins>
+        </pluginManagement>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

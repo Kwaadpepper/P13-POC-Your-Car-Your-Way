@@ -1,0 +1,32 @@
+{
+  "conventionalCommits.scopes": [
+    "back",
+    "back-auth",
+    "back-support",
+    "back-user"
+  ],
+  "maven.view": "hierarchical",
+  "java.dependency.packagePresentation": "hierarchical",
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#c4350c",
+    "activityBar.background": "#c4350c",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#043c10",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#e7e7e799",
+    "sash.hoverBorder": "#c4350c",
+    "statusBar.background": "#942809",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#c4350c",
+    "statusBarItem.remoteBackground": "#942809",
+    "statusBarItem.remoteForeground": "#e7e7e7",
+    "titleBar.activeBackground": "#942809",
+    "titleBar.activeForeground": "#e7e7e7",
+    "titleBar.inactiveBackground": "#94280999",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#942809"
+}

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core'
+import { AfterViewInit, Component, ElementRef, input, OnChanges, SimpleChanges, ViewChild } from '@angular/core'
 
 import { ScrollPanel, ScrollPanelModule } from 'primeng/scrollpanel'
 
@@ -17,8 +17,8 @@ import { Message } from '../message/message'
   styleUrl: './message-list.css',
 })
 export class MessageList implements AfterViewInit, OnChanges {
-  @Input() messages: ChatMessage[] = []
-  @Input() currentUser!: UUID
+  readonly messages = input.required<ChatMessage[]>()
+  readonly currentUser = input.required<UUID>()
   @ViewChild('panel') panel?: ScrollPanel
 
   ngAfterViewInit(): void {

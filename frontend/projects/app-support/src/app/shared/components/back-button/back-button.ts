@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core'
+import { Component, input } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
@@ -13,9 +13,6 @@ import { ButtonModule } from 'primeng/button'
   styleUrl: './back-button.css',
 })
 export class BackButton {
-  @Input({ required: true })
-  public backUrl = ''
-
-  @Input({ required: false })
-  public label = ''
+  readonly backUrl = input.required<string>()
+  readonly label = input<string>('')
 }

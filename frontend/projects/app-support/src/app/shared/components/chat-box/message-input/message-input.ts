@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core'
+import { Component, input, OnDestroy, output } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 
 import { ButtonModule } from 'primeng/button'
@@ -17,9 +17,9 @@ import { TextareaModule } from 'primeng/textarea'
   styleUrl: './message-input.css',
 })
 export class MessageInput implements OnDestroy {
-  @Input() disabled = false
-  @Output() send = new EventEmitter<string>()
-  @Output() typing = new EventEmitter<boolean>()
+  readonly disabled = input<boolean>(false)
+  readonly send = output<string>()
+  readonly typing = output<boolean>()
 
   text = ''
   private lastTypingSent = 0

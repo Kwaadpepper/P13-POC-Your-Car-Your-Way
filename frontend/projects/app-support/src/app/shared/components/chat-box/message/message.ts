@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common'
-import { Component, Input } from '@angular/core'
+import { Component, input } from '@angular/core'
 
 import { AvatarModule } from 'primeng/avatar'
 import { TagModule } from 'primeng/tag'
@@ -18,20 +18,20 @@ import { Role } from '@ycyw/support-shared/enums'
   styleUrl: './message.css',
 })
 export class Message {
-  @Input({ required: true }) message!: ChatMessage
-  @Input() self = false
+  readonly message = input.required<ChatMessage>()
+  readonly self = input<boolean>(false)
 
   get initials(): string {
-    const id = this.message.from.name || ''
+    const id = this.message().from.name || ''
     const part = id.split('-').pop() || id
     return (part[0] || '?').toUpperCase()
   }
 
   get from(): { id: string, role: Role, isOperator: boolean } {
     return {
-      id: this.message.from.id,
-      role: this.message.from.role,
-      isOperator: this.message.from.role === Role.OPERATOR,
+      id: this.message().from.id,
+      role: this.message().from.role,
+      isOperator: this.message().from.role === Role.OPERATOR,
     }
   }
 }

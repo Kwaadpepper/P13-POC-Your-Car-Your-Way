@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, Input, OnDestroy, OnInit, signal } from '@angular/core'
+import { Component, computed, effect, inject, input, OnDestroy, OnInit, signal } from '@angular/core'
 
 import { DividerModule } from 'primeng/divider'
 import { ScrollTopModule } from 'primeng/scrolltop'
@@ -48,8 +48,8 @@ export class ChatBox implements OnInit, OnDestroy {
   private readonly chatService = inject(CHAT_SERVICE)
 
   // Inputs
-  @Input({ required: true }) user!: ChatBoxUser
-  @Input({ required: true }) conversation!: UUID
+  readonly user = input.required<ChatBoxUser>()
+  readonly conversation = input.required<UUID>()
 
   // State (signals locaux)
   private readonly _connected = signal(false)
@@ -70,15 +70,15 @@ export class ChatBox implements OnInit, OnDestroy {
   private readonly _rejoinEffect = effect(() => {
     const id = this.conversation
     if (!id || !this._connected()) return
-    this.join(id)
+    this.join(id())
   })
 
   ngOnInit() {
-    if (!this.user?.id) throw new Error('ChatBox: user.id requis')
+    if (!this.user().id) throw new Error('ChatBox: user.id requis')
     if (!this.conversation) throw new Error('ChatBox: conversation requis')
 
     this.connect()
-      .then(() => this.join(this.conversation))
+      .then(() => this.join(this.conversation()))
       .catch(err => console.error('ChatBox: échec de la connexion', err))
   }
 

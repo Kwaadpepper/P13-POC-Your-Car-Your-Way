@@ -1,8 +1,22 @@
 <div class="flex flex-col md:flex-row items-center p-2 gap-2 w-full">
-  <textarea pInputTextarea [(ngModel)]="text" rows="3" placeholder="Écrire un message…" (blur)="emitTyping(false)"
-    (input)="onInput($event)" (keydown)="maybeSend($event)" [disabled]="disabled"
-    class="w-full md:w-2/3 flex resize-none"></textarea>
-  <button pButton label="Envoyer" (click)="submit()" [disabled]="!text.trim() || disabled" class="mx-3">
+  <textarea
+    pInputTextarea
+    [(ngModel)]="text"
+    rows="3"
+    placeholder="Écrire un message…"
+    (blur)="emitTyping(false)"
+    (input)="onInput($event)"
+    (keydown)="maybeSend($event)"
+    [disabled]="disabled()"
+    class="w-full md:w-2/3 flex resize-none"
+  ></textarea>
+  <button
+    pButton
+    label="Envoyer"
+    (click)="submit()"
+    [disabled]="!text.trim() || disabled"
+    class="mx-3"
+  >
     <i class="pi pi-send"></i>
   </button>
 </div>

@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core'
+import { Component, inject, input } from '@angular/core'
 import { Router } from '@angular/router'
 
 import { Button } from 'primeng/button'
@@ -10,8 +10,7 @@ import { Button } from 'primeng/button'
   styleUrl: './back-button.css',
 })
 export class BackButton {
-  @Input({ required: true })
-  public backUrl = ''
+  readonly backUrl = input.required<string>()
 
   private readonly router = inject(Router)
 
@@ -20,6 +19,6 @@ export class BackButton {
   }
 
   public onGoBackLink(): void {
-    this.goBack(this.backUrl)
+    this.goBack(this.backUrl())
   }
 }

@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common'
 import { Component, inject, input, output } from '@angular/core'
 import { RouterModule } from '@angular/router'
 
@@ -13,7 +12,6 @@ import { NavMenuViewModel } from './nav-menu.viewmodel'
   selector: 'shell-nav-menu',
   imports: [
     RouterModule,
-    NgClass,
     ButtonModule,
     LogoutButton,
   ],

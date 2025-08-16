@@ -1,7 +1,7 @@
 @if (viewModel.loggedIn()) {
   <div
     class="flex justify-end items-center relative"
-    [ngClass]="['flex-col gap-6 pt-20', 'flex-row'][verticalDisplay() ? 0 : 1]"
+    [class]="['flex-col gap-6 pt-20', 'flex-row'][verticalDisplay() ? 0 : 1]"
   >
     @if (verticalDisplay()) {
       <button

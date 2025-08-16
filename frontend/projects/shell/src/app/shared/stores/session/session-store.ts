@@ -3,14 +3,14 @@ import { toObservable } from '@angular/core/rxjs-interop'
 
 import { Subscription } from 'rxjs'
 
-import { User } from '~shell-domains/auth/models'
 import {
   SESSION_USER_STORAGE_KEY,
   SessionBroadcastMessage,
   SessionBroadcastService,
   SessionBroadcastType,
   SharedUserProfile,
-} from '~ycyw/shared'
+} from '@ycyw/shared'
+import { User } from '@ycyw/shell-domains/auth/models'
 
 export interface SessionSnapshot {
   isLoggedIn: boolean

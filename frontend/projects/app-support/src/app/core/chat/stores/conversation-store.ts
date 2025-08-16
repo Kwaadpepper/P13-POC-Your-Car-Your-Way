@@ -2,8 +2,8 @@ import { Injectable, computed, inject, resource } from '@angular/core'
 
 import { firstValueFrom } from 'rxjs'
 
-import { Conversation, ConversationId } from '~support-domains/chat/models'
-import { CONVERSATION_REPOSITORY } from '~support-tokens/conversation-repository-token'
+import { Conversation, ConversationId } from '@ycyw/support-domains/chat/models'
+import { CONVERSATION_REPOSITORY } from '@ycyw/support-tokens/conversation-repository-token'
 
 @Injectable({
   providedIn: 'root',

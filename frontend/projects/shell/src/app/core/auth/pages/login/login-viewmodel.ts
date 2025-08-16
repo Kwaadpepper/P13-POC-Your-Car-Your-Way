@@ -2,10 +2,10 @@ import { inject, Injectable, signal } from '@angular/core'
 
 import { catchError, EMPTY, finalize, Observable, tap, throwError } from 'rxjs'
 
-import { LoginFailureError } from '~shell-core/errors'
-import { User } from '~shell-domains/auth/models'
-import { ToastService } from '~shell-shared/services'
-import { AUTH_SERVICE } from '~shell-tokens/auth-service-token'
+import { LoginFailureError } from '@ycyw/shell-core/errors'
+import { User } from '@ycyw/shell-domains/auth/models'
+import { ToastService } from '@ycyw/shell-shared/services'
+import { AUTH_SERVICE } from '@ycyw/shell-tokens/auth-service-token'
 
 @Injectable({
   providedIn: 'root',

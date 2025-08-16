@@ -3,11 +3,11 @@ import { inject, Injectable } from '@angular/core'
 
 import { catchError, Observable, throwError } from 'rxjs'
 
-import faqListSchema, { FaqListZod } from '~support-core/api/schemas/faq-list-schema'
-import { Faq } from '~support-domains/faq/models'
-import { FaqRepository } from '~support-domains/faq/repositories'
-import { environment } from '~support-env/environment'
-import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
+import { SessionExpiredError, verifyResponseType } from '@ycyw/shared'
+import faqListSchema, { FaqListZod } from '@ycyw/support-core/api/schemas/faq-list-schema'
+import { Faq } from '@ycyw/support-domains/faq/models'
+import { FaqRepository } from '@ycyw/support-domains/faq/repositories'
+import { environment } from '@ycyw/support-env/environment'
 
 @Injectable({
   providedIn: 'root',

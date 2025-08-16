@@ -2,7 +2,7 @@ import { Injectable, computed, inject, resource } from '@angular/core'
 
 import { firstValueFrom } from 'rxjs'
 
-import { SUPPORT_CONFIG_SERVICE } from '~support-tokens/support-config-service-token'
+import { SUPPORT_CONFIG_SERVICE } from '@ycyw/support-tokens/support-config-service-token'
 
 @Injectable({
   providedIn: 'root',

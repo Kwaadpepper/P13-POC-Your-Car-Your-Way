@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
-import { IssueStatus } from '~support-domains/issue/enums'
 import { AcrissCode, uuidSchema } from '~ycyw/shared'
+
+import { IssueStatus } from '@ycyw/support-domains/issue/enums'
 
 const addressSchema = z.object({
   line1: z.string().nonempty(),

@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core'
 import { GuardResult, MaybeAsync, RedirectCommand, Router } from '@angular/router'
 
-import { redirectUrls } from '~shell-core/auth/routes'
-import { Role } from '~shell-shared/enums'
-import { SessionStore } from '~shell-shared/stores'
+import { redirectUrls } from '@ycyw/shell-core/auth/routes'
+import { Role } from '@ycyw/shell-shared/enums'
+import { SessionStore } from '@ycyw/shell-shared/stores'
 
 import { AuthGuard } from '../auth/auth-guard'
 

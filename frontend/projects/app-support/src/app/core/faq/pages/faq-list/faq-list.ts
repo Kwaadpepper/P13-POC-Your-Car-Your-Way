@@ -11,8 +11,8 @@ import { TagModule } from 'primeng/tag'
 import { ToggleButtonModule } from 'primeng/togglebutton'
 import { TooltipModule } from 'primeng/tooltip'
 
-import { Faq } from '~support-domains/faq/models'
-import { BackButton } from '~support-shared/components'
+import { Faq } from '@ycyw/support-domains/faq/models'
+import { BackButton } from '@ycyw/support-shared/components'
 
 import { FaqListViewModel } from './faq-list-viewmodel'
 

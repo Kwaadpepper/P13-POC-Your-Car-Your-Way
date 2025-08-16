@@ -1,4 +1,4 @@
-import { AcrissCode } from '~ycyw/shared'
+import { AcrissCode } from '@ycyw/shared'
 
 interface AgencyInfo {
   label: string

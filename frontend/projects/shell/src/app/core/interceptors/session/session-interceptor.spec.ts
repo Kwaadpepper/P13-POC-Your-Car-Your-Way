@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing'
 import { Router } from '@angular/router'
 
-import { ToastService } from '~shell-shared/services'
-import { SessionStore } from '~shell-shared/stores'
+import { ToastService } from '@ycyw/shell-shared/services'
+import { SessionStore } from '@ycyw/shell-shared/stores'
 
 import { SessionInterceptor } from './session-interceptor'
 

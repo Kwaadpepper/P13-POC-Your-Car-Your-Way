@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs'
 
-import { LoginRequest, RegisterRequest } from '~shell-core/api/requests'
-import { User } from '~shell-domains/auth/models'
+import { LoginRequest, RegisterRequest } from '@ycyw/shell-core/api/requests'
+import { User } from '@ycyw/shell-domains/auth/models'
 
 export interface AuthService {
   readonly resourceUrl: string

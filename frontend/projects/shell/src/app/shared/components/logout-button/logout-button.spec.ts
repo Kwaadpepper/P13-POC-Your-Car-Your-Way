@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router'
 
 import { of } from 'rxjs'
 
-import { ToastService } from '~shell-shared/services'
+import { ToastService } from '@ycyw/shell-shared/services'
 
 import { LogoutButton } from './logout-button'
 import { LogoutButtonViewModel } from './logout-button-viewmodel'

@@ -1,7 +1,7 @@
 import { Injectable, computed, inject } from '@angular/core'
 
-import { Role } from '~reservation-shared/enums'
-import { SessionStore } from '~reservation-shared/stores'
+import { Role } from '@ycyw/reservation-shared/enums'
+import { SessionStore } from '@ycyw/reservation-shared/stores'
 
 @Injectable({
   providedIn: 'root',

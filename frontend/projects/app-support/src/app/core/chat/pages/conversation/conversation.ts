@@ -6,8 +6,8 @@ import { MessageModule } from 'primeng/message'
 import { TagModule } from 'primeng/tag'
 import { ToolbarModule } from 'primeng/toolbar'
 
-import { Conversation } from '~support-domains/chat/models'
-import { BackButton, ChatBox } from '~support-shared/components'
+import { Conversation } from '@ycyw/support-domains/chat/models'
+import { BackButton, ChatBox } from '@ycyw/support-shared/components'
 
 import { ConversationViewModel } from './conversation-viewmodel'
 

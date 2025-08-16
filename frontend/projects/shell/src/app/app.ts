@@ -7,8 +7,8 @@ import { ProgressBarModule } from 'primeng/progressbar'
 import { ToastModule } from 'primeng/toast'
 import { distinctUntilChanged, filter, map } from 'rxjs'
 
-import { Header } from '~shell-core/layout'
-import { SessionListener } from '~shell-shared/components'
+import { Header } from '@ycyw/shell-core/layout'
+import { SessionListener } from '@ycyw/shell-shared/components'
 
 @Component({
   selector: 'shell-root',

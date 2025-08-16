@@ -2,8 +2,8 @@ import { inject, Injectable, ErrorHandler as NgErrorHanlder } from '@angular/cor
 import { NotFoundError } from '@angular/core/primitives/di'
 import { Router } from '@angular/router'
 
-import { ToastService } from '~shell-shared/services'
-import { SessionExpiredError } from '~ycyw/shared'
+import { SessionExpiredError } from '@ycyw/shared'
+import { ToastService } from '@ycyw/shell-shared/services'
 
 /**
 * This allows to manage errors in a centralized way

@@ -10,67 +10,67 @@
     "isolatedModules": true,
     "experimentalDecorators": true,
     "paths": {
-      "~shell-core/*": [
+      "@ycyw/shell-core/*": [
         "./projects/shell/src/app/core/*"
       ],
-      "~shell-env/*": [
+      "@ycyw/shell-env/*": [
         "./projects/shell/src/environments/*"
       ],
-      "~shell-domains/*": [
+      "@ycyw/shell-domains/*": [
         "./projects/shell/src/app/domains/*"
       ],
-      "~shell-shared/*": [
+      "@ycyw/shell-shared/*": [
         "./projects/shell/src/app/shared/*"
       ],
-      "~shell-tokens/*": [
+      "@ycyw/shell-tokens/*": [
         "./projects/shell/src/app/tokens/*"
       ],
-      "~backoffice-core/*": [
+      "@ycyw/backoffice-core/*": [
         "./projects/app-backoffice/src/app/core/*"
       ],
-      "~backoffice-env/*": [
+      "@ycyw/backoffice-env/*": [
         "./projects/app-backoffice/src/environments/*"
       ],
-      "~backoffice-domains/*": [
+      "@ycyw/backoffice-domains/*": [
         "./projects/app-backoffice/src/app/domains/*"
       ],
-      "~backoffice-shared/*": [
+      "@ycyw/backoffice-shared/*": [
         "./projects/app-backoffice/src/app/shared/*"
       ],
-      "~backoffice-tokens/*": [
+      "@ycyw/backoffice-tokens/*": [
         "./projects/app-backoffice/src/app/tokens/*"
       ],
-      "~reservation-core/*": [
+      "@ycyw/reservation-core/*": [
         "./projects/app-reservation/src/app/core/*"
       ],
-      "~reservation-env/*": [
+      "@ycyw/reservation-env/*": [
         "./projects/app-reservation/src/environments/*"
       ],
-      "~reservation-domains/*": [
+      "@ycyw/reservation-domains/*": [
         "./projects/app-reservation/src/app/domains/*"
       ],
-      "~reservation-shared/*": [
+      "@ycyw/reservation-shared/*": [
         "./projects/app-reservation/src/app/shared/*"
       ],
-      "~reservation-tokens/*": [
+      "@ycyw/reservation-tokens/*": [
         "./projects/app-reservation/src/app/tokens/*"
       ],
-      "~support-core/*": [
+      "@ycyw/support-core/*": [
         "./projects/app-support/src/app/core/*"
       ],
-      "~support-env/*": [
+      "@ycyw/support-env/*": [
         "./projects/app-support/src/environments/*"
       ],
-      "~support-domains/*": [
+      "@ycyw/support-domains/*": [
         "./projects/app-support/src/app/domains/*"
       ],
-      "~support-shared/*": [
+      "@ycyw/support-shared/*": [
         "./projects/app-support/src/app/shared/*"
       ],
-      "~support-tokens/*": [
+      "@ycyw/support-tokens/*": [
         "./projects/app-support/src/app/tokens/*"
       ],
-      "~ycyw/shared": [
+      "@ycyw/shared": [
         "./dist/shared"
       ]
     },

@@ -6,22 +6,22 @@
     "outDir": "../../out-tsc/app",
     "types": [],
     "paths": {
-      "~backoffice-core/*": [
+      "@ycyw/backoffice-core/*": [
         "./src/app/core/*"
       ],
-      "~backoffice-env/*": [
+      "@ycyw/backoffice-env/*": [
         "./src/environments/*"
       ],
-      "~backoffice-domains/*": [
+      "@ycyw/backoffice-domains/*": [
         "./src/app/domains/*"
       ],
-      "~backoffice-shared/*": [
+      "@ycyw/backoffice-shared/*": [
         "./src/app/shared/*"
       ],
-      "~backoffice-tokens/*": [
+      "@ycyw/backoffice-tokens/*": [
         "./src/app/tokens/*"
       ],
-      "~ycyw/shared": [
+      "@ycyw/shared": [
         "../../dist/shared"
       ]
     }

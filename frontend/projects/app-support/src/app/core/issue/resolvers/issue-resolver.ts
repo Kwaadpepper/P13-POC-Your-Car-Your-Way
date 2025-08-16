@@ -2,8 +2,8 @@ import { inject } from '@angular/core'
 import { NotFoundError } from '@angular/core/primitives/di'
 import type { ActivatedRouteSnapshot, ResolveFn } from '@angular/router'
 
-import { Issue } from '~support-domains/issue/models'
-import { UUID, uuidSchema } from '~ycyw/shared'
+import { UUID, uuidSchema } from '@ycyw/shared'
+import { Issue } from '@ycyw/support-domains/issue/models'
 
 import { IssueStore } from '../stores/issue-store'
 

@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs'
 
-import { PresenceEvent, TypingEvent } from '~support-domains/events'
+import { PresenceEvent, TypingEvent } from '@ycyw/support-domains/events'
 
 import { ChatMessage, ConversationId } from '../models'
 

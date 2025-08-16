@@ -2,8 +2,8 @@ import { inject } from '@angular/core'
 import { NotFoundError } from '@angular/core/primitives/di'
 import type { ActivatedRouteSnapshot, ResolveFn } from '@angular/router'
 
-import { Conversation } from '~support-domains/chat/models'
-import { UUID, uuidSchema } from '~ycyw/shared'
+import { UUID, uuidSchema } from '@ycyw/shared'
+import { Conversation } from '@ycyw/support-domains/chat/models'
 
 import { ConversationStore } from '../stores'
 

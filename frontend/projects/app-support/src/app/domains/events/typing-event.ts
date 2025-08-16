@@ -1,5 +1,5 @@
-import { ConversationId, UserId } from '~support-domains/chat/models'
-import { Role } from '~support-shared/enums'
+import { ConversationId, UserId } from '@ycyw/support-domains/chat/models'
+import { Role } from '@ycyw/support-shared/enums'
 
 export interface TypingEvent {
   user: UserId

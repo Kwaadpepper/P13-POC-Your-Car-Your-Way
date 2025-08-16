@@ -1,7 +1,8 @@
 import { inject, Inject } from '@angular/core'
 
-import { ConversationStore } from '~support-core/chat/stores'
 import { UUID } from '~ycyw/shared'
+
+import { ConversationStore } from '@ycyw/support-core/chat/stores'
 
 @Inject({
   providedIn: 'root',

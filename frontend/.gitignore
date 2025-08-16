@@ -42,3 +42,8 @@ testem.log
 Thumbs.db
 
 .github
+
+# ignore lock files other than bun
+package-lock.json
+yarn.lock
+pnpm-lock.yaml

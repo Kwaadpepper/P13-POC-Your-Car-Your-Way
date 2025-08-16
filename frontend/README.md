@@ -1,12 +1,12 @@
 # Frontend
 
-Ce projet est un monorepo Angular (version 20).
+Ce projet est un monorepo Angular (version 20) orienté micro-frontends, conçu pour l’authentification et le support dans une architecture scalable.
 
 ---
 
 ## 1. Prérequis
 
-- **Node.js** (version recommandée : >=18)
+- **Node.js** (>=18 recommandé)
 - **bun** (optionnel mais recommandé) [https://bun.sh/](https://bun.sh/)
 - Un navigateur moderne (Chrome, Firefox, Edge…)
 
@@ -14,44 +14,61 @@ Ce projet est un monorepo Angular (version 20).
 
 ## 2. Architecture du projet
 
-Le monorepo utilise la structure standard Angular :
 - Le dossier `projects/` contient les différentes applications et librairies.
 - Les styles partagés sont mutualisés dans `shared/src/styles/shared.css`.
 - Chaque projet possède son propre préfixe pour les composants.
+- Les conventions de nommage et d’organisation facilitent l’intégration de micro-frontends (Native Federation).
 
 ---
 
 ## 3. Configuration / Variables d’environnement
 
-**TODO**  
-La gestion des variables d’environnement et la configuration spécifique seront documentées ultérieurement.
+Les variables d’environnement sont gérées via les fichiers `environment.*.ts` dans chaque projet.
+Pour personnaliser la configuration :
+- Modifiez les fichiers `projects/<nom-du-projet>/src/environments/`.
+- Exemple : pour changer l’URL de l’API, éditez `environment.ts`.
 
 ---
 
 ## 4. Gestion des styles
 
-Dans chaque projet, le fichier de styles principal (généralement `projects/<nom-du-projet>/src/styles.css`) doit importer les styles partagés :
+Dans chaque projet, le fichier de styles principal doit importer les styles partagés :
 
 ```css
 @import "./../../../shared/src/styles/shared.css";
 ```
 
-Cela permet d’uniformiser l’apparence des applications et d’éviter la duplication de styles.
+Cela permet d’uniformiser l’apparence et d’éviter la duplication.
 
 ---
 
 ## 5. Convention de nommage
 
-**Préfixe des composants**  
-Chaque projet Angular doit définir un préfixe unique dans son fichier `angular.json`.  
-Tous les tags des composants générés dans un projet utiliseront ce préfixe (ex : `shell-dashboard`, `support-dashboard`).  
-Cela évite les collisions de selectors, notamment lors de l’utilisation de Native Federation.
+Chaque projet Angular définit un préfixe unique dans `angular.json`.
+Tous les tags de composants générés utilisent ce préfixe (ex : `shell-dashboard`, `support-dashboard`), ce qui évite les collisions lors de l’utilisation de Native Federation.
 
 ---
 
-## 8. Utilisation des librairies
+## 6. Bonnes pratiques Angular & TypeScript
 
-La bibliothèque de composants principale du monorepo est **PrimeNG**.
+- Utilisez **standalone components** (pas de NgModules).
+- Utilisez **signals** pour le state local.
+- Préférez les **composants petits et spécialisés**.
+- Utilisez `input()` et `output()` au lieu des décorateurs.
+- Préférez **Reactive Forms**.
+- Utilisez les **structures de contrôle natives** (`@if`, `@for`, `@switch`).
+- Utilisez `NgOptimizedImage` pour les images statiques.
+- Respectez la **single responsibility** pour les services.
+- Utilisez `inject()` au lieu de l’injection par constructeur.
+- Évitez `ngClass`/`ngStyle`, utilisez des bindings `class`/`style`.
+- Activez `changeDetection: ChangeDetectionStrategy.OnPush` dans les composants.
+- Privilégiez le typage strict TypeScript, évitez le type `any`.
+
+---
+
+## 7. Utilisation des librairies
+
+La bibliothèque principale est **PrimeNG**.
 
 **Installation :**
 ```bash
@@ -62,36 +79,46 @@ npm install primeng primeicons
 bun add primeng primeicons
 ```
 
-**Utilisation :**  
-Importez les modules nécessaires dans vos modules Angular selon la [documentation officielle de PrimeNG](https://primeng.org/).
+Importez les modules nécessaires selon la [documentation officielle PrimeNG](https://primeng.org/).
 
 ---
 
-## 9. Scripts d’automatisation
+## 8. Scripts d’automatisation
 
-**TODO**  
-Les scripts personnalisés (vérification des alias, formatage, etc.) seront ajoutés prochainement.
-
----
-
-## 10. Déploiement
-
-**TODO**  
-La procédure de déploiement sera documentée ultérieurement.
+Des scripts personnalisés (alias, formatage, vérifications) sont en cours d’ajout dans le dossier `scripts/`.  
+Consultez les scripts disponibles dans `package.json`.
 
 ---
 
-## 11. Contribution
+## 9. Déploiement
 
-**TODO**  
-Les instructions détaillées pour contribuer au projet seront ajoutées prochainement.
+Les artefacts de build sont générés dans le dossier `dist/`.
+
+**Déploiement local :**
+- Compiler en production :
+  ```bash
+  npm run build --project=shell
+  # ou
+  bun run build --project=shell
+  ```
+- Copier le contenu de `dist/<nom-du-projet>` sur le serveur cible.
+
+**Automatisation** : à venir (scripts et CI/CD).
+
+---
+
+## 10. Contribution
+
+- Forkez le dépôt et créez une branche dédiée (`feature/<votre-nom>/<description>`).
+- Respectez la convention de nommage et les bonnes pratiques Angular/TypeScript.
+- Décrivez clairement vos Pull Requests.
+- Vérifiez le lint et les tests avant toute PR.
 
 ---
 
 ## 🖥️ Développement local
 
-Les scripts sont configurés pour utiliser la variable `--project`.  
-Pour lancer le serveur de développement sur un projet spécifique (exemple : `shell`) :
+Pour lancer le serveur de développement sur un projet spécifique :
 
 ```bash
 npm run start --project=shell
@@ -99,21 +126,18 @@ npm run start --project=shell
 bun run start --project=shell
 ```
 
-Ouvrez [http://localhost:4200/](http://localhost:4200/)  
-L’application se rechargera automatiquement lors de la modification des fichiers sources.
+Ouvrez [http://localhost:4200/](http://localhost:4200/).
 
 ---
 
 ## 🧹 Linter le code
 
 Pour lancer le lint sur un projet précis :
-
 ```bash
 ng lint <nom-du-projet>
 ```
 
-Pour tous les projets (avec vérification des alias et du style) :
-
+Pour tous les projets :
 ```bash
 npm run lint
 # ou
@@ -124,8 +148,7 @@ bun run lint
 
 ## ⚙️ Construire le projet
 
-Pour compiler un projet spécifique en production :
-
+Pour compiler en production :
 ```bash
 npm run build --project=shell
 # ou
@@ -133,21 +156,19 @@ bun run build --project=shell
 ```
 
 Pour tous les projets :
-
 ```bash
 npm run build
 # ou
 bun run build
 ```
 
-Les artefacts de build sont générés dans le dossier `dist/`.
+Les artefacts se trouvent dans `dist/`.
 
 ---
 
 ## 👁️ Build en mode watch
 
-Pour builder un projet en mode « watch » :
-
+Pour builder en mode « watch » :
 ```bash
 npm run watch --project=shell
 # ou
@@ -158,8 +179,7 @@ bun run watch --project=shell
 
 ## 🧪 Tester
 
-Pour exécuter les tests unitaires sur un projet :
-
+Pour exécuter les tests unitaires :
 ```bash
 npm run test --project=shell
 # ou
@@ -170,9 +190,8 @@ bun run test --project=shell
 
 ## 📚 Guide d’ajout de projet
 
-Consultez le guide détaillé pour ajouter un nouveau projet, générer des composants, configurer les alias TypeScript, mutualiser les styles, et respecter les conventions du monorepo :
-
-➡️ [Guide : Ajouter un nouveau projet à votre monorepo Angular](./GUIDE-ajouter-un-nouveau-projet-angular-monorepo.md)
+Consultez le guide détaillé :
+➡️ [GUIDE-ajouter-un-nouveau-projet-angular-monorepo.md](./GUIDE-ajouter-un-nouveau-projet-angular-monorepo.md)
 
 ---
 

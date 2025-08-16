@@ -3,7 +3,7 @@ import { Router } from '@angular/router'
 
 import { of } from 'rxjs'
 
-import { SessionStore } from '~shell-core/auth/stores'
+import { SessionStore } from '@ycyw/shell-core/auth/stores'
 
 import { HeaderViewModel } from './header.viewmodel'
 

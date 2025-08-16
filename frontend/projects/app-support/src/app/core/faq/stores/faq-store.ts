@@ -2,8 +2,8 @@ import { Injectable, computed, inject, resource } from '@angular/core'
 
 import { firstValueFrom } from 'rxjs'
 
-import { Faq, FaqId } from '~support-domains/faq/models'
-import { FAQ_REPOSITORY } from '~support-tokens/faq-repository-token'
+import { Faq, FaqId } from '@ycyw/support-domains/faq/models'
+import { FAQ_REPOSITORY } from '@ycyw/support-tokens/faq-repository-token'
 
 @Injectable({
   providedIn: 'root',

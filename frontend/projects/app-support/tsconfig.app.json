@@ -6,22 +6,22 @@
     "outDir": "../../out-tsc/app",
     "types": [],
     "paths": {
-      "~support-core/*": [
+      "@ycyw/support-core/*": [
         "./src/app/core/*"
       ],
-      "~support-env/*": [
+      "@ycyw/support-env/*": [
         "./src/environments/*"
       ],
-      "~support-domains/*": [
+      "@ycyw/support-domains/*": [
         "./src/app/domains/*"
       ],
-      "~support-shared/*": [
+      "@ycyw/support-shared/*": [
         "./src/app/shared/*"
       ],
-      "~support-tokens/*": [
+      "@ycyw/support-tokens/*": [
         "./src/app/tokens/*"
       ],
-      "~ycyw/shared": [
+      "@ycyw/shared": [
         "../../dist/shared"
       ]
     }

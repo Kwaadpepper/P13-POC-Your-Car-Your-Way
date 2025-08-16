@@ -4,7 +4,7 @@ import { Router } from '@angular/router'
 import { Button, ButtonModule } from 'primeng/button'
 import { SubscriptionLike } from 'rxjs'
 
-import { ToastService } from '~shell-shared/services'
+import { ToastService } from '@ycyw/shell-shared/services'
 
 import { LogoutButtonViewModel } from './logout-button-viewmodel'
 

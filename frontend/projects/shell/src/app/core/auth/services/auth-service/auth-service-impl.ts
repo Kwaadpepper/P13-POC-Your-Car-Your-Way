@@ -3,14 +3,14 @@ import { inject, Injectable } from '@angular/core'
 
 import { catchError, first, map, Observable, throwError } from 'rxjs'
 
-import { LoginRequest, RegisterRequest } from '~shell-core/api/requests'
-import { simpleMessageSchema, SimpleMessageZod, userSchema, UserZod } from '~shell-core/api/schemas'
-import { LoginFailureError } from '~shell-core/errors'
-import { User } from '~shell-domains/auth/models'
-import { AuthService } from '~shell-domains/auth/services'
-import { environment } from '~shell-env/environment'
-import { SessionStore } from '~shell-shared/stores'
-import { checkServerReponse, verifyResponseType } from '~ycyw/shared'
+import { checkServerReponse, verifyResponseType } from '@ycyw/shared'
+import { LoginRequest, RegisterRequest } from '@ycyw/shell-core/api/requests'
+import { simpleMessageSchema, SimpleMessageZod, userSchema, UserZod } from '@ycyw/shell-core/api/schemas'
+import { LoginFailureError } from '@ycyw/shell-core/errors'
+import { User } from '@ycyw/shell-domains/auth/models'
+import { AuthService } from '@ycyw/shell-domains/auth/services'
+import { environment } from '@ycyw/shell-env/environment'
+import { SessionStore } from '@ycyw/shell-shared/stores'
 
 @Injectable({
   providedIn: 'root',

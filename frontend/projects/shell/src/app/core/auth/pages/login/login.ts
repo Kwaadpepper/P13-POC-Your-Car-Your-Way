@@ -8,8 +8,8 @@ import { InputTextModule } from 'primeng/inputtext'
 import { MessageModule } from 'primeng/message'
 import { Subject, takeUntil } from 'rxjs'
 
-import { BackButton } from '~shell-shared/components'
-import { ToastService } from '~shell-shared/services'
+import { BackButton } from '@ycyw/shell-shared/components'
+import { ToastService } from '@ycyw/shell-shared/services'
 
 import { LoginViewModel } from './login-viewmodel'
 

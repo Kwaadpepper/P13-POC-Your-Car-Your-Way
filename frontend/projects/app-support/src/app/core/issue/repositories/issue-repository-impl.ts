@@ -3,12 +3,12 @@ import { inject, Injectable } from '@angular/core'
 
 import { catchError, Observable, throwError } from 'rxjs'
 
-import { IssueListZod } from '~support-core/api/schemas'
-import issueListSchema from '~support-core/api/schemas/issue-list-schema'
-import { Issue } from '~support-domains/issue/models'
-import { IssueRepository } from '~support-domains/issue/repositories/issue-repository'
-import { environment } from '~support-env/environment'
-import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
+import { SessionExpiredError, verifyResponseType } from '@ycyw/shared'
+import { IssueListZod } from '@ycyw/support-core/api/schemas'
+import issueListSchema from '@ycyw/support-core/api/schemas/issue-list-schema'
+import { Issue } from '@ycyw/support-domains/issue/models'
+import { IssueRepository } from '@ycyw/support-domains/issue/repositories/issue-repository'
+import { environment } from '@ycyw/support-env/environment'
 
 @Injectable({
   providedIn: 'root',

@@ -1,7 +1,7 @@
 import { Injectable, computed, inject } from '@angular/core'
 
-import { Role } from '~backoffice-shared/enums'
-import { SessionStore } from '~backoffice-shared/stores'
+import { Role } from '@ycyw/backoffice-shared/enums'
+import { SessionStore } from '@ycyw/backoffice-shared/stores'
 
 @Injectable({
   providedIn: 'root',

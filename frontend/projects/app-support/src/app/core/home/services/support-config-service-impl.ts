@@ -3,11 +3,11 @@ import { inject, Injectable } from '@angular/core'
 
 import { catchError, Observable, throwError } from 'rxjs'
 
-import { supportConfigSchema, SupportConfigZod } from '~support-core/api/schemas'
-import { SupportConfig } from '~support-domains/support/dtos'
-import { SupportConfigService } from '~support-domains/support/services'
-import { environment } from '~support-env/environment'
-import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
+import { SessionExpiredError, verifyResponseType } from '@ycyw/shared'
+import { supportConfigSchema, SupportConfigZod } from '@ycyw/support-core/api/schemas'
+import { SupportConfig } from '@ycyw/support-domains/support/dtos'
+import { SupportConfigService } from '@ycyw/support-domains/support/services'
+import { environment } from '@ycyw/support-env/environment'
 
 @Injectable({
   providedIn: 'root',

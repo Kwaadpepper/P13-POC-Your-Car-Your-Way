@@ -1,8 +1,8 @@
 import { computed, inject, Injectable } from '@angular/core'
 
-import { SupportConfigStore } from '~support-core/home/stores'
-import { SupportConfig } from '~support-domains/support/dtos'
-import { APP_CONFIG } from '~support-tokens/config-token'
+import { SupportConfigStore } from '@ycyw/support-core/home/stores'
+import { SupportConfig } from '@ycyw/support-domains/support/dtos'
+import { APP_CONFIG } from '@ycyw/support-tokens/config-token'
 
 export type BusinessHours = Record<string, {
   from: string

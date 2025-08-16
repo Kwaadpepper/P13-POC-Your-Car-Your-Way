@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { uuidSchema } from '~ycyw/shared'
+import { uuidSchema } from '@ycyw/shared'
 
 const faqSchema = z.object({
   id: uuidSchema,

@@ -1,7 +1,7 @@
 import { inject, Inject } from '@angular/core'
 
-import { IssueStore } from '~support-core/issue/stores/issue-store'
-import { UUID } from '~ycyw/shared'
+import { UUID } from '@ycyw/shared'
+import { IssueStore } from '@ycyw/support-core/issue/stores/issue-store'
 
 @Inject({
   providedIn: 'root',

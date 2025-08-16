@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core'
 
 import { map, Observable } from 'rxjs'
 
-import { AUTH_SERVICE } from '~shell-tokens/auth-service-token'
+import { AUTH_SERVICE } from '@ycyw/shell-tokens/auth-service-token'
 
 @Injectable({
   providedIn: 'root',

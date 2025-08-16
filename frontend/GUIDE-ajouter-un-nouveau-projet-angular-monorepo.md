@@ -82,7 +82,7 @@ Astuce :
 - Ajoutez/éditez les alias dans `compilerOptions.paths`.
   - Exemple :
     ```json
-    "@mon-alias/*": ["./projects/<nom-du-projet>/src/app/mon-dossier/*"]
+    "@ycyw/mon-alias/*": ["./projects/<nom-du-projet>/src/app/mon-dossier/*"]
     ```
 - Ouvrez `projects/<nom-du-projet>/tsconfig.app.json` et ajoutez les alias spécifiques dans `compilerOptions.paths` si nécessaire.
 
@@ -96,7 +96,7 @@ Règles à respecter :
 
 Dans le fichier de styles principal du projet (`projects/<nom-du-projet>/src/styles.css` ou `styles.scss`), ajoutez en haut :
 ```css
-@import "~ycyw/styles";
+@import "@ycyw/styles";
 ```
 Note :
 - Le chemin est relatif à `projects/<nom-du-projet>/src/`.

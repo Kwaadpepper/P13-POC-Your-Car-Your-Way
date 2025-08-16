@@ -11,10 +11,10 @@ import { provideRouter, withComponentInputBinding } from '@angular/router'
 
 import { MessageService } from 'primeng/api'
 
-import { ErrorHandler } from '~shell-core/error-handler'
-import { SessionInterceptor } from '~shell-core/interceptors'
-import { configuration } from '~shell-tokens/config-token'
-import { primeNgProvider } from '~ycyw/shared'
+import { primeNgProvider } from '@ycyw/shared'
+import { ErrorHandler } from '@ycyw/shell-core/error-handler'
+import { SessionInterceptor } from '@ycyw/shell-core/interceptors'
+import { configuration } from '@ycyw/shell-tokens/config-token'
 
 import { routes } from './app.routes'
 

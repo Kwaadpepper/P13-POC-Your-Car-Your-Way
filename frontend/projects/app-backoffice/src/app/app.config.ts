@@ -3,7 +3,7 @@ import { ApplicationConfig, enableProdMode } from '@angular/core'
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async'
 import { provideRouter, withComponentInputBinding } from '@angular/router'
 
-import { primeNgProvider } from '~ycyw/shared'
+import { primeNgProvider } from '@ycyw/shared'
 
 import { environment } from '../environments/environment'
 

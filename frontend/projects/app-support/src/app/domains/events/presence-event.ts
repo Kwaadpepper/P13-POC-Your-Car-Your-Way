@@ -1,5 +1,5 @@
-import { ConversationId, UserId } from '~support-domains/chat/models'
-import { PresenceStatus, Role } from '~support-shared/enums'
+import { ConversationId, UserId } from '@ycyw/support-domains/chat/models'
+import { PresenceStatus, Role } from '@ycyw/support-shared/enums'
 
 export interface PresenceEvent {
   user: UserId

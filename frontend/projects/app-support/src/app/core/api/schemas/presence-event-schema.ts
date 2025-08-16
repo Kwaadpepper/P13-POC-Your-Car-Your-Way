@@ -1,7 +1,7 @@
 import { z } from 'zod'
 
-import { PresenceStatus, Role } from '~support-shared/enums'
-import { uuidSchema } from '~ycyw/shared'
+import { uuidSchema } from '@ycyw/shared'
+import { PresenceStatus, Role } from '@ycyw/support-shared/enums'
 
 const presenceEventSchema = z.object({
   user: uuidSchema,

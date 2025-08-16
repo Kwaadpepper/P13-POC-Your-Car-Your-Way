@@ -8,8 +8,8 @@ import { ButtonModule } from 'primeng/button'
 import { ListboxModule } from 'primeng/listbox'
 import { MessageModule } from 'primeng/message'
 
-import { Conversation } from '~support-domains/chat/models'
-import { BackButton } from '~support-shared/components'
+import { Conversation } from '@ycyw/support-domains/chat/models'
+import { BackButton } from '@ycyw/support-shared/components'
 
 import { IssueListViewModel } from './issue-list-viewmodel'
 

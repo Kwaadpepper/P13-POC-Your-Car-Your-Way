@@ -11,11 +11,11 @@ import { Router } from '@angular/router'
 
 import { catchError, debounceTime, Observable, Subject, switchMap, takeWhile, throwError } from 'rxjs'
 
-import { redirectUrls } from '~shell-core/auth/routes'
-import { ToastService } from '~shell-shared/services'
-import { SessionStore } from '~shell-shared/stores'
-import { AUTH_SERVICE } from '~shell-tokens/auth-service-token'
-import { SessionExpiredError } from '~ycyw/shared'
+import { SessionExpiredError } from '@ycyw/shared'
+import { redirectUrls } from '@ycyw/shell-core/auth/routes'
+import { ToastService } from '@ycyw/shell-shared/services'
+import { SessionStore } from '@ycyw/shell-shared/stores'
+import { AUTH_SERVICE } from '@ycyw/shell-tokens/auth-service-token'
 
 /**
 * This is used to manage the session of the user

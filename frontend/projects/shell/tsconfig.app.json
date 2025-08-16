@@ -4,22 +4,22 @@
     "outDir": "../../out-tsc/app",
     "types": [],
     "paths": {
-      "~shell-core/*": [
+      "@ycyw/shell-core/*": [
         "./src/app/core/*"
       ],
-      "~shell-env/*": [
+      "@ycyw/shell-env/*": [
         "./src/environments/*"
       ],
-      "~shell-domains/*": [
+      "@ycyw/shell-domains/*": [
         "./src/app/domains/*"
       ],
-      "~shell-shared/*": [
+      "@ycyw/shell-shared/*": [
         "./src/app/shared/*"
       ],
-      "~shell-tokens/*": [
+      "@ycyw/shell-tokens/*": [
         "./src/app/tokens/*"
       ],
-      "~ycyw/shared": [
+      "@ycyw/shared": [
         "../../dist/shared"
       ]
     }

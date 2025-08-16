@@ -1,8 +1,8 @@
 import { Injectable, computed, inject } from '@angular/core'
 
-import { FaqStore } from '~support-core/faq/stores'
-import { Faq } from '~support-domains/faq/models'
-import { UUID } from '~ycyw/shared'
+import { UUID } from '@ycyw/shared'
+import { FaqStore } from '@ycyw/support-core/faq/stores'
+import { Faq } from '@ycyw/support-domains/faq/models'
 
 @Injectable({
   providedIn: 'root',

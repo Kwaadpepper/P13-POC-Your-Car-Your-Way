@@ -11,8 +11,8 @@ import { TabsModule } from 'primeng/tabs'
 import { TagModule } from 'primeng/tag'
 import { map } from 'rxjs/operators'
 
-import { Issue } from '~support-domains/issue/models'
-import { BackButton, ChatBox } from '~support-shared/components'
+import { Issue } from '@ycyw/support-domains/issue/models'
+import { BackButton, ChatBox } from '@ycyw/support-shared/components'
 
 import { IssuePageViewModel } from './issue-page-viewmodel'
 

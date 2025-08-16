@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router'
 
-import { HomePage } from '~shell-core/auth/pages/home/home'
-import { authRoutes } from '~shell-core/auth/routes'
-import { homeRoutes } from '~shell-core/home/routes'
-import { GuestGuard } from '~shell-shared/guards'
+import { HomePage } from '@ycyw/shell-core/auth/pages/home/home'
+import { authRoutes } from '@ycyw/shell-core/auth/routes'
+import { homeRoutes } from '@ycyw/shell-core/home/routes'
+import { GuestGuard } from '@ycyw/shell-shared/guards'
 
 export const routes: Routes = [
   {
@@ -15,6 +15,6 @@ export const routes: Routes = [
   ...homeRoutes,
   {
     path: '**',
-    loadComponent: () => import('~shell-core/home/pages').then(c => c.NotFound),
+    loadComponent: () => import('@ycyw/shell-core/home/pages').then(c => c.NotFound),
   },
 ]

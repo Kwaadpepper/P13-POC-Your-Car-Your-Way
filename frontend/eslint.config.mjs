@@ -70,7 +70,7 @@ export default tseslint.config(
           pathGroups: [
             { pattern: "@angular/**", group: "external", position: "before" },
             { pattern: "primeng?(/**)", group: "external", position: "before" },
-            { pattern: "~**", group: "internal", position: "after" },
+            { pattern: "@ycyw/**", group: "internal", position: "after" },
           ],
           pathGroupsExcludedImportTypes: ["builtin"],
         },

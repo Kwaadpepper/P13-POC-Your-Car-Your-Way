@@ -4,8 +4,8 @@ import { RouterModule } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
 
-import { redirectUrls } from '~shell-core/auth/routes'
-import { LogoutButton } from '~shell-shared/components'
+import { redirectUrls } from '@ycyw/shell-core/auth/routes'
+import { LogoutButton } from '@ycyw/shell-shared/components'
 
 import { NavMenuViewModel } from './nav-menu.viewmodel'
 

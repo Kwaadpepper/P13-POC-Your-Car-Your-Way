@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core'
 
-import { APP_CONFIG } from '~shell-tokens/config-token'
+import { APP_CONFIG } from '@ycyw/shell-tokens/config-token'
 
 @Injectable({
   providedIn: 'root',

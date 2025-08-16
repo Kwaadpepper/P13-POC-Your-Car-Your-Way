@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing'
 
-import { SessionStore } from '~shell-core/auth/stores'
+import { SessionStore } from '@ycyw/shell-core/auth/stores'
 
 import { NavMenuViewModel } from './nav-menu.viewmodel'
 

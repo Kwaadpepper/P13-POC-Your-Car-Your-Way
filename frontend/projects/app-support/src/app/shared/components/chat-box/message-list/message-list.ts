@@ -2,8 +2,8 @@ import { AfterViewInit, Component, ElementRef, Input, OnChanges, SimpleChanges, 
 
 import { ScrollPanel, ScrollPanelModule } from 'primeng/scrollpanel'
 
-import { ChatMessage } from '~support-domains/chat/models'
-import { UUID } from '~ycyw/shared'
+import { UUID } from '@ycyw/shared'
+import { ChatMessage } from '@ycyw/support-domains/chat/models'
 
 import { Message } from '../message/message'
 

@@ -3,12 +3,13 @@ import { inject, Injectable } from '@angular/core'
 
 import { catchError, Observable, throwError } from 'rxjs'
 
-import { ConversationListZod } from '~support-core/api/schemas'
-import conversationListSchema from '~support-core/api/schemas/conversation-list-schema'
-import { Conversation } from '~support-domains/chat/models'
-import { ConversationRepository } from '~support-domains/chat/repositories'
-import { environment } from '~support-env/environment'
 import { SessionExpiredError, verifyResponseType } from '~ycyw/shared'
+
+import { ConversationListZod } from '@ycyw/support-core/api/schemas'
+import conversationListSchema from '@ycyw/support-core/api/schemas/conversation-list-schema'
+import { Conversation } from '@ycyw/support-domains/chat/models'
+import { ConversationRepository } from '@ycyw/support-domains/chat/repositories'
+import { environment } from '@ycyw/support-env/environment'
 
 @Injectable({
   providedIn: 'root',

@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core'
 
-import { environment } from '~shell-env/environment'
-import { Configuration } from '~ycyw/shared'
+import { Configuration } from '@ycyw/shared'
+import { environment } from '@ycyw/shell-env/environment'
 
 import config from '../../../application.json'
 

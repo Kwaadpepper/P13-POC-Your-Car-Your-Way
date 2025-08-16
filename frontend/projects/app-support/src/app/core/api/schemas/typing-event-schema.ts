@@ -1,7 +1,8 @@
 import { z } from 'zod'
 
-import { Role } from '~support-shared/enums'
 import { uuidSchema } from '~ycyw/shared'
+
+import { Role } from '@ycyw/support-shared/enums'
 
 const typingEventSchema = z.object({
   user: uuidSchema,

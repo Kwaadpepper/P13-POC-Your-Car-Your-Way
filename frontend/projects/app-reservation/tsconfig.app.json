@@ -6,22 +6,22 @@
     "outDir": "../../out-tsc/app",
     "types": [],
     "paths": {
-      "~reservation-core/*": [
+      "@ycyw/reservation-core/*": [
         "./src/app/core/*"
       ],
-      "~reservation-env/*": [
+      "@ycyw/reservation-env/*": [
         "./src/environments/*"
       ],
-      "~reservation-domains/*": [
+      "@ycyw/reservation-domains/*": [
         "./src/app/domains/*"
       ],
-      "~reservation-shared/*": [
+      "@ycyw/reservation-shared/*": [
         "./src/app/shared/*"
       ],
-      "~reservation-tokens/*": [
+      "@ycyw/reservation-tokens/*": [
         "./src/app/tokens/*"
       ],
-      "~ycyw/shared": [
+      "@ycyw/shared": [
         "../../dist/shared"
       ]
     }

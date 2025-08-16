@@ -1,5 +1,6 @@
-import { Role } from '~support-shared/enums'
 import { Entity, UUID } from '~ycyw/shared'
+
+import { Role } from '@ycyw/support-shared/enums'
 
 export interface ChatMessage extends Entity {
   conversation: UUID

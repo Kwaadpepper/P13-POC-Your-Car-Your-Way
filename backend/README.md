@@ -1,45 +1,52 @@
-# YCYW Backend Monorepo (Spring Boot, Java 21)
+# YCYW Backend Monorepo (Spring Boot, Java 21, Gradle)
 
-Monorepo Maven pour héberger des micro‑services Spring Boot alignés sur le diagramme cible:
+Monorepo Gradle (Kotlin DSL) pour héberger des micro‑services Spring Boot alignés sur le diagramme cible:
 - Plateforme: Spring Cloud Config Server, Eureka Service Registry, Spring Cloud Gateway
 - Services métiers: ex. user-service (et futurs: catalogue, réservation, support…)
 - Messagerie: RabbitMQ
 - Base de données: un Postgres par service
 - Observabilité: Actuator + Micrometer Prometheus
 
+Gradle: 8.10.2 (wrapper inclus)
+
 ## Stack technique
 - Java 21
-- Spring Boot 3.3+ / 3.4+ (compatibles Java 21)
+- Spring Boot 3.4.x (compatible Java 21)
 - Spring Cloud 2024.0.x
-- Maven (avec Maven Wrapper)
+- Gradle (Wrapper, Kotlin DSL)
 - Docker (Postgres, RabbitMQ)
+- Gestion centralisée des versions via Version Catalog (gradle/deps.versions.toml)
 
 ## Arborescence
 ```
 backend/
-├─ pom.xml                       # POM parent (packaging=pom)
+├─ settings.gradle.kts            # Déclare les modules et le catalog TOML
+├─ build.gradle.kts               # Conventions communes
+├─ gradle/
+│  ├─ deps.versions.toml          # Version Catalog (libs, versions, plugins)
+│  └─ wrapper/                     # Gradle wrapper
 ├─ platform/
-│  ├─ config-server/             # Spring Cloud Config Server (port 8888)
-│  ├─ service-registry/          # Eureka Server (port 8761)
-│  └─ gateway/                   # Spring Cloud Gateway (port 8080)
+│  ├─ config-server/              # Spring Cloud Config Server (port 8888)
+│  ├─ service-registry/           # Eureka Server (port 8761)
+│  └─ gateway/                    # Spring Cloud Gateway (port 8080)
 ├─ services/
-│  └─ user-service/              # Exemple de micro-service (port 8081)
-├─ config/                       # Config centralisée (servie par Config Server)
+│  └─ user-service/               # Exemple de micro-service (port 8081)
+├─ config/                        # Config centralisée (servie par Config Server)
 │  ├─ application.yml
 │  └─ user-service.yml
 ├─ docker/
-│  └─ docker-compose.yml         # RabbitMQ + Postgres pour user-service
+│  └─ docker-compose.yml          # RabbitMQ + Postgres pour user-service (et autres)
 └─ .vscode/
-   └─ launch.json                # Configs Run/Debug VS Code
+   └─ launch.json                 # Configs Run/Debug VS Code
 ```
 
 ## Prérequis
 - JDK 21 installé (JAVA_HOME pointe vers le JDK 21)
 - Docker Desktop (ou équivalent)
-- VS Code:
+- VS Code (recommandé):
   - Extension Pack for Java
   - Spring Boot Extension Pack
-- Port disponibles: 8888, 8761, 8080, 8081, 5432, 5672, 15672
+- Ports disponibles: 8888, 8761, 8080, 8081, 5432, 5672, 15672
 
 ## Démarrage rapide
 
@@ -47,9 +54,11 @@ Ouvrez un terminal dans `backend/`.
 
 1) Build global
 ```bash
-./mvnw clean verify
+./gradlew clean build
+# Optionnel (analyse de nullité NullAway + ErrorProne):
+./gradlew -Pnullaway=true clean build
 ```
-Attendu: BUILD SUCCESS.
+Attendu: BUILD SUCCESSFUL.
 
 2) Lancer l’infra locale (RabbitMQ + Postgres)
 ```bash
@@ -60,14 +69,14 @@ docker compose -f docker/docker-compose.yml ps
 
 3) Démarrer le Config Server (port 8888)
 ```bash
-./mvnw -pl platform/config-server spring-boot:run
+./gradlew :platform:config-server:bootRun
 # Santé:
 curl http://localhost:8888/actuator/health   # {"status":"UP"}
 ```
 
 4) Démarrer le Service Registry Eureka (port 8761)
 ```bash
-./mvnw -pl platform/service-registry spring-boot:run
+./gradlew :platform:service-registry:bootRun
 # Santé:
 curl http://localhost:8761/actuator/health   # {"status":"UP"}
 # UI:
@@ -76,7 +85,7 @@ curl http://localhost:8761/actuator/health   # {"status":"UP"}
 
 5) Démarrer la Gateway (port 8080)
 ```bash
-./mvnw -pl platform/gateway spring-boot:run
+./gradlew :platform:gateway:bootRun
 # Santé:
 curl http://localhost:8080/actuator/health   # {"status":"UP"}
 ```
@@ -84,10 +93,10 @@ curl http://localhost:8080/actuator/health   # {"status":"UP"}
 6) Démarrer le user-service (port 8081)
 ```bash
 # Si server.port est déjà 8081 dans application.yml:
-./mvnw -pl services/user-service spring-boot:run
+./gradlew :services:user-service:bootRun
 
 # Ou en forçant le port à la volée:
-./mvnw -pl services/user-service spring-boot:run -Dspring-boot.run.arguments=--server.port=8081
+./gradlew :services:user-service:bootRun -Dspring-boot.run.arguments=--server.port=8081
 ```
 
 7) Vérifications fonctionnelles
@@ -107,7 +116,14 @@ curl http://localhost:8080/user-service/users/hello
 Arrêt
 ```bash
 # Ctrl+C dans chaque terminal Spring Boot
+./gradlew --stop
 docker compose -f docker/docker-compose.yml down
+```
+
+Astuce
+```bash
+# Si vous lancez depuis la racine du repo, préfixez avec -p backend
+./gradlew -p backend :platform:config-server:bootRun
 ```
 
 ## Configuration
@@ -116,11 +132,11 @@ docker compose -f docker/docker-compose.yml down
   - Le Config Server lit `backend/config/` (voir `platform/config-server/src/main/resources/application.yml`, `search-locations`).
   - Exemple de clés communes: `management.endpoints.web.exposure.include`, `logging.level.root`, etc.
 - Chaque service importe la config:
-  ```yaml
-  spring:
-    config:
-      import: optional:configserver:http://localhost:8888
-  ```
+```yaml
+spring:
+  config:
+    import: optional:configserver:http://localhost:8888
+```
 - Variables d’environnement utiles:
   - Base de données:
     - `DB_URL` (ex: jdbc:postgresql://localhost:5432/userdb)
@@ -132,33 +148,34 @@ docker compose -f docker/docker-compose.yml down
 
 ## Ajouter un nouveau micro‑service
 
-Vous avez deux approches: dupliquer `user-service` (rapide) ou générer via Spring Initializr (VS Code).
+Deux approches: dupliquer `user-service` (rapide) ou générer via Spring Initializr.
 
-### Option A — Dupliquer `user-service` (recommandé pour démarrer)
+### Option A — Dupliquer `user-service`
 1) Copier le dossier
 ```bash
 cp -R services/user-service services/catalog-service
 ```
 
 2) Mettre à jour dans `services/catalog-service`:
-- `pom.xml`:
-  - `<artifactId>catalog-service</artifactId>`
-  - Parent inchangé
+- `build.gradle.kts`:
+  - Le plugin `org.springframework.boot` doit être appliqué (comme dans user-service)
+  - Dépendances minimales (voir plus bas)
 - Packages Java et classe main:
-  - Renommez le package `com.ycyw.users` en `com.ycyw.catalog` et la classe en `CatalogServiceApplication`
+  - Renommez le package `com.ycyw.users` en `com.ycyw.catalog`
+  - Classe principale: `CatalogServiceApplication`
 - `src/main/resources/application.yml`:
   - `spring.application.name: catalog-service`
   - `server.port: 8082` (ou laissez vide et lancez avec `--server.port=...`)
   - URL de sa base: `jdbc:postgresql://localhost:5433/catalogdb` (par exemple)
 - Ajoutez un contrôleur minimal (ex: GET `/catalog/hello`)
 
-3) Ajouter le module dans le POM parent
-Dans `backend/pom.xml`, ajoutez:
-```xml
-<modules>
-  ...
-  <module>services/catalog-service</module>
-</modules>
+3) Déclarer le module dans `settings.gradle.kts`
+```kotlin
+include(
+  // ...
+  "services:user-service",
+  "services:catalog-service", // <-- ajouter
+)
 ```
 
 4) Config centralisée (optionnel mais conseillé)
@@ -193,8 +210,8 @@ docker compose -f docker/docker-compose.yml up -d
 
 6) Build et démarrage du nouveau service
 ```bash
-./mvnw -q clean verify
-./mvnw -pl services/catalog-service spring-boot:run -Dspring-boot.run.arguments=--server.port=8082
+./gradlew clean build
+./gradlew :services:catalog-service:bootRun -Dspring-boot.run.arguments=--server.port=8082
 ```
 Vérifiez:
 ```bash
@@ -215,16 +232,15 @@ Dépendances minimales conseillées pour un service type:
 - micrometer-registry-prometheus
 - spring-boot-starter-test (test)
 
-### Option B — Spring Initializr (dans VS Code)
-- VS Code > “Spring Initializr: Generate a Maven Project”
+### Option B — Spring Initializr
+- Générez un projet Gradle Java 21, Spring Boot 3.4.x
 - Group: `com.ycyw`, Artifact: `catalog-service`
-- Java 21, Spring Boot 3.3+/3.4+
 - Dépendances: celles listées ci‑dessus
-- Générez directement dans `backend/services/`
+- Placez-le dans `backend/services/`
 - Ajustez:
   - `spring.application.name`
   - `application.yml` (ports, DB, RabbitMQ)
-  - Ajoutez le module dans le `<modules>` du parent
+  - Ajoutez le module dans `settings.gradle.kts` (voir étape 3)
   - Ajoutez `config/catalog-service.yml` si nécessaire
 
 ## Observabilité
@@ -239,16 +255,15 @@ Dépendances minimales conseillées pour un service type:
 
 ## Exécution avec VS Code
 
-- `.vscode/launch.json` inclut:
+- `.vscode/launch.json` peut inclure:
   - “Start Platform (Config + Eureka + Gateway)” (compound)
-  - Lances ensuite chaque micro-service avec sa configuration dédiée (“User Service”, etc.)
+  - “User Service”, etc. pour chaque micro‑service
 - Palette de commande:
-  - “Maven: Reload All Projects” si VS Code ne détecte pas les modules
   - “Java: Clean Java Language Server Workspace” en cas de souci d’indexation
 
 ## Dépannage
 
-- Port déjà utilisé (“Adresse déjà utilisée”)
+- Port déjà utilisé (“Address already in use”)
   - Changer le port: `--server.port=808x` ou `server.port` dans `application.yml`
   - Voir les processus:
     ```bash
@@ -257,7 +272,7 @@ Dépendances minimales conseillées pour un service type:
     ```
 - Le service n’apparaît pas dans Eureka
   - Vérifier `eureka.client.service-url.defaultZone`
-  - Vérifier que le service a bien `spring-cloud-starter-netflix-eureka-client`
+  - Vérifier la présence de `spring-cloud-starter-netflix-eureka-client`
 - Erreur Config Server
   - Assurez-vous que Config Server est démarré (8888)
   - Vérifier `spring.config.import=optional:configserver:http://localhost:8888`
@@ -270,18 +285,18 @@ Dépendances minimales conseillées pour un service type:
 
 - Build global:
   ```bash
-  ./mvnw -q clean verify
+  ./gradlew clean build
   ```
 - Démarrer un module:
   ```bash
-  ./mvnw -pl platform/config-server spring-boot:run
-  ./mvnw -pl platform/service-registry spring-boot:run
-  ./mvnw -pl platform/gateway spring-boot:run
-  ./mvnw -pl services/user-service spring-boot:run
+  ./gradlew :platform:config-server:bootRun
+  ./gradlew :platform:service-registry:bootRun
+  ./gradlew :platform:gateway:bootRun
+  ./gradlew :services:user-service:bootRun
   ```
 - Forcer un port à la volée:
   ```bash
-  ./mvnw -pl services/user-service spring-boot:run -Dspring-boot.run.arguments=--server.port=8081
+  ./gradlew :services:user-service:bootRun -Dspring-boot.run.arguments=--server.port=8081
   ```
 - Infra locale:
   ```bash

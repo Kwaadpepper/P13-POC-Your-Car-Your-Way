@@ -2,16 +2,18 @@ import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import net.ltgt.gradle.errorprone.errorprone
+import com.diffplug.gradle.spotless.SpotlessExtension
+import org.gradle.api.provider.Provider
 
 plugins {
   alias(libs.plugins.errorprone) apply false
+  alias(libs.plugins.spotless) apply false
 }
 
 val enableNullAway = providers.gradleProperty("nullaway").orNull == "true"
 
 subprojects {
   group = "com.ycyw"
-
   pluginManager.apply("java")
 
   repositories {
@@ -19,15 +21,19 @@ subprojects {
     maven("https://repo.spring.io/release")
   }
 
+  // Toolchain Java via le catalog (référence depuis le projet racine)
   extensions.configure(JavaPluginExtension::class.java) {
-    // Désambiguïser explicitement vers Int
-    toolchain.languageVersion.set(JavaLanguageVersion.of(rootProject.libs.versions.java.get().toInt()))
+    toolchain.languageVersion.set(
+      JavaLanguageVersion.of(rootProject.libs.versions.java.get().toInt())
+    )
   }
 
+  // Dépendances communes
   dependencies {
     add("compileOnly", rootProject.libs.jspecify)
   }
 
+  // ErrorProne / NullAway (optionnel)
   if (enableNullAway) {
     pluginManager.apply("net.ltgt.errorprone")
     dependencies {
@@ -42,5 +48,44 @@ subprojects {
       }
       options.compilerArgs.add("-Werror")
     }
+  }
+
+  // Spotless
+  pluginManager.apply("com.diffplug.spotless")
+  extensions.configure(SpotlessExtension::class.java) {
+    // Java
+    java {
+      googleJavaFormat(rootProject.libs.versions.google.java.format.get())
+      removeUnusedImports()
+      importOrder()
+      formatAnnotations()
+      target("**/*.java")
+      targetExclude("**/build/**", "**/generated/**")
+    }
+    // Scripts Gradle Kotlin
+    kotlinGradle {
+      ktlint(rootProject.libs.versions.ktlint.get())
+      target("**/*.gradle.kts")
+      targetExclude("**/build/**")
+    }
+    // YAML / YML / Markdown
+    format("misc") {
+      target("**/*.md", "**/*.yaml", "**/*.yml", ".gitignore")
+      targetExclude("**/build/**")
+      trimTrailingWhitespace()
+      indentWithSpaces(2)
+      endWithNewline()
+    }
+    // JSON
+    json {
+      target("**/*.json")
+      targetExclude("**/build/**")
+      simple()
+    }
+  }
+
+  // Intègre Spotless dans 'check'
+  tasks.matching { it.name == "check" }.configureEach {
+    dependsOn("spotlessCheck")
   }
 }

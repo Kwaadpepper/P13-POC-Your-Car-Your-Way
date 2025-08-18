@@ -5,6 +5,7 @@
     "back-support",
     "back-user"
   ],
+  "editor.formatOnSave": true,
   "java.configuration.updateBuildConfiguration": "automatic",
   "java.import.gradle.enabled": true,
   "java.import.gradle.wrapper.enabled": true,

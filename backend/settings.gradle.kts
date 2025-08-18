@@ -10,6 +10,11 @@ dependencyResolutionManagement {
     mavenCentral()
     maven("https://repo.spring.io/release")
   }
+  versionCatalogs {
+    create("buildSrcLibs") {
+      from(files("./gradle/libs.versions.toml"))
+    }
+  }
 }
 
 rootProject.name = "ycyw-backend"

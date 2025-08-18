@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Start Platform (Config + Eureka + Gateway)",
+      "configurations": [
+        "Config Server",
+        "Service Registry",
+        "Gateway"
+      ]
+    }
+  ],
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Config Server",
+      "request": "launch",
+      "mainClass": "com.ycyw.configserver.ConfigServerApplication",
+      "projectName": "config-server"
+    },
+    {
+      "type": "java",
+      "name": "Service Registry",
+      "request": "launch",
+      "mainClass": "com.ycyw.serviceregistry.ServiceRegistryApplication",
+      "projectName": "service-registry"
+    },
+    {
+      "type": "java",
+      "name": "Gateway",
+      "request": "launch",
+      "mainClass": "com.ycyw.gateway.GatewayApplication",
+      "projectName": "gateway"
+    },
+    {
+      "type": "java",
+      "name": "User Service",
+      "request": "launch",
+      "mainClass": "com.ycyw.users.UserServiceApplication",
+      "projectName": "user-service"
+    }
+  ]
+}

@@ -34,7 +34,7 @@ jobs:
     uses: ./.github/workflows/step-linting-frontend.yml
 
   linting-backend:
-    uses: ./.github/workflows/step-lint-backend.yml
+    uses: ./.github/workflows/step-linting-backend.yml
 
   # Exécute le build du frontend
   building-frontend:

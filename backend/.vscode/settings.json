@@ -5,9 +5,11 @@
     "back-support",
     "back-user"
   ],
-  "maven.view": "hierarchical",
-  "java.dependency.packagePresentation": "hierarchical",
   "java.configuration.updateBuildConfiguration": "automatic",
+  "java.import.gradle.enabled": true,
+  "java.import.gradle.wrapper.enabled": true,
+  "java.import.gradle.offline.enabled": false,
+  "java.import.generatesMetadataFilesAtProjectRoot": true,
   "java.compile.nullAnalysis.mode": "automatic",
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#c4350c",

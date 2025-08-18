@@ -19,7 +19,7 @@
     "files.trimTrailingWhitespace": false,
   },
   "triggerTaskOnSave.tasks": {
-    "Spotless Apply": [
+    "Gradle Spotless Apply Silently": [
       "*.java",
       "*.kts",
     ],

@@ -23,6 +23,10 @@ on:
   # ou de pull request
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 # Définition des jobs à exécuter dans ce workflow
 jobs:
   # Exécute le lint du frontend

@@ -1,6 +1,6 @@
 [versions]
 java = "21"
-spring-boot = "3.4.4"
+spring-boot = "3.5.4"
 spring-cloud = "2024.0.2"
 jspecify = "1.0.0"
 error-prone = "2.41.0"

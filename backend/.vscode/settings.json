@@ -45,5 +45,7 @@
     "titleBar.inactiveBackground": "#94280999",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "#942809"
+  "peacock.color": "#942809",
+  "java.project.explorer.showNonJavaResources": false,
+  "java.dependency.packagePresentation": "hierarchical"
 }

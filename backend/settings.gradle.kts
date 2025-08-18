@@ -23,5 +23,8 @@ include(
   "platform:config-server",
   "platform:service-registry",
   "platform:gateway",
-  "services:user-service",
+  "services:user-service:application",
+  "services:user-service:domain",
+  "services:user-service:infrastructure",
+  "shared",
 )

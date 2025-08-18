@@ -3,6 +3,9 @@ plugins {
   id("java")
 }
 
+group = "ycyw.platform"
+version = "0.0.1-SNAPSHOT"
+
 dependencies {
   implementation(platform(libs.spring.boot.dependencies))
   implementation(platform(libs.spring.cloud.dependencies))

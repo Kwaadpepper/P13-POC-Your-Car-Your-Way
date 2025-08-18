@@ -42,7 +42,7 @@ tasks.matching { it.name == "check" }.configureEach {
 }
 
 subprojects {
-  group = "com.ycyw"
+  group = "ycyw"
   pluginManager.apply("java")
 
   repositories {

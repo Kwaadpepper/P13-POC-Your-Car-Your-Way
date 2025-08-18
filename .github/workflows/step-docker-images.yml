@@ -52,6 +52,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          # Frontend
           - name: shell
             type: frontend
             project: shell
@@ -65,8 +66,22 @@ jobs:
             type: frontend
             project: app-support
 
+          # Backend
+          - name: config-server
+            type: backend
+            context: ./backend/platform/config-server
+          - name: gateway
+            type: backend
+            context: ./backend/platform/gateway
+          - name: service-registry
+            type: backend
+            context: ./backend/platform/service-registry
+          - name: user-service
+            type: backend
+            context: ./backend/services/user-service
+
     concurrency:
-      group: front-images-${{ matrix.name }}
+      group: images-${{ matrix.name }}
       cancel-in-progress: true
 
     steps:
@@ -86,6 +101,7 @@ jobs:
           IMAGE_BASE=${{ env.REGISTRY }}/${OWNER_SAFE}/${{ env.REPO }}-${{ matrix.name }}
           echo "tags=${IMAGE_BASE}:${{ inputs.tag }}" >> "$GITHUB_OUTPUT"
 
+      # Frontend build (cache only)
       - name: Build frontend (cache only)
         if: matrix.type == 'frontend'
         uses: docker/build-push-action@v6
@@ -102,6 +118,18 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      # Backend build (cache only)
+      - name: Build backend (cache only)
+        if: matrix.type == 'backend'
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ./docker/backend/Dockerfile
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Login to GHCR
         uses: docker/login-action@v3
         with:
@@ -110,6 +138,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           logout: true
 
+      # Frontend push
       - name: Push frontend image (reuse cache)
         if: matrix.type == 'frontend'
         uses: docker/build-push-action@v6
@@ -122,6 +151,18 @@ jobs:
             BUN_VERSION=1.2.19
             PROJECT=${{ matrix.project }}
             CONFIG=production
+          tags: ${{ steps.meta.outputs.tags }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      # Backend push
+      - name: Push backend image (reuse cache)
+        if: matrix.type == 'backend'
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ./docker/backend/Dockerfile
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

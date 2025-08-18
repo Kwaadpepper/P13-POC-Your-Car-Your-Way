@@ -29,8 +29,14 @@ jobs:
   linting-frontend:
     uses: ./.github/workflows/step-linting-frontend.yml
 
+  linting-backend:
+    uses: ./.github/workflows/step-lint-backend.yml
+
   # Exécute le build du frontend
   building-frontend:
+    uses: ./.github/workflows/step-building-frontend.yml
+
+  building-backend:
     uses: ./.github/workflows/step-building-frontend.yml
 
   # Construit et pousse les images Docker
@@ -43,7 +49,9 @@ jobs:
     # avec succès avant de commencer
     needs:
       - linting-frontend
+      - linting-backend
       - building-frontend
+      - building-backend
     # Donne au workflow appelé les permissions nécessaires
     permissions:
       contents: read

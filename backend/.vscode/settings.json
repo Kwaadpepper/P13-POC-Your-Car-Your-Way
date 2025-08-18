@@ -21,6 +21,7 @@
   "triggerTaskOnSave.tasks": {
     "Spotless Apply": [
       "*.java",
+      "*.kts",
     ],
   },
   "java.checkstyle.configuration": "config/checkstyle/checkstyle.xml",

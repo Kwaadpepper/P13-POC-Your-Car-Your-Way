@@ -1,17 +1,39 @@
+import net.ltgt.gradle.errorprone.errorprone
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import net.ltgt.gradle.errorprone.errorprone
-import com.diffplug.gradle.spotless.SpotlessExtension
-import org.gradle.api.provider.Provider
 
 plugins {
-  alias(libs.plugins.errorprone) apply false
-  alias(libs.plugins.spotless) apply false
+  alias(libs.plugins.spotless)
   alias(libs.plugins.checkstyle)
+  alias(libs.plugins.errorprone) apply false
 }
 
 val enableNullAway = providers.gradleProperty("nullaway").orNull == "true"
+
+// Spotless pour tout le monorepo
+spotless {
+  // * Java
+  java {
+    googleJavaFormat(rootProject.libs.versions.google.java.format.get())
+    removeUnusedImports()
+    importOrder()
+    formatAnnotations()
+    target("**/*.java")
+    targetExclude("**/build/**", "**/generated/**")
+  }
+  // * Scripts Gradle Kotlin
+  kotlinGradle {
+    ktlint(rootProject.libs.versions.ktlint.get())
+    target("**/*.gradle.kts")
+    targetExclude("**/build/**")
+  }
+}
+
+// * Intègre Spotless dans 'check'
+tasks.matching { it.name == "check" }.configureEach {
+  dependsOn("spotlessCheck")
+}
 
 subprojects {
   group = "com.ycyw"
@@ -22,19 +44,19 @@ subprojects {
     maven("https://repo.spring.io/release")
   }
 
-  // Toolchain Java via le catalog (référence depuis le projet racine)
+  // * Toolchain Java via le catalog (référence depuis le projet racine)
   extensions.configure(JavaPluginExtension::class.java) {
     toolchain.languageVersion.set(
-      JavaLanguageVersion.of(rootProject.libs.versions.java.get().toInt())
+      JavaLanguageVersion.of(rootProject.libs.versions.java.get().toInt()),
     )
   }
 
-  // Dépendances communes
+  // * Dépendances communes
   dependencies {
     add("compileOnly", rootProject.libs.jspecify)
   }
 
-  // ErrorProne / NullAway (optionnel)
+  // * ErrorProne / NullAway (optionnel)
   if (enableNullAway) {
     pluginManager.apply("net.ltgt.errorprone")
     dependencies {
@@ -51,46 +73,7 @@ subprojects {
     }
   }
 
-  // Spotless
-  pluginManager.apply("com.diffplug.spotless")
-  extensions.configure(SpotlessExtension::class.java) {
-    // Java
-    java {
-      googleJavaFormat(rootProject.libs.versions.google.java.format.get())
-      removeUnusedImports()
-      importOrder()
-      formatAnnotations()
-      target("**/*.java")
-      targetExclude("**/build/**", "**/generated/**")
-    }
-    // Scripts Gradle Kotlin
-    kotlinGradle {
-      ktlint(rootProject.libs.versions.ktlint.get())
-      target("**/*.gradle.kts")
-      targetExclude("**/build/**")
-    }
-    // YAML / YML / Markdown
-    format("misc") {
-      target("**/*.md", "**/*.yaml", "**/*.yml", ".gitignore")
-      targetExclude("**/build/**")
-      trimTrailingWhitespace()
-      indentWithSpaces(2)
-      endWithNewline()
-    }
-    // JSON
-    json {
-      target("**/*.json")
-      targetExclude("**/build/**")
-      simple()
-    }
-  }
-
-  // Intègre Spotless dans 'check'
-  tasks.matching { it.name == "check" }.configureEach {
-    dependsOn("spotlessCheck")
-  }
-
-  // Checkstyle
+  // * Checkstyle
   pluginManager.apply("checkstyle")
 
   checkstyle {

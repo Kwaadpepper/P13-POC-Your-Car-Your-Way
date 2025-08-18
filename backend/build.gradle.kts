@@ -15,7 +15,10 @@ val enableNullAway = providers.gradleProperty("nullaway").orNull == "true"
 spotless {
   // * Java
   java {
-    googleJavaFormat(rootProject.libs.versions.google.java.format.get())
+    googleJavaFormat(
+      rootProject.libs.versions.google.java.format
+        .get(),
+    )
     removeUnusedImports()
     importOrder()
     formatAnnotations()
@@ -24,7 +27,10 @@ spotless {
   }
   // * Scripts Gradle Kotlin
   kotlinGradle {
-    ktlint(rootProject.libs.versions.ktlint.get())
+    ktlint(
+      rootProject.libs.versions.ktlint
+        .get(),
+    )
     target("**/*.gradle.kts")
     targetExclude("**/build/**")
   }
@@ -47,7 +53,11 @@ subprojects {
   // * Toolchain Java via le catalog (référence depuis le projet racine)
   extensions.configure(JavaPluginExtension::class.java) {
     toolchain.languageVersion.set(
-      JavaLanguageVersion.of(rootProject.libs.versions.java.get().toInt()),
+      JavaLanguageVersion.of(
+        rootProject.libs.versions.java
+          .get()
+          .toInt(),
+      ),
     )
   }
 
@@ -77,7 +87,9 @@ subprojects {
   pluginManager.apply("checkstyle")
 
   checkstyle {
-    toolVersion = rootProject.libs.versions.checkstyle.get()
+    toolVersion =
+      rootProject.libs.versions.checkstyle
+        .get()
     configFile = rootProject.file("config/checkstyle/checkstyle.xml")
     isShowViolations = true
   }

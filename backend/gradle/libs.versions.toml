@@ -9,6 +9,7 @@ errorprone-plugin = "4.1.0"
 spotless = "6.25.0"
 ktlint = "1.2.1"
 google-java-format = "1.17.0"
+checkstyle = "11.0.0"
 
 [libraries]
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
@@ -23,3 +24,4 @@ postgresql = { module = "org.postgresql:postgresql" }
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone-plugin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+checkstyle = { id = "checkstyle" }

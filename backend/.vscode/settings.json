@@ -12,6 +12,19 @@
   "java.import.gradle.offline.enabled": false,
   "java.import.generatesMetadataFilesAtProjectRoot": true,
   "java.compile.nullAnalysis.mode": "automatic",
+  "java.format.comments.enabled": true,
+  "java.format.enabled": false,
+  "[java]": {
+    "editor.formatOnSave": false,
+    "files.trimTrailingWhitespace": false,
+  },
+  "triggerTaskOnSave.tasks": {
+    "Spotless Apply": [
+      "*.java",
+    ],
+  },
+  "java.checkstyle.configuration": "config/checkstyle/checkstyle.xml",
+  "java.checkstyle.version": "11.0.0",
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#c4350c",
     "activityBar.background": "#c4350c",

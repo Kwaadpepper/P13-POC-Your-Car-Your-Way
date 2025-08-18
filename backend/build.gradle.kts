@@ -8,6 +8,7 @@ import org.gradle.api.provider.Provider
 plugins {
   alias(libs.plugins.errorprone) apply false
   alias(libs.plugins.spotless) apply false
+  alias(libs.plugins.checkstyle)
 }
 
 val enableNullAway = providers.gradleProperty("nullaway").orNull == "true"
@@ -87,5 +88,26 @@ subprojects {
   // Intègre Spotless dans 'check'
   tasks.matching { it.name == "check" }.configureEach {
     dependsOn("spotlessCheck")
+  }
+
+  // Checkstyle
+  pluginManager.apply("checkstyle")
+
+  checkstyle {
+    toolVersion = rootProject.libs.versions.checkstyle.get()
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+    isShowViolations = true
+  }
+
+  tasks.withType<Checkstyle>().configureEach {
+    enabled = fileTree("src/main/java").files.isNotEmpty()
+    reports {
+      html.required.set(true)
+      xml.required.set(false)
+    }
+  }
+
+  tasks.named("check") {
+    dependsOn("checkstyleMain", "checkstyleTest")
   }
 }

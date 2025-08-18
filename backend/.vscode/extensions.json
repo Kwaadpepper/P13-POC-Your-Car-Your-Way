@@ -4,6 +4,8 @@
         "vmware.vscode-spring-boot",
         "vscjava.vscode-java-pack",
         "vscjava.vscode-gradle",
-        "vmware.vscode-boot-dev-pack"
+        "vmware.vscode-boot-dev-pack",
+        "gruntfuggly.triggertaskonsave",
+        "shengchen.vscode-checkstyle"
     ]
 }

@@ -1,11 +1,10 @@
 {
-    "recommendations": [
-        "josevseb.google-java-format-for-vs-code",
-        "vmware.vscode-spring-boot",
-        "vscjava.vscode-java-pack",
-        "vscjava.vscode-gradle",
-        "vmware.vscode-boot-dev-pack",
-        "gruntfuggly.triggertaskonsave",
-        "shengchen.vscode-checkstyle"
-    ]
+  "recommendations": [
+    "vmware.vscode-spring-boot",
+    "vscjava.vscode-java-pack",
+    "vscjava.vscode-gradle",
+    "vmware.vscode-boot-dev-pack",
+    "gruntfuggly.triggertaskonsave",
+    "shengchen.vscode-checkstyle"
+  ]
 }

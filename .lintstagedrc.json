@@ -4,5 +4,11 @@
   ],
   "**/*.css": [
     "cd frontend && sh -c 'npm run lint:css:fix'"
+  ],
+  "**/*.gradle.kts": [
+    "cd backend && ./gradlew checkstyleMain checkstyleTest spotlessCheck --no-daemon"
+  ],
+  "**/*.java": [
+    "cd backend && ./gradlew checkstyleMain checkstyleTest spotlessCheck --no-daemon"
   ]
 }

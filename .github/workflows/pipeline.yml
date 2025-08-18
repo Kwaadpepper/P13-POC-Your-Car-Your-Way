@@ -41,7 +41,7 @@ jobs:
     uses: ./.github/workflows/step-building-frontend.yml
 
   building-backend:
-    uses: ./.github/workflows/step-building-frontend.yml
+    uses: ./.github/workflows/step-building-backend.yml
 
   # Construit et pousse les images Docker
   docker-images:

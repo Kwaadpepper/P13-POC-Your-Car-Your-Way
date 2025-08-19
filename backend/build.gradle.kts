@@ -20,7 +20,14 @@ spotless {
         .get(),
     )
     removeUnusedImports()
-    importOrder()
+    importOrder(
+      "java",
+      "javax",
+      "org.springframework",
+      "com.ycyw",
+      "\\#",
+      "",
+    )
     formatAnnotations()
     target("**/*.java")
     targetExclude("**/build/**", "**/generated/**")
@@ -32,6 +39,12 @@ spotless {
         .get(),
     )
     target("**/*.gradle.kts")
+    targetExclude("**/build/**")
+  }
+  // * Scripts Gradle Groovy
+  groovyGradle {
+    greclipse()
+    target("**/*.gradle")
     targetExclude("**/build/**")
   }
 }

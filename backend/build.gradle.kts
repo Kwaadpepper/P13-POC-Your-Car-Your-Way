@@ -90,6 +90,12 @@ subprojects {
     toolVersion =
       rootProject.libs.versions.checkstyle
         .get()
+    setConfigProperties(
+      mapOf(
+        "org.checkstyle.google.suppressionfilter.config" to
+          rootProject.file("config/checkstyle/checkstyle-suppressions.xml"),
+      ),
+    )
     configFile = rootProject.file("config/checkstyle/checkstyle.xml")
     isShowViolations = true
   }

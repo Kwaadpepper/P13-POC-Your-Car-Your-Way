@@ -1,19 +1,19 @@
 pluginManagement {
-	repositories {
-		gradlePluginPortal()
-		mavenCentral()
-	}
+  repositories {
+    mavenCentral()
+    gradlePluginPortal()
+  }
 }
 
 dependencyResolutionManagement {
-	repositories {
-		mavenCentral()
-	}
-	versionCatalogs {
-		create("buildSrcLibs") {
-			from(files("./gradle/libs.versions.toml"))
-		}
-	}
+  repositories {
+    mavenCentral()
+  }
+  versionCatalogs {
+    create("buildSrcLibs") {
+      from(files("./gradle/libs.versions.toml"))
+    }
+  }
 }
 
 rootProject.name = "ycyw-backend"

@@ -1,29 +1,27 @@
 package com.ycyw.users.web;
 
-import org.jspecify.annotations.Nullable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * REST controller for user-related endpoints.
- *
- * <p>Provides endpoints for user operations such as greeting.
- */
+import com.ycyw.shared.ddd.objectvalues.SimpleMessage;
+import com.ycyw.users.dto.SimpleMessageDto;
+import com.ycyw.users.presenter.SimpleMessagePresenter;
+
+import org.jspecify.annotations.Nullable;
+
 @RestController
 public class UserController {
+  private final SimpleMessagePresenter presenter;
 
-  /**
-   * Returns a greeting message for the specified user name.
-   *
-   * @param name the name of the user to greet; if null or blank, defaults to "user-service"
-   * @return a {@link ResponseEntity} containing the greeting message
-   */
+  public UserController(SimpleMessagePresenter presenter) {
+    this.presenter = presenter;
+  }
+
   @GetMapping("/users/hello")
-  public ResponseEntity<String> hello(
+  public SimpleMessageDto hello(
       @RequestParam(name = "name", required = false) @Nullable String name) {
     var who = (name == null || name.isBlank()) ? "user-service" : name;
-    return ResponseEntity.ok("Hello from " + who);
+    return this.presenter.present(new SimpleMessage("Hello, " + who + "!"));
   }
 }

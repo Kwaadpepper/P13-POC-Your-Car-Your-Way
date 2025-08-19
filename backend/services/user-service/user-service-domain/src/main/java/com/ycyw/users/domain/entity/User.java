@@ -1,7 +1,8 @@
 package com.ycyw.users.domain.entity;
 
-import com.ycyw.shared.ddd.AggregateRoot;
 import java.util.UUID;
+
+import com.ycyw.shared.ddd.lib.AggregateRoot;
 
 /**
  * Represents a user entity in the system.

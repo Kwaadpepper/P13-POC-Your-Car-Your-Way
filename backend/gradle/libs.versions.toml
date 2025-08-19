@@ -10,11 +10,13 @@ spotless = "7.2.1"
 ktlint = "1.7.1"
 google-java-format = "1.17.0"
 checkstyle = "11.0.0"
+jdt-annotation-version = "2.2.600"
 
 [libraries]
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
+eclipse-jdt-annotation = { module = "org.eclipse.jdt:org.eclipse.jdt.annotation", version.ref = "jdt-annotation-version" }
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "error-prone" }
 nullaway = { module = "com.uber.nullaway:nullaway", version.ref = "nullaway" }
 micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }

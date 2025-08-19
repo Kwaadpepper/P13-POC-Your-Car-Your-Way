@@ -1,6 +1,6 @@
 package com.ycyw.users.domain.port.repository;
 
-import com.ycyw.shared.ddd.Repository;
+import com.ycyw.shared.ddd.lib.Repository;
 import com.ycyw.users.domain.entity.User;
 
 /**

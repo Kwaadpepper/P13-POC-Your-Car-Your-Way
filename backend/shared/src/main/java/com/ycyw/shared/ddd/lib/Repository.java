@@ -1,4 +1,4 @@
-package com.ycyw.shared.ddd;
+package com.ycyw.shared.ddd.lib;
 
 import java.util.UUID;
 

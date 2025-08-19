@@ -1,10 +1,11 @@
 package com.ycyw.users.infrastructure.adapter.repository;
 
-import com.ycyw.users.domain.entity.User;
-import com.ycyw.users.domain.port.repository.UserRepository;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.ycyw.users.domain.entity.User;
+import com.ycyw.users.domain.port.repository.UserRepository;
 
 /**
  * In-memory implementation of the {@link UserRepository} interface. Stores users in a thread-safe

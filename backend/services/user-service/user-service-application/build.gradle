@@ -5,9 +5,6 @@ plugins {
 
 repositories {
   mavenCentral()
-  maven {
-    url = "https://repo.spring.io/release"
-  }
 }
 
 group = "ycyw.services"
@@ -16,6 +13,7 @@ version = "0.0.1-SNAPSHOT"
 dependencies {
   implementation project(":user-service-domain")
   implementation project(":user-service-infrastructure")
+  implementation project(":shared")
 
   implementation platform(libs.spring.boot.dependencies)
   implementation platform(libs.spring.cloud.dependencies)

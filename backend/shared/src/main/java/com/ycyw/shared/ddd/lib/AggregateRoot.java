@@ -1,7 +1,8 @@
-package com.ycyw.shared.ddd;
+package com.ycyw.shared.ddd.lib;
+
+import java.util.UUID;
 
 import com.ycyw.shared.utils.UuidV7;
-import java.util.UUID;
 
 /**
  * Represents the base class for aggregate roots in a domain-driven design context.

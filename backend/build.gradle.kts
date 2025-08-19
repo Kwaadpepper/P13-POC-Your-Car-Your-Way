@@ -46,6 +46,7 @@ spotless {
     greclipse()
     target("**/*.gradle")
     targetExclude("**/build/**")
+    leadingTabsToSpaces(2)
   }
 }
 
@@ -57,10 +58,10 @@ tasks.matching { it.name == "check" }.configureEach {
 subprojects {
   group = "ycyw"
   pluginManager.apply("java")
+  apply(from = rootProject.file("gradle/generate-package-info.gradle.kts"))
 
   repositories {
     mavenCentral()
-    maven("https://repo.spring.io/release")
   }
 
   // * Toolchain Java via le catalog (référence depuis le projet racine)
@@ -77,6 +78,7 @@ subprojects {
   // * Dépendances communes
   dependencies {
     add("compileOnly", rootProject.libs.jspecify)
+    add("compileOnly", rootProject.libs.eclipse.jdt.annotation)
   }
 
   // * ErrorProne / NullAway (optionnel)

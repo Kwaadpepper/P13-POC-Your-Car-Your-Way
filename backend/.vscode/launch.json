@@ -16,28 +16,28 @@
       "name": "Config Server",
       "request": "launch",
       "mainClass": "com.ycyw.configserver.ConfigServerApplication",
-      "projectName": "config-server"
+      "projectName": "platform-config-server"
     },
     {
       "type": "java",
       "name": "Service Registry",
       "request": "launch",
       "mainClass": "com.ycyw.serviceregistry.ServiceRegistryApplication",
-      "projectName": "service-registry"
+      "projectName": "platform-service-registry"
     },
     {
       "type": "java",
       "name": "Gateway",
       "request": "launch",
       "mainClass": "com.ycyw.gateway.GatewayApplication",
-      "projectName": "gateway"
+      "projectName": "platform-gateway"
     },
     {
       "type": "java",
       "name": "User Service",
       "request": "launch",
       "mainClass": "com.ycyw.users.UserServiceApplication",
-      "projectName": "user-service"
+      "projectName": "user-service-application"
     }
   ]
 }

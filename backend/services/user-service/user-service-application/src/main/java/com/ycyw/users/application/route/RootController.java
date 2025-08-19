@@ -1,12 +1,12 @@
-package com.ycyw.users.route;
+package com.ycyw.users.application.route;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.objectvalues.SimpleMessage;
-import com.ycyw.users.dto.SimpleMessageDto;
-import com.ycyw.users.presenter.SimpleMessagePresenter;
+import com.ycyw.users.application.dto.SimpleMessageDto;
+import com.ycyw.users.application.presenter.SimpleMessagePresenter;
 
 @RestController
 public class RootController {

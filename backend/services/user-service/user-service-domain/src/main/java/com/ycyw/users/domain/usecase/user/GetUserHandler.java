@@ -4,12 +4,14 @@ import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.users.domain.entity.User;
 import com.ycyw.users.domain.port.repository.UserRepository;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Handles the retrieval of a user by their unique identifier.
  *
  * <p>This use case delegates to the {@link UserRepository} to fetch user information.
  */
-public class GetUserHandler implements UseCaseHandler<GetUser, User> {
+public class GetUserHandler implements UseCaseHandler<GetUser, @Nullable User> {
   private final UserRepository userRepository;
 
   /**

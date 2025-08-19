@@ -1,3 +1,3 @@
 @org.eclipse.jdt.annotation.NonNullByDefault
 @org.jspecify.annotations.NullMarked
-package com.ycyw;
+package com.ycyw.users.application.exception.exceptions;

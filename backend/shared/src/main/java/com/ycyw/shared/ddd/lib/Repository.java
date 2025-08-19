@@ -2,6 +2,8 @@ package com.ycyw.shared.ddd.lib;
 
 import java.util.UUID;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * Generic repository interface for managing aggregate root entities.
  *
@@ -16,7 +18,7 @@ public interface Repository<E extends AggregateRoot> {
    * @param id the unique identifier of the entity to find
    * @return the entity corresponding to the given identifier, or {@code null} if not found
    */
-  E find(UUID id);
+  @Nullable E find(UUID id);
 
   /**
    * Persists the given entity to the repository.

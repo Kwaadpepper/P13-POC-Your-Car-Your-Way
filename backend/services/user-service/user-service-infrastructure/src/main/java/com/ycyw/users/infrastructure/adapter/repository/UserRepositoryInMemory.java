@@ -7,40 +7,34 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.ycyw.users.domain.entity.User;
 import com.ycyw.users.domain.port.repository.UserRepository;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * In-memory implementation of the {@link UserRepository} interface. Stores users in a thread-safe
  * map for fast access and testing purposes.
  *
  * @see UserRepository
  */
-public final class UserRepositoryInMemory {
+public final class UserRepositoryInMemory implements UserRepository {
   private final Map<UUID, User> userStore = new ConcurrentHashMap<>();
 
-  /**
-   * Finds a user by their unique identifier.
-   *
-   * @param id the UUID of the user to find
-   * @return the User if found, otherwise null
-   */
-  public User find(UUID id) {
+  @Override
+  public @Nullable User find(UUID id) {
     return userStore.get(id);
   }
 
-  /**
-   * Saves a user to the in-memory store.
-   *
-   * @param entity the User to save
-   */
+  @Override
   public void save(User entity) {
     userStore.put(entity.getId(), entity);
   }
 
-  /**
-   * Deletes a user from the in-memory store by their unique identifier.
-   *
-   * @param id the UUID of the user to delete
-   */
-  public void delete(UUID id) {
-    userStore.remove(id);
+  @Override
+  public void update(User entity) {
+    userStore.put(entity.getId(), entity);
+  }
+
+  @Override
+  public void delete(User entity) {
+    userStore.remove(entity.getId());
   }
 }

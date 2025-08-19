@@ -1,15 +1,5 @@
 {
   "version": "0.2.0",
-  "compounds": [
-    {
-      "name": "Start Platform (Config + Eureka + Gateway)",
-      "configurations": [
-        "Config Server",
-        "Service Registry",
-        "Gateway"
-      ]
-    }
-  ],
   "configurations": [
     {
       "type": "java",

@@ -47,5 +47,6 @@
   },
   "peacock.color": "#942809",
   "java.project.explorer.showNonJavaResources": false,
-  "java.dependency.packagePresentation": "hierarchical"
+  "java.dependency.packagePresentation": "hierarchical",
+  "java.dependency.syncWithFolderExplorer": true
 }

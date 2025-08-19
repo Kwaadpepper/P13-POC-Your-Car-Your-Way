@@ -1,0 +1,41 @@
+pluginManagement {
+  repositories {
+    gradlePluginPortal()
+    mavenCentral()
+  }
+}
+
+dependencyResolutionManagement {
+  repositories {
+    mavenCentral()
+  }
+  versionCatalogs {
+    create("buildSrcLibs") {
+      from(files("./gradle/libs.versions.toml"))
+    }
+  }
+}
+
+rootProject.name = "ycyw-backend"
+
+include("shared")
+
+// Plateforme
+include("platform-gateway")
+project(":platform-gateway").projectDir = file("./platform/platform-gateway")
+
+include("platform-config-server")
+project(":platform-config-server").projectDir = file("./platform/platform-config-server")
+
+include("platform-service-registry")
+project(":platform-service-registry").projectDir = file("./platform/platform-service-registry")
+
+// Services
+include("user-service-application")
+project(":user-service-application").projectDir = file("./services/user-service/user-service-application")
+
+include("user-service-domain")
+project(":user-service-domain").projectDir = file("./services/user-service/user-service-domain")
+
+include("user-service-infrastructure")
+project(":user-service-infrastructure").projectDir = file("./services/user-service/user-service-infrastructure")

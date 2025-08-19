@@ -69,14 +69,14 @@ docker compose -f docker/docker-compose.yml ps
 
 3) Démarrer le Config Server (port 8888)
 ```bash
-./gradlew :platform:config-server:bootRun
+./gradlew :platform-config-server:bootRun
 # Santé:
 curl http://localhost:8888/actuator/health   # {"status":"UP"}
 ```
 
 4) Démarrer le Service Registry Eureka (port 8761)
 ```bash
-./gradlew :platform:service-registry:bootRun
+./gradlew :platform-service-registry:bootRun
 # Santé:
 curl http://localhost:8761/actuator/health   # {"status":"UP"}
 # UI:
@@ -85,7 +85,7 @@ curl http://localhost:8761/actuator/health   # {"status":"UP"}
 
 5) Démarrer la Gateway (port 8080)
 ```bash
-./gradlew :platform:gateway:bootRun
+./gradlew :platform-gateway:bootRun
 # Santé:
 curl http://localhost:8080/actuator/health   # {"status":"UP"}
 ```
@@ -123,7 +123,7 @@ docker compose -f docker/docker-compose.yml down
 Astuce
 ```bash
 # Si vous lancez depuis la racine du repo, préfixez avec -p backend
-./gradlew -p backend :platform:config-server:bootRun
+./gradlew -p backend :platform-config-server:bootRun
 ```
 
 ## Configuration
@@ -289,9 +289,9 @@ Dépendances minimales conseillées pour un service type:
   ```
 - Démarrer un module:
   ```bash
-  ./gradlew :platform:config-server:bootRun
-  ./gradlew :platform:service-registry:bootRun
-  ./gradlew :platform:gateway:bootRun
+  ./gradlew :platform-config-server:bootRun
+  ./gradlew :platform-service-registry:bootRun
+  ./gradlew :platform-gateway:bootRun
   ./gradlew :services:user-service:bootRun
   ```
 - Forcer un port à la volée:

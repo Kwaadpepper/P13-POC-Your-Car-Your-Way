@@ -1,5 +1,5 @@
 plugins {
-  id("java")
+  id "java"
 }
 
 group = "ycyw.services"
@@ -10,5 +10,5 @@ repositories {
 }
 
 dependencies {
-  implementation(project(":shared"))
+  implementation project(":shared")
 }

@@ -1,6 +1,11 @@
 server:
   port: ${USER_SERVER_PORT:8081}
 
+debug: true
+
+config:
+  seed-data: true
+
 spring:
   datasource:
     url: ${USER_DB_URL:jdbc:postgresql://localhost:5432/userdb}

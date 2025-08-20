@@ -14,27 +14,29 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-/**
- * In-memory implementation of the {@link UserRepository} interface. Stores users in a thread-safe
- * map for fast access and testing purposes.
- *
- * @see UserRepository
- */
 @Repository
 public class UserRepositoryInMemory implements UserRepository {
   private final Map<UUID, User> userStore = new ConcurrentHashMap<>();
   private static final Logger logger = LoggerFactory.getLogger(UserRepositoryInMemory.class);
 
-  public UserRepositoryInMemory() {
-    seedUserRepository();
+  @Override
+  public @Nullable User findWithEmail(String email) {
+    MDC.put("email", email);
+    @Nullable final User user =
+        userStore.values().stream()
+            .filter(u -> u.getEmail().equals(email))
+            .findFirst()
+            .orElse(null);
+    logger.debug("User found with email {}: {}", email, user);
+    MDC.remove("email");
+    return user;
   }
 
   @Override
   public @Nullable User find(UUID id) {
     MDC.put("id", id.toString());
-    logger.debug("On tente de trouver l'utilisateur");
     @Nullable final User user = userStore.get(id);
-    logger.debug("Utilisateur trouvé: {}", user);
+    logger.debug("User found with id {}: {}", id, user);
     MDC.remove("id");
     return user;
   }
@@ -52,9 +54,5 @@ public class UserRepositoryInMemory implements UserRepository {
   @Override
   public void delete(User entity) {
     userStore.remove(entity.getId());
-  }
-
-  private void seedUserRepository() {
-    this.save(new User("user@example.com"));
   }
 }

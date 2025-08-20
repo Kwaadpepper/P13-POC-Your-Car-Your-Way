@@ -1,2 +1,2 @@
 @org.eclipse.jdt.annotation.NonNullByDefault
-package com.ycyw.shared.exceptions;
+package com.ycyw.shared.ddd.exceptions;

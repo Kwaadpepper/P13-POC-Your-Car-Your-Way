@@ -19,6 +19,8 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
+import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 import com.ycyw.users.application.dto.ApiErrorDetails;
 import com.ycyw.users.application.dto.ValidationErrorDetails;
 import com.ycyw.users.application.exception.exceptions.ResourceNotFoundException;
@@ -26,6 +28,18 @@ import com.ycyw.users.application.exception.exceptions.ValidationException;
 
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
+
+  @ExceptionHandler(DomainConstraintException.class)
+  public ResponseEntity<ApiErrorDetails> handleException(
+      final DomainConstraintException ex, final WebRequest request) {
+    return new ResponseEntity<>(toErrorDetails(ex, request), HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+
+  @ExceptionHandler(IllegalDomainStateException.class)
+  public ResponseEntity<ApiErrorDetails> handleException(
+      final IllegalDomainStateException ex, final WebRequest request) {
+    return new ResponseEntity<>(toErrorDetails(ex, request), HttpStatus.BAD_REQUEST);
+  }
 
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<ApiErrorDetails> handleException(

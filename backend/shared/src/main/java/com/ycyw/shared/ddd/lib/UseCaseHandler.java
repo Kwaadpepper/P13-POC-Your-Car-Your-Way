@@ -1,11 +1,13 @@
 package com.ycyw.shared.ddd.lib;
 
-public interface UseCaseHandler<I extends UseCase, O> {
+import org.eclipse.jdt.annotation.Nullable;
+
+public interface UseCaseHandler<I extends UseCaseInput, O extends @Nullable UseCaseOutput> {
   /**
    * Executes the use case with the provided input.
    *
-   * @param usecase the input for the use case
+   * @param usecaseInput the input for the use case
    * @return the output of the use case
    */
-  O execute(I usecase);
+  @Nullable O execute(I usecaseInput);
 }

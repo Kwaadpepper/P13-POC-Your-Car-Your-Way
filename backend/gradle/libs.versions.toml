@@ -12,7 +12,7 @@ checkstyle = "11.0.0"
 jdt-annotation-version = "2.2.600"
 rabbitmq-amqp-client = "5.26.0"
 slf4j-api = "2.0.17"
-
+datafaker-version = "2.4.4"
 
 [libraries]
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
@@ -27,6 +27,7 @@ rabbitmq-amqpclient = { module = "com.rabbitmq:amqp-client", version.ref = "rabb
 slf4j-api = { module = "org.slf4j:slf4j-api" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 logback-classic = { module = "ch.qos.logback:logback-classic" }
+datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker-version" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

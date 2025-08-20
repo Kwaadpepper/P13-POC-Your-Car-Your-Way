@@ -1,15 +1,15 @@
 server:
-  port: ${SERVER_PORT:8081}
+  port: ${SERVER_PORT}
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/userdb}
-    username: ${DB_USER:user}
-    password: ${DB_PASSWORD:password}
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: validate
     open-in-view: false
   rabbitmq:
-    username: ${RABBIT_USER:guest}
-    password: ${RABBIT_PASSWORD:guest}
+    username: ${RABBIT_USER}
+    password: ${RABBIT_PASSWORD}

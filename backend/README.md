@@ -93,9 +93,11 @@ curl http://localhost:8080/actuator/health   # {"status":"UP"}
 6) Démarrer le user-service (port 8081)
 ```bash
 # Si server.port est déjà 8081 dans application.yml:
+SPRING_APPLICATION_NAME=user-service-application SPRING_PROFILES_ACTIVE=dev
 ./gradlew :services:user-service:bootRun
 
 # Ou en forçant le port à la volée:
+SPRING_APPLICATION_NAME=user-service-application SPRING_PROFILES_ACTIVE=dev
 ./gradlew :services:user-service:bootRun -Dspring-boot.run.arguments=--server.port=8081
 ```
 

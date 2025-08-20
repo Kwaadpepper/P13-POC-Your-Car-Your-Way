@@ -1,3 +1,3 @@
 package com.ycyw.shared.ddd.lib;
 
-public interface UseCase {}
+public interface UseCaseOutput {}

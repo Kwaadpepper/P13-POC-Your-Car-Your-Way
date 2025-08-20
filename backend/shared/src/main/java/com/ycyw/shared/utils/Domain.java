@@ -2,7 +2,7 @@ package com.ycyw.shared.utils;
 
 import java.util.function.BooleanSupplier;
 
-import com.ycyw.shared.exceptions.IllegalDomainStateException;
+import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 
 /** Utility class for domain validation logic. */
 public final class Domain {

@@ -1,4 +1,4 @@
-package com.ycyw.shared.exceptions;
+package com.ycyw.shared.ddd.exceptions;
 
 public class IllegalDomainStateException extends RuntimeException {
   public IllegalDomainStateException(String message) {

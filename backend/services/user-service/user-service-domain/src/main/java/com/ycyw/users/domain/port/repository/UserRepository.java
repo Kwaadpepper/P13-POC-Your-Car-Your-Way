@@ -1,7 +1,5 @@
 package com.ycyw.users.domain.port.repository;
 
-import java.util.UUID;
-
 import com.ycyw.shared.ddd.lib.Repository;
 import com.ycyw.users.domain.entity.User;
 
@@ -15,5 +13,5 @@ import org.eclipse.jdt.annotation.Nullable;
  * @see Repository
  */
 public interface UserRepository extends Repository<User> {
-  @Nullable User find(UUID id);
+  @Nullable User findWithEmail(String email);
 }

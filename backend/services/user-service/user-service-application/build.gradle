@@ -29,6 +29,7 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-actuator"
   implementation libs.micrometer.registry.prometheus
   testImplementation "org.springframework.boot:spring-boot-starter-test"
+  implementation libs.datafaker
 }
 
 // dependencies {

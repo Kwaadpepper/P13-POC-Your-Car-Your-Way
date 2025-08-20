@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: config-server
+    name: platform-config-server
   profiles:
     active: native
   cloud:
@@ -12,6 +12,10 @@ spring:
         native:
           # Vu depuis backend/platform/config-server vers backend/config
           search-locations: file:../../config
+
+config:
+  loki:
+    url: http://localhost:3100/loki/api/v1/push
 
 management:
   endpoints:

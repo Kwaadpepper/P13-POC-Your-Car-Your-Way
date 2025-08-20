@@ -3,12 +3,16 @@ server:
 
 spring:
   application:
-    name: service-registry
+    name: platform-service-registry
 
 eureka:
   client:
     register-with-eureka: false
     fetch-registry: false
+
+config:
+  loki:
+    url: http://localhost:3100/loki/api/v1/push
 
 management:
   endpoints:

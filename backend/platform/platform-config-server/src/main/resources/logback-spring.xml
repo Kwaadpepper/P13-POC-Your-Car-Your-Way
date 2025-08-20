@@ -1,0 +1,31 @@
+<configuration>
+
+  <springProperty name="SERVICE_NAME" source="spring.application.name" defaultValue="config-server"/>
+  <springProperty name="SERVICE_URL" source="config.loki.url"/>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{36} [%X{service:-${SERVICE_NAME}}] - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="LOKI" class="com.ycyw.shared.utils.LokiHttpAppender">
+    <url>${SERVICE_URL}</url>
+    <serviceName>${SERVICE_NAME}</serviceName>
+    <includeMdc>true</includeMdc>
+  </appender>
+
+  <appender name="ASYNC_LOKI" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="LOKI"/>
+    <queueSize>2048</queueSize>
+    <discardingThreshold>80</discardingThreshold>
+    <neverBlock>false</neverBlock>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="STDOUT"/>
+    <appender-ref ref="ASYNC_LOKI"/>
+  </root>
+
+  <logger name="com.ycyw" level="DEBUG"/>
+</configuration>

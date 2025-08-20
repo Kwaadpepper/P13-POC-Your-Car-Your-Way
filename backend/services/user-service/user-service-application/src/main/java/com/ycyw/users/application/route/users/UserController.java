@@ -12,11 +12,15 @@ import com.ycyw.users.application.presenter.UserPresenter;
 import com.ycyw.users.domain.usecase.user.GetUser;
 import com.ycyw.users.domain.usecase.user.GetUserHandler;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @RestController
 public class UserController {
   private final UseCaseExecutor useCaseExecutor;
   private final GetUserHandler getUserHandler;
   private final UserPresenter presenter;
+  private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
   public UserController(
       UseCaseExecutor useCaseExecutor, GetUserHandler getUserHandler, UserPresenter presenter) {
@@ -30,6 +34,8 @@ public class UserController {
 
     final var getUser = new GetUser(userId);
     final var output = this.useCaseExecutor.execute(this.getUserHandler, getUser);
+
+    logger.info("User retrieved: {}", output);
 
     return this.presenter.present(output);
   }

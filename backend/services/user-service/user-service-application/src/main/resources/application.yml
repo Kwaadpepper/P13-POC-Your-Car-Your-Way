@@ -1,9 +1,13 @@
 server:
   port: ${SERVER_PORT:8081}
 
+config:
+  loki:
+    url: http://localhost:3100/loki/api/v1/push
+
 spring:
   application:
-    name: user-service
+    name: user-service-application
   config:
     import: optional:configserver:http://localhost:8888
   datasource:

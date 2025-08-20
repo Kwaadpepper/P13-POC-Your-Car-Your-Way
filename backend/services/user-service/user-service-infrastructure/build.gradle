@@ -13,6 +13,5 @@ dependencies {
   implementation project(":user-service-domain")
   implementation project(":shared")
 
-  implementation "org.slf4j:slf4j-api:2.0.6"
-  implementation "com.rabbitmq:amqp-client:5.16.0"
+  implementation(libs.spring.context)
 }

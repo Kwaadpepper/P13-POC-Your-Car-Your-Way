@@ -1,0 +1,61 @@
+{
+  "uid": "svc-user-infra",
+  "title": "Service logs - user-service-infrastructure",
+  "schemaVersion": 36,
+  "version": 1,
+  "style": "dark",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timezone": "",
+  "editable": true,
+  "tags": [
+    "service",
+    "user",
+    "infrastructure"
+  ],
+  "templating": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "logs",
+      "title": "Logs (user-service-infrastructure)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 10
+      },
+      "datasource": "Loki",
+      "targets": [
+        {
+          "expr": "{service=\"user-service-infrastructure\"}",
+          "refId": "A"
+        }
+      ],
+      "options": {}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Logs rate (1m) - user-service-infrastructure",
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 24,
+        "h": 8
+      },
+      "datasource": "Loki",
+      "targets": [
+        {
+          "expr": "count_over_time({service=\"user-service-infrastructure\"}[1m])",
+          "refId": "B"
+        }
+      ],
+      "options": {}
+    }
+  ]
+}

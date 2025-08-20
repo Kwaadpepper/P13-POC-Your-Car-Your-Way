@@ -1,5 +1,5 @@
 plugins {
-  id("java")
+  id 'java-library'
 }
 
 group = "ycyw"
@@ -7,4 +7,12 @@ version = "1.0.0"
 
 repositories {
   mavenCentral()
+}
+
+dependencies {
+  api(platform(libs.spring.boot.dependencies))
+
+  api(libs.slf4j.api)
+  api(libs.jackson.databind)
+  implementation(libs.logback.classic)
 }

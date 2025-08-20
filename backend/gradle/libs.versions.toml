@@ -10,15 +10,23 @@ ktlint = "1.7.1"
 google-java-format = "1.17.0"
 checkstyle = "11.0.0"
 jdt-annotation-version = "2.2.600"
+rabbitmq-amqp-client = "5.26.0"
+slf4j-api = "2.0.17"
+
 
 [libraries]
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
+spring-context = { module = "org.springframework:spring-context" }
 eclipse-jdt-annotation = { module = "org.eclipse.jdt:org.eclipse.jdt.annotation", version.ref = "jdt-annotation-version" }
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "error-prone" }
 nullaway = { module = "com.uber.nullaway:nullaway", version.ref = "nullaway" }
 micrometer-registry-prometheus = { module = "io.micrometer:micrometer-registry-prometheus" }
 postgresql = { module = "org.postgresql:postgresql" }
+rabbitmq-amqpclient = { module = "com.rabbitmq:amqp-client", version.ref = "rabbitmq-amqp-client" }
+slf4j-api = { module = "org.slf4j:slf4j-api" }
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
+logback-classic = { module = "ch.qos.logback:logback-classic" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

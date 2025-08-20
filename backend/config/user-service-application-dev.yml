@@ -1,0 +1,15 @@
+server:
+  port: ${USER_SERVER_PORT:8081}
+
+spring:
+  datasource:
+    url: ${USER_DB_URL:jdbc:postgresql://localhost:5432/userdb}
+    username: ${USER_DB_USER:user}
+    password: ${USER_DB_PASSWORD:password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  rabbitmq:
+    username: ${USER_RABBIT_USER:guest}
+    password: ${USER_RABBIT_PASSWORD:guest}

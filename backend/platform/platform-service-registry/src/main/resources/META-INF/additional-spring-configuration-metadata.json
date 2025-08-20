@@ -3,7 +3,7 @@
     {
       "name": "config.loki.url",
       "type": "java.lang.String",
-      "description": "The url where to join loki server"
+      "description": "L'url du serveur Loki pour la collecte des logs."
     }
   ]
 }

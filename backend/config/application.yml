@@ -1,8 +1,26 @@
+# propriétés globales partagées à tous les services
+config:
+  loki:
+    url: ${LOKI_URL:http://localhost:3100/loki/api/v1/push}
+
+
+spring:
+  rabbitmq:
+    host: ${RABBIT_HOST:localhost}
+    port: ${RABBIT_PORT:5672}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info,prometheus
+
 logging:
   level:
     root: INFO
+    com.ycyw: INFO

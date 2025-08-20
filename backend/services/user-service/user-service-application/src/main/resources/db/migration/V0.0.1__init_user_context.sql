@@ -24,7 +24,7 @@ CREATE TABLE user_context.clients (
 	address_country smallint NOT NULL,
 	credential uuid,
 	updated_at timestamptz NOT NULL,
-	"deleted_At" timestamptz,
+	deleted_at timestamptz,
 	CONSTRAINT clients_pk PRIMARY KEY (id),
 	CONSTRAINT credential_client_unique UNIQUE (credential)
 );
@@ -69,7 +69,7 @@ CREATE TABLE user_context.operators (
 	roles jsonb NOT NULL,
 	credential uuid NOT NULL,
 	updated_at timestamptz NOT NULL,
-	"deleted_At" timestamptz,
+	deleted_at timestamptz,
 	CONSTRAINT operators_pk PRIMARY KEY (id),
 	CONSTRAINT credential_operator_unique UNIQUE (credential)
 );

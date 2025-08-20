@@ -32,7 +32,7 @@
       "datasource": "Loki",
       "targets": [
         {
-          "expr": "{service=\"user-service-infrastructure\"}",
+          "expr": "{service=\"user-service-infrastructure\"} | json timestamp,level,logger,message | line_format \"{{.timestamp}} {{.level}} {{.logger}}\\n{{.message}}\"",
           "refId": "A"
         }
       ],

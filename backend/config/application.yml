@@ -1,6 +1,7 @@
 # propriétés globales partagées à tous les services
 config:
   loki:
+    enabled: ${LOKI_ENABLED:true}
     url: ${LOKI_URL:http://localhost:3100/loki/api/v1/push}
 
 

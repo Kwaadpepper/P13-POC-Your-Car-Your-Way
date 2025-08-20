@@ -1,5 +1,6 @@
 package com.ycyw.shared.utils;
 
+import java.io.ByteArrayOutputStream;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -12,6 +13,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.zip.GZIPOutputStream;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.IThrowableProxy;
@@ -19,23 +24,26 @@ import ch.qos.logback.core.AppenderBase;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jdt.annotation.Nullable;
 
-/**
- * Minimal Logback appender that sends each logging event to Loki via HTTP /loki/api/v1/push. -
- * Intended for POC / low volume. - Wrap this appender with an AsyncAppender in logback config to
- * avoid blocking application threads.
- *
- * <p>Notes: - For production, add batching, retries, publisher confirms (if using RabbitMQ), or use
- * an agent (Promtail/Vector). - This class targets Java 21 (uses java.net.http.HttpClient).
- */
 public final class LokiHttpAppender extends AppenderBase<ILoggingEvent> {
 
   private final ObjectMapper mapper = new ObjectMapper();
-  private @Nullable HttpClient httpClient = null;
+
+  @Nullable private HttpClient httpClient = null;
 
   // configurable via logback XML setters
-  private String url = "http://localhost:3100/loki/api/v1/push";
+  private boolean enabled = true;
+  private @Nullable String url = null;
   private String serviceName = "unknown-service";
   private boolean includeMdc = true;
+  private boolean mdcAsLabels = false;
+  private Set<String> mdcLabelKeys = Collections.emptySet();
+  private boolean gzipEnabled = false;
+  private Duration requestTimeout = Duration.ofSeconds(5);
+
+  // setter methods used by logback XML
+  public void setEnabled(boolean enabled) {
+    this.enabled = enabled;
+  }
 
   public void setUrl(String url) {
     this.url = url;
@@ -47,6 +55,35 @@ public final class LokiHttpAppender extends AppenderBase<ILoggingEvent> {
 
   public void setIncludeMdc(boolean includeMdc) {
     this.includeMdc = includeMdc;
+  }
+
+  public void setMdcAsLabels(boolean mdcAsLabels) {
+    this.mdcAsLabels = mdcAsLabels;
+  }
+
+  /**
+   * Comma-separated list of MDC keys to promote into labels when mdcAsLabels is true. Example:
+   * "env,instance"
+   */
+  public void setMdcLabelKeys(String csv) {
+    if (csv == null || csv.isBlank()) {
+      this.mdcLabelKeys = Collections.emptySet();
+    } else {
+      var parts =
+          Arrays.stream(csv.split(","))
+              .map(String::trim)
+              .filter(s -> !s.isEmpty())
+              .collect(java.util.stream.Collectors.toUnmodifiableSet());
+      this.mdcLabelKeys = parts;
+    }
+  }
+
+  public void setGzipEnabled(boolean gzipEnabled) {
+    this.gzipEnabled = gzipEnabled;
+  }
+
+  public void setRequestTimeoutSeconds(int seconds) {
+    this.requestTimeout = Duration.ofSeconds(seconds);
   }
 
   @Override
@@ -61,75 +98,130 @@ public final class LokiHttpAppender extends AppenderBase<ILoggingEvent> {
 
   @Override
   protected void append(ILoggingEvent event) {
+    if (!enabled) {
+      return;
+    }
+    if (url == null || (url != null && url.isBlank())) {
+      addError("HttpClient is not initialized; cannot send log to Loki.");
+      return;
+    }
 
     try {
-      // Loki expects timestamp in nanoseconds as string
-      final String tsNanos = Long.toString(event.getTimeStamp() * 1_000_000L);
+      // build timestamp and content
+      String ts = nanosFromMillis(event.getTimeStamp());
 
-      // Build labels (stream) - Loki labels must be strings
-      Map<String, String> labels = new LinkedHashMap<>();
-      labels.put("service", serviceName);
-      labels.put("logger", event.getLoggerName());
-      labels.put("level", event.getLevel().toString());
+      // Build labels and the JSON line independently
+      Map<String, String> labels = buildLabels(event);
+      String lineJson = buildLineJson(event);
 
-      if (includeMdc && event.getMDCPropertyMap() != null) {
-        event
-            .getMDCPropertyMap()
-            .forEach(
-                (k, v) -> {
-                  if (k != null && v != null) {
-                    labels.put(k, v);
-                  }
-                });
-      }
+      // Build final payload bytes (possibly gzipped)
+      byte[] body = buildPayloadBytes(labels, ts, lineJson);
 
-      // Build the line content as structured JSON
-      Map<String, Object> line = new LinkedHashMap<>();
-      line.put("timestamp", Instant.ofEpochMilli(event.getTimeStamp()).toString());
-      line.put("message", event.getFormattedMessage());
-      line.put("thread", event.getThreadName());
-
-      IThrowableProxy tp = event.getThrowableProxy();
-      if (tp != null) {
-        line.put("throwable", tp.getMessage());
-      }
-
-      String lineJson = mapper.writeValueAsString(line);
-
-      // single stream entry for payload
-      Map<String, Object> streamEntry = new HashMap<>();
-      streamEntry.put("stream", labels);
-      // values is a list of arrays [ [ "<unix_nano>", "<line>" ] ]
-      List<List<String>> values = Collections.singletonList(Arrays.asList(tsNanos, lineJson));
-      streamEntry.put("values", values);
-
-      Map<String, Object> payload = new HashMap<>();
-      payload.put("streams", Collections.singletonList(streamEntry));
-
-      byte[] body = mapper.writeValueAsBytes(payload);
-
+      // Build request
       HttpRequest request =
           HttpRequest.newBuilder()
               .uri(URI.create(url))
+              .timeout(requestTimeout)
               .header("Content-Type", "application/json")
-              .timeout(Duration.ofSeconds(5))
               .POST(HttpRequest.BodyPublishers.ofByteArray(body))
               .build();
 
       if (httpClient != null) {
-        HttpResponse<Void> resp = httpClient.send(request, HttpResponse.BodyHandlers.discarding());
-        if (resp.statusCode() >= 400) {
-          addError("Loki returned HTTP " + resp.statusCode());
-        }
+        CompletableFuture<HttpResponse<Void>> future =
+            httpClient.sendAsync(request, HttpResponse.BodyHandlers.discarding());
+        future.whenComplete(
+            (resp, ex) -> {
+              if (ex != null) {
+                addError("Failed to send log to Loki (async)", ex);
+                return;
+              }
+              if (resp.statusCode() >= 400) {
+                addError("Loki returned HTTP " + resp.statusCode());
+              }
+            });
       } else {
-        addError("HttpClient is not initialized, cannot send log to Loki");
+        addError("HttpClient is not initialized; cannot send log to Loki.");
       }
-    } catch (InterruptedException ie) {
-      Thread.currentThread().interrupt();
-      addError("Thread was interrupted while sending log to Loki", ie);
+
     } catch (Exception e) {
-      // appenders must not throw; report via addError so Logback can surface the problem
-      addError("Failed to send log to Loki", e);
+      addError("Failed to prepare or send log to Loki", e);
+    }
+  }
+
+  private static String nanosFromMillis(long millis) {
+    return Long.toString(Math.multiplyExact(millis, 1_000_000L));
+  }
+
+  private Map<String, String> buildLabels(ILoggingEvent event) {
+    Map<String, String> labels = new LinkedHashMap<>();
+    labels.put("service", serviceName);
+    labels.put("logger", event.getLoggerName());
+    labels.put("level", event.getLevel().levelStr);
+
+    Map<String, String> mdcMap = event.getMDCPropertyMap();
+    if (mdcAsLabels && !mdcMap.isEmpty() && !mdcLabelKeys.isEmpty()) {
+      for (String key : mdcLabelKeys) {
+        String v = mdcMap.get(key);
+        if (!v.isEmpty()) {
+          labels.put(key, v);
+        }
+      }
+    }
+    return labels;
+  }
+
+  private String buildLineJson(ILoggingEvent event) throws Exception {
+    Map<String, Object> line = new LinkedHashMap<>();
+    line.put("timestamp", Instant.ofEpochMilli(event.getTimeStamp()).toString());
+    line.put("message", Optional.ofNullable(event.getFormattedMessage()).orElse(""));
+    line.put("thread", Optional.ofNullable(event.getThreadName()).orElse(""));
+
+    if (includeMdc) {
+      Map<String, String> mdc = event.getMDCPropertyMap();
+      if (mdc != null && !mdc.isEmpty()) {
+        line.put("mdc", new LinkedHashMap<>(mdc));
+      }
+    }
+
+    IThrowableProxy tp = event.getThrowableProxy();
+    if (tp != null) {
+      line.put("throwable", tp.getMessage());
+    }
+
+    return mapper.writeValueAsString(line);
+  }
+
+  private byte[] buildPayloadBytes(Map<String, String> labels, String ts, String lineJson)
+      throws Exception {
+    Map<String, Object> streamEntry = new HashMap<>();
+    streamEntry.put("stream", labels);
+    List<List<String>> values = Collections.singletonList(Arrays.asList(ts, lineJson));
+    streamEntry.put("values", values);
+
+    Map<String, Object> payload = new HashMap<>();
+    payload.put("streams", Collections.singletonList(streamEntry));
+
+    byte[] body = mapper.writeValueAsBytes(payload);
+
+    if (gzipEnabled) {
+      try {
+        return gzip(body);
+      } catch (Exception e) {
+        // If gzip fails, fallback to uncompressed body but report the issue
+        addError("Gzip compression failed, sending uncompressed payload", e);
+        return body;
+      }
+    } else {
+      return body;
+    }
+  }
+
+  private static byte[] gzip(byte[] input) throws Exception {
+    try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        GZIPOutputStream gos = new GZIPOutputStream(bos)) {
+      gos.write(input);
+      gos.finish();
+      return bos.toByteArray();
     }
   }
 }

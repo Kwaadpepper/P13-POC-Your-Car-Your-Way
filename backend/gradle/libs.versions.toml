@@ -18,6 +18,17 @@ datafaker-version = "2.4.4"
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 spring-context = { module = "org.springframework:spring-context" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+spring-boot-starter-aop = { module = "org.springframework.boot:spring-boot-starter-aop" }
+spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
+spring-cloud-starter-netflix-eureka-client = { module = "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client" }
+spring-cloud-starter-netflix-eureka-server = { module = "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server" }
+spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
+spring-cloud-starter-config = { module = "org.springframework.cloud:spring-cloud-starter-config" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
 eclipse-jdt-annotation = { module = "org.eclipse.jdt:org.eclipse.jdt.annotation", version.ref = "jdt-annotation-version" }
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "error-prone" }
 nullaway = { module = "com.uber.nullaway:nullaway", version.ref = "nullaway" }
@@ -28,6 +39,8 @@ slf4j-api = { module = "org.slf4j:slf4j-api" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
 logback-classic = { module = "ch.qos.logback:logback-classic" }
 datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker-version" }
+flyway-core = { module = "org.flywaydb:flyway-core" }
+flyway-postgres = { module = "org.flywaydb:flyway-database-postgresql" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.ycyw.users.domain.port.repository.UserRepository;
 import com.ycyw.users.domain.usecase.user.CreateUser;
-import com.ycyw.users.domain.usecase.user.GetUser;
+import com.ycyw.users.domain.usecase.user.FindUser;
 
 import net.datafaker.Faker;
 
@@ -13,8 +13,8 @@ import net.datafaker.Faker;
 public class SpringInjector {
   // * USECASES
   @Bean
-  GetUser.GetUserHandler userService(UserRepository userRepository) {
-    return new GetUser.GetUserHandler(userRepository);
+  FindUser.FindUserHandler userService(UserRepository userRepository) {
+    return new FindUser.FindUserHandler(userRepository);
   }
 
   @Bean

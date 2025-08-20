@@ -9,22 +9,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.users.application.dto.UserViewDto;
 import com.ycyw.users.application.presenter.UserPresenter;
-import com.ycyw.users.domain.usecase.user.GetUser;
+import com.ycyw.users.domain.usecase.user.FindUser;
 
 import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-public class FindUser {
+public class FindUserController {
   private final UseCaseExecutor useCaseExecutor;
-  private final GetUser.GetUserHandler getUserHandler;
+  private final FindUser.FindUserHandler getUserHandler;
   private final UserPresenter presenter;
-  private static final Logger logger = LoggerFactory.getLogger(FindUser.class);
+  private static final Logger logger = LoggerFactory.getLogger(FindUserController.class);
 
-  public FindUser(
+  public FindUserController(
       UseCaseExecutor useCaseExecutor,
-      GetUser.GetUserHandler getUserHandler,
+      FindUser.FindUserHandler getUserHandler,
       UserPresenter presenter) {
     this.useCaseExecutor = useCaseExecutor;
     this.getUserHandler = getUserHandler;
@@ -40,8 +40,8 @@ public class FindUser {
         this.useCaseExecutor.execute(
             this.getUserHandler,
             userId != null
-                ? new GetUser.Input.GetUserById(userId)
-                : new GetUser.Input.GetUserByEmail(userEmail));
+                ? new FindUser.Input.FindUserById(userId)
+                : new FindUser.Input.FindUserByEmail(userEmail));
 
     logger.info("User retrieved: {}", output);
 

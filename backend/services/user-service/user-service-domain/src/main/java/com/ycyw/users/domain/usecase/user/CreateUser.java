@@ -20,7 +20,7 @@ public sealed interface CreateUser {
       this.userRepository = userRepository;
     }
 
-    public CreatedUser execute(CreateUserInput usecaseInput) {
+    public CreatedUser handle(CreateUserInput usecaseInput) {
       final var email = usecaseInput.email();
 
       if (userRepository.findWithEmail(email) != null) {

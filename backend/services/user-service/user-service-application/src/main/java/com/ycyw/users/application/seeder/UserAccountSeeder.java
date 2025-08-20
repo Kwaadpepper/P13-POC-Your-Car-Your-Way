@@ -2,6 +2,7 @@ package com.ycyw.users.application.seeder;
 
 import org.springframework.stereotype.Component;
 
+import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.users.domain.usecase.user.CreateUser;
 
 import net.datafaker.Faker;
@@ -11,10 +12,13 @@ public class UserAccountSeeder implements Seeder {
   private static final int AMOUNT_TO_SEED = 10;
 
   private final Faker dataFaker;
+  private final UseCaseExecutor useCaseExecutor;
   private final CreateUser.CreateUserHandler handler;
 
-  public UserAccountSeeder(Faker dataFaker, CreateUser.CreateUserHandler handler) {
+  public UserAccountSeeder(
+      Faker dataFaker, UseCaseExecutor useCaseExecutor, CreateUser.CreateUserHandler handler) {
     this.dataFaker = dataFaker;
+    this.useCaseExecutor = useCaseExecutor;
     this.handler = handler;
   }
 
@@ -37,6 +41,6 @@ public class UserAccountSeeder implements Seeder {
 
     CreateUser.CreateUserInput useCase = new CreateUser.CreateUserInput(email);
 
-    handler.execute(useCase);
+    useCaseExecutor.execute(this.handler, useCase);
   }
 }

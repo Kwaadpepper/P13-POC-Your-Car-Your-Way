@@ -10,37 +10,37 @@ import com.ycyw.users.domain.port.repository.UserRepository;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-public sealed interface GetUser {
-  sealed interface Input extends UseCaseInput, GetUser {
-    record GetUserById(UUID userId) implements Input {}
+public sealed interface FindUser {
+  sealed interface Input extends UseCaseInput, FindUser {
+    record FindUserById(UUID userId) implements Input {}
 
-    record GetUserByEmail(String email) implements Input {}
+    record FindUserByEmail(String email) implements Input {}
   }
 
-  record FoundUser(UUID id, String email) implements UseCaseOutput, GetUser {}
+  record FoundUser(UUID id, String email) implements UseCaseOutput, FindUser {}
 
-  final class GetUserHandler implements UseCaseHandler<Input, @Nullable FoundUser>, GetUser {
+  final class FindUserHandler implements UseCaseHandler<Input, @Nullable FoundUser>, FindUser {
     private final UserRepository userRepository;
 
-    public GetUserHandler(UserRepository userRepository) {
+    public FindUserHandler(UserRepository userRepository) {
       this.userRepository = userRepository;
     }
 
-    public @Nullable FoundUser execute(Input usecaseInput) {
+    public @Nullable FoundUser handle(Input usecaseInput) {
       return switch (usecaseInput) {
-        case Input.GetUserById getUserById -> run(getUserById);
-        case Input.GetUserByEmail getUserByEmail -> run(getUserByEmail);
+        case Input.FindUserById getUserById -> run(getUserById);
+        case Input.FindUserByEmail getUserByEmail -> run(getUserByEmail);
       };
     }
 
-    private @Nullable FoundUser run(Input.GetUserById usecaseInput) {
+    private @Nullable FoundUser run(Input.FindUserById usecaseInput) {
       final var id = usecaseInput.userId();
 
       final var user = userRepository.find(id);
       return mapToFoundUser(user);
     }
 
-    private @Nullable FoundUser run(Input.GetUserByEmail usecaseInput) {
+    private @Nullable FoundUser run(Input.FindUserByEmail usecaseInput) {
       final var email = usecaseInput.email();
 
       final var user = userRepository.findWithEmail(email);

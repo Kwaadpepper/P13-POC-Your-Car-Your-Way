@@ -17,6 +17,6 @@ public class TransactionalUseCaseExecutor implements UseCaseExecutor {
   @Transactional
   public <I extends UseCaseInput, @Nullable O extends UseCaseOutput> O execute(
       UseCaseHandler<I, O> useCaseHandler, I usecaseInput) {
-    return useCaseHandler.execute(usecaseInput);
+    return useCaseHandler.handle(usecaseInput);
   }
 }

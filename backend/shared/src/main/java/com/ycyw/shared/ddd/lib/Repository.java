@@ -2,7 +2,7 @@ package com.ycyw.shared.ddd.lib;
 
 import java.util.UUID;
 
-import org.jspecify.annotations.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Generic repository interface for managing aggregate root entities.

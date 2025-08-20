@@ -4,7 +4,7 @@ import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.users.domain.entity.User;
 import com.ycyw.users.domain.port.repository.UserRepository;
 
-import org.jspecify.annotations.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Handles the retrieval of a user by their unique identifier.

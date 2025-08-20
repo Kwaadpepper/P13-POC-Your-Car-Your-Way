@@ -85,8 +85,8 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         HttpStatus.UNPROCESSABLE_ENTITY);
   }
 
-  @Nullable @Override
-  protected ResponseEntity<Object> handleMethodArgumentNotValid(
+  @Override
+  @Nullable protected ResponseEntity<Object> handleMethodArgumentNotValid(
       final MethodArgumentNotValidException ex,
       final HttpHeaders headers,
       final HttpStatusCode status,

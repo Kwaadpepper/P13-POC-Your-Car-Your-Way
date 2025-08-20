@@ -5,7 +5,7 @@ import java.util.UUID;
 import com.ycyw.shared.ddd.lib.Repository;
 import com.ycyw.users.domain.entity.User;
 
-import org.jspecify.annotations.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * Repository interface for managing {@link User} entities. Extends the generic {@link Repository}

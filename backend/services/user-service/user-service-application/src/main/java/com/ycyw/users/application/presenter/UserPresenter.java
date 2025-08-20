@@ -7,7 +7,7 @@ import com.ycyw.users.application.dto.UserViewDto;
 import com.ycyw.users.application.exception.exceptions.ResourceNotFoundException;
 import com.ycyw.users.domain.entity.User;
 
-import org.jspecify.annotations.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 @Component
 public class UserPresenter implements Presenter<UserViewDto, @Nullable User> {

@@ -2,7 +2,6 @@
 java = "21"
 spring-boot = "3.5.4"
 spring-cloud = "2025.0.0"
-jspecify = "1.0.0"
 error-prone = "2.41.0"
 nullaway = "0.12.8"
 errorprone-plugin = "4.2.0"
@@ -15,7 +14,6 @@ jdt-annotation-version = "2.2.600"
 [libraries]
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
-jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 eclipse-jdt-annotation = { module = "org.eclipse.jdt:org.eclipse.jdt.annotation", version.ref = "jdt-annotation-version" }
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "error-prone" }
 nullaway = { module = "com.uber.nullaway:nullaway", version.ref = "nullaway" }

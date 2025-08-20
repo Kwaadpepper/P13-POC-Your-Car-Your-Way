@@ -77,7 +77,6 @@ subprojects {
 
   // * Dépendances communes
   dependencies {
-    add("compileOnly", rootProject.libs.jspecify)
     add("compileOnly", rootProject.libs.eclipse.jdt.annotation)
   }
 

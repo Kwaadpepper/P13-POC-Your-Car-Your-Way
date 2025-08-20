@@ -13,6 +13,6 @@ dependencies {
   implementation project(":user-service-domain")
   implementation project(":shared")
 
-  // implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.3.0")
-  // implementation("org.springframework.boot:spring-boot-starter-web:3.3.0")
+  implementation "org.slf4j:slf4j-api:2.0.6"
+  implementation "com.rabbitmq:amqp-client:5.16.0"
 }

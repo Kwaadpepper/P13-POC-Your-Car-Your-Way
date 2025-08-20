@@ -22,7 +22,6 @@ val proj = project
 val annotationsTemplate =
   """
   @org.eclipse.jdt.annotation.NonNullByDefault
-  @org.jspecify.annotations.NullMarked
   """.trimIndent()
 
 // Valeurs par défaut (modifiable via -P...)

@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.ycyw.users.domain.entity.User;
 import com.ycyw.users.domain.port.repository.UserRepository;
 
-import org.jspecify.annotations.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 /**
  * In-memory implementation of the {@link UserRepository} interface. Stores users in a thread-safe

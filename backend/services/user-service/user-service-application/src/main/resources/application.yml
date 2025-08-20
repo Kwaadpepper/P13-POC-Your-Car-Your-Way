@@ -3,3 +3,5 @@ spring:
     name: user-service-application
   config:
     import: "optional:configserver:http://localhost:8888"
+  flyway:
+    locations: classpath:db/migration

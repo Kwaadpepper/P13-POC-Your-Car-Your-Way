@@ -26,6 +26,4 @@
     <appender-ref ref="STDOUT"/>
     <appender-ref ref="ASYNC_LOKI"/>
   </root>
-
-  <logger name="com.ycyw" level="DEBUG"/>
 </configuration>

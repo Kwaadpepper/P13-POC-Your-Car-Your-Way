@@ -62,8 +62,8 @@ Attendu: BUILD SUCCESSFUL.
 
 2) Lancer l’infra locale (RabbitMQ + Postgres)
 ```bash
-docker compose -f docker/docker-compose.yml up -d
-docker compose -f docker/docker-compose.yml ps
+cd docker
+podman-compose -p backend up -d
 # RabbitMQ UI: http://localhost:15672 (guest/guest)
 ```
 

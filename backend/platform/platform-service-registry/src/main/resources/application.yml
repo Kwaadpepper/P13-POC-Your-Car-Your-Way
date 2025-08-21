@@ -1,0 +1,22 @@
+server:
+  port: ${REGISTRY_SERVER_PORT:8761}
+
+spring:
+  application:
+    name: platform-service-registry
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+
+config:
+  loki:
+    enabled: ${LOKI_ENABLED:true}
+    url: ${LOKI_URL:http://localhost:3100/loki/api/v1/push}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

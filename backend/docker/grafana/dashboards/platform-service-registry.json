@@ -1,0 +1,60 @@
+{
+  "uid": "svc-platform-service-registry",
+  "title": "Service logs - platform-service-registry",
+  "schemaVersion": 36,
+  "version": 1,
+  "style": "dark",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timezone": "",
+  "editable": true,
+  "tags": [
+    "platform",
+    "service-registry"
+  ],
+  "templating": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "logs",
+      "title": "Logs (platform-service-registry)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 10
+      },
+      "datasource": "Loki",
+      "targets": [
+        {
+          "expr": "{service=\"platform-service-registry\"} | json timestamp,level,logger,message | line_format \"{{.timestamp}} {{.level}} {{.logger}}\\n{{.message}}\"",
+          "refId": "A"
+        }
+      ],
+      "options": {}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Logs rate (1m) - platform-service-registry",
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 24,
+        "h": 8
+      },
+      "datasource": "Loki",
+      "targets": [
+        {
+          "expr": "count_over_time({service=\"platform-service-registry\"}[1m])",
+          "refId": "B"
+        }
+      ],
+      "options": {}
+    }
+  ]
+}

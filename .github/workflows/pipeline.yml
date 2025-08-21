@@ -23,15 +23,25 @@ on:
   # ou de pull request
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+
 # Définition des jobs à exécuter dans ce workflow
 jobs:
   # Exécute le lint du frontend
   linting-frontend:
     uses: ./.github/workflows/step-linting-frontend.yml
 
+  linting-backend:
+    uses: ./.github/workflows/step-linting-backend.yml
+
   # Exécute le build du frontend
   building-frontend:
     uses: ./.github/workflows/step-building-frontend.yml
+
+  building-backend:
+    uses: ./.github/workflows/step-building-backend.yml
 
   # Construit et pousse les images Docker
   docker-images:
@@ -43,7 +53,9 @@ jobs:
     # avec succès avant de commencer
     needs:
       - linting-frontend
+      - linting-backend
       - building-frontend
+      - building-backend
     # Donne au workflow appelé les permissions nécessaires
     permissions:
       contents: read

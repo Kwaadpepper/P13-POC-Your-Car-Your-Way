@@ -1,0 +1,37 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Config Server",
+      "request": "launch",
+      "mainClass": "com.ycyw.configserver.ConfigServerApplication",
+      "projectName": "platform-config-server"
+    },
+    {
+      "type": "java",
+      "name": "Service Registry",
+      "request": "launch",
+      "mainClass": "com.ycyw.serviceregistry.ServiceRegistryApplication",
+      "projectName": "platform-service-registry"
+    },
+    {
+      "type": "java",
+      "name": "Gateway",
+      "request": "launch",
+      "mainClass": "com.ycyw.gateway.GatewayApplication",
+      "projectName": "platform-gateway"
+    },
+    {
+      "type": "java",
+      "name": "User Service",
+      "request": "launch",
+      "mainClass": "com.ycyw.users.UserServiceApplication",
+      "projectName": "user-service-application",
+      "env": {
+        "SPRING_APPLICATION_NAME": "user-service-application",
+        "SPRING_PROFILES_ACTIVE": "dev"
+      }
+    }
+  ]
+}

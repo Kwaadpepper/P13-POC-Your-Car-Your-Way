@@ -1,0 +1,67 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Gradle Build",
+      "type": "shell",
+      "command": "./gradlew build",
+      "group": "build"
+    },
+    {
+      "label": "Gradle Clean",
+      "type": "shell",
+      "command": "./gradlew clean",
+      "group": "build"
+    },
+    {
+      "label": "Gradle Test",
+      "type": "shell",
+      "command": "./gradlew test",
+      "group": "test"
+    },
+    {
+      "label": "Gradle Spotless Apply",
+      "type": "shell",
+      "command": "./gradlew spotlessApply",
+      "group": "build"
+    },
+    {
+      "label": "Gradle Spotless Apply Silently",
+      "type": "shell",
+      "command": "./gradlew spotlessApply",
+      "presentation": {
+        "reveal": "silent",
+      }
+    },
+    {
+      "label": "Gradle Spotless Check",
+      "type": "shell",
+      "command": "./gradlew spotlessCheck",
+      "group": "test"
+    },
+    {
+      "label": "Gradle Spotless Check",
+      "type": "shell",
+      "command": "./gradlew spotlessCheck",
+      "group": "build"
+    },
+    {
+      "label": "Gradle Checkstyle",
+      "type": "shell",
+      "command": "./gradlew checkstyleMain checkstyleTest",
+      "group": "test"
+    },
+    {
+      "label": "Gradle Build (NullAway)",
+      "type": "shell",
+      "command": "./gradlew build -Pnullaway=true",
+      "group": "build"
+    },
+    {
+      "label": "Gradle Build Scan",
+      "type": "shell",
+      "command": "./gradlew build --scan",
+      "group": "build"
+    }
+  ]
+}

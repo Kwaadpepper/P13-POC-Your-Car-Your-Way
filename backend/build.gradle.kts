@@ -1,0 +1,128 @@
+import net.ltgt.gradle.errorprone.errorprone
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.jvm.toolchain.JavaLanguageVersion
+
+plugins {
+  alias(libs.plugins.spotless)
+  alias(libs.plugins.checkstyle)
+  alias(libs.plugins.errorprone) apply false
+}
+
+val enableNullAway = providers.gradleProperty("nullaway").orNull == "true"
+
+// Spotless pour tout le monorepo
+spotless {
+  // * Java
+  java {
+    googleJavaFormat(
+      rootProject.libs.versions.google.java.format
+        .get(),
+    )
+    removeUnusedImports()
+    importOrder(
+      "java",
+      "javax",
+      "org.springframework",
+      "com.ycyw",
+      "\\#",
+      "",
+    )
+    formatAnnotations()
+    target("**/*.java")
+    targetExclude("**/build/**", "**/generated/**")
+  }
+  // * Scripts Gradle Kotlin
+  kotlinGradle {
+    ktlint(
+      rootProject.libs.versions.ktlint
+        .get(),
+    )
+    target("**/*.gradle.kts")
+    targetExclude("**/build/**")
+  }
+  // * Scripts Gradle Groovy
+  groovyGradle {
+    greclipse()
+    target("**/*.gradle")
+    targetExclude("**/build/**")
+    leadingTabsToSpaces(2)
+  }
+}
+
+// * Intègre Spotless dans 'check'
+tasks.matching { it.name == "check" }.configureEach {
+  dependsOn("spotlessCheck")
+}
+
+subprojects {
+  group = "ycyw"
+  pluginManager.apply("java")
+  apply(from = rootProject.file("gradle/generate-package-info.gradle.kts"))
+
+  repositories {
+    mavenCentral()
+  }
+
+  // * Toolchain Java via le catalog (référence depuis le projet racine)
+  extensions.configure(JavaPluginExtension::class.java) {
+    toolchain.languageVersion.set(
+      JavaLanguageVersion.of(
+        rootProject.libs.versions.java
+          .get()
+          .toInt(),
+      ),
+    )
+  }
+
+  // * Dépendances communes
+  dependencies {
+    add("compileOnly", rootProject.libs.eclipse.jdt.annotation)
+  }
+
+  // * ErrorProne / NullAway (optionnel)
+  if (enableNullAway) {
+    pluginManager.apply("net.ltgt.errorprone")
+    dependencies {
+      add("errorprone", rootProject.libs.errorprone.core)
+      add("errorprone", rootProject.libs.nullaway)
+    }
+    tasks.withType(JavaCompile::class.java).configureEach {
+      options.errorprone {
+        error("NullAway")
+        option("NullAway:AnnotatedPackages", "com.ycyw")
+        option("NullAway:TreatGeneratedAsUnannotated", "true")
+      }
+      options.compilerArgs.add("-Werror")
+    }
+  }
+
+  // * Checkstyle
+  pluginManager.apply("checkstyle")
+
+  checkstyle {
+    toolVersion =
+      rootProject.libs.versions.checkstyle
+        .get()
+    setConfigProperties(
+      mapOf(
+        "org.checkstyle.google.suppressionfilter.config" to
+          rootProject.file("config/checkstyle/checkstyle-suppressions.xml"),
+      ),
+    )
+    configFile = rootProject.file("config/checkstyle/checkstyle.xml")
+    isShowViolations = true
+  }
+
+  tasks.withType<Checkstyle>().configureEach {
+    enabled = fileTree("src/main/java").files.isNotEmpty()
+    reports {
+      html.required.set(true)
+      xml.required.set(false)
+    }
+  }
+
+  tasks.named("check") {
+    dependsOn("checkstyleMain", "checkstyleTest")
+  }
+}

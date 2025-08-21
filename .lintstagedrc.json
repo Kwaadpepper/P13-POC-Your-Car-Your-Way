@@ -1,8 +1,14 @@
 {
   "**/*.{ts,html}": [
-    "cd frontend && sh -c 'npm run lint:ts:fix'"
+    "sh -c 'cd frontend && npm run lint:ts:fix'"
   ],
   "**/*.css": [
-    "cd frontend && sh -c 'npm run lint:css:fix'"
+    "sh -c 'cd frontend && npm run lint:css:fix'"
+  ],
+  "**/*.gradle.kts": [
+    "sh -c 'cd backend && ./gradlew checkstyleMain checkstyleTest spotlessCheck --no-daemon'"
+  ],
+  "**/*.java": [
+    "sh -c 'cd backend && ./gradlew checkstyleMain checkstyleTest spotlessCheck --no-daemon'"
   ]
 }

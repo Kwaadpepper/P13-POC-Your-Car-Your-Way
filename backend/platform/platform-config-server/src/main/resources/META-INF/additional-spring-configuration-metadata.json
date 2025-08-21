@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "config.loki.url",
+      "type": "java.lang.String",
+      "description": "The url where to join loki server"
+    },
+    {
+      "name": "config.loki.enabled",
+      "type": "java.lang.String",
+      "description": "Wether to enable loki logging or not"
+    }
+  ]
+}

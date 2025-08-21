@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "config.loki.url",
+      "type": "java.lang.String",
+      "description": "L'url du serveur Loki pour la collecte des logs."
+    },
+    {
+      "name": "config.loki.enabled",
+      "type": "java.lang.String",
+      "description": "Wether to enable loki logging or not"
+    }
+  ]
+}

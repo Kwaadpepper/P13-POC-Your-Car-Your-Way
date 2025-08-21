@@ -1,0 +1,25 @@
+server:
+  port: ${CONFIG_SERVER_PORT:8888}
+
+spring:
+  application:
+    name: platform-config-server
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          # Vu depuis backend/platform/config-server vers backend/config
+          search-locations: file:../../config
+
+config:
+  loki:
+    enabled: ${LOKI_ENABLED:true}
+    url: ${LOKI_URL:http://localhost:3100/loki/api/v1/push}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

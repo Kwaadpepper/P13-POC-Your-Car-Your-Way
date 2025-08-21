@@ -1,0 +1,72 @@
+name: Build Backend
+
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  build-platform:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ["config-server", "gateway", "service-registry"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Build ${{ matrix.module }}
+        run: ./gradlew :platform-${{ matrix.module }}:build -Pnullaway=true --scan --no-daemon
+
+      - name: Upload ${{ matrix.module }} artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-back-platform-${{ matrix.module }}
+          path: backend/platform/${{ matrix.module }}/build/libs/
+
+  build-services:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ["user-service"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+          cache: gradle
+
+      - name: Build ${{ matrix.module }}
+        run: ./gradlew :${{ matrix.module }}-application:build -Pnullaway=true --scan --no-daemon
+
+      - name: Upload ${{ matrix.module }} artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-back-services-${{ matrix.module }}
+          path: backend/services/${{ matrix.module }}/build/libs/

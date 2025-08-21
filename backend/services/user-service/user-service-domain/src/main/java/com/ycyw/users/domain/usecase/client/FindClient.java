@@ -40,6 +40,7 @@ public sealed interface FindClient {
       this.clientRepository = clientRepository;
     }
 
+    @Override
     public @Nullable FoundClient handle(Input usecaseInput) {
       return switch (usecaseInput) {
         case Input.FindClientById getUserById -> run(getUserById);

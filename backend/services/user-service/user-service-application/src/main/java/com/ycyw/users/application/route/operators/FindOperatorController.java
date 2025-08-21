@@ -1,4 +1,4 @@
-package com.ycyw.users.application.route.clients;
+package com.ycyw.users.application.route.operators;
 
 import java.util.UUID;
 
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
-import com.ycyw.users.application.dto.ClientViewDto;
-import com.ycyw.users.application.presenter.ClientPresenter;
+import com.ycyw.users.application.dto.OperatorViewDto;
+import com.ycyw.users.application.presenter.OperatorPresenter;
 import com.ycyw.users.domain.model.valueobject.Email;
-import com.ycyw.users.domain.usecase.client.FindClient;
+import com.ycyw.users.domain.usecase.operator.FindOperator;
 
 import jakarta.ws.rs.BadRequestException;
 import org.eclipse.jdt.annotation.Nullable;
@@ -18,23 +18,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
-public class FindClientController {
+public class FindOperatorController {
   private final UseCaseExecutor useCaseExecutor;
-  private final FindClient.FindUserHandler getUserHandler;
-  private final ClientPresenter presenter;
-  private static final Logger logger = LoggerFactory.getLogger(FindClientController.class);
+  private final FindOperator.FindUserHandler getUserHandler;
+  private final OperatorPresenter presenter;
+  private static final Logger logger = LoggerFactory.getLogger(FindOperatorController.class);
 
-  public FindClientController(
+  public FindOperatorController(
       UseCaseExecutor useCaseExecutor,
-      FindClient.FindUserHandler getUserHandler,
-      ClientPresenter presenter) {
+      FindOperator.FindUserHandler getUserHandler,
+      OperatorPresenter presenter) {
     this.useCaseExecutor = useCaseExecutor;
     this.getUserHandler = getUserHandler;
     this.presenter = presenter;
   }
 
-  @GetMapping("/clients/{user}")
-  public ClientViewDto getUserById(
+  @GetMapping("/operators/{user}")
+  public OperatorViewDto getUserById(
       @PathVariable(name = "user", required = true) final String user) {
 
     final var userId = toUserId(user);
@@ -43,8 +43,8 @@ public class FindClientController {
         this.useCaseExecutor.execute(
             this.getUserHandler,
             userId != null
-                ? new FindClient.Input.FindClientById(userId)
-                : new FindClient.Input.FindClientByEmail(userEmail));
+                ? new FindOperator.Input.FindById(userId)
+                : new FindOperator.Input.FindByEmail(userEmail));
 
     logger.info("User retrieved: {}", output);
 

@@ -1,6 +1,8 @@
 package com.ycyw.users.infrastructure.entity;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -131,12 +133,13 @@ public class CredentialEntity {
     this.passkeyId = passkeyId;
   }
 
-  public @Nullable Byte[] getPasskeyPublicKey() {
-    return passkeyPublicKey;
+  public @Nullable List<Byte> getPasskeyPublicKey() {
+    return passkeyPublicKey == null ? null : new ArrayList<>(List.of(passkeyPublicKey));
   }
 
-  public void setPasskeyPublicKey(@Nullable Byte[] passkeyPublicKey) {
-    this.passkeyPublicKey = passkeyPublicKey;
+  public void setPasskeyPublicKey(@Nullable List<Byte> passkeyPublicKey) {
+    this.passkeyPublicKey =
+        passkeyPublicKey == null ? new Byte[0] : passkeyPublicKey.toArray(new Byte[0]);
   }
 
   public @Nullable Integer getPasskeySignCount() {

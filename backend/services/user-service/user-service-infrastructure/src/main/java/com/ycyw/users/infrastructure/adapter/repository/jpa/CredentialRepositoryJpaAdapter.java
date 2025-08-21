@@ -1,10 +1,9 @@
 package com.ycyw.users.infrastructure.adapter.repository.jpa;
 
 import java.time.ZonedDateTime;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.Vector;
 
 import org.springframework.stereotype.Repository;
 
@@ -86,7 +85,7 @@ public class CredentialRepositoryJpaAdapter implements CredentialRepository {
 
   private @Nullable PartialPassKeysInfo toPassKeysInfo(CredentialEntity e) {
     @Nullable UUID id = e.getPasskeyId();
-    @Nullable Vector<Byte> publicKey = toVector(e.getPasskeyPublicKey());
+    @Nullable List<Byte> publicKey = e.getPasskeyPublicKey();
     @Nullable Integer signCount = e.getPasskeySignCount();
     @Nullable String type = e.getPasskeyType();
 
@@ -108,19 +107,10 @@ public class CredentialRepositoryJpaAdapter implements CredentialRepository {
     e.setSsoProvider(ssoInfo != null ? fromSsoProvider(ssoInfo.provider()) : null);
     e.setToptCodeValue(toptCode != null ? toptCode.value() : null);
     e.setPasskeyId(partialPassKeysInfo != null ? partialPassKeysInfo.id() : null);
-    e.setPasskeyPublicKey(
-        partialPassKeysInfo != null ? fromVector(partialPassKeysInfo.publicKey()) : null);
+    e.setPasskeyPublicKey(partialPassKeysInfo != null ? partialPassKeysInfo.publicKey() : null);
     e.setPasskeySignCount(partialPassKeysInfo != null ? partialPassKeysInfo.signCount() : null);
     e.setPasskeyType(partialPassKeysInfo != null ? partialPassKeysInfo.type() : null);
     return e;
-  }
-
-  private @Nullable Byte[] fromVector(@Nullable Vector<Byte> vector) {
-    return vector == null ? null : vector.toArray(new Byte[0]);
-  }
-
-  private @Nullable Vector<Byte> toVector(@Nullable Byte[] array) {
-    return array == null ? null : new Vector<>(Arrays.asList(array));
   }
 
   private @Nullable Integer fromSsoProvider(@Nullable SsoProvider provider) {

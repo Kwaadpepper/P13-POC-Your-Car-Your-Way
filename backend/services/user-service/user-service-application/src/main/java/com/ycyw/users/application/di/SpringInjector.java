@@ -3,9 +3,12 @@ package com.ycyw.users.application.di;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.ycyw.users.domain.port.repository.UserRepository;
-import com.ycyw.users.domain.usecase.user.CreateUser;
-import com.ycyw.users.domain.usecase.user.FindUser;
+import com.ycyw.users.domain.port.repository.ClientRepository;
+import com.ycyw.users.domain.port.repository.CredentialRepository;
+import com.ycyw.users.domain.port.service.Hasher;
+import com.ycyw.users.domain.port.service.PasswordHasher;
+import com.ycyw.users.domain.usecase.client.CreateClient;
+import com.ycyw.users.domain.usecase.client.FindClient;
 
 import net.datafaker.Faker;
 
@@ -13,13 +16,18 @@ import net.datafaker.Faker;
 public class SpringInjector {
   // * USECASES
   @Bean
-  FindUser.FindUserHandler userService(UserRepository userRepository) {
-    return new FindUser.FindUserHandler(userRepository);
+  FindClient.FindUserHandler userService(ClientRepository clientRepository) {
+    return new FindClient.FindUserHandler(clientRepository);
   }
 
   @Bean
-  CreateUser.CreateUserHandler createUserHandler(UserRepository userRepository) {
-    return new CreateUser.CreateUserHandler(userRepository);
+  CreateClient.CreateClientHandler createUserHandler(
+      CredentialRepository credentialRepository,
+      ClientRepository clientRepository,
+      Hasher hasher,
+      PasswordHasher passwordHasher) {
+    return new CreateClient.CreateClientHandler(
+        credentialRepository, clientRepository, hasher, passwordHasher);
   }
 
   // * MISCELLANEOUS

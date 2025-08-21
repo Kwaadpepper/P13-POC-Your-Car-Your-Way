@@ -18,6 +18,8 @@ datafaker-version = "2.4.4"
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-cloud-dependencies = { module = "org.springframework.cloud:spring-cloud-dependencies", version.ref = "spring-cloud" }
 spring-context = { module = "org.springframework:spring-context" }
+spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }
+spring-security-core = { module = "org.springframework.security:spring-security-core" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }
 spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
 spring-boot-starter-aop = { module = "org.springframework.boot:spring-boot-starter-aop" }
@@ -37,6 +39,7 @@ postgresql = { module = "org.postgresql:postgresql" }
 rabbitmq-amqpclient = { module = "com.rabbitmq:amqp-client", version.ref = "rabbitmq-amqp-client" }
 slf4j-api = { module = "org.slf4j:slf4j-api" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind" }
+jackson-datatype-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 logback-classic = { module = "ch.qos.logback:logback-classic" }
 datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker-version" }
 flyway-core = { module = "org.flywaydb:flyway-core" }

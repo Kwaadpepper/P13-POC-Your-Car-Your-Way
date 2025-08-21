@@ -1,5 +1,8 @@
 package com.ycyw.shared.ddd.lib;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 import com.ycyw.shared.utils.UuidV7;
@@ -13,6 +16,7 @@ import com.ycyw.shared.utils.UuidV7;
  */
 public abstract class AggregateRoot {
   protected final UUID id;
+  protected final ZonedDateTime createdAt;
 
   /**
    * Protected constructor for AggregateRoot. Initializes the aggregate root with a randomly
@@ -20,6 +24,13 @@ public abstract class AggregateRoot {
    */
   protected AggregateRoot() {
     this.id = UuidV7.randomUuid();
+    this.createdAt = extractCreatedAtFromId(id);
+  }
+
+  /** Protected constructor for reconstitution: use when hydrating an aggregate from persistence. */
+  protected AggregateRoot(UUID id) {
+    this.id = Objects.requireNonNull(id, "id");
+    this.createdAt = extractCreatedAtFromId(id);
   }
 
   /**
@@ -28,4 +39,15 @@ public abstract class AggregateRoot {
    * @return the UUID of the aggregate root
    */
   public abstract UUID getId();
+
+  /**
+   * Returns the creation timestamp of this aggregate root.
+   *
+   * @return the ZonedDateTime when the aggregate root was created
+   */
+  public abstract ZonedDateTime getCreatedAt();
+
+  private ZonedDateTime extractCreatedAtFromId(UUID id) {
+    return ZonedDateTime.ofInstant(UuidV7.extractInstant(id), ZoneId.systemDefault());
+  }
 }

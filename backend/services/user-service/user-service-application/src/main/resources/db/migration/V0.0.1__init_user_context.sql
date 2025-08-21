@@ -6,7 +6,6 @@ DROP TABLE IF EXISTS user_context.clients;
 DROP TABLE IF EXISTS user_context.credentials;
 DROP TABLE IF EXISTS user_context.operators;
 
-
 -- object: user_context.clients | type: TABLE --
 -- DROP TABLE IF EXISTS user_context.clients CASCADE;
 CREATE TABLE user_context.clients (
@@ -15,13 +14,13 @@ CREATE TABLE user_context.clients (
 	first_name varchar(255) NOT NULL,
 	email varchar(255) NOT NULL,
 	phone varchar(255) NOT NULL,
-	birthdate varchar(255) NOT NULL,
+	birthdate date NOT NULL,
 	address_line1 varchar(255) NOT NULL,
 	address_line2 varchar(255),
 	address_line3 varchar(255),
 	address_city varchar(255) NOT NULL,
 	address_postcode varchar(255) NOT NULL,
-	address_country smallint NOT NULL,
+	address_country char(2) NOT NULL,
 	credential uuid,
 	updated_at timestamptz NOT NULL,
 	deleted_at timestamptz,
@@ -36,15 +35,18 @@ ALTER TABLE user_context.clients OWNER TO postgres;
 -- DROP TABLE IF EXISTS user_context.credentials CASCADE;
 CREATE TABLE user_context.credentials (
 	id uuid NOT NULL,
-	last_connection timestamptz NOT NULL,
-	hashed_identifier varchar(250),
+	last_connection timestamptz,
+	hashed_identifier varchar(250) NOT NULL,
 	hashed_password varchar(350) NOT NULL,
 	sso_id varchar(450),
 	sso_provider smallint,
 	topt_code_value varchar(350),
-	passkey_alg varchar(255),
-	passkey_publickey text,
-	CONSTRAINT credentials_pk PRIMARY KEY (id)
+	passkey_id uuid,
+	passkey_publickey bytea,
+	passkey_sign_count integer,
+	passkey_type varchar(255),
+	CONSTRAINT credentials_pk PRIMARY KEY (id),
+	CONSTRAINT passkey_id_unique UNIQUE (passkey_id)
 );
 -- ddl-end --
 COMMENT ON COLUMN user_context.credentials.hashed_identifier IS E'With no Salt or Pepper';

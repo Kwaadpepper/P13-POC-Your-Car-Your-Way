@@ -2,6 +2,8 @@ package com.ycyw.shared.utils;
 
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -44,6 +46,38 @@ public class UuidV7 {
     long high = buf.getLong();
     long low = buf.getLong();
     return new UUID(high, low);
+  }
+
+  /**
+   * Extract the Instant corresponding to the embedded timestamp in a UUIDv7.
+   *
+   * @param uuid the UUID (expected version 7)
+   * @return the Instant encoded in the UUIDv7 (epoch milliseconds)
+   * @throws NullPointerException if uuid is null
+   * @throws IllegalArgumentException if the provided UUID is not version 7
+   */
+  public static Instant extractInstant(UUID uuid) {
+    Objects.requireNonNull(uuid, "uuid");
+
+    if (uuid.version() != 7) {
+      throw new IllegalArgumentException("UUID is not version 7");
+    }
+
+    // Recreate the original byte array layout used by randomBytes()
+    byte[] bytes = new byte[16];
+    ByteBuffer.wrap(bytes)
+        .putLong(uuid.getMostSignificantBits())
+        .putLong(uuid.getLeastSignificantBits());
+
+    // timestamp was stored in bytes[0..5]; reconstruct an 8-byte big-endian long with two leading
+    // zeros
+    byte[] ts = new byte[8];
+    ts[0] = 0;
+    ts[1] = 0;
+    System.arraycopy(bytes, 0, ts, 2, 6);
+
+    long epochMillis = ByteBuffer.wrap(ts).getLong();
+    return Instant.ofEpochMilli(epochMillis);
   }
 
   private static byte[] randomBytes() {

@@ -25,6 +25,10 @@ public record Email(String value) {
       return false;
     }
 
+    if (email.length() - email.replace("@", "").length() != 1) {
+      return false;
+    }
+
     // split local part and domain
     final String emailSplitRegex = "^(.+)@(.+)$";
     final Pattern splitPattern = Pattern.compile(emailSplitRegex);

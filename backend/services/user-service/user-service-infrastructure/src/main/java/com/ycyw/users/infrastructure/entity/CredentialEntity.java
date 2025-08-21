@@ -53,6 +53,17 @@ public class CredentialEntity {
 
   public CredentialEntity() {
     // JPA requires a no-arg constructor
+    this.id = UUID.randomUUID();
+    this.lastConnection = null;
+    this.hashedIdentifier = "";
+    this.hashedPassword = "";
+    this.ssoId = null;
+    this.ssoProvider = null;
+    this.toptCodeValue = null;
+    this.passkeyId = null;
+    this.passkeyPublicKey = new Byte[0];
+    this.passkeySignCount = null;
+    this.passkeyType = null;
   }
 
   // Getters / Setters
@@ -145,14 +156,16 @@ public class CredentialEntity {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(@Nullable Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (!(o instanceof CredentialEntity)) {
+    if (obj == null) {
       return false;
     }
-    CredentialEntity that = (CredentialEntity) o;
+    if (!(obj instanceof CredentialEntity that)) {
+      return false;
+    }
     return Objects.equals(id, that.id);
   }
 

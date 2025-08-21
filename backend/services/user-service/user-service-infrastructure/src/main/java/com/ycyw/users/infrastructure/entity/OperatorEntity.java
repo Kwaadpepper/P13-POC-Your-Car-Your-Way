@@ -1,5 +1,6 @@
 package com.ycyw.users.infrastructure.entity;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Set;
@@ -41,10 +42,17 @@ public class OperatorEntity {
   private ZonedDateTime updatedAt;
 
   @Column(name = "deleted_at", nullable = true)
-  private ZonedDateTime deletedAt;
+  private @Nullable ZonedDateTime deletedAt;
 
   public OperatorEntity() {
     // JPA requires a no-arg constructor
+    this.id = UUID.randomUUID();
+    this.name = "";
+    this.email = "";
+    this.roles = Set.of();
+    this.credentialId = UUID.randomUUID();
+    this.updatedAt = ZonedDateTime.now(ZoneId.systemDefault());
+    this.deletedAt = null;
   }
 
   // Getters / Setters
@@ -105,14 +113,16 @@ public class OperatorEntity {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(@Nullable Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (!(o instanceof OperatorEntity)) {
+    if (obj == null) {
       return false;
     }
-    OperatorEntity that = (OperatorEntity) o;
+    if (!(obj instanceof OperatorEntity that)) {
+      return false;
+    }
     return Objects.equals(id, that.id);
   }
 

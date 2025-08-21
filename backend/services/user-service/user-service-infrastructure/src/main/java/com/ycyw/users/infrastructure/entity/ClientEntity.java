@@ -1,6 +1,7 @@
 package com.ycyw.users.infrastructure.entity;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -67,6 +68,21 @@ public class ClientEntity {
 
   public ClientEntity() {
     // JPA requires a no-arg constructor
+    this.id = UUID.randomUUID();
+    this.lastName = "";
+    this.firstName = "";
+    this.email = "";
+    this.phone = "";
+    this.birthdate = LocalDate.now(ZoneId.systemDefault());
+    this.addressLine1 = "";
+    this.addressLine2 = null;
+    this.addressLine3 = null;
+    this.addressCity = "";
+    this.addressPostcode = "";
+    this.addressCountry = "";
+    this.credentialId = UUID.randomUUID();
+    this.updatedAt = ZonedDateTime.now(ZoneId.systemDefault());
+    this.deletedAt = null;
   }
 
   // Getters / Setters
@@ -191,14 +207,16 @@ public class ClientEntity {
   }
 
   @Override
-  public boolean equals(Object o) {
-    if (this == o) {
+  public boolean equals(@Nullable Object obj) {
+    if (this == obj) {
       return true;
     }
-    if (!(o instanceof ClientEntity)) {
+    if (obj == null) {
       return false;
     }
-    ClientEntity that = (ClientEntity) o;
+    if (!(obj instanceof ClientEntity that)) {
+      return false;
+    }
     return Objects.equals(id, that.id);
   }
 

@@ -102,7 +102,7 @@ public final class LokiHttpAppender extends AppenderBase<ILoggingEvent> {
       return;
     }
     if (url == null || (url != null && url.isBlank())) {
-      addError("HttpClient is not initialized; cannot send log to Loki.");
+      addError("URL is not configured; cannot send log to Loki.");
       return;
     }
 
@@ -118,27 +118,35 @@ public final class LokiHttpAppender extends AppenderBase<ILoggingEvent> {
       byte[] body = buildPayloadBytes(labels, ts, lineJson);
 
       // Build request
-      HttpRequest request =
+      HttpRequest.Builder builder =
           HttpRequest.newBuilder()
               .uri(URI.create(url))
               .timeout(requestTimeout)
-              .header("Content-Type", "application/json")
-              .POST(HttpRequest.BodyPublishers.ofByteArray(body))
-              .build();
+              .header("Content-Type", "application/json");
+
+      if (gzipEnabled) {
+        builder.header("Content-Encoding", "gzip");
+      }
+
+      HttpRequest request = builder.POST(HttpRequest.BodyPublishers.ofByteArray(body)).build();
 
       if (httpClient != null) {
         CompletableFuture<HttpResponse<Void>> future =
             httpClient.sendAsync(request, HttpResponse.BodyHandlers.discarding());
-        future.whenComplete(
-            (resp, ex) -> {
-              if (ex != null) {
-                addError("Failed to send log to Loki (async)", ex);
-                return;
-              }
-              if (resp.statusCode() >= 400) {
-                addError("Loki returned HTTP " + resp.statusCode());
-              }
-            });
+
+        // Capture the returned Future to satisfy Error Prone (and keep async behavior)
+        var unused =
+            future.whenComplete(
+                (resp, ex) -> {
+                  if (ex != null) {
+                    addError("Failed to send log to Loki (async)", ex);
+                    return;
+                  }
+                  if (resp.statusCode() >= 400) {
+                    addError("Loki returned HTTP " + resp.statusCode());
+                  }
+                });
+
       } else {
         addError("HttpClient is not initialized; cannot send log to Loki.");
       }
@@ -159,10 +167,10 @@ public final class LokiHttpAppender extends AppenderBase<ILoggingEvent> {
     labels.put("level", event.getLevel().levelStr);
 
     Map<String, String> mdcMap = event.getMDCPropertyMap();
-    if (mdcAsLabels && !mdcMap.isEmpty() && !mdcLabelKeys.isEmpty()) {
+    if (mdcAsLabels && mdcMap != null && !mdcMap.isEmpty() && !mdcLabelKeys.isEmpty()) {
       for (String key : mdcLabelKeys) {
-        String v = mdcMap.get(key);
-        if (!v.isEmpty()) {
+        @Nullable String v = mdcMap.get(key);
+        if (v != null && !v.isBlank()) {
           labels.put(key, v);
         }
       }

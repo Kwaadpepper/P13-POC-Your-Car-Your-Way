@@ -66,7 +66,7 @@ public class JwtAccessTokenManagerImpl implements JwtAccessTokenManager {
       return new TokenManager.TokenValidity.Invalid(TokenManager.TokenInvalidityReason.EXPIRED);
     }
     var result = jwtTokenProcessor.extractApiToken(toJwtToken(token));
-    if (result == null) {
+    if (result != null) {
       return new TokenManager.TokenValidity.Valid();
     } else {
       return new TokenManager.TokenValidity.Invalid(TokenManager.TokenInvalidityReason.UNKNOWN);

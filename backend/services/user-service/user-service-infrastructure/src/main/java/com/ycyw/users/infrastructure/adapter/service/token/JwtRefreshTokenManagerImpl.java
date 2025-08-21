@@ -97,7 +97,7 @@ public class JwtRefreshTokenManagerImpl implements JwtRefreshTokenManager {
     if (jwtTokenProcessor.hasTokenExpired(jwtToken)) {
       return new TokenManager.TokenValidity.Invalid(TokenManager.TokenInvalidityReason.EXPIRED);
     }
-    if (jwtTokenProcessor.extractApiToken(toJwtToken(token)) == null) {
+    if (jwtTokenProcessor.extractApiToken(toJwtToken(token)) != null) {
       return new TokenManager.TokenValidity.Valid();
     } else {
       return new TokenManager.TokenValidity.Invalid(TokenManager.TokenInvalidityReason.UNKNOWN);

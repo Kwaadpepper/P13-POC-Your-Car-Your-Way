@@ -1,0 +1,61 @@
+{
+  "uid": "svc-support-infra",
+  "title": "Service logs - support-service-infrastructure",
+  "schemaVersion": 36,
+  "version": 1,
+  "style": "dark",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timezone": "",
+  "editable": true,
+  "tags": [
+    "service",
+    "support",
+    "infrastructure"
+  ],
+  "templating": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "logs",
+      "title": "Logs (support-service-infrastructure)",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 10
+      },
+      "datasource": "Loki",
+      "targets": [
+        {
+          "expr": "{service=\"support-service-infrastructure\"} | json timestamp,level,logger,message | line_format \"{{.timestamp}} {{.level}} {{.logger}}\\n{{.message}}\"",
+          "refId": "A"
+        }
+      ],
+      "options": {}
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Logs rate (1m) - support-service-infrastructure",
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 24,
+        "h": 8
+      },
+      "datasource": "Loki",
+      "targets": [
+        {
+          "expr": "count_over_time({service=\"support-service-infrastructure\"}[1m])",
+          "refId": "B"
+        }
+      ],
+      "options": {}
+    }
+  ]
+}

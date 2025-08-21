@@ -1,0 +1,23 @@
+plugins {
+  id "java"
+}
+
+group = "ycyw.services"
+version = "0.0.1-SNAPSHOT"
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+  implementation project(":support-service-domain")
+  implementation project(":shared")
+
+  implementation(libs.spring.context)
+
+  implementation(libs.spring.security.core)
+  implementation(libs.spring.boot.starter.data.jpa)
+  runtimeOnly(libs.postgresql)
+  implementation(libs.jackson.databind)
+  implementation(libs.jackson.datatype.jsr310)
+}

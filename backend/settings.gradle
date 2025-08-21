@@ -39,3 +39,13 @@ project(":user-service-domain").projectDir = file("./services/user-service/user-
 
 include("user-service-infrastructure")
 project(":user-service-infrastructure").projectDir = file("./services/user-service/user-service-infrastructure")
+
+
+include("support-service-application")
+project(":support-service-application").projectDir = file("./services/support-service/support-service-application")
+
+include("support-service-domain")
+project(":support-service-domain").projectDir = file("./services/support-service/support-service-domain")
+
+include("support-service-infrastructure")
+project(":support-service-infrastructure").projectDir = file("./services/support-service/support-service-infrastructure")

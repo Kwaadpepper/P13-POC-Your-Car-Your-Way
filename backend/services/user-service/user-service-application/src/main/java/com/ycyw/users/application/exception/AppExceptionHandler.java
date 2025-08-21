@@ -1,5 +1,7 @@
 package com.ycyw.users.application.exception;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,11 +128,15 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   private ApiErrorDetails toErrorDetails(final String message, final WebRequest request) {
-    return new ApiErrorDetails(new Date(), message, getRequestUri(request));
+    return new ApiErrorDetails(
+        LocalDate.now(ZoneId.systemDefault()), message, getRequestUri(request));
   }
 
   private ApiErrorDetails toErrorDetails(final Throwable e, final WebRequest request) {
-    return new ApiErrorDetails(new Date(), e.getMessage(), getRequestUri(request));
+    return new ApiErrorDetails(
+        LocalDate.now(ZoneId.systemDefault()),
+        e.getMessage() != null ? e.getMessage() : "error",
+        getRequestUri(request));
   }
 
   private String toSnakeCase(final String value) {

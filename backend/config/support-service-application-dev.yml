@@ -8,7 +8,7 @@ config:
 
 spring:
   datasource:
-    url: ${SUPPORT_DB_URL:jdbc:postgresql://localhost:5432/userdb}
+    url: ${SUPPORT_DB_URL:jdbc:postgresql://localhost:5433/supportdb}
     username: ${SUPPORT_DB_USER:postgres}
     password: ${SUPPORT_DB_PASSWORD:password}
   jpa:

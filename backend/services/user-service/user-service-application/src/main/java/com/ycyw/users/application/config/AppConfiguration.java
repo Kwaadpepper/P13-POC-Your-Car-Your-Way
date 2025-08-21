@@ -30,9 +30,9 @@ public class AppConfiguration {
     if (jwtSecretKey == null) {
       throw new IllegalStateException("Property 'jwt.secret_key' has to be set");
     }
-    if (jwtSecretKey.length() < 256) {
+    if (jwtSecretKey.length() < 64) {
       throw new IllegalStateException(
-          "Property 'jwt.secret_key' must be at least 256 characters long");
+          "Property 'jwt.secret_key' must be at least 64 characters long");
     }
 
     if (jwtTokenExpiration == null) {

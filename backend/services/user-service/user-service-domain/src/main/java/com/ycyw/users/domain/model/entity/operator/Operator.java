@@ -137,10 +137,6 @@ public class Operator extends AggregateRoot {
     if (obj == null) {
       return false;
     }
-
-    if (obj.getClass() != this.getClass()) {
-      return false;
-    }
     if (!(obj instanceof Operator that)) {
       return false;
     }

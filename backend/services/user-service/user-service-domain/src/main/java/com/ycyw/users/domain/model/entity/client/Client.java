@@ -154,10 +154,6 @@ public class Client extends AggregateRoot {
     if (obj == null) {
       return false;
     }
-
-    if (obj.getClass() != this.getClass()) {
-      return false;
-    }
     if (!(obj instanceof Client that)) {
       return false;
     }

@@ -109,10 +109,6 @@ public class Credential extends AggregateRoot {
     if (obj == null) {
       return false;
     }
-
-    if (obj.getClass() != this.getClass()) {
-      return false;
-    }
     if (!(obj instanceof Credential that)) {
       return false;
     }

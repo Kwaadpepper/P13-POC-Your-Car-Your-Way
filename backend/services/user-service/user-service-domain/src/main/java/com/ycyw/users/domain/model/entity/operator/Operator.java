@@ -121,7 +121,7 @@ public class Operator extends AggregateRoot {
     return createdAt;
   }
 
-  public @Nullable ZonedDateTime getUpdatedAt() {
+  public ZonedDateTime getUpdatedAt() {
     return updatedAt;
   }
 

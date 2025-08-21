@@ -77,7 +77,7 @@ public class UserAccountSeeder implements Seeder {
     String firstInitial = firstName.substring(0, 1).toLowerCase(Locale.ROOT);
 
     // Nom de famille en minuscule, sans espaces ni caractères spéciaux
-    String cleanedLastName = lastName.toLowerCase().replaceAll("[^a-z0-9]", "");
+    String cleanedLastName = lastName.toLowerCase(Locale.getDefault()).replaceAll("[^a-z0-9]", "");
 
     // Concaténation et retour de l'identifiant
     return firstInitial + cleanedLastName;

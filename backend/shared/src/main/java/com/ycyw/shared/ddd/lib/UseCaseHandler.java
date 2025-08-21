@@ -9,5 +9,5 @@ public interface UseCaseHandler<I extends UseCaseInput, O extends @Nullable UseC
    * @param usecaseInput the input for the use case
    * @return the output of the use case
    */
-  @Nullable O handle(I usecaseInput);
+  O handle(I usecaseInput);
 }

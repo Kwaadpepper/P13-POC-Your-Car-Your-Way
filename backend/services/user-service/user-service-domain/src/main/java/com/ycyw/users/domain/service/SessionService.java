@@ -50,14 +50,12 @@ public class SessionService {
 
       if (accessTokenManager.validate(accessToken)
           instanceof TokenManager.TokenValidity.Invalid(var reason)) {
-        throw new SessionServiceException(
-            ACCESS_TOKEN_IS_INVALID.formatted(reason));
+        throw new SessionServiceException(ACCESS_TOKEN_IS_INVALID.formatted(reason));
       }
 
       if (refreshTokenManager.validate(refreshToken)
           instanceof TokenManager.TokenValidity.Invalid(var reason)) {
-        throw new SessionServiceException(
-            ACCESS_TOKEN_IS_INVALID.formatted(reason));
+        throw new SessionServiceException(ACCESS_TOKEN_IS_INVALID.formatted(reason));
       }
 
       @Nullable AccessTokenClaims accessTokenClaims = accessTokenManager.extract(accessToken);
@@ -117,8 +115,7 @@ public class SessionService {
     try {
       if (accessTokenManager.validate(accessToken)
           instanceof TokenManager.TokenValidity.Invalid(var reason)) {
-        throw new SessionServiceException(
-            ACCESS_TOKEN_IS_INVALID.formatted(reason));
+        throw new SessionServiceException(ACCESS_TOKEN_IS_INVALID.formatted(reason));
       }
 
       @Nullable AccessTokenClaims accessTokenClaims = accessTokenManager.extract(accessToken);

@@ -1,5 +1,8 @@
 package com.ycyw.users.domain.usecase.session;
 
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
 import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
@@ -31,7 +34,16 @@ public sealed interface CreateSession {
   record CreateSessionInput(RawIdentifier identifier, PasswordCandidate password)
       implements UseCaseInput, CreateSession {}
 
-  record CreatedSession(JwtAccessToken accessToken, JwtRefreshToken refreshToken)
+  record CreatedSession(
+      JwtAccessToken accessToken,
+      JwtRefreshToken refreshToken,
+      // NOTE: Les valeurs ci-dessous sont là pour la simplicité du POC uniquement,
+      UUID id,
+      String name,
+      String role,
+      Email email,
+      ZonedDateTime createdAt,
+      ZonedDateTime updatedAt)
       implements UseCaseOutput, CreateSession {}
 
   final class CreateSessionHandler
@@ -109,18 +121,47 @@ public sealed interface CreateSession {
       assertPasswordCandidateIsValid(password, credentialIdToCheck);
 
       if (client != null) {
-        return createSessionFor(client.getCredentialId(), CLIENT_ROLE);
+        return createSessionFor(
+            client.getCredentialId(),
+            CLIENT_ROLE,
+            client.getId(),
+            client.getLastName() + " " + client.getFirstName(),
+            client.getEmail(),
+            client.getCreatedAt(),
+            client.getUpdatedAt());
       } else if (operator != null) {
-        return createSessionFor(operator.getCredentialId(), OPERATOR_ROLE);
+        return createSessionFor(
+            operator.getCredentialId(),
+            OPERATOR_ROLE,
+            operator.getId(),
+            operator.getName(),
+            operator.getEmail(),
+            operator.getCreatedAt(),
+            operator.getUpdatedAt());
       } else {
         throw new DomainConstraintException(ERR_NO_USER_FOR_IDENTIFIER);
       }
     }
 
-    private CreatedSession createSessionFor(CredentialId credentialId, String role) {
+    private CreatedSession createSessionFor(
+        CredentialId credentialId,
+        String role,
+        UUID id,
+        String name,
+        Email email,
+        ZonedDateTime createdAt,
+        ZonedDateTime updatedAt) {
       final var authenticableUser = new SessionService.AuthenticableUser(credentialId, role);
       final TokenPair tokenPair = sessionService.generateSessionFor(authenticableUser);
-      return new CreatedSession(tokenPair.accessToken(), tokenPair.refreshToken());
+      return new CreatedSession(
+          tokenPair.accessToken(),
+          tokenPair.refreshToken(),
+          id,
+          name,
+          role,
+          email,
+          createdAt,
+          updatedAt);
     }
 
     private @Nullable Email getEmailFromRawIdentifier(RawIdentifier identifier) {

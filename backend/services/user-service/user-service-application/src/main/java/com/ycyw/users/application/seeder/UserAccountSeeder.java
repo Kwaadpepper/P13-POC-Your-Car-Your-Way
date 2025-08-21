@@ -40,7 +40,7 @@ public class UserAccountSeeder implements Seeder {
     int i = 0;
     while (i < AMOUNT_TO_SEED) {
       final var email = dataFaker.internet().emailAddress();
-      final var password = dataFaker.internet().password(8, 16, true, true, true);
+      final var password = "aA1." + dataFaker.internet().password(8, 16, true, true, true);
       createUserAccount(email, password, null);
       i++;
     }

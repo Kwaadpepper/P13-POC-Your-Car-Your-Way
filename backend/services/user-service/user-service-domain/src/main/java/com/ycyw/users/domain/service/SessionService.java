@@ -138,6 +138,26 @@ public class SessionService {
     }
   }
 
+  public @Nullable String getRole(TokenPair tokenPair) {
+    try {
+      final @Nullable AccessTokenSubject accessTokenSubject = verify(tokenPair);
+      if (accessTokenSubject == null) {
+        throw new SessionServiceException("Access token is invalid or could not be extracted.");
+      }
+
+      final @Nullable AccessTokenClaims accessTokenClaims =
+          accessTokenManager.extract(tokenPair.accessToken());
+      if (accessTokenClaims == null) {
+        throw new SessionServiceException(ACCESS_TOKEN_COULD_NOT_BE_EXTRACTED);
+      }
+
+      return accessTokenClaims.role();
+    } catch (SessionServiceException e) {
+      logger.debug(e.getMessage());
+      return null;
+    }
+  }
+
   private AccessTokenClaims newAccessTokenClaims(CredentialId identifier, String role) {
     return new AccessTokenClaims(new AccessTokenSubject(identifier.value()), role);
   }

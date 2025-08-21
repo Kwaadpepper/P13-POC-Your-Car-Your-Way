@@ -27,11 +27,6 @@ public class AppConfiguration {
       @Value("${jwt.token.expiration}") @Nullable final Integer jwtTokenExpiration,
       @Value("${jwt.refresh.expiration}") @Nullable final Integer jwtRefreshExpiration) {
 
-    assertNotEmpty(appName, "spring.application.name");
-    assertNotEmpty(allowedOrigins, "server.cors.allowed-origins");
-    assertNotEmpty(jwtSecretKey, "jwt.secret_key");
-    assertNotEmpty(jwtCookieName, "jwt.cookie.name");
-
     if (jwtSecretKey == null) {
       throw new IllegalStateException("Property 'jwt.secret_key' has to be set");
     }
@@ -65,10 +60,11 @@ public class AppConfiguration {
           "Property 'jwt.refresh.expiration' must be greater than 'jwt.token.expiration'");
     }
 
-    this.appName = appName;
-    this.allowedOrigins = allowedOrigins;
-    this.jwtSecretKey = jwtSecretKey;
-    this.jwtCookieName = jwtCookieName;
+    this.appName = assertNotEmpty(appName, "spring.application.name");
+    this.allowedOrigins = assertNotEmpty(allowedOrigins, "server.cors.allowed-origins");
+    this.jwtSecretKey = assertNotEmpty(jwtSecretKey, "jwt.secret_key");
+    this.jwtCookieName = assertNotEmpty(jwtCookieName, "jwt.cookie.name");
+
     this.jwtTokenExpiration = jwtTokenExpiration;
     this.jwtRefreshExpiration = jwtRefreshExpiration;
   }
@@ -97,9 +93,10 @@ public class AppConfiguration {
     return jwtRefreshExpiration;
   }
 
-  private void assertNotEmpty(@Nullable String value, String property) {
+  private final String assertNotEmpty(@Nullable String value, String property) {
     if (value == null || value.isBlank()) {
       throw new IllegalStateException("Property '%s' cannot be null or empty".formatted(property));
     }
+    return value;
   }
 }

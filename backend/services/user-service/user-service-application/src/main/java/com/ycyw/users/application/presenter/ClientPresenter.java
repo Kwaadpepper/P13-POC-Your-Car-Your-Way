@@ -8,20 +8,18 @@ import com.ycyw.users.application.exception.exceptions.ResourceNotFoundException
 import com.ycyw.users.domain.model.valueobject.Address;
 import com.ycyw.users.domain.usecase.client.FindClient;
 
-import org.eclipse.jdt.annotation.Nullable;
-
 @Component
-public class ClientPresenter implements Presenter<ClientViewDto, FindClient.@Nullable FoundClient> {
+public class ClientPresenter implements Presenter<ClientViewDto, FindClient.Output> {
 
   @Override
-  public ClientViewDto present(FindClient.@Nullable FoundClient model) {
-    if (model == null) {
-      throw new ResourceNotFoundException("Client not found");
+  public ClientViewDto present(FindClient.Output model) {
+    if (model instanceof FindClient.Output.FoundClient foundClient) {
+      return toDto(foundClient);
     }
-    return toDto(model);
+    throw new ResourceNotFoundException("Client not found");
   }
 
-  private ClientViewDto toDto(FindClient.FoundClient model) {
+  private ClientViewDto toDto(FindClient.Output.FoundClient model) {
     return new ClientViewDto(
         model.id(),
         model.lastName(),

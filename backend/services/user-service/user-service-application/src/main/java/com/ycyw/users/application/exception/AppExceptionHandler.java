@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.context.MessageSourceResolvable;
@@ -140,7 +141,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
   }
 
   private String toSnakeCase(final String value) {
-    return value.replaceAll("(.)(\\p{Upper}+|\\d+)", "$1_$2").toLowerCase();
+    return value.replaceAll("(.)(\\p{Upper}+|\\d+)", "$1_$2").toLowerCase(Locale.ROOT);
   }
 
   private ValidationErrorDetails toValidationErrorDetails(

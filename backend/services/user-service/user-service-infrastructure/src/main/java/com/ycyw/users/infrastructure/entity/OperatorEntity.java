@@ -6,14 +6,13 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
-import com.ycyw.users.infrastructure.converters.RolesConverter;
-
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.eclipse.jdt.annotation.Nullable;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(schema = "user_context", name = "operators")
@@ -29,8 +28,7 @@ public class OperatorEntity {
   @Column(nullable = false, length = 255, unique = true)
   private String email;
 
-  // JSONB stocké en base ; converti en Set<String> ici
-  @Convert(converter = RolesConverter.class)
+  @JdbcTypeCode(SqlTypes.JSON)
   @Column(nullable = false, columnDefinition = "jsonb")
   private Set<String> roles;
 

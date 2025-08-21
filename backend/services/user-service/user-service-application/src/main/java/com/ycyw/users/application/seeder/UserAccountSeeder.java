@@ -33,25 +33,25 @@ public class UserAccountSeeder implements Seeder {
 
   @Override
   public void seed() {
-    Faker faker = dataFaker.getFaker();
 
     // Static dummy user account
-    createUserAccount("user@example.net");
+    createUserAccount("user@example.net", "Password.123", "John Doe");
 
     int i = 0;
     while (i < AMOUNT_TO_SEED) {
-      String emailStr = faker.internet().emailAddress();
-      createUserAccount(emailStr);
+      final var email = dataFaker.internet().emailAddress();
+      final var password = dataFaker.internet().password(8, 16, true, true, true);
+      createUserAccount(email, password, null);
       i++;
     }
   }
 
-  private void createUserAccount(@Nullable String providedEmail) {
+  private void createUserAccount(
+      String providedEmail, String providedPassword, @Nullable String providedId) {
 
     var lastName = dataFaker.name().lastName();
     var firstName = dataFaker.name().firstName();
-    var email =
-        new Email(providedEmail == null ? dataFaker.internet().emailAddress() : providedEmail);
+    var email = new Email(providedEmail);
     String phone = dataFaker.phoneNumber().phoneNumberInternational();
     BirthDate birthDate = new BirthDate(dataFaker.date().birthdayLocalDate());
     Address address =
@@ -62,8 +62,9 @@ public class UserAccountSeeder implements Seeder {
             dataFaker.address().city(),
             dataFaker.address().zipCode(),
             Country.FRANCE);
-    RawIdentifier identifier = new RawIdentifier(generateId(firstName, lastName));
-    RawPassword password = new RawPassword(dataFaker.internet().password(8, 16, true, true, true));
+    RawIdentifier identifier =
+        new RawIdentifier(providedId != null ? providedId : generateId(firstName, lastName));
+    final var password = new RawPassword(providedPassword);
 
     CreateClient.CreateClientInput useCase =
         new CreateClient.CreateClientInput(

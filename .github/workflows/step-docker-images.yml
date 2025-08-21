@@ -79,6 +79,9 @@ jobs:
           - name: user-service
             type: backend
             context: ./backend/services/user-service
+          - name: support-service
+            type: backend
+            context: ./backend/services/support-service
 
     concurrency:
       group: images-${{ matrix.name }}

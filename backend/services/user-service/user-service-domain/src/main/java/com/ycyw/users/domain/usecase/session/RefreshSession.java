@@ -1,7 +1,6 @@
 package com.ycyw.users.domain.usecase.session;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
-import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
@@ -41,7 +40,7 @@ public sealed interface RefreshSession {
       }
 
       if (credentialRepository.find(accessTokenSubject.value()) == null) {
-        throw new IllegalDomainStateException("No user account found for the token pair");
+        throw new DomainConstraintException("No user account found for the token pair");
       }
 
       final @Nullable TokenPair refreshedTokenPair = sessionService.refresh(tokenPair);

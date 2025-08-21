@@ -1,7 +1,6 @@
 package com.ycyw.users.domain.usecase.session;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
-import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
@@ -52,7 +51,7 @@ public sealed interface InvalidateSession {
       }
 
       if (credentialRepository.find(login.value()) == null) {
-        throw new IllegalDomainStateException("Cannot invalidate session for a non-existent user.");
+        throw new DomainConstraintException("Cannot invalidate session for a non-existent user.");
       }
 
       sessionService.invalidate(tokenPair);

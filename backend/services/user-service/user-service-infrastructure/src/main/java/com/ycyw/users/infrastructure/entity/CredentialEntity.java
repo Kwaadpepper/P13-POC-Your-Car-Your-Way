@@ -45,7 +45,7 @@ public class CredentialEntity {
   @Nullable private UUID passkeyId;
 
   @Column(name = "passkey_publickey", columnDefinition = "bytea", nullable = true)
-  @Nullable private Byte[] passkeyPublicKey;
+  private byte[] passkeyPublicKey;
 
   @Column(name = "passkey_sign_count", nullable = true)
   @Nullable private Integer passkeySignCount;
@@ -63,7 +63,7 @@ public class CredentialEntity {
     this.ssoProvider = null;
     this.toptCodeValue = null;
     this.passkeyId = null;
-    this.passkeyPublicKey = new Byte[0];
+    this.passkeyPublicKey = new byte[0];
     this.passkeySignCount = null;
     this.passkeyType = null;
   }
@@ -133,13 +133,28 @@ public class CredentialEntity {
     this.passkeyId = passkeyId;
   }
 
+  @SuppressWarnings("unused")
   public @Nullable List<Byte> getPasskeyPublicKey() {
-    return passkeyPublicKey == null ? null : new ArrayList<>(List.of(passkeyPublicKey));
+    if (passkeyPublicKey == null) {
+      return null;
+    }
+    List<Byte> list = new ArrayList<>(passkeyPublicKey.length);
+    for (byte b : passkeyPublicKey) {
+      list.add(b);
+    }
+    return list;
   }
 
   public void setPasskeyPublicKey(@Nullable List<Byte> passkeyPublicKey) {
-    this.passkeyPublicKey =
-        passkeyPublicKey == null ? new Byte[0] : passkeyPublicKey.toArray(new Byte[0]);
+    if (passkeyPublicKey == null) {
+      this.passkeyPublicKey = new byte[0];
+    } else {
+      this.passkeyPublicKey = new byte[passkeyPublicKey.size()];
+      for (int i = 0; i < passkeyPublicKey.size(); i++) {
+        @Nullable Byte b = passkeyPublicKey.get(i);
+        this.passkeyPublicKey[i] = (b == null) ? 0 : b;
+      }
+    }
   }
 
   public @Nullable Integer getPasskeySignCount() {

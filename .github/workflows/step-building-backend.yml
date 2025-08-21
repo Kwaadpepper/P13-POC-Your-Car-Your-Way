@@ -28,7 +28,7 @@ jobs:
           cache: gradle
 
       - name: Build ${{ matrix.module }}
-        run: ./gradlew :platform:${{ matrix.module }}:build -Pnullaway=true --scan --no-daemon
+        run: ./gradlew :platform-${{ matrix.module }}:build -Pnullaway=true --scan --no-daemon
 
       - name: Upload ${{ matrix.module }} artifact
         uses: actions/upload-artifact@v4
@@ -60,7 +60,7 @@ jobs:
           cache: gradle
 
       - name: Build ${{ matrix.module }}
-        run: ./gradlew :services:${{ matrix.module }}:build -Pnullaway=true --scan --no-daemon
+        run: ./gradlew :${{ matrix.module }}-application:build -Pnullaway=true --scan --no-daemon
 
       - name: Upload ${{ matrix.module }} artifact
         uses: actions/upload-artifact@v4

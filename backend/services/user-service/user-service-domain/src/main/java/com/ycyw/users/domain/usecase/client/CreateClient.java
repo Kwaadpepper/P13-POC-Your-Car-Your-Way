@@ -1,5 +1,6 @@
 package com.ycyw.users.domain.usecase.client;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
@@ -89,7 +90,7 @@ public sealed interface CreateClient {
               birthDate,
               address,
               credentialId,
-              ZonedDateTime.now(),
+              ZonedDateTime.now(ZoneId.systemDefault()),
               null);
       clientRepository.save(client);
       return mapToCreatedUser(client);

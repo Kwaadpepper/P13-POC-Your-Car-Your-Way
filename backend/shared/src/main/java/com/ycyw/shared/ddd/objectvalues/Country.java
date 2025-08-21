@@ -1,4 +1,4 @@
-package com.ycyw.users.domain.model.valueobject;
+package com.ycyw.shared.ddd.objectvalues;
 
 import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 

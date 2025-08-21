@@ -4,11 +4,11 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import com.ycyw.shared.ddd.objectvalues.Country;
 import com.ycyw.users.domain.model.entity.client.Client;
 import com.ycyw.users.domain.model.entity.credential.CredentialId;
 import com.ycyw.users.domain.model.valueobject.Address;
 import com.ycyw.users.domain.model.valueobject.BirthDate;
-import com.ycyw.users.domain.model.valueobject.Country;
 import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.port.repository.ClientRepository;
 import com.ycyw.users.infrastructure.entity.ClientEntity;

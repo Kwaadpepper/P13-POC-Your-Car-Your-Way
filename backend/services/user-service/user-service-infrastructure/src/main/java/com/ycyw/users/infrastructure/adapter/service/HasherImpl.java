@@ -45,7 +45,7 @@ public class HasherImpl implements Hasher {
     }
   }
 
-  public class HashException extends RuntimeException {
+  public static class HashException extends RuntimeException {
     public HashException(String message, Throwable cause) {
       super(message, cause);
     }

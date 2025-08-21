@@ -3,7 +3,8 @@ package com.ycyw.users.application.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
-import com.ycyw.users.application.seeder.UserAccountSeeder;
+import com.ycyw.users.application.seeder.ClientAccountSeeder;
+import com.ycyw.users.application.seeder.OperatorAccountSeeder;
 
 import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
@@ -13,11 +14,16 @@ import org.slf4j.LoggerFactory;
 public class SpringBootConfig {
   private static final Logger logger = LoggerFactory.getLogger(SpringBootConfig.class);
   private final Environment environment;
-  private final UserAccountSeeder userAccountSeeder;
+  private final ClientAccountSeeder clientAccountSeeder;
+  private final OperatorAccountSeeder operatorAccountSeeder;
 
-  SpringBootConfig(Environment environment, UserAccountSeeder userAccountSeeder) {
+  SpringBootConfig(
+      Environment environment,
+      ClientAccountSeeder clientAccountSeeder,
+      OperatorAccountSeeder operatorAccountSeeder) {
     this.environment = environment;
-    this.userAccountSeeder = userAccountSeeder;
+    this.clientAccountSeeder = clientAccountSeeder;
+    this.operatorAccountSeeder = operatorAccountSeeder;
   }
 
   @PostConstruct
@@ -33,11 +39,10 @@ public class SpringBootConfig {
   }
 
   private void seed() {
-    // This method can be used to seed initial data if needed
-    // For example, you can call a seeder class here
     logger.info("Seeding initial data...");
 
-    userAccountSeeder.seed();
+    clientAccountSeeder.seed();
+    operatorAccountSeeder.seed();
 
     logger.info("Seeding completed.");
   }

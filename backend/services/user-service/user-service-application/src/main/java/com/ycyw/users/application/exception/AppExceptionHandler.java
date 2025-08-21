@@ -2,7 +2,6 @@ package com.ycyw.users.application.exception;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -146,6 +145,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
   private ValidationErrorDetails toValidationErrorDetails(
       final String message, final Map<String, String> errors, final WebRequest request) {
-    return new ValidationErrorDetails(new Date(), message, errors, getRequestUri(request));
+    return new ValidationErrorDetails(
+        LocalDate.now(ZoneId.systemDefault()), message, errors, getRequestUri(request));
   }
 }

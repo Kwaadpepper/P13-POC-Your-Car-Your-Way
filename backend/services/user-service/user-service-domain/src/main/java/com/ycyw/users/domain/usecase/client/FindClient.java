@@ -11,6 +11,7 @@ import com.ycyw.users.domain.model.valueobject.Address;
 import com.ycyw.users.domain.model.valueobject.BirthDate;
 import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.port.repository.ClientRepository;
+import com.ycyw.users.domain.usecase.client.FindClient.Output.FoundClient;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -21,19 +22,23 @@ public sealed interface FindClient {
     record FindClientByEmail(Email email) implements Input {}
   }
 
-  record FoundClient(
-      UUID id,
-      String lastName,
-      String firstName,
-      Email email,
-      String phone,
-      BirthDate birthDate,
-      Address address,
-      ZonedDateTime updatedAt,
-      @Nullable ZonedDateTime deletedAt)
-      implements UseCaseOutput, FindClient {}
+  sealed interface Output extends UseCaseOutput, FindClient {
+    record FoundClient(
+        UUID id,
+        String lastName,
+        String firstName,
+        Email email,
+        String phone,
+        BirthDate birthDate,
+        Address address,
+        ZonedDateTime updatedAt,
+        @Nullable ZonedDateTime deletedAt)
+        implements Output {}
 
-  final class FindUserHandler implements UseCaseHandler<Input, @Nullable FoundClient>, FindClient {
+    record NotFound() implements Output {}
+  }
+
+  final class FindUserHandler implements UseCaseHandler<Input, Output>, FindClient {
     private final ClientRepository clientRepository;
 
     public FindUserHandler(ClientRepository clientRepository) {
@@ -41,31 +46,38 @@ public sealed interface FindClient {
     }
 
     @Override
-    public @Nullable FoundClient handle(Input usecaseInput) {
+    public Output handle(Input usecaseInput) {
       return switch (usecaseInput) {
         case Input.FindClientById getUserById -> run(getUserById);
         case Input.FindClientByEmail getUserByEmail -> run(getUserByEmail);
       };
     }
 
-    private @Nullable FoundClient run(Input.FindClientById usecaseInput) {
+    private Output run(Input.FindClientById usecaseInput) {
       final var id = usecaseInput.userId();
 
       final var client = clientRepository.find(id);
+
+      if (client == null) {
+        return new Output.NotFound();
+      }
+
       return mapToFoundClient(client);
     }
 
-    private @Nullable FoundClient run(Input.FindClientByEmail usecaseInput) {
+    private Output run(Input.FindClientByEmail usecaseInput) {
       final var email = usecaseInput.email();
 
       final var client = clientRepository.findByEmail(email);
+
+      if (client == null) {
+        return new Output.NotFound();
+      }
+
       return mapToFoundClient(client);
     }
 
-    private @Nullable FoundClient mapToFoundClient(@Nullable Client client) {
-      if (client == null) {
-        return null;
-      }
+    private FoundClient mapToFoundClient(Client client) {
       return new FoundClient(
           client.getId(),
           client.getLastName(),

@@ -60,19 +60,20 @@ public class CookieService {
         jwtRefreshCookieName + JWT_REFRESH_COOKIE_NAME_SUFFIX, null, JWT_REFRESH_COOKIE_HTTP_PATH);
   }
 
-  public Optional<JwtAccessToken> getJwtAccessTokenFromRequest(final HttpServletRequest request) {
+  public @Nullable JwtAccessToken getJwtAccessTokenFromRequest(final HttpServletRequest request) {
     return getCookieValueByName(request, "%s-jwt".formatted(jwtCookieName))
         .map(Cookie::getValue)
         .filter(cookieValue -> cookieValue != null && !cookieValue.isBlank())
-        .map(JwtAccessToken::new);
+        .map(JwtAccessToken::new)
+        .orElse(null);
   }
 
-  public Optional<JwtRefreshToken> getRefreshTokenUuidFromRequest(
-      final HttpServletRequest request) {
+  public @Nullable JwtRefreshToken getJwtRefreshTokenFromRequest(final HttpServletRequest request) {
     return getCookieValueByName(request, "%s-refresh".formatted(jwtCookieName))
         .map(Cookie::getValue)
         .filter(cookieValue -> cookieValue != null && !cookieValue.isBlank())
-        .map(JwtRefreshToken::new);
+        .map(JwtRefreshToken::new)
+        .orElse(null);
   }
 
   private ResponseCookie generateCookie(String name, @Nullable String value, String path) {

@@ -71,6 +71,7 @@ public class LoginController {
     return new AuthenticableViewDto(
         session.id(),
         session.name(),
+        session.role(),
         session.email().value(),
         session.createdAt(),
         session.updatedAt());

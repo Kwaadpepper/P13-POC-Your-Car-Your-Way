@@ -4,4 +4,9 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public record AuthenticableViewDto(
-    UUID id, String name, String email, ZonedDateTime createdAt, ZonedDateTime updatedAt) {}
+    UUID id,
+    String name,
+    String role,
+    String email,
+    ZonedDateTime createdAt,
+    ZonedDateTime updatedAt) {}

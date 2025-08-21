@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.objectvalues.Country;
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.valueobject.Address;
 import com.ycyw.users.domain.model.valueobject.BirthDate;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.model.valueobject.RawIdentifier;
 import com.ycyw.users.domain.model.valueobject.RawPassword;
 import com.ycyw.users.domain.usecase.client.CreateClient;

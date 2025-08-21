@@ -7,8 +7,8 @@ import java.util.UUID;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.entity.operator.Operator;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.model.valueobject.Role;
 import com.ycyw.users.domain.port.repository.OperatorRepository;
 

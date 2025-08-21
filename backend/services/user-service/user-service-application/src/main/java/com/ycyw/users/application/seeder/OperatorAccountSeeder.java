@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
-import com.ycyw.users.domain.model.valueobject.Email;
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.valueobject.RawIdentifier;
 import com.ycyw.users.domain.model.valueobject.RawPassword;
 import com.ycyw.users.domain.model.valueobject.Role;

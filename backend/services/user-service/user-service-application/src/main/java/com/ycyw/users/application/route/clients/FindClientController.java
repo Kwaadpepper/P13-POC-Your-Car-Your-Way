@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.application.dto.ClientViewDto;
 import com.ycyw.users.application.presenter.ClientPresenter;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.usecase.client.FindClient;
 
 import jakarta.ws.rs.BadRequestException;

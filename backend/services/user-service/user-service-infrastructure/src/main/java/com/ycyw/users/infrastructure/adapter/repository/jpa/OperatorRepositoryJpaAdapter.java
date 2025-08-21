@@ -7,9 +7,9 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.entity.credential.CredentialId;
 import com.ycyw.users.domain.model.entity.operator.Operator;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.model.valueobject.Role;
 import com.ycyw.users.domain.port.repository.OperatorRepository;
 import com.ycyw.users.infrastructure.entity.OperatorEntity;

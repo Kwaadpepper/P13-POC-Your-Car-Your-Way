@@ -52,6 +52,7 @@ public sealed interface CreateClient {
       this.passwordHasher = passwordHasher;
     }
 
+    @Override
     public CreatedClient handle(CreateClientInput usecaseInput) {
       final var lastName = usecaseInput.lastName();
       final var firstName = usecaseInput.firstName();

@@ -32,7 +32,7 @@ public class OperatorRepositoryInMemory implements OperatorRepository {
     MDC.put("credentialId", credentialId == null ? "null" : credentialId.toString());
     @Nullable final Operator operator =
         store.values().stream()
-            .filter(o -> Objects.equals(o.getCredentialId(), credentialId))
+            .filter(o -> Objects.equals(o.getCredentialId().value(), credentialId))
             .findFirst()
             .orElse(null);
     logger.debug("Operator found with credentialId {}: {}", credentialId, operator);

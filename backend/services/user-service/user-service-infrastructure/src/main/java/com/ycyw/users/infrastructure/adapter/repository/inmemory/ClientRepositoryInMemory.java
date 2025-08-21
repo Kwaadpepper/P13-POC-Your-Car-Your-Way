@@ -33,7 +33,7 @@ public class ClientRepositoryInMemory implements ClientRepository {
     try {
       @Nullable final Client client =
           store.values().stream()
-              .filter(o -> Objects.equals(o.getCredentialId(), credentialId))
+              .filter(o -> Objects.equals(o.getCredentialId().value(), credentialId))
               .findFirst()
               .orElse(null);
       logger.debug("Client found with credentialId {}: {}", credentialId, client);

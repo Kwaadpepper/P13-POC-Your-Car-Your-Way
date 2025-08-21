@@ -1,5 +1,7 @@
 package com.ycyw.users.application.seeder;
 
+import java.util.Locale;
+
 import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
@@ -72,7 +74,7 @@ public class UserAccountSeeder implements Seeder {
 
   private String generateId(String firstName, String lastName) {
     // Première lettre du prénom en minuscule
-    String firstInitial = firstName.substring(0, 1).toLowerCase();
+    String firstInitial = firstName.substring(0, 1).toLowerCase(Locale.ROOT);
 
     // Nom de famille en minuscule, sans espaces ni caractères spéciaux
     String cleanedLastName = lastName.toLowerCase().replaceAll("[^a-z0-9]", "");

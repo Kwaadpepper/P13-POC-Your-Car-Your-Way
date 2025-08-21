@@ -30,7 +30,7 @@
       "projectName": "user-service-application",
       "env": {
         "SPRING_APPLICATION_NAME": "user-service-application",
-        "SERVER_SPRING_PROFILES_ACTIVE": "dev"
+        "SPRING_PROFILES_ACTIVE": "dev"
       }
     }
   ]

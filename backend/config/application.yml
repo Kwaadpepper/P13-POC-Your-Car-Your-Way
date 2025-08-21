@@ -1,5 +1,8 @@
 # propriétés globales partagées à tous les services
 config:
+  security:
+    jwt:
+      secret: ${JWT_SECRET:443a00f5072a066891ced7ea96f1926a1bcdb9f6d8ad4bbe3722cb59a2e15682}
   loki:
     enabled: ${LOKI_ENABLED:true}
     url: ${LOKI_URL:http://localhost:3100/loki/api/v1/push}

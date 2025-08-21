@@ -20,4 +20,8 @@ dependencies {
   runtimeOnly(libs.postgresql)
   implementation(libs.jackson.databind)
   implementation(libs.jackson.datatype.jsr310)
+
+  implementation(libs.jsonwebtoken.jjwt.api)
+  runtimeOnly(libs.jsonwebtoken.jjwt.impl)
+  runtimeOnly(libs.jsonwebtoken.jjwt.jackson)
 }

@@ -13,6 +13,7 @@ jdt-annotation-version = "2.2.600"
 rabbitmq-amqp-client = "5.26.0"
 slf4j-api = "2.0.17"
 datafaker-version = "2.4.4"
+jsonwebtoken-jjwt-version = "0.12.6"
 
 [libraries]
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
@@ -44,6 +45,9 @@ logback-classic = { module = "ch.qos.logback:logback-classic" }
 datafaker = { module = "net.datafaker:datafaker", version.ref = "datafaker-version" }
 flyway-core = { module = "org.flywaydb:flyway-core" }
 flyway-postgres = { module = "org.flywaydb:flyway-database-postgresql" }
+jsonwebtoken-jjwt-api = { module = "io.jsonwebtoken:jjwt-api", version.ref = "jsonwebtoken-jjwt-version" }
+jsonwebtoken-jjwt-impl = { module = "io.jsonwebtoken:jjwt-impl", version.ref = "jsonwebtoken-jjwt-version" }
+jsonwebtoken-jjwt-jackson = { module = "io.jsonwebtoken:jjwt-jackson", version.ref = "jsonwebtoken-jjwt-version" }
 
 [plugins]
 spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }

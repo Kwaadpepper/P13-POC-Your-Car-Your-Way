@@ -13,13 +13,12 @@ import com.ycyw.users.domain.model.entity.credential.CredentialId;
 import com.ycyw.users.domain.model.valueobject.Address;
 import com.ycyw.users.domain.model.valueobject.BirthDate;
 import com.ycyw.users.domain.model.valueobject.Email;
-import com.ycyw.users.domain.model.valueobject.HashedIdentifier;
 import com.ycyw.users.domain.model.valueobject.RawIdentifier;
 import com.ycyw.users.domain.model.valueobject.RawPassword;
 import com.ycyw.users.domain.port.repository.ClientRepository;
 import com.ycyw.users.domain.port.repository.CredentialRepository;
-import com.ycyw.users.domain.port.service.Hasher;
 import com.ycyw.users.domain.port.service.PasswordHasher;
+import com.ycyw.users.domain.service.IdentifierHasher;
 
 public sealed interface CreateClient {
   record CreateClientInput(
@@ -39,17 +38,17 @@ public sealed interface CreateClient {
       implements UseCaseHandler<CreateClientInput, CreatedClient>, CreateClient {
     private final CredentialRepository credentialRepository;
     private final ClientRepository clientRepository;
-    private final Hasher hasher;
+    private final IdentifierHasher identifierHasher;
     private final PasswordHasher passwordHasher;
 
     public CreateClientHandler(
         CredentialRepository credentialRepository,
         ClientRepository clientRepository,
-        Hasher hasher,
+        IdentifierHasher identifierHasher,
         PasswordHasher passwordHasher) {
       this.credentialRepository = credentialRepository;
       this.clientRepository = clientRepository;
-      this.hasher = hasher;
+      this.identifierHasher = identifierHasher;
       this.passwordHasher = passwordHasher;
     }
 
@@ -63,8 +62,7 @@ public sealed interface CreateClient {
       final var address = usecaseInput.address();
       final var rawIdentifier = usecaseInput.identifier();
       final var rawPassword = usecaseInput.password();
-      final var hashedIdentifier =
-          new HashedIdentifier(hasher.hash(rawIdentifier.value(), Hasher.HashAlgorithm.SHA256));
+      final var hashedIdentifier = identifierHasher.hash(rawIdentifier);
       final var hashedPassword = passwordHasher.hash(rawPassword);
 
       if (credentialRepository.findByIdentifier(hashedIdentifier) != null) {

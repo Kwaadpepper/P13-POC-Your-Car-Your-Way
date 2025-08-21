@@ -7,6 +7,7 @@ import com.ycyw.users.domain.port.repository.ClientRepository;
 import com.ycyw.users.domain.port.repository.CredentialRepository;
 import com.ycyw.users.domain.port.service.Hasher;
 import com.ycyw.users.domain.port.service.PasswordHasher;
+import com.ycyw.users.domain.service.IdentifierHasher;
 import com.ycyw.users.domain.usecase.client.CreateClient;
 import com.ycyw.users.domain.usecase.client.FindClient;
 
@@ -24,10 +25,16 @@ public class SpringInjector {
   CreateClient.CreateClientHandler createUserHandler(
       CredentialRepository credentialRepository,
       ClientRepository clientRepository,
-      Hasher hasher,
+      IdentifierHasher hasher,
       PasswordHasher passwordHasher) {
     return new CreateClient.CreateClientHandler(
         credentialRepository, clientRepository, hasher, passwordHasher);
+  }
+
+  // * OTHER DOMAIN SERVICES
+  @Bean
+  IdentifierHasher identifierHasher(Hasher hasher) {
+    return new IdentifierHasher(hasher);
   }
 
   // * MISCELLANEOUS

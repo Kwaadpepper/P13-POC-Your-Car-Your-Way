@@ -21,15 +21,20 @@ dependencies {
   implementation(libs.spring.context)
   implementation(libs.spring.boot.starter.web)
   implementation(libs.spring.boot.starter.validation)
-  implementation(libs.spring.boot.starter.aop)
-  implementation(libs.spring.boot.starter.amqp)
   implementation(libs.spring.cloud.starter.netflix.eureka.client)
   implementation(libs.spring.cloud.starter.config)
   implementation(libs.spring.boot.starter.actuator)
   implementation(libs.micrometer.registry.prometheus)
-  testImplementation(libs.spring.boot.starter.test)
+
+  implementation(libs.spring.boot.starter.aop)
+  implementation(libs.spring.boot.starter.amqp)
+
+  implementation(libs.spring.cloud.starter.openfeign)
+
   implementation(libs.datafaker)
   runtimeOnly(libs.postgresql)
   implementation(libs.flyway.core)
   implementation(libs.flyway.postgres)
+
+  testImplementation(libs.spring.boot.starter.test)
 }

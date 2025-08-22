@@ -14,7 +14,7 @@ import com.ycyw.shared.utils.UuidV7;
  * UuidV7#randomUuid()}. Subclasses should extend this class to inherit the unique identity
  * functionality.
  */
-public abstract class AggregateRoot {
+public abstract class AggregateRoot implements Entity {
   protected final UUID id;
   protected final ZonedDateTime createdAt;
 

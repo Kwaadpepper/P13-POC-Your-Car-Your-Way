@@ -5,7 +5,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
-import com.ycyw.shared.utils.UuidV7;
 import com.ycyw.support.domain.model.valueobject.IssueStatus;
 import com.ycyw.support.domain.usecase.conversation.CreateConversation;
 import com.ycyw.support.domain.usecase.issue.CreateIssue;
@@ -43,11 +42,12 @@ public class IssueSeeder implements Seeder {
   }
 
   private void createModel() {
+    final var JOHN_DOE_CLIENT_ID = "00000000-0000-7000-8000-000000000002";
 
     var subject = dataFaker.lorem().sentence();
     var description = dataFaker.lorem().paragraph();
     @Nullable IssueStatus status = dataFaker.options().option(IssueStatus.class);
-    var client = UuidV7.randomUuid();
+    var client = UUID.fromString(JOHN_DOE_CLIENT_ID);
 
     var useCase = new CreateIssue.CreateInput(subject, description, status, client, null);
 

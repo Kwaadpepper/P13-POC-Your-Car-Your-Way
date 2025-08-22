@@ -1,6 +1,5 @@
-package com.ycyw.support.domain.model.valueobject;
+package com.ycyw.shared.ddd.objectvalues;
 
-import com.ycyw.shared.ddd.objectvalues.Country;
 import com.ycyw.shared.utils.Domain;
 
 import org.eclipse.jdt.annotation.Nullable;

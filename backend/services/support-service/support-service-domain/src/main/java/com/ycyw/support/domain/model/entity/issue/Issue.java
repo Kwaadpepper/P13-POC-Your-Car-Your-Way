@@ -6,8 +6,8 @@ import java.util.UUID;
 
 import com.ycyw.shared.ddd.lib.AggregateRoot;
 import com.ycyw.shared.utils.Domain;
+import com.ycyw.support.domain.model.entity.externals.client.ClientId;
 import com.ycyw.support.domain.model.entity.externals.reservation.ReservationId;
-import com.ycyw.support.domain.model.entity.externals.users.ClientId;
 import com.ycyw.support.domain.model.valueobject.IssueStatus;
 
 import org.eclipse.jdt.annotation.Nullable;

@@ -5,8 +5,8 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
+import com.ycyw.support.domain.model.entity.externals.client.ClientId;
 import com.ycyw.support.domain.model.entity.externals.reservation.ReservationId;
-import com.ycyw.support.domain.model.entity.externals.users.ClientId;
 import com.ycyw.support.domain.model.entity.issue.Issue;
 import com.ycyw.support.domain.model.valueobject.IssueStatus;
 import com.ycyw.support.domain.port.repository.IssueRepository;

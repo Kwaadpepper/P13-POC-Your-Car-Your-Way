@@ -3,6 +3,7 @@ package com.ycyw.support.application.di;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ycyw.support.domain.port.directory.ClientDirectory;
 import com.ycyw.support.domain.port.repository.CompanyInformationRepository;
 import com.ycyw.support.domain.port.repository.ConversationRepository;
 import com.ycyw.support.domain.port.repository.FaqRepository;
@@ -53,8 +54,9 @@ public class SpringInjector {
   }
 
   @Bean
-  GetAllIssue.Handler getAllIssueHandler(IssueRepository issueRepository) {
-    return new GetAllIssue.Handler(issueRepository);
+  GetAllIssue.Handler getAllIssueHandler(
+      IssueRepository issueRepository, ClientDirectory clientDirector) {
+    return new GetAllIssue.Handler(issueRepository, clientDirector);
   }
 
   // * OTHER DOMAIN SERVICES

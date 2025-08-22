@@ -2,6 +2,7 @@
 java = "21"
 spring-boot = "3.5.4"
 spring-cloud = "2025.0.0"
+spring-cloud-openfeign = "4.3.0"
 error-prone = "2.41.0"
 nullaway = "0.12.8"
 errorprone-plugin = "4.2.0"
@@ -27,7 +28,7 @@ spring-boot-starter-aop = { module = "org.springframework.boot:spring-boot-start
 spring-boot-starter-amqp = { module = "org.springframework.boot:spring-boot-starter-amqp" }
 spring-cloud-starter-netflix-eureka-client = { module = "org.springframework.cloud:spring-cloud-starter-netflix-eureka-client" }
 spring-cloud-starter-netflix-eureka-server = { module = "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server" }
-spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign" }
+spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud-openfeign" }
 spring-cloud-starter-config = { module = "org.springframework.cloud:spring-cloud-starter-config" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "spring-boot" }

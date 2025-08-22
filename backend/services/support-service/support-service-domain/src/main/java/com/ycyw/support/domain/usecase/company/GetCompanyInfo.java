@@ -5,12 +5,12 @@ import java.util.UUID;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
+import com.ycyw.shared.ddd.objectvalues.Address;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.shared.ddd.objectvalues.HttpUrl;
+import com.ycyw.shared.ddd.objectvalues.PhoneNumber;
 import com.ycyw.support.domain.model.entity.company.CompanyInformation;
-import com.ycyw.support.domain.model.valueobject.Address;
 import com.ycyw.support.domain.model.valueobject.BusinessHours;
-import com.ycyw.support.domain.model.valueobject.PhoneNumber;
 import com.ycyw.support.domain.port.repository.CompanyInformationRepository;
 
 public sealed interface GetCompanyInfo {

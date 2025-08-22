@@ -6,10 +6,10 @@ import java.util.UUID;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
+import com.ycyw.shared.ddd.objectvalues.BirthDate;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.entity.client.Client;
 import com.ycyw.users.domain.model.valueobject.Address;
-import com.ycyw.users.domain.model.valueobject.BirthDate;
 import com.ycyw.users.domain.port.repository.ClientRepository;
 import com.ycyw.users.domain.usecase.client.FindClient.Output.FoundClient;
 

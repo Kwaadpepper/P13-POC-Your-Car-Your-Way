@@ -39,7 +39,12 @@ public class FindClientController {
       @PathVariable(name = "user", required = true) final String user) {
 
     @Nullable final UUID userId = toUserId(user);
-    final var userEmail = toUserEmail(user);
+    @Nullable final Email userEmail = toUserEmail(user);
+
+    if (userId == null && userEmail == null) {
+      throw new BadRequestException("Invalid user identifier: " + user);
+    }
+
     final var input =
         userId != null
             ? new FindClient.Input.FindById(userId)
@@ -54,17 +59,17 @@ public class FindClientController {
   private @Nullable UUID toUserId(String id) {
     try {
       return UUID.fromString(id);
-    } catch (IllegalDomainStateException e) {
+    } catch (IllegalArgumentException e) {
       logger.debug("Invalid user ID format: {}", id);
       return null;
     }
   }
 
-  private Email toUserEmail(String email) {
+  private @Nullable Email toUserEmail(String email) {
     try {
       return new Email(email);
     } catch (IllegalDomainStateException e) {
-      throw new BadRequestException("Invalid email format: " + email);
+      return null;
     }
   }
 }

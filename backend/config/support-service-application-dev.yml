@@ -7,6 +7,12 @@ config:
   seed-data: true
 
 spring:
+  cloud:
+  openfeign:
+    client:
+      config:
+        default:
+          loggerLevel: basic
   datasource:
     url: ${SUPPORT_DB_URL:jdbc:postgresql://localhost:5433/supportdb}
     username: ${SUPPORT_DB_USER:postgres}

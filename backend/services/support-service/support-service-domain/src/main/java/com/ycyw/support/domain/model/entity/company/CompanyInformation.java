@@ -5,11 +5,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.ycyw.shared.ddd.lib.AggregateRoot;
+import com.ycyw.shared.ddd.objectvalues.Address;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.shared.ddd.objectvalues.HttpUrl;
-import com.ycyw.support.domain.model.valueobject.Address;
+import com.ycyw.shared.ddd.objectvalues.PhoneNumber;
 import com.ycyw.support.domain.model.valueobject.BusinessHours;
-import com.ycyw.support.domain.model.valueobject.PhoneNumber;
 
 import org.eclipse.jdt.annotation.Nullable;
 

@@ -1,4 +1,4 @@
-package com.ycyw.support.domain.model.entity.externals.users;
+package com.ycyw.support.domain.model.entity.externals.client;
 
 import java.util.UUID;
 

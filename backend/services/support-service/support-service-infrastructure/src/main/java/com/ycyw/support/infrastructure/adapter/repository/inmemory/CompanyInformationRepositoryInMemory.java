@@ -7,9 +7,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import com.ycyw.shared.ddd.objectvalues.Address;
 import com.ycyw.shared.ddd.objectvalues.TimeRange;
 import com.ycyw.support.domain.model.entity.company.CompanyInformation;
-import com.ycyw.support.domain.model.valueobject.Address;
 import com.ycyw.support.domain.model.valueobject.BusinessHours;
 import com.ycyw.support.domain.port.repository.CompanyInformationRepository;
 

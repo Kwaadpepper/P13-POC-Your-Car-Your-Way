@@ -8,12 +8,12 @@ import java.util.Map.Entry;
 import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.application.Presenter;
+import com.ycyw.shared.ddd.objectvalues.Address;
+import com.ycyw.shared.ddd.objectvalues.PhoneNumber;
 import com.ycyw.shared.ddd.objectvalues.TimeRange;
 import com.ycyw.support.application.dto.CompanyInfoViewDto;
 import com.ycyw.support.application.exception.exceptions.ResourceNotFoundException;
-import com.ycyw.support.domain.model.valueobject.Address;
 import com.ycyw.support.domain.model.valueobject.BusinessHours;
-import com.ycyw.support.domain.model.valueobject.PhoneNumber;
 import com.ycyw.support.domain.usecase.company.GetCompanyInfo;
 
 import org.eclipse.jdt.annotation.Nullable;

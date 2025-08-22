@@ -6,13 +6,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.application.dto.ClientViewDto;
+import com.ycyw.users.application.exception.exceptions.BadRequestException;
 import com.ycyw.users.application.presenter.ClientPresenter;
 import com.ycyw.users.domain.usecase.client.FindClient;
 
-import jakarta.ws.rs.BadRequestException;
 import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +38,7 @@ public class FindClientController {
   public ClientViewDto getUserById(
       @PathVariable(name = "user", required = true) final String user) {
 
-    final var userId = toUserId(user);
+    @Nullable final UUID userId = toUserId(user);
     final var userEmail = toUserEmail(user);
     final var input =
         userId != null
@@ -53,7 +54,7 @@ public class FindClientController {
   private @Nullable UUID toUserId(String id) {
     try {
       return UUID.fromString(id);
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalDomainStateException e) {
       logger.debug("Invalid user ID format: {}", id);
       return null;
     }
@@ -62,7 +63,7 @@ public class FindClientController {
   private Email toUserEmail(String email) {
     try {
       return new Email(email);
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalDomainStateException e) {
       throw new BadRequestException("Invalid email format: " + email);
     }
   }

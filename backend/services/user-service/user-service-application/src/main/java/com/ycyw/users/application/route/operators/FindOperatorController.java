@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.application.dto.OperatorViewDto;
+import com.ycyw.users.application.exception.exceptions.BadRequestException;
 import com.ycyw.users.application.presenter.OperatorPresenter;
 import com.ycyw.users.domain.usecase.operator.FindOperator;
 
-import jakarta.ws.rs.BadRequestException;
 import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.users.application.dto.AuthenticableViewDto;
+import com.ycyw.users.application.exception.exceptions.BadRequestException;
 import com.ycyw.users.application.request.LoginRequest;
 import com.ycyw.users.application.service.CookieService;
 import com.ycyw.users.domain.model.valueobject.PasswordCandidate;
@@ -19,7 +20,6 @@ import com.ycyw.users.domain.model.valueobject.RawIdentifier;
 import com.ycyw.users.domain.usecase.session.CreateSession;
 
 import jakarta.validation.Valid;
-import jakarta.ws.rs.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS support_context.company_information;
 DROP TABLE IF EXISTS support_context.messages;
 DROP TABLE IF EXISTS support_context.conversations;
 DROP TABLE IF EXISTS support_context.issues;
+DROP TABLE IF EXISTS support_context.faqs;
 
 -- object: support_context.company_information | type: TABLE --
 -- DROP TABLE IF EXISTS support_context.company_information CASCADE;

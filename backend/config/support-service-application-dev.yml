@@ -19,6 +19,7 @@ spring:
   flyway:
     enabled: ${SUPPORT_DB_MIGRATE_ON_START:true}
     schemas: ${SUPPORT_DB_MIGRATION_SCHEMA:migrations}
+    cleanDisabled: false
     baseline-on-migrate: true # utile si la BDD existe déjà
     validate-on-migrate: true
   rabbitmq:

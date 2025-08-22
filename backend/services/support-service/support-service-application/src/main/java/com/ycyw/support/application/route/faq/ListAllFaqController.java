@@ -16,14 +16,12 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class ListAllFaqController {
   private final UseCaseExecutor useCaseExecutor;
-  private final GetAllFaq.GetAllFaqHandler useCaseHandler;
+  private final GetAllFaq.Handler useCaseHandler;
   private final FaqPresenter presenter;
   private static final Logger logger = LoggerFactory.getLogger(ListAllFaqController.class);
 
   public ListAllFaqController(
-      UseCaseExecutor useCaseExecutor,
-      GetAllFaq.GetAllFaqHandler useCaseHandler,
-      FaqPresenter presenter) {
+      UseCaseExecutor useCaseExecutor, GetAllFaq.Handler useCaseHandler, FaqPresenter presenter) {
     this.useCaseExecutor = useCaseExecutor;
     this.useCaseHandler = useCaseHandler;
     this.presenter = presenter;

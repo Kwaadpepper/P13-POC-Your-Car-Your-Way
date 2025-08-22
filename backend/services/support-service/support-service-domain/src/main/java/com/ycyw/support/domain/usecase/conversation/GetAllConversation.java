@@ -21,11 +21,10 @@ public sealed interface GetAllConversation {
     record ConversationDto(UUID id, String subject, UUID issue) {}
   }
 
-  final class GetAllConversationHandler
-      implements UseCaseHandler<Input, Output>, GetAllConversation {
+  final class Handler implements UseCaseHandler<Input, Output>, GetAllConversation {
     private final ConversationRepository conversationRepository;
 
-    public GetAllConversationHandler(ConversationRepository conversationRepository) {
+    public Handler(ConversationRepository conversationRepository) {
       this.conversationRepository = conversationRepository;
     }
 

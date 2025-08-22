@@ -14,13 +14,13 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class CompanyInfoController {
   private final UseCaseExecutor useCaseExecutor;
-  private final GetCompanyInfo.GetCompanyInfoHandler useCaseHandler;
+  private final GetCompanyInfo.Handler useCaseHandler;
   private final CompanyInfoPresenter presenter;
   private static final Logger logger = LoggerFactory.getLogger(CompanyInfoController.class);
 
   public CompanyInfoController(
       UseCaseExecutor useCaseExecutor,
-      GetCompanyInfo.GetCompanyInfoHandler useCaseHandler,
+      GetCompanyInfo.Handler useCaseHandler,
       CompanyInfoPresenter presenter) {
     this.useCaseExecutor = useCaseExecutor;
     this.useCaseHandler = useCaseHandler;

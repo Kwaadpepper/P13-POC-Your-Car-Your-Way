@@ -23,10 +23,10 @@ public sealed interface GetAllFaq {
         UUID id, String question, String answer, FaqCategory category, ZonedDateTime updatedAt) {}
   }
 
-  final class GetAllFaqHandler implements UseCaseHandler<Input, Output>, GetAllFaq {
+  final class Handler implements UseCaseHandler<Input, Output>, GetAllFaq {
     private final FaqRepository faqRepository;
 
-    public GetAllFaqHandler(FaqRepository faqRepository) {
+    public Handler(FaqRepository faqRepository) {
       this.faqRepository = faqRepository;
     }
 

@@ -31,10 +31,10 @@ public sealed interface GetCompanyInfo {
         implements Output {}
   }
 
-  final class GetCompanyInfoHandler implements UseCaseHandler<Input, Output>, GetCompanyInfo {
+  final class Handler implements UseCaseHandler<Input, Output>, GetCompanyInfo {
     private final CompanyInformationRepository companyInfoRepository;
 
-    public GetCompanyInfoHandler(CompanyInformationRepository companyInfoRepository) {
+    public Handler(CompanyInformationRepository companyInfoRepository) {
       this.companyInfoRepository = companyInfoRepository;
     }
 

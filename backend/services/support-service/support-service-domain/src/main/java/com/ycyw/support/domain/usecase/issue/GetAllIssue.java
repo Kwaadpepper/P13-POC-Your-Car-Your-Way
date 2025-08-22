@@ -32,10 +32,10 @@ public sealed interface GetAllIssue {
         ZonedDateTime updatedAt) {}
   }
 
-  final class GetAllIssueHandler implements UseCaseHandler<Input, Output>, GetAllIssue {
+  final class Handler implements UseCaseHandler<Input, Output>, GetAllIssue {
     private final IssueRepository issueRepository;
 
-    public GetAllIssueHandler(IssueRepository issueRepository) {
+    public Handler(IssueRepository issueRepository) {
       this.issueRepository = issueRepository;
     }
 

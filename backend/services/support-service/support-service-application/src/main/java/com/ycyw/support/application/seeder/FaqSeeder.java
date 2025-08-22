@@ -14,10 +14,9 @@ public class FaqSeeder implements Seeder {
 
   private final Faker dataFaker;
   private final UseCaseExecutor useCaseExecutor;
-  private final CreateFaq.CreateFaqHandler handler;
+  private final CreateFaq.Handler handler;
 
-  public FaqSeeder(
-      Faker dataFaker, UseCaseExecutor useCaseExecutor, CreateFaq.CreateFaqHandler handler) {
+  public FaqSeeder(Faker dataFaker, UseCaseExecutor useCaseExecutor, CreateFaq.Handler handler) {
     this.dataFaker = dataFaker;
     this.useCaseExecutor = useCaseExecutor;
     this.handler = handler;

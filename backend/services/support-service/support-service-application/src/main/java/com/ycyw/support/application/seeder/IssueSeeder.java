@@ -19,14 +19,14 @@ public class IssueSeeder implements Seeder {
 
   private final Faker dataFaker;
   private final UseCaseExecutor useCaseExecutor;
-  private final CreateIssue.CreateIssueHandler handler;
-  private final CreateConversation.CreateConversationHandler createConversationHandler;
+  private final CreateIssue.Handler handler;
+  private final CreateConversation.Handler createConversationHandler;
 
   public IssueSeeder(
       Faker dataFaker,
       UseCaseExecutor useCaseExecutor,
-      CreateIssue.CreateIssueHandler handler,
-      CreateConversation.CreateConversationHandler createConversationHandler) {
+      CreateIssue.Handler handler,
+      CreateConversation.Handler createConversationHandler) {
     this.dataFaker = dataFaker;
     this.useCaseExecutor = useCaseExecutor;
     this.handler = handler;

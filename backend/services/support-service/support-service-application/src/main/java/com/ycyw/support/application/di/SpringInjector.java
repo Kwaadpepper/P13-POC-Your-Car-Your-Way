@@ -21,42 +21,40 @@ import net.datafaker.Faker;
 public class SpringInjector {
   // * USECASES
   @Bean
-  GetCompanyInfo.GetCompanyInfoHandler getCompanyInfoHandler(
-      CompanyInformationRepository companyInfoRepository) {
-    return new GetCompanyInfo.GetCompanyInfoHandler(companyInfoRepository);
+  GetCompanyInfo.Handler getCompanyInfoHandler(CompanyInformationRepository companyInfoRepository) {
+    return new GetCompanyInfo.Handler(companyInfoRepository);
   }
 
   @Bean
-  CreateFaq.CreateFaqHandler createFaqHandler(FaqRepository faqRepository) {
-    return new CreateFaq.CreateFaqHandler(faqRepository);
+  CreateFaq.Handler createFaqHandler(FaqRepository faqRepository) {
+    return new CreateFaq.Handler(faqRepository);
   }
 
   @Bean
-  GetAllFaq.GetAllFaqHandler getAllFaqHandler(FaqRepository faqRepository) {
-    return new GetAllFaq.GetAllFaqHandler(faqRepository);
+  GetAllFaq.Handler getAllFaqHandler(FaqRepository faqRepository) {
+    return new GetAllFaq.Handler(faqRepository);
   }
 
   @Bean
-  CreateConversation.CreateConversationHandler createConversationHandler(
+  CreateConversation.Handler createConversationHandler(
       IssueRepository issueRepository, ConversationRepository conversationRepository) {
-    return new CreateConversation.CreateConversationHandler(
-        issueRepository, conversationRepository);
+    return new CreateConversation.Handler(issueRepository, conversationRepository);
   }
 
   @Bean
-  GetAllConversation.GetAllConversationHandler getAllConversationHandler(
+  GetAllConversation.Handler getAllConversationHandler(
       ConversationRepository conversationRepository) {
-    return new GetAllConversation.GetAllConversationHandler(conversationRepository);
+    return new GetAllConversation.Handler(conversationRepository);
   }
 
   @Bean
-  CreateIssue.CreateIssueHandler createIssueHandler(IssueRepository issueRepository) {
-    return new CreateIssue.CreateIssueHandler(issueRepository);
+  CreateIssue.Handler createIssueHandler(IssueRepository issueRepository) {
+    return new CreateIssue.Handler(issueRepository);
   }
 
   @Bean
-  GetAllIssue.GetAllIssueHandler getAllIssueHandler(IssueRepository issueRepository) {
-    return new GetAllIssue.GetAllIssueHandler(issueRepository);
+  GetAllIssue.Handler getAllIssueHandler(IssueRepository issueRepository) {
+    return new GetAllIssue.Handler(issueRepository);
   }
 
   // * OTHER DOMAIN SERVICES

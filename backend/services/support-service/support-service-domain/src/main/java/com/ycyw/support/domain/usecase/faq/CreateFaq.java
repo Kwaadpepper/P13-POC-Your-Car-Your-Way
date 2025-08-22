@@ -16,10 +16,10 @@ public sealed interface CreateFaq {
 
   record Created() implements UseCaseOutput, CreateFaq {}
 
-  final class CreateFaqHandler implements UseCaseHandler<CreateInput, Created>, CreateFaq {
+  final class Handler implements UseCaseHandler<CreateInput, Created>, CreateFaq {
     private final FaqRepository faqRepository;
 
-    public CreateFaqHandler(FaqRepository faqRepository) {
+    public Handler(FaqRepository faqRepository) {
       this.faqRepository = faqRepository;
     }
 

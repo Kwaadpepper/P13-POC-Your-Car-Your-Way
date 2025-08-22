@@ -26,10 +26,10 @@ public sealed interface CreateIssue {
 
   record Created(UUID id) implements UseCaseOutput, CreateIssue {}
 
-  final class CreateIssueHandler implements UseCaseHandler<CreateInput, Created>, CreateIssue {
+  final class Handler implements UseCaseHandler<CreateInput, Created>, CreateIssue {
     private final IssueRepository issueRepository;
 
-    public CreateIssueHandler(IssueRepository issueRepository) {
+    public Handler(IssueRepository issueRepository) {
       this.issueRepository = issueRepository;
     }
 

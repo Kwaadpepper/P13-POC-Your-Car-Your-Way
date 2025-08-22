@@ -16,13 +16,11 @@ public sealed interface CreateConversation {
 
   record Created(UUID id) implements UseCaseOutput, CreateConversation {}
 
-  final class CreateConversationHandler
-      implements UseCaseHandler<CreateInput, Created>, CreateConversation {
+  final class Handler implements UseCaseHandler<CreateInput, Created>, CreateConversation {
     private final IssueRepository issueRepository;
     private final ConversationRepository conversationRepository;
 
-    public CreateConversationHandler(
-        IssueRepository issueRepository, ConversationRepository conversationRepository) {
+    public Handler(IssueRepository issueRepository, ConversationRepository conversationRepository) {
       this.issueRepository = issueRepository;
       this.conversationRepository = conversationRepository;
     }

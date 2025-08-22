@@ -1,7 +1,7 @@
 package com.ycyw.support.infrastructure.adapter.repository.inmemory;
 
 import java.time.DayOfWeek;
-import java.util.List;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -74,21 +74,15 @@ public class CompanyInformationRepositoryInMemory implements CompanyInformationR
   }
 
   private BusinessHours clone(BusinessHours entity) {
-    Map<DayOfWeek, List<TimeRange>> hoursCopy =
+    Map<DayOfWeek, TimeRange> hoursCopy =
         entity.hours().entrySet().stream()
             .collect(
                 Collectors.toMap(
                     Map.Entry::getKey,
-                    e ->
-                        e.getValue() == null
-                            ? java.util.List.<TimeRange>of()
-                            : e.getValue().stream()
-                                .filter(java.util.Objects::nonNull)
-                                .map(tr -> new TimeRange(tr.start(), tr.end()))
-                                .toList(),
+                    Map.Entry::getValue,
                     (a, b) -> a,
-                    () -> new java.util.EnumMap<DayOfWeek, List<TimeRange>>(DayOfWeek.class)));
+                    () -> new EnumMap<DayOfWeek, TimeRange>(DayOfWeek.class)));
 
-    return new BusinessHours(new java.util.EnumMap<>(hoursCopy));
+    return new BusinessHours(new EnumMap<>(hoursCopy));
   }
 }

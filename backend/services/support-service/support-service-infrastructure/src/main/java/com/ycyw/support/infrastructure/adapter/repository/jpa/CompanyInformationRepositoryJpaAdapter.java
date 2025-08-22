@@ -4,10 +4,8 @@ import java.net.URI;
 import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -108,10 +106,10 @@ public class CompanyInformationRepositoryJpaAdapter implements CompanyInformatio
     if (raw == null || raw.isEmpty()) {
       return new BusinessHours(Map.of());
     }
-    Map<DayOfWeek, List<TimeRange>> result = new EnumMap<>(DayOfWeek.class);
+    Map<DayOfWeek, TimeRange> result = new EnumMap<>(DayOfWeek.class);
     for (var entry : raw.entrySet()) {
       @Nullable final String key = entry.getKey();
-      @Nullable final Object rangesRawObj = entry.getValue();
+      @Nullable final Object rangeRawObj = entry.getValue();
 
       DayOfWeek day = parseDay(key);
       if (day == null) {
@@ -119,8 +117,11 @@ public class CompanyInformationRepositoryJpaAdapter implements CompanyInformatio
         continue;
       }
 
-      List<TimeRange> ranges = parseRanges(rangesRawObj);
-      result.put(day, List.copyOf(ranges));
+      @Nullable TimeRange range = parseRange(rangeRawObj);
+
+      if (range != null) {
+        result.put(day, range);
+      }
     }
     return new BusinessHours(Map.copyOf(result));
   }
@@ -135,20 +136,6 @@ public class CompanyInformationRepositoryJpaAdapter implements CompanyInformatio
       // unknown day string
       return null;
     }
-  }
-
-  private List<TimeRange> parseRanges(@Nullable Object rangesRawObj) {
-    if (!(rangesRawObj instanceof List<?> rangesList) || rangesList.isEmpty()) {
-      return List.of();
-    }
-    List<TimeRange> ranges = new ArrayList<>();
-    for (Object rawRangeObj : rangesList) {
-      TimeRange tr = parseRange(rawRangeObj);
-      if (tr != null) {
-        ranges.add(tr);
-      }
-    }
-    return ranges;
   }
 
   private @Nullable TimeRange parseRange(@Nullable Object rawRangeObj) {
@@ -175,21 +162,12 @@ public class CompanyInformationRepositoryJpaAdapter implements CompanyInformatio
     hours
         .hours()
         .forEach(
-            (day, ranges) -> {
-              List<Map<String, Object>> encodedRanges = new ArrayList<>();
-              if (ranges != null) {
-                for (TimeRange tr : ranges) {
-                  if (tr == null || tr.start() == null || tr.end() == null) {
-                    continue;
-                  }
-                  encodedRanges.add(
-                      Map.of(
-                          "start", tr.start().format(HH_MM),
-                          "end", tr.end().format(HH_MM)));
-                }
-              }
-              out.put(day.name(), List.copyOf(encodedRanges));
-            });
+            (day, range) ->
+                out.put(
+                    day.name(),
+                    Map.of(
+                        "start", range.start().format(HH_MM),
+                        "end", range.end().format(HH_MM))));
 
     return out;
   }

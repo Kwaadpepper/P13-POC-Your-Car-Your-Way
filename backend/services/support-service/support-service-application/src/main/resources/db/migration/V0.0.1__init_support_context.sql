@@ -119,14 +119,8 @@ INSERT INTO support_context.company_information (
   '+33102030405',
   'https://support.example.net',
   $${
-    "MONDAY": [
-      { "start": "09:00", "end": "12:30" },
-      { "start": "14:00", "end": "18:00" }
-    ],
-    "TUESDAY": [
-      { "start": "09:00", "end": "12:30" },
-      { "start": "14:00", "end": "18:00" }
-    ],
+    "MONDAY": { "start": "09:00", "end": "18:00" },
+    "TUESDAY": { "start": "14:00", "end": "18:00" },
     "WEDNESDAY": [],
     "THURSDAY": [],
     "FRIDAY": [
@@ -136,22 +130,11 @@ INSERT INTO support_context.company_information (
     "SUNDAY": []
   }$$::jsonb,
   $${
-    "MONDAY": [
-      { "start": "09:00", "end": "12:30" },
-      { "start": "14:00", "end": "18:00" }
-    ],
-    "TUESDAY": [
-      { "start": "09:00", "end": "12:30" },
-      { "start": "14:00", "end": "18:00" }
-    ],
-    "WEDNESDAY": [
-      { "start": "09:00", "end": "12:30" },
-      { "start": "14:00", "end": "18:00" }
-    ],
+    "MONDAY": { "start": "09:00", "end": "12:30" },
+    "TUESDAY": { "start": "09:00", "end": "12:30" },
+    "WEDNESDAY": { "start": "09:00", "end": "12:30" },
     "THURSDAY": [],
-    "FRIDAY": [
-      { "start": "09:00", "end": "17:00" }
-    ],
+    "FRIDAY": { "start": "09:00", "end": "12:30" },
     "SATURDAY": [],
     "SUNDAY": []
   }$$::jsonb

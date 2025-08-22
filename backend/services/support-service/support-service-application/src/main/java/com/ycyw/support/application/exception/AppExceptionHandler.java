@@ -40,7 +40,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
   @ExceptionHandler(IllegalDomainStateException.class)
   public ResponseEntity<ApiErrorDetails> handleException(
       final IllegalDomainStateException ex, final WebRequest request) {
-    return new ResponseEntity<>(toErrorDetails(ex, request), HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(toErrorDetails(ex, request), HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)

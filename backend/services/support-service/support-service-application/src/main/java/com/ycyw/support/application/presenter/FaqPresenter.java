@@ -20,7 +20,6 @@ public class FaqPresenter implements Presenter<List<FaqViewDto>, GetAllFaq.Outpu
   }
 
   private FaqViewDto toDto(GetAllFaq.Output.FaqDto model) {
-    return new FaqViewDto(
-        model.id(), model.question(), model.answer(), model.category().toString());
+    return new FaqViewDto(model.id(), model.question(), model.answer(), model.category().value());
   }
 }

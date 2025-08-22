@@ -5,16 +5,15 @@ import java.util.Locale;
 import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
+import com.ycyw.shared.ddd.objectvalues.BirthDate;
 import com.ycyw.shared.ddd.objectvalues.Country;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.valueobject.Address;
-import com.ycyw.users.domain.model.valueobject.BirthDate;
 import com.ycyw.users.domain.model.valueobject.RawIdentifier;
 import com.ycyw.users.domain.model.valueobject.RawPassword;
 import com.ycyw.users.domain.usecase.client.CreateClient;
 
 import net.datafaker.Faker;
-import org.eclipse.jdt.annotation.Nullable;
 
 @Component
 public class ClientAccountSeeder implements Seeder {
@@ -34,24 +33,18 @@ public class ClientAccountSeeder implements Seeder {
   @Override
   public void seed() {
 
-    // Static dummy user account
-    createUserAccount("user@example.net", "Password.123", "John Doe");
-
     int i = 0;
     while (i < AMOUNT_TO_SEED) {
-      final var email = dataFaker.internet().emailAddress();
-      final var password = "aA1." + dataFaker.internet().password(8, 16, true, true, true);
-      createUserAccount(email, password, null);
+      createUserAccount();
       i++;
     }
   }
 
-  private void createUserAccount(
-      String providedEmail, String providedPassword, @Nullable String providedId) {
+  private void createUserAccount() {
 
     var lastName = dataFaker.name().lastName();
     var firstName = dataFaker.name().firstName();
-    var email = new Email(providedEmail);
+    var email = new Email(dataFaker.internet().emailAddress());
     String phone = dataFaker.phoneNumber().phoneNumberInternational();
     BirthDate birthDate = new BirthDate(dataFaker.date().birthdayLocalDate());
     Address address =
@@ -62,9 +55,9 @@ public class ClientAccountSeeder implements Seeder {
             dataFaker.address().city(),
             dataFaker.address().zipCode(),
             Country.FRANCE);
-    RawIdentifier identifier =
-        new RawIdentifier(providedId != null ? providedId : generateId(firstName, lastName));
-    final var password = new RawPassword(providedPassword);
+    RawIdentifier identifier = new RawIdentifier(generateId(firstName, lastName));
+    final var password =
+        new RawPassword("aA1." + dataFaker.internet().password(8, 16, true, true, true));
 
     CreateClient.ClientInfo useCase =
         new CreateClient.ClientInfo(

@@ -1,0 +1,11 @@
+meta {
+  name: Logout
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/user-service-application/auth/logout
+  body: none
+  auth: inherit
+}

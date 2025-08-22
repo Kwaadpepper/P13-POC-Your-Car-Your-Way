@@ -30,44 +30,43 @@ import net.datafaker.Faker;
 public class SpringInjector {
   // * USECASES
   @Bean
-  FindClient.FindUserHandler createUser(ClientRepository clientRepository) {
-    return new FindClient.FindUserHandler(clientRepository);
+  FindClient.Handler createUser(ClientRepository clientRepository) {
+    return new FindClient.Handler(clientRepository);
   }
 
   @Bean
-  CreateClient.CreateClientHandler createUserHandler(
+  CreateClient.Handler createUserHandler(
       CredentialRepository credentialRepository,
       ClientRepository clientRepository,
       IdentifierHasher hasher,
       PasswordHasher passwordHasher) {
-    return new CreateClient.CreateClientHandler(
-        credentialRepository, clientRepository, hasher, passwordHasher);
+    return new CreateClient.Handler(credentialRepository, clientRepository, hasher, passwordHasher);
   }
 
   @Bean
-  FindOperator.FindUserHandler createOperator(OperatorRepository operatorRepository) {
-    return new FindOperator.FindUserHandler(operatorRepository);
+  FindOperator.Handler createOperator(OperatorRepository operatorRepository) {
+    return new FindOperator.Handler(operatorRepository);
   }
 
   @Bean
-  CreateOperator.CreateOperatorHandler createOperatorHandler(
+  CreateOperator.Handler createOperatorHandler(
       CredentialRepository credentialRepository,
       OperatorRepository operatorRepository,
       IdentifierHasher hasher,
       PasswordHasher passwordHasher) {
-    return new CreateOperator.CreateOperatorHandler(
+    return new CreateOperator.Handler(
         credentialRepository, operatorRepository, hasher, passwordHasher);
   }
 
   @Bean
-  CreateSession.CreateSessionHandler createSessionHandler(
+  CreateSession.Handler createSessionHandler(
       CredentialRepository credentialRepository,
       OperatorRepository operatorRepository,
       ClientRepository clientRepository,
       SessionService sessionService,
       IdentifierHasher identifierHasher,
       PasswordHasher passwordHasher) {
-    return new CreateSession.CreateSessionHandler(
+    return new CreateSession.Handler(
         credentialRepository,
         operatorRepository,
         clientRepository,
@@ -77,15 +76,15 @@ public class SpringInjector {
   }
 
   @Bean
-  InvalidateSession.InvalidateSessionHandler invalidateSessionHandler(
+  InvalidateSession.Handler invalidateSessionHandler(
       CredentialRepository credentialRepository, SessionService sessionService) {
-    return new InvalidateSession.InvalidateSessionHandler(credentialRepository, sessionService);
+    return new InvalidateSession.Handler(credentialRepository, sessionService);
   }
 
   @Bean
-  RefreshSession.RefreshSessionHandler refreshSessionHandler(
+  RefreshSession.Handler refreshSessionHandler(
       CredentialRepository credentialRepository, SessionService sessionService) {
-    return new RefreshSession.RefreshSessionHandler(credentialRepository, sessionService);
+    return new RefreshSession.Handler(credentialRepository, sessionService);
   }
 
   // * OTHER DOMAIN SERVICES

@@ -31,10 +31,10 @@ public sealed interface CreateSession {
   String CLIENT_ROLE = "client";
   String OPERATOR_ROLE = "operator";
 
-  record CreateSessionInput(RawIdentifier identifier, PasswordCandidate password)
+  record Credentials(RawIdentifier identifier, PasswordCandidate password)
       implements UseCaseInput, CreateSession {}
 
-  record CreatedSession(
+  record NewSession(
       JwtAccessToken accessToken,
       JwtRefreshToken refreshToken,
       // NOTE: Les valeurs ci-dessous sont là pour la simplicité du POC uniquement,
@@ -46,8 +46,7 @@ public sealed interface CreateSession {
       ZonedDateTime updatedAt)
       implements UseCaseOutput, CreateSession {}
 
-  final class CreateSessionHandler
-      implements UseCaseHandler<CreateSessionInput, CreatedSession>, CreateSession {
+  final class Handler implements UseCaseHandler<Credentials, NewSession>, CreateSession {
     private static final String ERR_CREDENTIAL_NOT_FOUND =
         "Credential not found for the given identifier.";
     private static final String ERR_NO_USER_FOR_IDENTIFIER =
@@ -61,7 +60,7 @@ public sealed interface CreateSession {
     private final IdentifierHasher identifierHasher;
     private final PasswordHasher passwordHasher;
 
-    public CreateSessionHandler(
+    public Handler(
         CredentialRepository credentialRepository,
         OperatorRepository operatorRepository,
         ClientRepository clientRepository,
@@ -77,7 +76,7 @@ public sealed interface CreateSession {
     }
 
     @Override
-    public CreatedSession handle(CreateSessionInput usecaseInput) {
+    public NewSession handle(Credentials usecaseInput) {
       final RawIdentifier identifier = usecaseInput.identifier();
       final PasswordCandidate password = usecaseInput.password();
 
@@ -143,7 +142,7 @@ public sealed interface CreateSession {
       }
     }
 
-    private CreatedSession createSessionFor(
+    private NewSession createSessionFor(
         CredentialId credentialId,
         String role,
         UUID id,
@@ -153,7 +152,7 @@ public sealed interface CreateSession {
         ZonedDateTime updatedAt) {
       final var authenticableUser = new SessionService.AuthenticableUser(credentialId, role);
       final TokenPair tokenPair = sessionService.generateSessionFor(authenticableUser);
-      return new CreatedSession(
+      return new NewSession(
           tokenPair.accessToken(),
           tokenPair.refreshToken(),
           id,

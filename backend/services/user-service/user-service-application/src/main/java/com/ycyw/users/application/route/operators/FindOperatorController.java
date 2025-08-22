@@ -20,13 +20,13 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class FindOperatorController {
   private final UseCaseExecutor useCaseExecutor;
-  private final FindOperator.FindUserHandler getUserHandler;
+  private final FindOperator.Handler getUserHandler;
   private final OperatorPresenter presenter;
   private static final Logger logger = LoggerFactory.getLogger(FindOperatorController.class);
 
   public FindOperatorController(
       UseCaseExecutor useCaseExecutor,
-      FindOperator.FindUserHandler getUserHandler,
+      FindOperator.Handler getUserHandler,
       OperatorPresenter presenter) {
     this.useCaseExecutor = useCaseExecutor;
     this.getUserHandler = getUserHandler;

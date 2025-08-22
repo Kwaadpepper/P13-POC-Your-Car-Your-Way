@@ -34,10 +34,10 @@ public sealed interface FindOperator {
     record NotFound() implements Output {}
   }
 
-  final class FindUserHandler implements UseCaseHandler<Input, Output>, FindOperator {
+  final class Handler implements UseCaseHandler<Input, Output>, FindOperator {
     private final OperatorRepository operatorRepository;
 
-    public FindUserHandler(OperatorRepository operatorRepository) {
+    public Handler(OperatorRepository operatorRepository) {
       this.operatorRepository = operatorRepository;
     }
 

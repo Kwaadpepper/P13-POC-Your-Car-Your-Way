@@ -22,10 +22,10 @@ public class ClientAccountSeeder implements Seeder {
 
   private final Faker dataFaker;
   private final UseCaseExecutor useCaseExecutor;
-  private final CreateClient.CreateClientHandler handler;
+  private final CreateClient.Handler handler;
 
   public ClientAccountSeeder(
-      Faker dataFaker, UseCaseExecutor useCaseExecutor, CreateClient.CreateClientHandler handler) {
+      Faker dataFaker, UseCaseExecutor useCaseExecutor, CreateClient.Handler handler) {
     this.dataFaker = dataFaker;
     this.useCaseExecutor = useCaseExecutor;
     this.handler = handler;
@@ -66,8 +66,8 @@ public class ClientAccountSeeder implements Seeder {
         new RawIdentifier(providedId != null ? providedId : generateId(firstName, lastName));
     final var password = new RawPassword(providedPassword);
 
-    CreateClient.CreateClientInput useCase =
-        new CreateClient.CreateClientInput(
+    CreateClient.ClientInfo useCase =
+        new CreateClient.ClientInfo(
             lastName, firstName, email, phone, birthDate, address, identifier, password);
 
     useCaseExecutor.execute(this.handler, useCase);

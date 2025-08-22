@@ -21,7 +21,7 @@ import com.ycyw.users.domain.port.service.PasswordHasher;
 import com.ycyw.users.domain.service.IdentifierHasher;
 
 public sealed interface CreateClient {
-  record CreateClientInput(
+  record ClientInfo(
       String lastName,
       String firstName,
       Email email,
@@ -32,16 +32,15 @@ public sealed interface CreateClient {
       RawPassword password)
       implements UseCaseInput, CreateClient {}
 
-  record CreatedClient(Email email) implements UseCaseOutput, CreateClient {}
+  record Created(Email email) implements UseCaseOutput, CreateClient {}
 
-  final class CreateClientHandler
-      implements UseCaseHandler<CreateClientInput, CreatedClient>, CreateClient {
+  final class Handler implements UseCaseHandler<ClientInfo, Created>, CreateClient {
     private final CredentialRepository credentialRepository;
     private final ClientRepository clientRepository;
     private final IdentifierHasher identifierHasher;
     private final PasswordHasher passwordHasher;
 
-    public CreateClientHandler(
+    public Handler(
         CredentialRepository credentialRepository,
         ClientRepository clientRepository,
         IdentifierHasher identifierHasher,
@@ -53,7 +52,7 @@ public sealed interface CreateClient {
     }
 
     @Override
-    public CreatedClient handle(CreateClientInput usecaseInput) {
+    public Created handle(ClientInfo usecaseInput) {
       final var lastName = usecaseInput.lastName();
       final var firstName = usecaseInput.firstName();
       final var email = usecaseInput.email();
@@ -94,8 +93,8 @@ public sealed interface CreateClient {
       return mapToCreatedUser(client);
     }
 
-    private CreatedClient mapToCreatedUser(Client client) {
-      return new CreatedClient(client.getEmail());
+    private Created mapToCreatedUser(Client client) {
+      return new Created(client.getEmail());
     }
   }
 }

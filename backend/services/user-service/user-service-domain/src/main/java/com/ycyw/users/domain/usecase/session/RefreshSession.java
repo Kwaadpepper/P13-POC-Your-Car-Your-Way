@@ -13,24 +13,22 @@ import org.eclipse.jdt.annotation.Nullable;
 
 public sealed interface RefreshSession {
 
-  record RefreshSessionInput(TokenPair tokenPair) implements UseCaseInput, RefreshSession {}
+  record OldTokens(TokenPair tokenPair) implements UseCaseInput, RefreshSession {}
 
-  record RefreshedSession(TokenPair tokenPair) implements UseCaseOutput, RefreshSession {}
+  record NewTokens(TokenPair tokenPair) implements UseCaseOutput, RefreshSession {}
 
-  final class RefreshSessionHandler
-      implements UseCaseHandler<RefreshSessionInput, RefreshedSession>, RefreshSession {
+  final class Handler implements UseCaseHandler<OldTokens, NewTokens>, RefreshSession {
 
     private final CredentialRepository credentialRepository;
     private final SessionService sessionService;
 
-    public RefreshSessionHandler(
-        CredentialRepository credentialRepository, SessionService sessionService) {
+    public Handler(CredentialRepository credentialRepository, SessionService sessionService) {
       this.credentialRepository = credentialRepository;
       this.sessionService = sessionService;
     }
 
     @Override
-    public RefreshedSession handle(RefreshSessionInput usecaseInput) {
+    public NewTokens handle(OldTokens usecaseInput) {
       final var tokenPair = usecaseInput.tokenPair();
 
       final @Nullable AccessTokenSubject accessTokenSubject = sessionService.verify(tokenPair);
@@ -49,7 +47,7 @@ public sealed interface RefreshSession {
         throw new DomainConstraintException("Failed to refresh the session tokens");
       }
 
-      return new RefreshedSession(refreshedTokenPair);
+      return new NewTokens(refreshedTokenPair);
     }
   }
 }

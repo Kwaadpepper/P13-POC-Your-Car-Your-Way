@@ -27,14 +27,14 @@ public sealed interface CreateOperator {
 
   record CreatedOperator(Email email) implements UseCaseOutput, CreateOperator {}
 
-  final class CreateOperatorHandler
+  final class Handler
       implements UseCaseHandler<CreateOperatorInput, CreatedOperator>, CreateOperator {
     private final CredentialRepository credentialRepository;
     private final OperatorRepository operatorRepository;
     private final IdentifierHasher identifierHasher;
     private final PasswordHasher passwordHasher;
 
-    public CreateOperatorHandler(
+    public Handler(
         CredentialRepository credentialRepository,
         OperatorRepository operatorRepository,
         IdentifierHasher identifierHasher,

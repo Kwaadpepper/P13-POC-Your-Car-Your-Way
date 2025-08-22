@@ -21,12 +21,10 @@ public class OperatorAccountSeeder implements Seeder {
 
   private final Faker dataFaker;
   private final UseCaseExecutor useCaseExecutor;
-  private final CreateOperator.CreateOperatorHandler handler;
+  private final CreateOperator.Handler handler;
 
   public OperatorAccountSeeder(
-      Faker dataFaker,
-      UseCaseExecutor useCaseExecutor,
-      CreateOperator.CreateOperatorHandler handler) {
+      Faker dataFaker, UseCaseExecutor useCaseExecutor, CreateOperator.Handler handler) {
     this.dataFaker = dataFaker;
     this.useCaseExecutor = useCaseExecutor;
     this.handler = handler;

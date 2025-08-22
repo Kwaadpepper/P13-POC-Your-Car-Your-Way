@@ -20,13 +20,13 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class FindClientController {
   private final UseCaseExecutor useCaseExecutor;
-  private final FindClient.FindUserHandler getUserHandler;
+  private final FindClient.Handler getUserHandler;
   private final ClientPresenter presenter;
   private static final Logger logger = LoggerFactory.getLogger(FindClientController.class);
 
   public FindClientController(
       UseCaseExecutor useCaseExecutor,
-      FindClient.FindUserHandler getUserHandler,
+      FindClient.Handler getUserHandler,
       ClientPresenter presenter) {
     this.useCaseExecutor = useCaseExecutor;
     this.getUserHandler = getUserHandler;
@@ -39,12 +39,11 @@ public class FindClientController {
 
     final var userId = toUserId(user);
     final var userEmail = toUserEmail(user);
-    final var output =
-        this.useCaseExecutor.execute(
-            this.getUserHandler,
-            userId != null
-                ? new FindClient.Input.FindClientById(userId)
-                : new FindClient.Input.FindClientByEmail(userEmail));
+    final var input =
+        userId != null
+            ? new FindClient.Input.FindById(userId)
+            : new FindClient.Input.FindByEmail(userEmail);
+    final var output = this.useCaseExecutor.execute(this.getUserHandler, input);
 
     logger.info("User retrieved: {}", output);
 

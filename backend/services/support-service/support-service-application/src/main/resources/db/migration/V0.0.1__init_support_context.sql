@@ -15,7 +15,7 @@ CREATE TABLE support_context.company_information (
 	address_line3 varchar(255),
 	address_city varchar(255),
 	address_postcode varchar(255) NOT NULL,
-	address_country smallint NOT NULL,
+	address_country char(2) NOT NULL,
 	support_phone varchar(255) NOT NULL,
 	support_phone_business_hours json NOT NULL,
 	support_chat_business_hours json NOT NULL,
@@ -94,3 +94,65 @@ CREATE TABLE support_context.faqs (
 -- ddl-end --
 ALTER TABLE support_context.faqs OWNER TO postgres;
 -- ddl-end --
+
+-- SEED INITIAL COMPANY INFO --
+INSERT INTO support_context.company_information (
+  address_country,
+  address_city,
+  address_line1,
+  address_line2,
+  address_line3,
+  address_postcode,
+  support_email,
+  support_phone,
+  website,
+  support_chat_business_hours,
+  support_phone_business_hours
+) VALUES (
+  'FR',
+  'Le Mans',
+  'rue Victor Hugo',
+  NULL,
+  NULL,
+  '72700',
+  'support@example.net',
+  '+33102030405',
+  'https://support.example.net',
+  $${
+    "MONDAY": [
+      { "start": "09:00", "end": "12:30" },
+      { "start": "14:00", "end": "18:00" }
+    ],
+    "TUESDAY": [
+      { "start": "09:00", "end": "12:30" },
+      { "start": "14:00", "end": "18:00" }
+    ],
+    "WEDNESDAY": [],
+    "THURSDAY": [],
+    "FRIDAY": [
+      { "start": "09:00", "end": "17:00" }
+    ],
+    "SATURDAY": [],
+    "SUNDAY": []
+  }$$::jsonb,
+  $${
+    "MONDAY": [
+      { "start": "09:00", "end": "12:30" },
+      { "start": "14:00", "end": "18:00" }
+    ],
+    "TUESDAY": [
+      { "start": "09:00", "end": "12:30" },
+      { "start": "14:00", "end": "18:00" }
+    ],
+    "WEDNESDAY": [
+      { "start": "09:00", "end": "12:30" },
+      { "start": "14:00", "end": "18:00" }
+    ],
+    "THURSDAY": [],
+    "FRIDAY": [
+      { "start": "09:00", "end": "17:00" }
+    ],
+    "SATURDAY": [],
+    "SUNDAY": []
+  }$$::jsonb
+);

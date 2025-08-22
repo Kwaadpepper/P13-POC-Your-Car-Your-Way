@@ -1,10 +1,16 @@
 package com.ycyw.support.infrastructure.adapter.repository.inmemory;
 
+import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
+import com.ycyw.shared.ddd.objectvalues.TimeRange;
 import com.ycyw.support.domain.model.entity.company.CompanyInformation;
+import com.ycyw.support.domain.model.valueobject.Address;
+import com.ycyw.support.domain.model.valueobject.BusinessHours;
 import com.ycyw.support.domain.port.repository.CompanyInformationRepository;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -43,6 +49,46 @@ public class CompanyInformationRepositoryInMemory implements CompanyInformationR
     @Nullable final CompanyInformation info = store.values().stream().findFirst().orElseThrow();
 
     logger.debug("getInfo -> CompanyInformation id={}", info.getId());
-    return info;
+    return clone(info);
+  }
+
+  private CompanyInformation clone(CompanyInformation entity) {
+    return CompanyInformation.hydrate(
+        entity.getId(),
+        clone(entity.getCompanyAddress()),
+        entity.getPhoneSupport(),
+        clone(entity.getPhoneSupportBusinessHours()),
+        clone(entity.getChatSupportBusinessHours()),
+        entity.getEmailSupport(),
+        entity.getWebsite());
+  }
+
+  private Address clone(Address entity) {
+    return new Address(
+        entity.line1(),
+        entity.line2(),
+        entity.line3(),
+        entity.city(),
+        entity.zipCode(),
+        entity.country());
+  }
+
+  private BusinessHours clone(BusinessHours entity) {
+    Map<DayOfWeek, List<TimeRange>> hoursCopy =
+        entity.hours().entrySet().stream()
+            .collect(
+                Collectors.toMap(
+                    Map.Entry::getKey,
+                    e ->
+                        e.getValue() == null
+                            ? java.util.List.<TimeRange>of()
+                            : e.getValue().stream()
+                                .filter(java.util.Objects::nonNull)
+                                .map(tr -> new TimeRange(tr.start(), tr.end()))
+                                .toList(),
+                    (a, b) -> a,
+                    () -> new java.util.EnumMap<DayOfWeek, List<TimeRange>>(DayOfWeek.class)));
+
+    return new BusinessHours(new java.util.EnumMap<>(hoursCopy));
   }
 }

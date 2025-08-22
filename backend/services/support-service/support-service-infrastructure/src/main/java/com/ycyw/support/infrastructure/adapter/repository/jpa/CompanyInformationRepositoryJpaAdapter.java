@@ -2,7 +2,8 @@ package com.ycyw.support.infrastructure.adapter.repository.jpa;
 
 import java.net.URI;
 import java.time.DayOfWeek;
-import java.time.ZonedDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
@@ -16,6 +17,7 @@ import com.ycyw.shared.ddd.objectvalues.Country;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.shared.ddd.objectvalues.HttpUrl;
 import com.ycyw.shared.ddd.objectvalues.TimeRange;
+import com.ycyw.shared.utils.UuidV7;
 import com.ycyw.support.domain.model.entity.company.CompanyInformation;
 import com.ycyw.support.domain.model.valueobject.Address;
 import com.ycyw.support.domain.model.valueobject.BusinessHours;
@@ -27,7 +29,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 @Repository
 public class CompanyInformationRepositoryJpaAdapter implements CompanyInformationRepository {
-
+  private static final DateTimeFormatter HH_MM = DateTimeFormatter.ofPattern("HH:mm");
   private final CompanyInformationJpaRepository repo;
 
   public CompanyInformationRepositoryJpaAdapter(CompanyInformationJpaRepository repo) {
@@ -79,10 +81,7 @@ public class CompanyInformationRepositoryJpaAdapter implements CompanyInformatio
     final var email = new Email(e.getSupportEmail());
     final var website = new HttpUrl(URI.create(e.getWebsite()));
 
-    // Domain aggregate root requires a UUID; synthesize a stable one from supportEmail
-    final var syntheticId =
-        java.util.UUID.nameUUIDFromBytes(
-            e.getSupportEmail().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    final var syntheticId = UuidV7.randomUuid();
 
     return CompanyInformation.hydrate(
         syntheticId, address, phone, phoneHours, chatHours, email, website);
@@ -163,8 +162,7 @@ public class CompanyInformationRepositoryJpaAdapter implements CompanyInformatio
     }
     final var startStr = String.valueOf(s);
     final var endStr = String.valueOf(e);
-    // Stored as ISO-8601 strings -> round-trip with ZonedDateTime
-    return new TimeRange(ZonedDateTime.parse(startStr), ZonedDateTime.parse(endStr));
+    return new TimeRange(LocalTime.parse(startStr, HH_MM), LocalTime.parse(endStr, HH_MM));
   }
 
   // Convert BusinessHours -> DB JSON (Map<String, Object>)
@@ -184,11 +182,10 @@ public class CompanyInformationRepositoryJpaAdapter implements CompanyInformatio
                   if (tr == null || tr.start() == null || tr.end() == null) {
                     continue;
                   }
-                  // Use ISO-8601 for round-trip with ZonedDateTime.parse(...)
                   encodedRanges.add(
                       Map.of(
-                          "start", tr.start().toString(),
-                          "end", tr.end().toString()));
+                          "start", tr.start().format(HH_MM),
+                          "end", tr.end().format(HH_MM)));
                 }
               }
               out.put(day.name(), List.copyOf(encodedRanges));

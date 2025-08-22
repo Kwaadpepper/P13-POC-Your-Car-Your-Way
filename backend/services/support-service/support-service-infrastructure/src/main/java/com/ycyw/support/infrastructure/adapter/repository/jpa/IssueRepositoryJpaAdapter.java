@@ -1,5 +1,6 @@
 package com.ycyw.support.infrastructure.adapter.repository.jpa;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
@@ -23,12 +24,17 @@ public class IssueRepositoryJpaAdapter implements IssueRepository {
   }
 
   @Override
+  public List<Issue> findAll() {
+    return repo.findAll().stream().map(this::toDomain).toList();
+  }
+
+  @Override
   public @Nullable Issue find(UUID id) {
     final var e = repo.findById(id);
     if (e.isEmpty()) {
       return null;
     }
-    return e.map(this::toDomain).get();
+    return e.map(this::toDomain).orElseThrow();
   }
 
   @Override

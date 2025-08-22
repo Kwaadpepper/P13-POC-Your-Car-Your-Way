@@ -1,4 +1,4 @@
-package com.ycyw.users.application.config;
+package com.ycyw.support.application.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

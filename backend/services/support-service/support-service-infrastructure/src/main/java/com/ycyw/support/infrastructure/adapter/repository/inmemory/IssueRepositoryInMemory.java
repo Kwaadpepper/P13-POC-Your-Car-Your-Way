@@ -1,5 +1,6 @@
 package com.ycyw.support.infrastructure.adapter.repository.inmemory;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -17,12 +18,17 @@ public class IssueRepositoryInMemory implements IssueRepository {
   private final Map<UUID, Issue> store = new ConcurrentHashMap<>();
 
   @Override
+  public List<Issue> findAll() {
+    return store.values().stream().map(this::clone).toList();
+  }
+
+  @Override
   public @Nullable Issue find(UUID id) {
     MDC.put("id", id.toString());
     try {
       @Nullable final Issue issue = store.get(id);
       logger.debug("Issue found with id {}: {}", id, issue);
-      return issue;
+      return issue != null ? clone(issue) : null;
     } finally {
       MDC.remove("id");
     }
@@ -44,5 +50,16 @@ public class IssueRepositoryInMemory implements IssueRepository {
   public void delete(Issue entity) {
     store.remove(entity.getId());
     logger.debug("Deleted Issue with id {}", entity.getId());
+  }
+
+  private Issue clone(Issue entity) {
+    return Issue.hydrate(
+        entity.getId(),
+        entity.getSubject(),
+        entity.getDescription(),
+        entity.getStatus(),
+        entity.getClient(),
+        entity.getReservation(),
+        entity.getUpdatedAt());
   }
 }

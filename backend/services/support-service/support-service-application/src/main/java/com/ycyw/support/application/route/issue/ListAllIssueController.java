@@ -34,7 +34,7 @@ public class ListAllIssueController {
 
     final var output = useCaseExecutor.execute(useCaseHandler, new GetAllIssue.Input.GetAll());
 
-    logger.info("Company info retrieved: {}", output);
+    logger.info("Issue details retrieved: {}", output);
 
     return presenter.present(output);
   }

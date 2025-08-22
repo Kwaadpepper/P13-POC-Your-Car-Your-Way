@@ -32,7 +32,7 @@ public class ListAllFaqController {
 
     final var output = useCaseExecutor.execute(useCaseHandler, new GetAllFaq.Input.GetAll());
 
-    logger.info("Company info retrieved: {}", output);
+    logger.info("Faqs retrieved: {}", output);
 
     return presenter.present(output);
   }

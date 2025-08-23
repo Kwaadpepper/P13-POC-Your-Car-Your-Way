@@ -12,7 +12,9 @@ dependencies {
   implementation(platform(libs.spring.boot.dependencies))
   implementation(platform(libs.spring.cloud.dependencies))
 
-  implementation("org.springframework.cloud:spring-cloud-config-server")
-  implementation("org.springframework.boot:spring-boot-starter-actuator")
-  testImplementation("org.springframework.boot:spring-boot-starter-test")
+  implementation(libs.spring.cloud.config.server)
+
+  implementation(libs.spring.boot.starter.actuator)
+
+  testImplementation(libs.spring.boot.starter.test)
 }

@@ -1,6 +1,6 @@
 package com.ycyw.users.infrastructure.adapter.service.token;
 
-import java.util.Map;
+import java.util.Collections;
 import java.util.UUID;
 
 import com.ycyw.users.domain.model.valueobject.jwt.JwtRefreshToken;
@@ -35,7 +35,8 @@ public class JwtRefreshTokenManagerImpl implements JwtRefreshTokenManager {
   @Override
   public JwtRefreshToken generate(RefreshTokenClaims claims) {
     final var subject = claims.subject();
-    final var token = jwtTokenProcessor.generateJwtToken(subject.value().toString(), Map.of());
+    final var additional = Collections.singletonMap("role", claims.role());
+    final var token = jwtTokenProcessor.generateJwtToken(subject.value().toString(), additional);
     final var jwtRefreshToken = new JwtRefreshToken(token.value());
 
     keyStorage.store(refreshKey(subject), jwtRefreshToken.value());
@@ -68,9 +69,13 @@ public class JwtRefreshTokenManagerImpl implements JwtRefreshTokenManager {
       return null;
     }
 
-    final var refreshSubject = new RefreshTokenSubject(UUID.fromString(claims.subject()));
+    @Nullable String role = claims.additional().get("role");
 
-    return new RefreshTokenClaims(refreshSubject);
+    if (role == null) {
+      return null;
+    }
+
+    return new RefreshTokenClaims(new RefreshTokenSubject(UUID.fromString(claims.subject())), role);
   }
 
   @Override

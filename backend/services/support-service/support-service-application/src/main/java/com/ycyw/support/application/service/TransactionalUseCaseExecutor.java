@@ -1,6 +1,6 @@
 package com.ycyw.support.application.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
@@ -10,7 +10,7 @@ import com.ycyw.shared.ddd.lib.UseCaseOutput;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-@Service
+@Component
 public class TransactionalUseCaseExecutor implements UseCaseExecutor {
 
   @Override

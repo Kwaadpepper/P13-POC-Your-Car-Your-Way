@@ -3,7 +3,7 @@ package com.ycyw.users.application.service;
 import java.util.Optional;
 
 import org.springframework.http.ResponseCookie;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
 import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
@@ -14,7 +14,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.eclipse.jdt.annotation.Nullable;
 
-@Service
+@Component
 public class CookieService {
   private final String jwtCookieName;
   private final String jwtRefreshCookieName;

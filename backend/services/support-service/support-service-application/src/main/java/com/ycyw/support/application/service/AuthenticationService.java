@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
 import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
@@ -27,7 +27,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jdt.annotation.Nullable;
 
-@Service
+@Component
 public class AuthenticationService {
   private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
 

@@ -9,7 +9,6 @@ import com.ycyw.support.domain.port.repository.CompanyInformationRepository;
 import com.ycyw.support.domain.port.repository.ConversationRepository;
 import com.ycyw.support.domain.port.repository.FaqRepository;
 import com.ycyw.support.domain.port.repository.IssueRepository;
-import com.ycyw.support.domain.port.service.SessionVerifyer;
 import com.ycyw.support.domain.usecase.company.GetCompanyInfo;
 import com.ycyw.support.domain.usecase.conversation.CreateConversation;
 import com.ycyw.support.domain.usecase.conversation.GetAllConversation;
@@ -17,12 +16,12 @@ import com.ycyw.support.domain.usecase.faq.CreateFaq;
 import com.ycyw.support.domain.usecase.faq.GetAllFaq;
 import com.ycyw.support.domain.usecase.issue.CreateIssue;
 import com.ycyw.support.domain.usecase.issue.GetAllIssue;
-import com.ycyw.support.domain.usecase.session.VerifySession;
 
 import net.datafaker.Faker;
 
 @Configuration
 public class SpringInjector {
+
   // * USECASES
   @Bean
   GetCompanyInfo.Handler getCompanyInfoHandler(CompanyInformationRepository companyInfoRepository) {
@@ -58,15 +57,10 @@ public class SpringInjector {
 
   @Bean
   GetAllIssue.Handler getAllIssueHandler(
-      IssueRepository issueRepository,
       ClientDirectory clientDirectory,
-      ReservationDirectory reservationDirectory) {
+      ReservationDirectory reservationDirectory,
+      IssueRepository issueRepository) {
     return new GetAllIssue.Handler(issueRepository, clientDirectory, reservationDirectory);
-  }
-
-  @Bean
-  VerifySession.Handler verifySessionHandler(SessionVerifyer sessionVerifyer) {
-    return new VerifySession.Handler(sessionVerifyer);
   }
 
   // * OTHER DOMAIN SERVICES

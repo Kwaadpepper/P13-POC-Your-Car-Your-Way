@@ -1,8 +1,11 @@
 package com.ycyw.support.application.service;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
@@ -12,25 +15,28 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
-import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
+import com.ycyw.support.application.config.AppConfiguration;
 import com.ycyw.support.application.exception.exceptions.ServerErrorException;
-import com.ycyw.support.domain.usecase.session.VerifySession;
 
-import jakarta.annotation.Nullable;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jdt.annotation.Nullable;
 
 @Service
 public class AuthenticationService {
   private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
-  private final UseCaseExecutor useCaseExecutor;
-  private final VerifySession.Handler verifySessionHandler;
 
-  public AuthenticationService(
-      final UseCaseExecutor useCaseExecutor, final VerifySession.Handler verifySessionHandler) {
-    this.useCaseExecutor = useCaseExecutor;
-    this.verifySessionHandler = verifySessionHandler;
+  private final String jwtIssuer;
+  private final SecretKey jwtSigningKey;
+
+  public AuthenticationService(AppConfiguration appConfiguration) {
+    this.jwtIssuer = appConfiguration.getJwtIssuer();
+    this.jwtSigningKey = keyFromString(appConfiguration.getJwtSecretKey());
   }
 
   public @Nullable AuthenticatedUser getAuthenticated() {
@@ -47,15 +53,18 @@ public class AuthenticationService {
   public AuthenticatedUser authenticate(final JwtAccessToken accessToken)
       throws BadCredentialsException {
     try {
-      final var input = new VerifySession.AccessToken(accessToken);
-      final var output = useCaseExecutor.execute(verifySessionHandler, input);
+      final var claims = extractAllClaims(accessToken);
+      final var userId = UUID.fromString(claims.getSubject());
+      @Nullable final String role = claims.get("role", String.class);
 
-      return switch (output) {
-        case VerifySession.Output.SessionInvalid ignored ->
-            throw new BadCredentialsException("Account cannot be used for the moment");
-        case VerifySession.Output.SessionVerified(var subject, var username, var role) ->
-            new AuthenticatedUser(subject, username, accessToken, role);
-      };
+      if (role == null) {
+        throw new BadCredentialsException("Invalid token claims");
+      }
+
+      return new AuthenticatedUser(userId, accessToken, role);
+    } catch (ExpiredJwtException e) {
+      throw new BadCredentialsException("Token has expired");
+
     } catch (DomainConstraintException e) {
       throw new BadCredentialsException("Account cannot be used for the moment");
     }
@@ -75,8 +84,21 @@ public class AuthenticationService {
             .formatted(AuthenticatedUser.class, principal.getClass()));
   }
 
-  public record AuthenticatedUser(
-      UUID id, String username, JwtAccessToken jwtAccessToken, String role) implements UserDetails {
+  private Claims extractAllClaims(JwtAccessToken jwtAccessToken) {
+    return Jwts.parser()
+        .verifyWith(jwtSigningKey)
+        .requireIssuer(jwtIssuer)
+        .build()
+        .parseSignedClaims(jwtAccessToken.value())
+        .getPayload();
+  }
+
+  private SecretKey keyFromString(String base64String) {
+    return Keys.hmacShaKeyFor(base64String.getBytes(StandardCharsets.UTF_8));
+  }
+
+  public record AuthenticatedUser(UUID id, JwtAccessToken jwtAccessToken, String role)
+      implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
       return List.of();
@@ -89,7 +111,7 @@ public class AuthenticationService {
 
     @Override
     public String getUsername() {
-      return username;
+      return id.toString();
     }
   }
 }

@@ -30,6 +30,12 @@ import net.datafaker.Faker;
 
 @Configuration
 public class SpringInjector {
+  private final AppConfiguration appConfiguration;
+
+  public SpringInjector(AppConfiguration appConfiguration) {
+    this.appConfiguration = appConfiguration;
+  }
+
   // * USECASES
   @Bean
   FindClient.Handler createUser(ClientRepository clientRepository) {
@@ -38,11 +44,12 @@ public class SpringInjector {
 
   @Bean
   CreateClient.Handler createUserHandler(
-      CredentialRepository credentialRepository,
+      IdentifierHasher identifierHasher,
+      PasswordHasher passwordHasher,
       ClientRepository clientRepository,
-      IdentifierHasher hasher,
-      PasswordHasher passwordHasher) {
-    return new CreateClient.Handler(credentialRepository, clientRepository, hasher, passwordHasher);
+      CredentialRepository credentialRepository) {
+    return new CreateClient.Handler(
+        credentialRepository, clientRepository, identifierHasher, passwordHasher);
   }
 
   @Bean
@@ -52,22 +59,22 @@ public class SpringInjector {
 
   @Bean
   CreateOperator.Handler createOperatorHandler(
-      CredentialRepository credentialRepository,
+      IdentifierHasher identifierHasher,
+      PasswordHasher passwordHasher,
       OperatorRepository operatorRepository,
-      IdentifierHasher hasher,
-      PasswordHasher passwordHasher) {
+      CredentialRepository credentialRepository) {
     return new CreateOperator.Handler(
-        credentialRepository, operatorRepository, hasher, passwordHasher);
+        credentialRepository, operatorRepository, identifierHasher, passwordHasher);
   }
 
   @Bean
   CreateSession.Handler createSessionHandler(
-      CredentialRepository credentialRepository,
+      IdentifierHasher identifierHasher,
+      PasswordHasher passwordHasher,
       OperatorRepository operatorRepository,
       ClientRepository clientRepository,
-      SessionService sessionService,
-      IdentifierHasher identifierHasher,
-      PasswordHasher passwordHasher) {
+      CredentialRepository credentialRepository,
+      SessionService sessionService) {
     return new CreateSession.Handler(
         credentialRepository,
         operatorRepository,
@@ -91,8 +98,8 @@ public class SpringInjector {
 
   @Bean
   VerifySession.Handler verifySessionHandler(
-      ClientRepository clientRepository,
       OperatorRepository operatorRepository,
+      ClientRepository clientRepository,
       SessionService sessionService) {
     return new VerifySession.Handler(clientRepository, operatorRepository, sessionService);
   }
@@ -100,8 +107,8 @@ public class SpringInjector {
   // * OTHER DOMAIN SERVICES
   @Bean
   SessionService sessionService(
-      JwtAccessTokenManager accessTokenManager, JwtRefreshTokenManager refreshTokenManager) {
-    return new SessionService(accessTokenManager, refreshTokenManager);
+      JwtAccessTokenManager jwtAccessTokenManager, JwtRefreshTokenManager jwtRefreshTokenManager) {
+    return new SessionService(jwtAccessTokenManager, jwtRefreshTokenManager);
   }
 
   @Bean
@@ -110,25 +117,23 @@ public class SpringInjector {
   }
 
   @Bean
-  JwtAccessTokenManager jwtAccessTokenManager(
-      AppConfiguration appConfiguration, KeyStorage keyStorage) {
-    final var appName = appConfiguration.getAppName();
+  JwtAccessTokenManager jwtAccessTokenManager(KeyStorage keyStorage) {
+    final var jwtIssuer = appConfiguration.getJwtIssuer();
     final var jwtSecretKey = appConfiguration.getJwtSecretKey();
     final var jwtTokenExpiration = appConfiguration.getJwtTokenExpiration();
     final var jwtTokenProcessor =
-        new JwtTokenProcessorImpl(jwtTokenExpiration, jwtSecretKey, appName);
+        new JwtTokenProcessorImpl(jwtTokenExpiration, jwtSecretKey, jwtIssuer);
 
     return new JwtAccessTokenManagerImpl(jwtTokenProcessor, keyStorage);
   }
 
   @Bean
-  JwtRefreshTokenManager jwtRefreshTokenManager(
-      AppConfiguration appConfiguration, KeyStorage keyStorage) {
-    final var appName = appConfiguration.getAppName();
+  JwtRefreshTokenManager jwtRefreshTokenManager(KeyStorage keyStorage) {
+    final var jwtIssuer = appConfiguration.getJwtIssuer();
     final var jwtSecretKey = appConfiguration.getJwtSecretKey();
     final var jwtRefreshExpiration = appConfiguration.getJwtRefreshExpiration();
     final var jwtTokenProcessor =
-        new JwtTokenProcessorImpl(jwtRefreshExpiration, jwtSecretKey, appName);
+        new JwtTokenProcessorImpl(jwtRefreshExpiration, jwtSecretKey, jwtIssuer);
 
     return new JwtRefreshTokenManagerImpl(jwtTokenProcessor, keyStorage);
   }

@@ -1,2 +1,2 @@
 @org.eclipse.jdt.annotation.NonNullByDefault
-package com.ycyw.users.application.service;
+package com.ycyw.support.application.service;

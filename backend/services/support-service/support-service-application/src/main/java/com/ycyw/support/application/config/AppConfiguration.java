@@ -10,22 +10,44 @@ public class AppConfiguration {
   public static final long SERIAL_VERSION_UID = 1L;
 
   private final String appName;
+  private final String jwtIssuer;
   private final String jwtCookieName;
+  private final String jwtSecretKey;
 
   AppConfiguration(
       @Value("${spring.application.name}") @Nullable final String appName,
-      @Value("${jwt.cookie.name}") @Nullable final String jwtCookieName) {
+      @Value("${jwt.issuer}") @Nullable final String jwtIssuer,
+      @Value("${jwt.cookie.name}") @Nullable final String jwtCookieName,
+      @Value("${jwt.secret_key}") @Nullable final String jwtSecretKey) {
+
+    if (jwtSecretKey == null) {
+      throw new IllegalStateException("Property 'jwt.secret_key' has to be set");
+    }
+    if (jwtSecretKey.length() < 64) {
+      throw new IllegalStateException(
+          "Property 'jwt.secret_key' must be at least 64 characters long");
+    }
 
     this.appName = assertNotEmpty(appName, "spring.application.name");
+    this.jwtIssuer = assertNotEmpty(jwtIssuer, "jwt.issuer");
     this.jwtCookieName = assertNotEmpty(jwtCookieName, "jwt.cookie.name");
+    this.jwtSecretKey = assertNotEmpty(jwtSecretKey, "jwt.secret_key");
   }
 
   public String getAppName() {
     return appName;
   }
 
+  public String getJwtIssuer() {
+    return jwtIssuer;
+  }
+
   public String getJwtCookieName() {
     return jwtCookieName;
+  }
+
+  public String getJwtSecretKey() {
+    return jwtSecretKey;
   }
 
   private final String assertNotEmpty(@Nullable String value, String property) {

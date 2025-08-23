@@ -5,13 +5,16 @@ config:
     url: ${LOKI_URL:http://localhost:3100/loki/api/v1/push}
 
 jwt:
+  issuer: ${JWT_ISSUER:yc-cw}
   secret_key: ${JWT_SECRET_KEY:443a00f5072a066891ced7ea96f1926a1bcdb9f6d8ad4bbe3722cb59a2e15682}
   cookie:
     name: ${JWT_COOKIE_NAME:jwt}
   token:
+    # Expiration time in seconds (default: 120s = 2 minutes)
     expiration: ${JWT_TOKEN_EXPIRATION:120}
   refresh:
-    expiration: ${JWT_REFRESH_EXPIRATION:604800}
+    # Expiration time in seconds (default: 25200s = 7 hours)
+    expiration: ${JWT_REFRESH_EXPIRATION:25200}
 
 server:
   cors:
@@ -21,10 +24,11 @@ spring:
   rabbitmq:
     host: ${RABBIT_HOST:localhost}
     port: ${RABBIT_PORT:5672}
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:redispassword}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:redispassword}
 
 eureka:
   client:
@@ -41,3 +45,18 @@ logging:
   level:
     root: INFO
     com.ycyw: DEBUG
+
+security:
+  public-routes:
+    - "/user-service-application/auth/login"
+    - "/user-service-application/auth/register"
+    - "/user-service-application/auth/refresh-token"
+    - "/user-service-application/auth/logout"
+    - "/user-service-application/v3/api-docs/**"
+    - "/user-service-application/swagger-ui.html"
+    - "/user-service-application/swagger-ui/**"
+    - "/user-service-application/actuator/**"
+    - "/support-service-application/v3/api-docs/**"
+    - "/support-service-application/swagger-ui.html"
+    - "/support-service-application/swagger-ui/**"
+    - "/support-service-application/actuator/**"

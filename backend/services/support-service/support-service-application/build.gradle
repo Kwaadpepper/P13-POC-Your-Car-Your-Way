@@ -19,17 +19,17 @@ dependencies {
   implementation platform(libs.spring.cloud.dependencies)
 
   implementation(libs.spring.context)
-  implementation(libs.spring.boot.starter.web)
-  implementation(libs.spring.boot.starter.validation)
   implementation(libs.spring.cloud.starter.netflix.eureka.client)
   implementation(libs.spring.cloud.starter.config)
-  implementation(libs.spring.boot.starter.actuator)
+  implementation(libs.spring.cloud.starter.openfeign)
   implementation(libs.micrometer.registry.prometheus)
 
+  implementation(libs.spring.boot.starter.web)
+  implementation(libs.spring.boot.starter.validation)
+  implementation(libs.spring.boot.starter.actuator)
   implementation(libs.spring.boot.starter.aop)
   implementation(libs.spring.boot.starter.amqp)
-
-  implementation(libs.spring.cloud.starter.openfeign)
+  implementation(libs.spring.boot.starter.security)
 
   implementation(libs.datafaker)
   runtimeOnly(libs.postgresql)

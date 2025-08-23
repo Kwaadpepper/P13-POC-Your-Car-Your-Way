@@ -6,7 +6,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /** Main entry point for the User Service Spring Boot application. */
 @SpringBootApplication
-@EnableFeignClients(basePackages = "com.ycyw.support.infrastructure.adapter.client")
+@EnableFeignClients(basePackages = "com.ycyw.support.infrastructure.feignclient")
 public class SupportServiceApplication {
   /**
    * Starts the User Service Spring Boot application.

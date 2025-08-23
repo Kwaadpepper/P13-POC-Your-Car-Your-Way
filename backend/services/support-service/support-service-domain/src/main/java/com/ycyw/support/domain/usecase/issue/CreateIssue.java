@@ -26,7 +26,7 @@ public sealed interface CreateIssue {
 
   record Created(UUID id) implements UseCaseOutput, CreateIssue {}
 
-  final class Handler implements UseCaseHandler<CreateInput, Created>, CreateIssue {
+  final class Handler implements UseCaseHandler<CreateInput, Created> {
     private final IssueRepository issueRepository;
 
     public Handler(IssueRepository issueRepository) {

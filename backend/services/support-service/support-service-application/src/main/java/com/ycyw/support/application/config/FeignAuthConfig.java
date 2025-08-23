@@ -18,6 +18,12 @@ public class FeignAuthConfig {
         return;
       }
       final var request = attrs.getRequest();
+      final var cookies = request.getCookies();
+      if (cookies != null) {
+        for (var cookie : cookies) {
+          template.header("Cookie", cookie.getName() + "=" + cookie.getValue());
+        }
+      }
       final var auth = request.getHeader("Authorization");
       if (auth != null && !auth.isBlank()) {
         template.header("Authorization", auth);

@@ -31,7 +31,19 @@ public class SpringSecurityConfig {
       throws Exception {
 
     final var allowNonAuthRequestToUrls =
-        new String[] {"/auth/login", "/auth/register", "/auth/refresh-token", "/auth/logout"};
+        new String[] {
+          // Swagger
+          "/v3/api-docs/**",
+          "/swagger-ui.html",
+          "/swagger-ui/**",
+          // Health check
+          "/actuator/**",
+          // Auth routes
+          "/auth/login",
+          "/auth/register",
+          "/auth/refresh-token",
+          "/auth/logout"
+        };
     jwtAuthenticationFilter.setIgnoreUrls(List.of(allowNonAuthRequestToUrls));
 
     return http.csrf(csrf -> csrf.disable())

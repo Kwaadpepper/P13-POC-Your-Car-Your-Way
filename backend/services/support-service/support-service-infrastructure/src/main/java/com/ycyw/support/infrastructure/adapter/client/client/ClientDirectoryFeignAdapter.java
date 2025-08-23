@@ -1,9 +1,5 @@
 package com.ycyw.support.infrastructure.adapter.client.client;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.UUID;
-
 import com.ycyw.annotation.annotations.Directory;
 import com.ycyw.shared.ddd.objectvalues.Address;
 import com.ycyw.shared.ddd.objectvalues.BirthDate;
@@ -13,8 +9,9 @@ import com.ycyw.shared.ddd.objectvalues.PhoneNumber;
 import com.ycyw.support.domain.model.entity.externals.client.Client;
 import com.ycyw.support.domain.model.entity.externals.client.ClientId;
 import com.ycyw.support.domain.port.directory.ClientDirectory;
+import com.ycyw.support.infrastructure.feignclient.ClientServiceFeignClient;
+import com.ycyw.support.infrastructure.feignclient.ClientServiceFeignClient.ClientDto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +35,8 @@ public class ClientDirectoryFeignAdapter implements ClientDirectory {
       }
 
       return map(payload);
-    } catch (Exception ex) {
-      logger.error("Error while calling user-service to get client by id: {}", id, ex);
+    } catch (Exception e) {
+      logger.error("Error while calling user-service to get client by id: {}", id, e);
       return null;
     }
   }
@@ -64,25 +61,4 @@ public class ClientDirectoryFeignAdapter implements ClientDirectory {
     return new Client(
         clientId, dto.lastName(), dto.firstName(), email, phoneNumber, birthDate, address);
   }
-
-  @JsonIgnoreProperties(ignoreUnknown = true)
-  public record ClientDto(
-      UUID id,
-      String lastName,
-      String firstName,
-      String email,
-      String phone,
-      LocalDate birthDate,
-      AddressDto address,
-      ZonedDateTime updatedAt,
-      @Nullable ZonedDateTime deletedAt) {}
-
-  @JsonIgnoreProperties(ignoreUnknown = true)
-  public record AddressDto(
-      String line1,
-      @Nullable String line2,
-      @Nullable String line3,
-      String city,
-      String zipCode,
-      String country) {}
 }

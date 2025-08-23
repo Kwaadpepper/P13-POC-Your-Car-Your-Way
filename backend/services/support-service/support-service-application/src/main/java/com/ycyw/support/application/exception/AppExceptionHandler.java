@@ -25,11 +25,18 @@ import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
 import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 import com.ycyw.support.application.dto.ApiErrorDetails;
 import com.ycyw.support.application.dto.ValidationErrorDetails;
+import com.ycyw.support.application.exception.exceptions.JwtAuthenticationFailureException;
 import com.ycyw.support.application.exception.exceptions.ResourceNotFoundException;
 import com.ycyw.support.application.exception.exceptions.ValidationException;
 
 @ControllerAdvice
 public class AppExceptionHandler extends ResponseEntityExceptionHandler {
+
+  @ExceptionHandler(JwtAuthenticationFailureException.class)
+  public ResponseEntity<ApiErrorDetails> handleException(
+      final JwtAuthenticationFailureException ex, final WebRequest request) {
+    return new ResponseEntity<>(toErrorDetails(ex, request), HttpStatus.UNAUTHORIZED);
+  }
 
   @ExceptionHandler(DomainConstraintException.class)
   public ResponseEntity<ApiErrorDetails> handleException(

@@ -17,6 +17,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.ycyw.users.application.component.JwtAuthenticationFilter;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 @Configuration
 public class SpringSecurityConfig {
 
@@ -28,24 +30,23 @@ public class SpringSecurityConfig {
 
   @Bean
   SecurityFilterChain securityFilterChain(
-      final HttpSecurity http, final JwtAuthenticationFilter jwtAuthenticationFilter)
+      HttpSecurity http,
+      JwtAuthenticationFilter jwtAuthenticationFilter,
+      AppConfiguration appConfiguration,
+      PublicRoutesConfig publicRoutesConfig)
       throws Exception {
 
-    final var allowNonAuthRequestToUrls =
-        new String[] {
-          // Swagger
-          "/v3/api-docs/**",
-          "/swagger-ui.html",
-          "/swagger-ui/**",
-          // Health check
-          "/actuator/**",
-          // Auth routes
-          "/auth/login",
-          "/auth/register",
-          "/auth/refresh-token",
-          "/auth/logout"
-        };
-    jwtAuthenticationFilter.setIgnoreUrls(List.of(allowNonAuthRequestToUrls));
+    final String appName = appConfiguration.getAppName();
+    @Nullable final List<String> publicRoutesList = publicRoutesConfig.getPublicRoutes();
+
+    if (publicRoutesList == null) {
+      throw new IllegalStateException("Public routes cannot be null");
+    }
+
+    List<String> routesToIgnore =
+        publicRoutesList.stream().map(route -> route.replaceAll("^/" + appName, "")).toList();
+
+    jwtAuthenticationFilter.setIgnoreUrls(routesToIgnore);
 
     return http.sessionManagement(
             // No cookie session, just state less API.
@@ -60,12 +61,11 @@ public class SpringSecurityConfig {
         .authorizeHttpRequests(
             request -> {
               // Allow non protected AuthRequestToUrls are not protected.
-              request.requestMatchers(allowNonAuthRequestToUrls).permitAll();
+              request.requestMatchers(routesToIgnore.toArray(new String[0])).permitAll();
 
               // Any other routes are.
               request.anyRequest().fullyAuthenticated();
             })
-        // Filter requests to check JWT and assert it matches an actual user.
         .addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }

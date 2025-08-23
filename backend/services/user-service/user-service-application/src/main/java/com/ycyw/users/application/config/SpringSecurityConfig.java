@@ -1,9 +1,20 @@
 package com.ycyw.users.application.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.ycyw.users.application.component.JwtAuthenticationFilter;
 
 @Configuration
 public class SpringSecurityConfig {
@@ -12,5 +23,36 @@ public class SpringSecurityConfig {
   @Bean
   PasswordEncoder passwordEncoder() {
     return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
+  }
+
+  @Bean
+  SecurityFilterChain securityFilterChain(
+      final HttpSecurity http, final JwtAuthenticationFilter jwtAuthenticationFilter)
+      throws Exception {
+
+    final var allowNonAuthRequestToUrls =
+        new String[] {"/auth/login", "/auth/register", "/auth/refresh-token", "/auth/logout"};
+    jwtAuthenticationFilter.setIgnoreUrls(List.of(allowNonAuthRequestToUrls));
+
+    return http.csrf(csrf -> csrf.disable())
+        .cors(Customizer.withDefaults())
+        .exceptionHandling(
+            handling ->
+                handling.authenticationEntryPoint(
+                    new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
+        .authorizeHttpRequests(
+            request -> {
+              // Login and Register are not protected.
+              request.requestMatchers(allowNonAuthRequestToUrls).permitAll();
+
+              // Any other routes are.
+              request.anyRequest().fullyAuthenticated();
+            })
+        // No cookie session, just state less API.
+        .sessionManagement(
+            manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        // Filter requests to check JWT and assert it matches an actual user.
+        .addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
   }
 }

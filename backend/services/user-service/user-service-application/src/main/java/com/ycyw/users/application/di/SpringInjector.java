@@ -20,6 +20,7 @@ import com.ycyw.users.domain.usecase.operator.FindOperator;
 import com.ycyw.users.domain.usecase.session.CreateSession;
 import com.ycyw.users.domain.usecase.session.InvalidateSession;
 import com.ycyw.users.domain.usecase.session.RefreshSession;
+import com.ycyw.users.domain.usecase.session.VerifySession;
 import com.ycyw.users.infrastructure.adapter.service.token.JwtAccessTokenManagerImpl;
 import com.ycyw.users.infrastructure.adapter.service.token.JwtRefreshTokenManagerImpl;
 import com.ycyw.users.infrastructure.adapter.service.token.JwtTokenProcessorImpl;
@@ -86,6 +87,14 @@ public class SpringInjector {
   RefreshSession.Handler refreshSessionHandler(
       CredentialRepository credentialRepository, SessionService sessionService) {
     return new RefreshSession.Handler(credentialRepository, sessionService);
+  }
+
+  @Bean
+  VerifySession.Handler verifySessionHandler(
+      ClientRepository clientRepository,
+      OperatorRepository operatorRepository,
+      SessionService sessionService) {
+    return new VerifySession.Handler(clientRepository, operatorRepository, sessionService);
   }
 
   // * OTHER DOMAIN SERVICES

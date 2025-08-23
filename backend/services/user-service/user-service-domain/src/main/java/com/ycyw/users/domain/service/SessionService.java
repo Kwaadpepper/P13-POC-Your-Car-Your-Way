@@ -21,6 +21,8 @@ public class SessionService {
   private static final String ACCESS_TOKEN_IS_INVALID = "Access token is invalid: %s";
   private static final String ACCESS_TOKEN_COULD_NOT_BE_EXTRACTED =
       "Access token could not be extracted";
+  private static final String REFRESH_TOKEN_COULD_NOT_BE_EXTRACTED =
+      "Refresh token could not be extracted";
   private final JwtAccessTokenManager accessTokenManager;
   private final JwtRefreshTokenManager refreshTokenManager;
 
@@ -35,7 +37,7 @@ public class SessionService {
     final var role = userAccount.role();
 
     final var accessTokenClaims = newAccessTokenClaims(identifier, role);
-    final var refreshTokenClaims = newRefreshTokenClaims(identifier);
+    final var refreshTokenClaims = newRefreshTokenClaims(identifier, role);
 
     final var accessToken = accessTokenManager.generate(accessTokenClaims);
     final var refreshToken = refreshTokenManager.generate(refreshTokenClaims);
@@ -65,7 +67,7 @@ public class SessionService {
 
       @Nullable RefreshTokenClaims refreshTokenClaims = refreshTokenManager.extract(refreshToken);
       if (refreshTokenClaims == null) {
-        throw new SessionServiceException("Refresh token could not be extracted");
+        throw new SessionServiceException(REFRESH_TOKEN_COULD_NOT_BE_EXTRACTED);
       }
 
       if (!accessTokenClaims.subject().value().equals(refreshTokenClaims.subject().value())) {
@@ -80,20 +82,42 @@ public class SessionService {
     }
   }
 
-  public @Nullable TokenPair refresh(TokenPair tokenPair) {
+  public boolean verify(JwtRefreshToken refreshToken) {
     try {
-      if (verify(tokenPair) == null) {
-        throw new SessionServiceException("Verification failed during refresh");
+      if (refreshTokenManager.validate(refreshToken)
+          instanceof TokenManager.TokenValidity.Invalid(var reason)) {
+        throw new SessionServiceException("Refresh token is invalid: %s".formatted(reason));
       }
 
+      @Nullable RefreshTokenClaims refreshTokenClaims = refreshTokenManager.extract(refreshToken);
+      if (refreshTokenClaims == null) {
+        throw new SessionServiceException(REFRESH_TOKEN_COULD_NOT_BE_EXTRACTED);
+      }
+
+      return true;
+    } catch (SessionServiceException e) {
+      logger.debug(e.getMessage());
+      return false;
+    }
+  }
+
+  public @Nullable TokenPair refresh(TokenPair tokenPair) {
+    try {
       JwtAccessToken oldAccessToken = tokenPair.accessToken();
       JwtRefreshToken refreshToken = tokenPair.refreshToken();
 
-      @Nullable AccessTokenClaims accessTokenClaims = accessTokenManager.extract(oldAccessToken);
-      if (accessTokenClaims == null) {
-        throw new SessionServiceException(ACCESS_TOKEN_COULD_NOT_BE_EXTRACTED);
+      if (!verify(refreshToken)) {
+        throw new SessionServiceException("Verification failed during refresh");
       }
 
+      @Nullable RefreshTokenClaims refreshTokenClaims = refreshTokenManager.extract(refreshToken);
+      if (refreshTokenClaims == null) {
+        throw new SessionServiceException(REFRESH_TOKEN_COULD_NOT_BE_EXTRACTED);
+      }
+
+      final var accessTokenClaims =
+          newAccessTokenClaims(
+              new CredentialId(refreshTokenClaims.subject().value()), refreshTokenClaims.role());
       JwtAccessToken newAccessToken = accessTokenManager.generate(accessTokenClaims);
       accessTokenManager.invalidate(oldAccessToken);
 
@@ -162,8 +186,8 @@ public class SessionService {
     return new AccessTokenClaims(new AccessTokenSubject(identifier.value()), role);
   }
 
-  private RefreshTokenClaims newRefreshTokenClaims(CredentialId identifier) {
-    return new RefreshTokenClaims(new RefreshTokenSubject(identifier.value()));
+  private RefreshTokenClaims newRefreshTokenClaims(CredentialId identifier, String role) {
+    return new RefreshTokenClaims(new RefreshTokenSubject(identifier.value()), role);
   }
 
   public record AuthenticableUser(CredentialId identifier, String role) {}

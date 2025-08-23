@@ -23,6 +23,7 @@ import com.ycyw.users.domain.usecase.session.RefreshSession;
 import com.ycyw.users.infrastructure.adapter.service.token.JwtAccessTokenManagerImpl;
 import com.ycyw.users.infrastructure.adapter.service.token.JwtRefreshTokenManagerImpl;
 import com.ycyw.users.infrastructure.adapter.service.token.JwtTokenProcessorImpl;
+import com.ycyw.users.infrastructure.storage.KeyStorage;
 
 import net.datafaker.Faker;
 
@@ -100,23 +101,27 @@ public class SpringInjector {
   }
 
   @Bean
-  JwtAccessTokenManager jwtAccessTokenManager(AppConfiguration appConfiguration) {
+  JwtAccessTokenManager jwtAccessTokenManager(
+      AppConfiguration appConfiguration, KeyStorage keyStorage) {
     final var appName = appConfiguration.getAppName();
     final var jwtSecretKey = appConfiguration.getJwtSecretKey();
     final var jwtTokenExpiration = appConfiguration.getJwtTokenExpiration();
     final var jwtTokenProcessor =
         new JwtTokenProcessorImpl(jwtTokenExpiration, jwtSecretKey, appName);
-    return new JwtAccessTokenManagerImpl(jwtTokenProcessor);
+
+    return new JwtAccessTokenManagerImpl(jwtTokenProcessor, keyStorage);
   }
 
   @Bean
-  JwtRefreshTokenManager jwtRefreshTokenManager(AppConfiguration appConfiguration) {
+  JwtRefreshTokenManager jwtRefreshTokenManager(
+      AppConfiguration appConfiguration, KeyStorage keyStorage) {
     final var appName = appConfiguration.getAppName();
     final var jwtSecretKey = appConfiguration.getJwtSecretKey();
     final var jwtRefreshExpiration = appConfiguration.getJwtRefreshExpiration();
     final var jwtTokenProcessor =
         new JwtTokenProcessorImpl(jwtRefreshExpiration, jwtSecretKey, appName);
-    return new JwtRefreshTokenManagerImpl(jwtTokenProcessor);
+
+    return new JwtRefreshTokenManagerImpl(jwtTokenProcessor, keyStorage);
   }
 
   // * MISCELLANEOUS

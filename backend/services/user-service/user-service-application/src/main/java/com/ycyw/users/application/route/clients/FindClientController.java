@@ -40,15 +40,19 @@ public class FindClientController {
 
     @Nullable final UUID userId = toUserId(user);
     @Nullable final Email userEmail = toUserEmail(user);
+    FindClient.@Nullable Input input = null;
 
-    if (userId == null && userEmail == null) {
+    if (userId != null) {
+      input = new FindClient.Input.FindById(userId);
+    }
+    if (userEmail != null) {
+      input = new FindClient.Input.FindByEmail(userEmail);
+    }
+
+    if (input == null) {
       throw new BadRequestException("Invalid user identifier: " + user);
     }
 
-    final var input =
-        userId != null
-            ? new FindClient.Input.FindById(userId)
-            : new FindClient.Input.FindByEmail(userEmail);
     final var output = this.useCaseExecutor.execute(this.getUserHandler, input);
 
     logger.info("User retrieved: {}", output);

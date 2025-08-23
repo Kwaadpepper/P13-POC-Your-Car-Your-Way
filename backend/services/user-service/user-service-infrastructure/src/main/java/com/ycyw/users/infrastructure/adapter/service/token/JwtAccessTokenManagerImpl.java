@@ -64,6 +64,10 @@ public class JwtAccessTokenManagerImpl implements JwtAccessTokenManager {
 
     @Nullable String role = claims.additional().get("role");
 
+    if (role == null) {
+      return null;
+    }
+
     return new AccessTokenClaims(new AccessTokenSubject(UUID.fromString(claims.subject())), role);
   }
 

@@ -120,6 +120,6 @@ public class ClientRepositoryJpaAdapter implements ClientRepository {
   }
 
   private Country toCountry(String countryCode) {
-    return Country.fromCode(countryCode);
+    return Country.of(countryCode);
   }
 }

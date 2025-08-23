@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import com.ycyw.shared.ddd.lib.AggregateRoot;
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.shared.utils.Domain;
 import com.ycyw.users.domain.model.entity.credential.CredentialId;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.model.valueobject.Role;
 
 import org.eclipse.jdt.annotation.Nullable;

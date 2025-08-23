@@ -1,6 +1,12 @@
-package com.ycyw.users.domain.model.valueobject;
+package com.ycyw.shared.ddd.objectvalues;
+
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
+
+import org.eclipse.jdt.annotation.Nullable;
 
 public enum Country {
   AFGHANISTAN("AF", "Afghanistan"),
@@ -257,18 +263,25 @@ public enum Country {
   private final String isoCode;
   private final String label;
 
+  private static final Map<String, Country> CACHE_MAP =
+      Stream.of(Country.values()).collect(Collectors.toMap(Country::getIsoCode, c -> c));
+
   Country(String isoCode, String label) {
     this.isoCode = isoCode;
     this.label = label;
   }
 
-  public static Country fromCode(String code) {
-    for (Country country : values()) {
-      if (country.isoCode.equalsIgnoreCase(code)) {
-        return country;
-      }
+  public static @Nullable Country fromCode(String code) {
+    @Nullable Country value = CACHE_MAP.get(code);
+    return value;
+  }
+
+  public static Country of(String code) {
+    @Nullable Country value = CACHE_MAP.get(code);
+    if (value == null) {
+      throw new IllegalDomainStateException("Invalid country code: '%s'".formatted(code));
     }
-    throw new IllegalDomainStateException("Invalid country code: " + code);
+    return value;
   }
 
   public String getIsoCode() {

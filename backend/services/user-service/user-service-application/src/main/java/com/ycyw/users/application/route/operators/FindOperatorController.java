@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.application.dto.OperatorViewDto;
+import com.ycyw.users.application.exception.exceptions.BadRequestException;
 import com.ycyw.users.application.presenter.OperatorPresenter;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.usecase.operator.FindOperator;
 
-import jakarta.ws.rs.BadRequestException;
 import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,13 +20,13 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class FindOperatorController {
   private final UseCaseExecutor useCaseExecutor;
-  private final FindOperator.FindUserHandler getUserHandler;
+  private final FindOperator.Handler getUserHandler;
   private final OperatorPresenter presenter;
   private static final Logger logger = LoggerFactory.getLogger(FindOperatorController.class);
 
   public FindOperatorController(
       UseCaseExecutor useCaseExecutor,
-      FindOperator.FindUserHandler getUserHandler,
+      FindOperator.Handler getUserHandler,
       OperatorPresenter presenter) {
     this.useCaseExecutor = useCaseExecutor;
     this.getUserHandler = getUserHandler;

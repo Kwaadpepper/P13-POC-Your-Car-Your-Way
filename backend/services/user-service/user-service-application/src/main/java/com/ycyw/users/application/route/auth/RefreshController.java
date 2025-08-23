@@ -24,13 +24,13 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class RefreshController {
   private final UseCaseExecutor useCaseExecutor;
-  private final RefreshSession.RefreshSessionHandler refreshSessionHandler;
+  private final RefreshSession.Handler refreshSessionHandler;
   private final CookieService cookieService;
   private static final Logger logger = LoggerFactory.getLogger(RefreshController.class);
 
   public RefreshController(
       UseCaseExecutor useCaseExecutor,
-      RefreshSession.RefreshSessionHandler refreshSessionHandler,
+      RefreshSession.Handler refreshSessionHandler,
       CookieService cookieService) {
     this.useCaseExecutor = useCaseExecutor;
     this.refreshSessionHandler = refreshSessionHandler;
@@ -55,9 +55,7 @@ public class RefreshController {
     final var tokenPair = refreshedSession.tokenPair();
 
     final List<ResponseCookie> cookieList =
-        List.of(
-            cookieService.generateJwtCookie(tokenPair.accessToken()),
-            cookieService.generateRefreshJwtCookie(tokenPair.refreshToken()));
+        List.of(cookieService.generateJwtCookie(tokenPair.accessToken()));
     final var response = ResponseEntity.ok();
 
     cookieList.forEach(cookie -> response.header(HttpHeaders.SET_COOKIE, cookie.toString()));
@@ -65,10 +63,9 @@ public class RefreshController {
     return response.body(new SimpleMessageDto("refreshed"));
   }
 
-  private RefreshSession.RefreshedSession refreshSession(
+  private RefreshSession.NewTokens refreshSession(
       final JwtAccessToken accessToken, final JwtRefreshToken refreshToken) {
-    return this.useCaseExecutor.execute(
-        this.refreshSessionHandler,
-        new RefreshSession.RefreshSessionInput(new TokenPair(accessToken, refreshToken)));
+    final var input = new RefreshSession.OldTokens(new TokenPair(accessToken, refreshToken));
+    return this.useCaseExecutor.execute(this.refreshSessionHandler, input);
   }
 }

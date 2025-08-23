@@ -20,18 +20,17 @@ import org.eclipse.jdt.annotation.Nullable;
 
 public sealed interface VerifySession {
 
-  record VerifySessionInput(JwtAccessToken accessToken) implements UseCaseInput, VerifySession {}
+  record AccessToken(JwtAccessToken accessToken) implements UseCaseInput, VerifySession {}
 
-  record VerifiedSession(AccessTokenClaims claims) implements UseCaseOutput, VerifySession {}
+  record SessionVerified(AccessTokenClaims claims) implements UseCaseOutput, VerifySession {}
 
-  final class VerifySessionHandler
-      implements UseCaseHandler<VerifySessionInput, VerifiedSession>, VerifySession {
+  final class Handler implements UseCaseHandler<AccessToken, SessionVerified>, VerifySession {
 
     private final ClientRepository clientRepository;
     private final OperatorRepository operatorRepository;
     private final SessionService sessionService;
 
-    public VerifySessionHandler(
+    public Handler(
         ClientRepository clientRepository,
         OperatorRepository operatorRepository,
         SessionService sessionService) {
@@ -41,7 +40,7 @@ public sealed interface VerifySession {
     }
 
     @Override
-    public VerifiedSession handle(VerifySessionInput usecaseInput) {
+    public SessionVerified handle(AccessToken usecaseInput) {
       final var token = usecaseInput.accessToken();
       final @Nullable JwtRefreshToken refreshToken = sessionService.findRefreshTokenFor(token);
 
@@ -73,7 +72,7 @@ public sealed interface VerifySession {
         throw new DomainConstraintException("Role could not be determined from the access token.");
       }
 
-      return new VerifiedSession(new AccessTokenClaims(subject, role));
+      return new SessionVerified(new AccessTokenClaims(subject, role));
     }
   }
 }

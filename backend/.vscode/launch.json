@@ -32,6 +32,17 @@
         "SPRING_APPLICATION_NAME": "user-service-application",
         "SPRING_PROFILES_ACTIVE": "dev"
       }
+    },
+    {
+      "type": "java",
+      "name": "Support Service",
+      "request": "launch",
+      "mainClass": "com.ycyw.support.SupportServiceApplication",
+      "projectName": "support-service-application",
+      "env": {
+        "SPRING_APPLICATION_NAME": "support-service-application",
+        "SPRING_PROFILES_ACTIVE": "dev"
+      }
     }
   ]
 }

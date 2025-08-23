@@ -1,0 +1,33 @@
+server:
+  port: ${SUPPORT_SERVER_PORT:8082}
+
+debug: false
+
+config:
+  seed-data: true
+
+spring:
+  cloud:
+  openfeign:
+    client:
+      config:
+        default:
+          loggerLevel: basic
+  datasource:
+    url: ${SUPPORT_DB_URL:jdbc:postgresql://localhost:5433/supportdb}
+    username: ${SUPPORT_DB_USER:postgres}
+    password: ${SUPPORT_DB_PASSWORD:password}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  flyway:
+    enabled: ${SUPPORT_DB_MIGRATE_ON_START:true}
+    schemas: ${SUPPORT_DB_MIGRATION_SCHEMA:migrations}
+    cleanDisabled: false
+    baseline-on-migrate: true # utile si la BDD existe déjà
+    validate-on-migrate: true
+  rabbitmq:
+    username: ${SUPPORT_RABBIT_USER:guest}
+    password: ${SUPPORT_RABBIT_PASSWORD:guest}

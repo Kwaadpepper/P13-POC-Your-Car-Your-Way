@@ -47,7 +47,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        module: ["user-service"]
+        module: ["support-service", "user-service"]
 
     steps:
       - name: Checkout

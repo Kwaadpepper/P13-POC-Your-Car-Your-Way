@@ -1,4 +1,4 @@
-package com.ycyw.users.domain.model.valueobject;
+package com.ycyw.shared.ddd.objectvalues;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

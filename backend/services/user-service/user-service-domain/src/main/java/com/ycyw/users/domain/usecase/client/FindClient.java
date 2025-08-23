@@ -6,10 +6,10 @@ import java.util.UUID;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
+import com.ycyw.shared.ddd.objectvalues.BirthDate;
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.entity.client.Client;
 import com.ycyw.users.domain.model.valueobject.Address;
-import com.ycyw.users.domain.model.valueobject.BirthDate;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.port.repository.ClientRepository;
 import com.ycyw.users.domain.usecase.client.FindClient.Output.FoundClient;
 
@@ -17,9 +17,9 @@ import org.eclipse.jdt.annotation.Nullable;
 
 public sealed interface FindClient {
   sealed interface Input extends UseCaseInput, FindClient {
-    record FindClientById(UUID userId) implements Input {}
+    record FindById(UUID userId) implements Input {}
 
-    record FindClientByEmail(Email email) implements Input {}
+    record FindByEmail(Email email) implements Input {}
   }
 
   sealed interface Output extends UseCaseOutput, FindClient {
@@ -38,22 +38,22 @@ public sealed interface FindClient {
     record NotFound() implements Output {}
   }
 
-  final class FindUserHandler implements UseCaseHandler<Input, Output>, FindClient {
+  final class Handler implements UseCaseHandler<Input, Output>, FindClient {
     private final ClientRepository clientRepository;
 
-    public FindUserHandler(ClientRepository clientRepository) {
+    public Handler(ClientRepository clientRepository) {
       this.clientRepository = clientRepository;
     }
 
     @Override
     public Output handle(Input usecaseInput) {
       return switch (usecaseInput) {
-        case Input.FindClientById getUserById -> run(getUserById);
-        case Input.FindClientByEmail getUserByEmail -> run(getUserByEmail);
+        case Input.FindById getUserById -> run(getUserById);
+        case Input.FindByEmail getUserByEmail -> run(getUserByEmail);
       };
     }
 
-    private Output run(Input.FindClientById usecaseInput) {
+    private Output run(Input.FindById usecaseInput) {
       final var id = usecaseInput.userId();
 
       final var client = clientRepository.find(id);
@@ -65,7 +65,7 @@ public sealed interface FindClient {
       return mapToFoundClient(client);
     }
 
-    private Output run(Input.FindClientByEmail usecaseInput) {
+    private Output run(Input.FindByEmail usecaseInput) {
       final var email = usecaseInput.email();
 
       final var client = clientRepository.findByEmail(email);

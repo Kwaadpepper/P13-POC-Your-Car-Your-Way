@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.users.application.dto.AuthenticableViewDto;
+import com.ycyw.users.application.exception.exceptions.BadRequestException;
 import com.ycyw.users.application.request.LoginRequest;
 import com.ycyw.users.application.service.CookieService;
 import com.ycyw.users.domain.model.valueobject.PasswordCandidate;
@@ -19,20 +20,19 @@ import com.ycyw.users.domain.model.valueobject.RawIdentifier;
 import com.ycyw.users.domain.usecase.session.CreateSession;
 
 import jakarta.validation.Valid;
-import jakarta.ws.rs.BadRequestException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @RestController
 public class LoginController {
   private final UseCaseExecutor useCaseExecutor;
-  private final CreateSession.CreateSessionHandler createSessionHandler;
+  private final CreateSession.Handler createSessionHandler;
   private final CookieService cookieService;
   private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
   public LoginController(
       UseCaseExecutor useCaseExecutor,
-      CreateSession.CreateSessionHandler createSessionHandler,
+      CreateSession.Handler createSessionHandler,
       CookieService cookieService) {
     this.useCaseExecutor = useCaseExecutor;
     this.createSessionHandler = createSessionHandler;
@@ -61,13 +61,13 @@ public class LoginController {
     return response.body(toAuthenticableViewDto(session));
   }
 
-  private CreateSession.CreatedSession createSession(
+  private CreateSession.NewSession createSession(
       final RawIdentifier login, final PasswordCandidate password) {
     return this.useCaseExecutor.execute(
-        this.createSessionHandler, new CreateSession.CreateSessionInput(login, password));
+        this.createSessionHandler, new CreateSession.Credentials(login, password));
   }
 
-  private AuthenticableViewDto toAuthenticableViewDto(CreateSession.CreatedSession session) {
+  private AuthenticableViewDto toAuthenticableViewDto(CreateSession.NewSession session) {
     return new AuthenticableViewDto(
         session.id(),
         session.name(),

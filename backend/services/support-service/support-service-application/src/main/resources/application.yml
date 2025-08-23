@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: support-service-application
+  config:
+    import: "optional:configserver:http://localhost:8888"
+  flyway:
+    locations: classpath:db/migration
+  jpa:
+    properties:
+      hibernate:
+        type:
+          wrapper_array_handling: ALLOW

@@ -22,13 +22,13 @@ import org.slf4j.LoggerFactory;
 @RestController
 public class LogoutController {
   private final UseCaseExecutor useCaseExecutor;
-  private final InvalidateSession.InvalidateSessionHandler invalidateSessionHandler;
+  private final InvalidateSession.Handler invalidateSessionHandler;
   private final CookieService cookieService;
   private static final Logger logger = LoggerFactory.getLogger(LogoutController.class);
 
   public LogoutController(
       UseCaseExecutor useCaseExecutor,
-      InvalidateSession.InvalidateSessionHandler invalidateSessionHandler,
+      InvalidateSession.Handler invalidateSessionHandler,
       CookieService cookieService) {
     this.useCaseExecutor = useCaseExecutor;
     this.invalidateSessionHandler = invalidateSessionHandler;
@@ -56,8 +56,8 @@ public class LogoutController {
     return response.body(new SimpleMessageDto("success"));
   }
 
-  private InvalidateSession.InvalidatedSession invalidateSession(JwtAccessToken accessToken) {
-    return this.useCaseExecutor.execute(
-        invalidateSessionHandler, new InvalidateSession.InvalidateSessionInput(accessToken));
+  private InvalidateSession.SessionInvalidated invalidateSession(JwtAccessToken accessToken) {
+    final var input = new InvalidateSession.AccessToken(accessToken);
+    return this.useCaseExecutor.execute(invalidateSessionHandler, input);
   }
 }

@@ -15,25 +15,23 @@ import org.eclipse.jdt.annotation.Nullable;
 
 public sealed interface InvalidateSession {
 
-  record InvalidateSessionInput(JwtAccessToken accessToken)
-      implements UseCaseInput, InvalidateSession {}
+  record AccessToken(JwtAccessToken accessToken) implements UseCaseInput, InvalidateSession {}
 
-  record InvalidatedSession() implements UseCaseOutput, InvalidateSession {}
+  record SessionInvalidated() implements UseCaseOutput, InvalidateSession {}
 
-  final class InvalidateSessionHandler
-      implements UseCaseHandler<InvalidateSessionInput, InvalidatedSession>, InvalidateSession {
+  final class Handler
+      implements UseCaseHandler<AccessToken, SessionInvalidated>, InvalidateSession {
 
     private final CredentialRepository credentialRepository;
     private final SessionService sessionService;
 
-    public InvalidateSessionHandler(
-        CredentialRepository credentialRepository, SessionService sessionService) {
+    public Handler(CredentialRepository credentialRepository, SessionService sessionService) {
       this.credentialRepository = credentialRepository;
       this.sessionService = sessionService;
     }
 
     @Override
-    public InvalidatedSession handle(InvalidateSessionInput usecaseInput) {
+    public SessionInvalidated handle(AccessToken usecaseInput) {
       final var accessToken = usecaseInput.accessToken();
 
       final @Nullable JwtRefreshToken refreshToken =
@@ -56,7 +54,7 @@ public sealed interface InvalidateSession {
 
       sessionService.invalidate(tokenPair);
 
-      return new InvalidatedSession();
+      return new SessionInvalidated();
     }
   }
 }

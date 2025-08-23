@@ -5,8 +5,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.entity.operator.Operator;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.port.repository.OperatorRepository;
 
 import org.eclipse.jdt.annotation.Nullable;

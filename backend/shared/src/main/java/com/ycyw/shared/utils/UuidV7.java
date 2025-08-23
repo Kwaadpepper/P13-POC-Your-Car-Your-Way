@@ -3,7 +3,6 @@ package com.ycyw.shared.utils;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.time.Instant;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -57,8 +56,6 @@ public class UuidV7 {
    * @throws IllegalArgumentException if the provided UUID is not version 7
    */
   public static Instant extractInstant(UUID uuid) {
-    Objects.requireNonNull(uuid, "uuid");
-
     if (uuid.version() != 7) {
       throw new IllegalArgumentException("UUID is not version 7");
     }

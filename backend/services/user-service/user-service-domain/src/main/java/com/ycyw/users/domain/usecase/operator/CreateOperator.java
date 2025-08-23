@@ -8,10 +8,10 @@ import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
+import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.users.domain.model.entity.credential.Credential;
 import com.ycyw.users.domain.model.entity.credential.CredentialId;
 import com.ycyw.users.domain.model.entity.operator.Operator;
-import com.ycyw.users.domain.model.valueobject.Email;
 import com.ycyw.users.domain.model.valueobject.RawIdentifier;
 import com.ycyw.users.domain.model.valueobject.RawPassword;
 import com.ycyw.users.domain.model.valueobject.Role;
@@ -27,14 +27,14 @@ public sealed interface CreateOperator {
 
   record CreatedOperator(Email email) implements UseCaseOutput, CreateOperator {}
 
-  final class CreateOperatorHandler
+  final class Handler
       implements UseCaseHandler<CreateOperatorInput, CreatedOperator>, CreateOperator {
     private final CredentialRepository credentialRepository;
     private final OperatorRepository operatorRepository;
     private final IdentifierHasher identifierHasher;
     private final PasswordHasher passwordHasher;
 
-    public CreateOperatorHandler(
+    public Handler(
         CredentialRepository credentialRepository,
         OperatorRepository operatorRepository,
         IdentifierHasher identifierHasher,

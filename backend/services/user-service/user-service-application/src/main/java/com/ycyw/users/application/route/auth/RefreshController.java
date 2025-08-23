@@ -55,9 +55,7 @@ public class RefreshController {
     final var tokenPair = refreshedSession.tokenPair();
 
     final List<ResponseCookie> cookieList =
-        List.of(
-            cookieService.generateJwtCookie(tokenPair.accessToken()),
-            cookieService.generateRefreshJwtCookie(tokenPair.refreshToken()));
+        List.of(cookieService.generateJwtCookie(tokenPair.accessToken()));
     final var response = ResponseEntity.ok();
 
     cookieList.forEach(cookie -> response.header(HttpHeaders.SET_COOKIE, cookie.toString()));

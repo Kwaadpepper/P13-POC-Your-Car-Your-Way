@@ -5,6 +5,7 @@ import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
 import com.ycyw.users.domain.model.valueobject.TokenPair;
+import com.ycyw.users.domain.model.valueobject.jwt.RefreshTokenSubject;
 import com.ycyw.users.domain.port.repository.CredentialRepository;
 import com.ycyw.users.domain.service.SessionService;
 
@@ -29,6 +30,16 @@ public sealed interface RefreshSession {
     @Override
     public NewTokens handle(OldTokens usecaseInput) {
       final var tokenPair = usecaseInput.tokenPair();
+
+      @Nullable RefreshTokenSubject refreshTokenSubject = sessionService.verify(tokenPair.refreshToken());
+
+      if (refreshTokenSubject == null) {
+        throw new DomainConstraintException("The provided refresh token is invalid.");
+      }
+
+      if (credentialRepository.find(refreshTokenSubject.value()) == null) {
+        throw new DomainConstraintException("No user account found for the token pair");
+      }
 
       final @Nullable TokenPair refreshedTokenPair = sessionService.refresh(tokenPair);
 

@@ -82,7 +82,7 @@ public class SessionService {
     }
   }
 
-  public boolean verify(JwtRefreshToken refreshToken) {
+  public @Nullable RefreshTokenSubject verify(JwtRefreshToken refreshToken) {
     try {
       if (refreshTokenManager.validate(refreshToken)
           instanceof TokenManager.TokenValidity.Invalid(var reason)) {
@@ -94,10 +94,10 @@ public class SessionService {
         throw new SessionServiceException(REFRESH_TOKEN_COULD_NOT_BE_EXTRACTED);
       }
 
-      return true;
+      return refreshTokenClaims.subject();
     } catch (SessionServiceException e) {
       logger.debug(e.getMessage());
-      return false;
+      return null;
     }
   }
 
@@ -106,7 +106,7 @@ public class SessionService {
       JwtAccessToken oldAccessToken = tokenPair.accessToken();
       JwtRefreshToken refreshToken = tokenPair.refreshToken();
 
-      if (!verify(refreshToken)) {
+      if (verify(refreshToken) == null) {
         throw new SessionServiceException("Verification failed during refresh");
       }
 

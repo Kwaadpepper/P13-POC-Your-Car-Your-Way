@@ -30,6 +30,46 @@ import net.datafaker.Faker;
 
 @Configuration
 public class SpringInjector {
+  private final AppConfiguration appConfiguration;
+  private final KeyStorage keyStorage;
+  private final Hasher hasher;
+  private final IdentifierHasher identifierHasher;
+  private final PasswordHasher passwordHasher;
+
+  private final OperatorRepository operatorRepository;
+  private final ClientRepository clientRepository;
+  private final CredentialRepository credentialRepository;
+
+  private final SessionService sessionService;
+
+  private final JwtAccessTokenManager jwtAccessTokenManager;
+  private final JwtRefreshTokenManager jwtRefreshTokenManager;
+
+  public SpringInjector(
+      AppConfiguration appConfiguration,
+      KeyStorage keyStorage,
+      Hasher hasher,
+      IdentifierHasher identifierHasher,
+      PasswordHasher passwordHasher,
+      OperatorRepository operatorRepository,
+      ClientRepository clientRepository,
+      CredentialRepository credentialRepository,
+      SessionService sessionService,
+      JwtAccessTokenManager jwtAccessTokenManager,
+      JwtRefreshTokenManager jwtRefreshTokenManager) {
+    this.appConfiguration = appConfiguration;
+    this.keyStorage = keyStorage;
+    this.hasher = hasher;
+    this.identifierHasher = identifierHasher;
+    this.passwordHasher = passwordHasher;
+    this.operatorRepository = operatorRepository;
+    this.clientRepository = clientRepository;
+    this.credentialRepository = credentialRepository;
+    this.sessionService = sessionService;
+    this.jwtAccessTokenManager = jwtAccessTokenManager;
+    this.jwtRefreshTokenManager = jwtRefreshTokenManager;
+  }
+
   // * USECASES
   @Bean
   FindClient.Handler createUser(ClientRepository clientRepository) {
@@ -37,37 +77,24 @@ public class SpringInjector {
   }
 
   @Bean
-  CreateClient.Handler createUserHandler(
-      CredentialRepository credentialRepository,
-      ClientRepository clientRepository,
-      IdentifierHasher hasher,
-      PasswordHasher passwordHasher) {
-    return new CreateClient.Handler(credentialRepository, clientRepository, hasher, passwordHasher);
+  CreateClient.Handler createUserHandler() {
+    return new CreateClient.Handler(
+        credentialRepository, clientRepository, identifierHasher, passwordHasher);
   }
 
   @Bean
-  FindOperator.Handler createOperator(OperatorRepository operatorRepository) {
+  FindOperator.Handler createOperator() {
     return new FindOperator.Handler(operatorRepository);
   }
 
   @Bean
-  CreateOperator.Handler createOperatorHandler(
-      CredentialRepository credentialRepository,
-      OperatorRepository operatorRepository,
-      IdentifierHasher hasher,
-      PasswordHasher passwordHasher) {
+  CreateOperator.Handler createOperatorHandler() {
     return new CreateOperator.Handler(
-        credentialRepository, operatorRepository, hasher, passwordHasher);
+        credentialRepository, operatorRepository, identifierHasher, passwordHasher);
   }
 
   @Bean
-  CreateSession.Handler createSessionHandler(
-      CredentialRepository credentialRepository,
-      OperatorRepository operatorRepository,
-      ClientRepository clientRepository,
-      SessionService sessionService,
-      IdentifierHasher identifierHasher,
-      PasswordHasher passwordHasher) {
+  CreateSession.Handler createSessionHandler() {
     return new CreateSession.Handler(
         credentialRepository,
         operatorRepository,
@@ -78,40 +105,33 @@ public class SpringInjector {
   }
 
   @Bean
-  InvalidateSession.Handler invalidateSessionHandler(
-      CredentialRepository credentialRepository, SessionService sessionService) {
+  InvalidateSession.Handler invalidateSessionHandler() {
     return new InvalidateSession.Handler(credentialRepository, sessionService);
   }
 
   @Bean
-  RefreshSession.Handler refreshSessionHandler(
-      CredentialRepository credentialRepository, SessionService sessionService) {
+  RefreshSession.Handler refreshSessionHandler() {
     return new RefreshSession.Handler(credentialRepository, sessionService);
   }
 
   @Bean
-  VerifySession.Handler verifySessionHandler(
-      ClientRepository clientRepository,
-      OperatorRepository operatorRepository,
-      SessionService sessionService) {
+  VerifySession.Handler verifySessionHandler() {
     return new VerifySession.Handler(clientRepository, operatorRepository, sessionService);
   }
 
   // * OTHER DOMAIN SERVICES
   @Bean
-  SessionService sessionService(
-      JwtAccessTokenManager accessTokenManager, JwtRefreshTokenManager refreshTokenManager) {
-    return new SessionService(accessTokenManager, refreshTokenManager);
+  SessionService sessionService() {
+    return new SessionService(jwtAccessTokenManager, jwtRefreshTokenManager);
   }
 
   @Bean
-  IdentifierHasher identifierHasher(Hasher hasher) {
+  IdentifierHasher identifierHasher() {
     return new IdentifierHasher(hasher);
   }
 
   @Bean
-  JwtAccessTokenManager jwtAccessTokenManager(
-      AppConfiguration appConfiguration, KeyStorage keyStorage) {
+  JwtAccessTokenManager jwtAccessTokenManager() {
     final var appName = appConfiguration.getAppName();
     final var jwtSecretKey = appConfiguration.getJwtSecretKey();
     final var jwtTokenExpiration = appConfiguration.getJwtTokenExpiration();
@@ -122,8 +142,7 @@ public class SpringInjector {
   }
 
   @Bean
-  JwtRefreshTokenManager jwtRefreshTokenManager(
-      AppConfiguration appConfiguration, KeyStorage keyStorage) {
+  JwtRefreshTokenManager jwtRefreshTokenManager() {
     final var appName = appConfiguration.getAppName();
     final var jwtSecretKey = appConfiguration.getJwtSecretKey();
     final var jwtRefreshExpiration = appConfiguration.getJwtRefreshExpiration();

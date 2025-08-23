@@ -23,49 +23,71 @@ import net.datafaker.Faker;
 
 @Configuration
 public class SpringInjector {
+  private final ClientDirectory clientDirectory;
+  private final ReservationDirectory reservationDirectory;
+
+  private final CompanyInformationRepository companyInfoRepository;
+  private final FaqRepository faqRepository;
+  private final IssueRepository issueRepository;
+  private final ConversationRepository conversationRepository;
+
+  private final SessionVerifyer sessionVerifyer;
+
+  public SpringInjector(
+      ClientDirectory clientDirectory,
+      ReservationDirectory reservationDirectory,
+      CompanyInformationRepository companyInfoRepository,
+      FaqRepository faqRepository,
+      IssueRepository issueRepository,
+      ConversationRepository conversationRepository,
+      SessionVerifyer sessionVerifyer) {
+    this.clientDirectory = clientDirectory;
+    this.reservationDirectory = reservationDirectory;
+    this.companyInfoRepository = companyInfoRepository;
+    this.faqRepository = faqRepository;
+    this.issueRepository = issueRepository;
+    this.conversationRepository = conversationRepository;
+    this.sessionVerifyer = sessionVerifyer;
+  }
+
   // * USECASES
   @Bean
-  GetCompanyInfo.Handler getCompanyInfoHandler(CompanyInformationRepository companyInfoRepository) {
+  GetCompanyInfo.Handler getCompanyInfoHandler() {
     return new GetCompanyInfo.Handler(companyInfoRepository);
   }
 
   @Bean
-  CreateFaq.Handler createFaqHandler(FaqRepository faqRepository) {
+  CreateFaq.Handler createFaqHandler() {
     return new CreateFaq.Handler(faqRepository);
   }
 
   @Bean
-  GetAllFaq.Handler getAllFaqHandler(FaqRepository faqRepository) {
+  GetAllFaq.Handler getAllFaqHandler() {
     return new GetAllFaq.Handler(faqRepository);
   }
 
   @Bean
-  CreateConversation.Handler createConversationHandler(
-      IssueRepository issueRepository, ConversationRepository conversationRepository) {
+  CreateConversation.Handler createConversationHandler() {
     return new CreateConversation.Handler(issueRepository, conversationRepository);
   }
 
   @Bean
-  GetAllConversation.Handler getAllConversationHandler(
-      ConversationRepository conversationRepository) {
+  GetAllConversation.Handler getAllConversationHandler() {
     return new GetAllConversation.Handler(conversationRepository);
   }
 
   @Bean
-  CreateIssue.Handler createIssueHandler(IssueRepository issueRepository) {
+  CreateIssue.Handler createIssueHandler() {
     return new CreateIssue.Handler(issueRepository);
   }
 
   @Bean
-  GetAllIssue.Handler getAllIssueHandler(
-      IssueRepository issueRepository,
-      ClientDirectory clientDirectory,
-      ReservationDirectory reservationDirectory) {
+  GetAllIssue.Handler getAllIssueHandler() {
     return new GetAllIssue.Handler(issueRepository, clientDirectory, reservationDirectory);
   }
 
   @Bean
-  VerifySession.Handler verifySessionHandler(SessionVerifyer sessionVerifyer) {
+  VerifySession.Handler verifySessionHandler() {
     return new VerifySession.Handler(sessionVerifyer);
   }
 

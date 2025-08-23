@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +42,13 @@ public class SpringSecurityConfig {
         };
     jwtAuthenticationFilter.setIgnoreUrls(List.of(allowNonAuthRequestToUrls));
 
-    return http.csrf(csrf -> csrf.disable())
+    jwtAuthenticationFilter.setIgnoreUrls(List.of(allowNonAuthRequestToUrls));
+
+    return http.sessionManagement(
+            // No cookie session, just state less API.
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        // No CSRF for stateless APIs.
+        .csrf(AbstractHttpConfigurer::disable)
         .cors(Customizer.withDefaults())
         .exceptionHandling(
             handling ->
@@ -49,15 +56,12 @@ public class SpringSecurityConfig {
                     new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
         .authorizeHttpRequests(
             request -> {
-              // Login and Register are not protected.
+              // Allow non protected AuthRequestToUrls are not protected.
               request.requestMatchers(allowNonAuthRequestToUrls).permitAll();
 
               // Any other routes are.
               request.anyRequest().fullyAuthenticated();
             })
-        // No cookie session, just state less API.
-        .sessionManagement(
-            manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // Filter requests to check JWT and assert it matches an actual user.
         .addFilterAt(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .build();

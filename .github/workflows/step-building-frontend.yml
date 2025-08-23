@@ -3,6 +3,9 @@ name: Build Frontend
 on:
   workflow_call:
 
+permissions:
+  contents: read
+
 jobs:
   build-shared:
     runs-on: ubuntu-latest

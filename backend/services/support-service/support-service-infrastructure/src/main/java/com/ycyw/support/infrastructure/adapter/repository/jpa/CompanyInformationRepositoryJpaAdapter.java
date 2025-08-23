@@ -72,7 +72,7 @@ public class CompanyInformationRepositoryJpaAdapter implements CompanyInformatio
             e.getAddressLine3(),
             e.getAddressCity(),
             e.getAddressPostcode(),
-            Country.fromCode(e.getAddressCountry()));
+            Country.of(e.getAddressCountry()));
     final var phone = new PhoneNumber(e.getSupportPhone());
     final var phoneHours = toBusinessHours(e.getSupportPhoneBusinessHours());
     final var chatHours = toBusinessHours(e.getSupportChatBusinessHours());

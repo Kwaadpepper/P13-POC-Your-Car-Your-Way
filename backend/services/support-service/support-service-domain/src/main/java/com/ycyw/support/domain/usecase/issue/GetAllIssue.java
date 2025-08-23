@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.ycyw.shared.ddd.exceptions.IllegalDomainStateException;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
 import com.ycyw.shared.ddd.lib.UseCaseOutput;
@@ -16,7 +17,6 @@ import com.ycyw.shared.ddd.objectvalues.BirthDate;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.shared.ddd.objectvalues.PhoneNumber;
 import com.ycyw.shared.ddd.objectvalues.acriss.AcrissCode;
-import com.ycyw.shared.utils.Domain;
 import com.ycyw.support.domain.model.entity.externals.agency.Agency;
 import com.ycyw.support.domain.model.entity.externals.client.Client;
 import com.ycyw.support.domain.model.entity.externals.client.ClientId;
@@ -106,7 +106,9 @@ public sealed interface GetAllIssue {
         @Nullable final Client client = clients.get(clientId);
         @Nullable final Reservation reservation = reservations.get(reservationId);
 
-        Domain.checkDomain(() -> client != null, "No client found for id " + clientId);
+        if (client == null) {
+          throw new IllegalDomainStateException("No client found for id " + clientId);
+        }
 
         agregates.add(new IssueAgregate(issue, client, reservation));
       }

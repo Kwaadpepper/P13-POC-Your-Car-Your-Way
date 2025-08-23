@@ -15,49 +15,49 @@ public record AcrissCode(String value) {
     Domain.checkDomain(
         () -> value.length() == 4, "Un code ACRISS doit comporter exactement 4 caractères.");
     Domain.checkDomain(
-        () -> extractCategory() != null, "Le code ACRISS comporte une catégorie invalide.");
+        () -> extractCategory(value) != null, "Le code ACRISS comporte une catégorie invalide.");
     Domain.checkDomain(
-        () -> extractType() != null, "Le code ACRISS comporte un type de véhicule invalide.");
+        () -> extractType(value) != null, "Le code ACRISS comporte un type de véhicule invalide.");
     Domain.checkDomain(
-        () -> extractTransmission() != null,
+        () -> extractTransmission(value) != null,
         "Le code ACRISS comporte un type de transmission invalide.");
     Domain.checkDomain(
-        () -> extractFuelAc() != null,
+        () -> extractFuelAc(value) != null,
         "Le code ACRISS comporte un type de carburant/climatisation invalide.");
   }
 
   public AcrissCategory category() {
-    return Objects.requireNonNull(extractCategory());
+    return Objects.requireNonNull(extractCategory(value));
   }
 
   public AcrissType type() {
-    return Objects.requireNonNull(extractType());
+    return Objects.requireNonNull(extractType(value));
   }
 
   public AcrissTransmission transmission() {
-    return Objects.requireNonNull(extractTransmission());
+    return Objects.requireNonNull(extractTransmission(value));
   }
 
   public AcrissFuelAc fuelAc() {
-    return Objects.requireNonNull(extractFuelAc());
+    return Objects.requireNonNull(extractFuelAc(value));
   }
 
-  private @Nullable AcrissCategory extractCategory() {
+  private @Nullable AcrissCategory extractCategory(String value) {
     char code = value.charAt(0);
     return AcrissCategory.fromCode(code);
   }
 
-  private @Nullable AcrissType extractType() {
+  private @Nullable AcrissType extractType(String value) {
     char code = value.charAt(1);
     return AcrissType.fromCode(code);
   }
 
-  private @Nullable AcrissTransmission extractTransmission() {
+  private @Nullable AcrissTransmission extractTransmission(String value) {
     char code = value.charAt(2);
     return AcrissTransmission.fromCode(code);
   }
 
-  private @Nullable AcrissFuelAc extractFuelAc() {
+  private @Nullable AcrissFuelAc extractFuelAc(String value) {
     char code = value.charAt(3);
     return AcrissFuelAc.fromCode(code);
   }

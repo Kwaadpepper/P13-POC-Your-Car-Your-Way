@@ -11,7 +11,7 @@ public record IssueViewDetailsDto(
     String description,
     String status,
     ClientDto client,
-    @Nullable UUID reservation,
+    @Nullable ReservationDto reservation,
     ZonedDateTime updatedAt) {
   public record ClientDto(
       UUID id,
@@ -29,4 +29,23 @@ public record IssueViewDetailsDto(
       String city,
       String zipCode,
       String country) {}
+
+  public record ReservationDto(
+      UUID id,
+      String status,
+      StartingFromDto from,
+      ArrivingToDto to,
+      VehiculeDto vehicule,
+      String payment) {
+    public record StartingFromDto(AgencyDto agency, ZonedDateTime at) {}
+
+    public record ArrivingToDto(AgencyDto agency, ZonedDateTime at) {}
+
+    public record VehiculeDto(String acrissCode) {}
+
+    public record AgencyDto(
+        String label, String phone, String email, AddressDto address, CoordinatesDto coordinates) {}
+
+    public record CoordinatesDto(double lat, double lng) {}
+  }
 }

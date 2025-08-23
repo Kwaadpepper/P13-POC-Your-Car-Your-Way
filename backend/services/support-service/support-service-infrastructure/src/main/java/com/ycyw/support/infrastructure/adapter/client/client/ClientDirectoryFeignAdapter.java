@@ -1,4 +1,4 @@
-package com.ycyw.support.infrastructure.adapter.client;
+package com.ycyw.support.infrastructure.adapter.client.client;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -29,9 +29,9 @@ public class ClientDirectoryFeignAdapter implements ClientDirectory {
   }
 
   @Override
-  public @Nullable Client findById(UUID id) {
+  public @Nullable Client findById(ClientId id) {
     try {
-      ClientDto payload = client.getClientByUuidOrEmail(id.toString());
+      ClientDto payload = client.getClientByUuidOrEmail(id.value().toString());
 
       if (payload == null) {
         return null;

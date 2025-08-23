@@ -21,4 +21,6 @@ dependencies {
   implementation(libs.jackson.databind)
   implementation(libs.jackson.datatype.jsr310)
   implementation(libs.spring.cloud.starter.openfeign)
+
+  implementation(libs.datafaker)
 }

@@ -26,12 +26,13 @@ import org.slf4j.LoggerFactory;
 public class JwtTokenProcessorImpl implements JwtTokenProcessor {
   private static final Logger logger = LoggerFactory.getLogger(JwtTokenProcessorImpl.class);
   private final long jwtExpirationInSeconds;
-  private final String appName;
+  private final String jwtIssuer;
   private final SecretKey jwtSigningKey;
 
-  public JwtTokenProcessorImpl(long jwtExpirationInSeconds, String jwtSigningKey, String appName) {
+  public JwtTokenProcessorImpl(
+      long jwtExpirationInSeconds, String jwtSigningKey, String jwtIssuer) {
     this.jwtExpirationInSeconds = jwtExpirationInSeconds;
-    this.appName = appName;
+    this.jwtIssuer = jwtIssuer;
     this.jwtSigningKey = keyFromString(jwtSigningKey);
   }
 
@@ -104,7 +105,7 @@ public class JwtTokenProcessorImpl implements JwtTokenProcessor {
   private Claims extractAllClaims(JwtTokenProcessor.JwtToken jwtToken) {
     return Jwts.parser()
         .verifyWith(jwtSigningKey)
-        .requireIssuer(appName)
+        .requireIssuer(jwtIssuer)
         .build()
         .parseSignedClaims(jwtToken.value())
         .getPayload();
@@ -133,7 +134,7 @@ public class JwtTokenProcessorImpl implements JwtTokenProcessor {
         .header()
         .add("typ", "JWT")
         .and()
-        .issuer(appName)
+        .issuer(jwtIssuer)
         .subject(subject)
         .issuedAt(Date.from(currentDate.toInstant()))
         .expiration(expirationDate)

@@ -1,8 +1,10 @@
 package com.ycyw.gateway.component;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -17,13 +19,23 @@ import reactor.core.publisher.Mono;
  */
 public class JwtPresenceFilter implements WebFilter {
   private final String cookieName;
+  private final List<String> publicRoutes;
+  private final AntPathMatcher pathMatcher = new AntPathMatcher();
 
   public JwtPresenceFilter(AppConfiguration appConfiguration) {
     this.cookieName = appConfiguration.getJwtCookieName() + "-jwt";
+    this.publicRoutes = appConfiguration.getPublicRouteList();
   }
 
   @Override
   public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
+    String requestPath = exchange.getRequest().getPath().value();
+
+    // Si la route est publique, laisse passer
+    if (isPublicRoute(requestPath)) {
+      return chain.filter(exchange);
+    }
+
     final var cookies = exchange.getRequest().getCookies().get(cookieName);
 
     if (cookies == null || cookies.isEmpty()) {
@@ -39,6 +51,11 @@ public class JwtPresenceFilter implements WebFilter {
     }
 
     return chain.filter(exchange);
+  }
+
+  private boolean isPublicRoute(String path) {
+    // Test les patterns et routes exactes
+    return publicRoutes.stream().anyMatch(pattern -> pathMatcher.match(pattern, path));
   }
 
   private boolean isValidJwt(String token) {

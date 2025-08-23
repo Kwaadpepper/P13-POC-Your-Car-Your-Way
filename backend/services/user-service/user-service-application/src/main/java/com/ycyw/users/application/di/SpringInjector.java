@@ -118,22 +118,22 @@ public class SpringInjector {
 
   @Bean
   JwtAccessTokenManager jwtAccessTokenManager(KeyStorage keyStorage) {
-    final var appName = appConfiguration.getAppName();
+    final var jwtIssuer = appConfiguration.getJwtIssuer();
     final var jwtSecretKey = appConfiguration.getJwtSecretKey();
     final var jwtTokenExpiration = appConfiguration.getJwtTokenExpiration();
     final var jwtTokenProcessor =
-        new JwtTokenProcessorImpl(jwtTokenExpiration, jwtSecretKey, appName);
+        new JwtTokenProcessorImpl(jwtTokenExpiration, jwtSecretKey, jwtIssuer);
 
     return new JwtAccessTokenManagerImpl(jwtTokenProcessor, keyStorage);
   }
 
   @Bean
   JwtRefreshTokenManager jwtRefreshTokenManager(KeyStorage keyStorage) {
-    final var appName = appConfiguration.getAppName();
+    final var jwtIssuer = appConfiguration.getJwtIssuer();
     final var jwtSecretKey = appConfiguration.getJwtSecretKey();
     final var jwtRefreshExpiration = appConfiguration.getJwtRefreshExpiration();
     final var jwtTokenProcessor =
-        new JwtTokenProcessorImpl(jwtRefreshExpiration, jwtSecretKey, appName);
+        new JwtTokenProcessorImpl(jwtRefreshExpiration, jwtSecretKey, jwtIssuer);
 
     return new JwtRefreshTokenManagerImpl(jwtTokenProcessor, keyStorage);
   }

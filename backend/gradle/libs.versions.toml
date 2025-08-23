@@ -25,6 +25,8 @@ spring-cloud-starter-netflix-eureka-client = { module = "org.springframework.clo
 spring-cloud-starter-netflix-eureka-server = { module = "org.springframework.cloud:spring-cloud-starter-netflix-eureka-server" }
 spring-cloud-starter-openfeign = { module = "org.springframework.cloud:spring-cloud-starter-openfeign", version.ref = "spring-cloud-openfeign" }
 spring-cloud-starter-config = { module = "org.springframework.cloud:spring-cloud-starter-config" }
+spring-cloud-starter-gateway-server-webflux = { module = "org.springframework.cloud:spring-cloud-starter-gateway-server-webflux" }
+spring-cloud-config-server = { module = "org.springframework.cloud:spring-cloud-config-server" }
 
 spring-boot-dependencies = { module = "org.springframework.boot:spring-boot-dependencies", version.ref = "spring-boot" }
 spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-starter-security" }

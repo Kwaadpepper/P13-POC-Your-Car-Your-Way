@@ -5,10 +5,10 @@ import { IssueStatus } from '@ycyw/support-domains/issue/enums'
 
 const addressSchema = z.object({
   line1: z.string().nonempty(),
-  line2: z.string().optional(),
-  line3: z.string().optional(),
+  line2: z.string().optional().nullable().transform(val => val === null ? undefined : val),
+  line3: z.string().optional().nullable().transform(val => val === null ? undefined : val),
   city: z.string().nonempty(),
-  post_code: z.string().nonempty(),
+  zipCode: z.string().nonempty(),
   country: z.string().nonempty(),
 })
 

@@ -1,4 +1,4 @@
 export const environment = {
   env: 'development',
-  endpoint: 'http://localhost:3001',
+  endpoint: 'http://localhost:8080',
 }

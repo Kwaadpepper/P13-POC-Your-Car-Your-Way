@@ -46,14 +46,20 @@
                     item.updatedAt | date: "short"
                   }}</span>
                 </div>
-                <div class="row">
-                  <span class="last">{{
-                    item.lastMessage.content || "—"
-                  }}</span>
-                  @if (item.unread > 0) {
-                    <p-badge [value]="item.unread" severity="danger" />
-                  }
-                </div>
+                @if (item.lastMessage) {
+                  <div class="row">
+                    <span class="last">{{
+                      item.lastMessage.content || "—"
+                    }}</span>
+                    @if (item.unread > 0) {
+                      <p-badge [value]="item.unread" severity="danger" />
+                    }
+                  </div>
+                } @else {
+                  <div class="row">
+                    <span class="last italic">Aucun message</span>
+                  </div>
+                }
               </div>
             </div>
           </ng-template>

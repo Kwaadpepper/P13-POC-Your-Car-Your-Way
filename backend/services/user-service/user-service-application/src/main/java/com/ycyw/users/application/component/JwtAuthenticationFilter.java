@@ -56,7 +56,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       final var jwtToken = cookieService.getJwtAccessTokenFromRequest(request);
 
       if (jwtToken == null || !urlHasToBeFiltered(request)) {
-        logger.debug("Request does not have 'Authorize' header, skipping authentication.");
+        logger.debug("Request missing 'Cookie' header with jwt token, skipping authentication.");
         filterChain.doFilter(request, servletResponse);
         return;
       }

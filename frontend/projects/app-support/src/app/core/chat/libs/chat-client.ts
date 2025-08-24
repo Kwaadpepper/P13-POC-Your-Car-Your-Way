@@ -1,5 +1,3 @@
-// Facade générique (sans Angular) pour manipuler le transport
-
 import { ChatTransport, Events, EventType, ServerEvent } from './chat/chat-transport'
 
 type Unsub = () => void

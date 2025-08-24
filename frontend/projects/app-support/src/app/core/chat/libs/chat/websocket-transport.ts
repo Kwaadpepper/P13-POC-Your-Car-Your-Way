@@ -1,5 +1,3 @@
-// Transport WebSocket minimal + auto-reconnexion avec ré-abonnement aux conversations
-
 import {
   type ChatTransport,
   type ClientCommand,

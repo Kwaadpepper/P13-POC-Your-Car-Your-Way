@@ -24,7 +24,9 @@ export class IssueRepositoryImpl implements IssueRepository {
   getAll(): Observable<Issue[]> {
     return this.http.get<IssueListZod>(
       this.faqListUrl,
-      {},
+      {
+        withCredentials: true,
+      },
     ).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {

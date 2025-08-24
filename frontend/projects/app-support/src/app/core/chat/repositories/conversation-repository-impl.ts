@@ -24,7 +24,9 @@ export class ConversationRepositoryImpl implements ConversationRepository {
   getAll(): Observable<Conversation[]> {
     return this.http.get<ConversationListZod>(
       this.conversationListUrl,
-      {},
+      {
+        withCredentials: true,
+      },
     ).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {

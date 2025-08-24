@@ -23,7 +23,9 @@ export class FaqRepositoryImpl implements FaqRepository {
   getAll(): Observable<Faq[]> {
     return this.http.get<FaqListZod>(
       this.faqListUrl,
-      {},
+      {
+        withCredentials: true,
+      },
     ).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {

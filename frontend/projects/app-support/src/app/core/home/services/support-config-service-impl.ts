@@ -24,7 +24,9 @@ export class SupportConfigServiceImpl implements SupportConfigService {
   getConfig(): Observable<SupportConfig> {
     return this.http.get<SupportConfigZod>(
       this.companyInfo,
-      {},
+      {
+        withCredentials: true,
+      },
     ).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {

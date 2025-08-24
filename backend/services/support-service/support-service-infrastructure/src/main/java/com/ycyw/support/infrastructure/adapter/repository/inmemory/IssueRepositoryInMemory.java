@@ -57,6 +57,7 @@ public class IssueRepositoryInMemory implements IssueRepository {
         entity.getId(),
         entity.getSubject(),
         entity.getDescription(),
+        entity.getAnswer(),
         entity.getStatus(),
         entity.getClient(),
         entity.getReservation(),

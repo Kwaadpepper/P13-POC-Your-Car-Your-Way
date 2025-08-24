@@ -15,27 +15,32 @@ import org.eclipse.jdt.annotation.Nullable;
 public class Issue extends AggregateRoot {
   private final String subject;
   private final String description;
+  private final @Nullable String answer;
   private final IssueStatus status;
   private final ClientId client;
   private final @Nullable ReservationId reservation;
   private final ZonedDateTime updatedAt;
 
-  private static void validateInvariants(String subject, String description) {
+  private static void validateInvariants(
+      String subject, String description, @Nullable String answer) {
     Domain.checkDomain(() -> !subject.isBlank(), "Subject cannot be blank");
     Domain.checkDomain(() -> !description.isBlank(), "Description cannot be blank");
+    Domain.checkDomain(() -> answer == null || !answer.isBlank(), "Description cannot be blank");
   }
 
   public Issue(
       String subject,
       String description,
+      @Nullable String answer,
       IssueStatus status,
       ClientId client,
       @Nullable ReservationId reservation,
       ZonedDateTime updatedAt) {
     super();
-    validateInvariants(subject, description);
+    validateInvariants(subject, description, answer);
     this.subject = subject;
     this.description = description;
+    this.answer = answer;
     this.status = status;
     this.client = client;
     this.reservation = reservation;
@@ -46,14 +51,16 @@ public class Issue extends AggregateRoot {
       UUID id,
       String subject,
       String description,
+      @Nullable String answer,
       IssueStatus status,
       ClientId client,
       @Nullable ReservationId reservation,
       ZonedDateTime updatedAt) {
     super(id);
-    validateInvariants(subject, description);
+    validateInvariants(subject, description, answer);
     this.subject = subject;
     this.description = description;
+    this.answer = answer;
     this.status = status;
     this.client = client;
     this.reservation = reservation;
@@ -64,11 +71,12 @@ public class Issue extends AggregateRoot {
       UUID id,
       String subject,
       String description,
+      @Nullable String answer,
       IssueStatus status,
       ClientId client,
       @Nullable ReservationId reservation,
       ZonedDateTime updatedAt) {
-    return new Issue(id, subject, description, status, client, reservation, updatedAt);
+    return new Issue(id, subject, description, answer, status, client, reservation, updatedAt);
   }
 
   @Override
@@ -78,6 +86,10 @@ public class Issue extends AggregateRoot {
 
   public String getSubject() {
     return subject;
+  }
+
+  public @Nullable String getAnswer() {
+    return answer;
   }
 
   public String getDescription() {

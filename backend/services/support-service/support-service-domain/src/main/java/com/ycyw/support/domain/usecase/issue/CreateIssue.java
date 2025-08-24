@@ -51,6 +51,7 @@ public sealed interface CreateIssue {
           new Issue(
               subject,
               description,
+              null,
               status,
               clientId,
               reservationId,

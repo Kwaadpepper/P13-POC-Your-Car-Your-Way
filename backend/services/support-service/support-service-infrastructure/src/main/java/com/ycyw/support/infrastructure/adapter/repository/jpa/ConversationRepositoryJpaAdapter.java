@@ -36,6 +36,15 @@ public class ConversationRepositoryJpaAdapter implements ConversationRepository 
   }
 
   @Override
+  public @Nullable Conversation findByIssueId(IssueId issueId) {
+    final var e = repo.findByIssueId(issueId.value());
+    if (e.isEmpty()) {
+      return null;
+    }
+    return e.map(this::toDomain).orElseThrow();
+  }
+
+  @Override
   public void save(Conversation entity) {
     repo.save(toEntity(entity));
   }

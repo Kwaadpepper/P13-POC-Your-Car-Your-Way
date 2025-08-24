@@ -59,6 +59,10 @@ public class SpringInjector {
   GetAllIssue.Handler getAllIssueHandler(
       ClientDirectory clientDirectory,
       ReservationDirectory reservationDirectory,
+      IssueRepository issueRepository,
+      ConversationRepository conversationRepository) {
+    return new GetAllIssue.Handler(
+        issueRepository, clientDirectory, reservationDirectory, conversationRepository);
       IssueRepository issueRepository) {
     return new GetAllIssue.Handler(issueRepository, clientDirectory, reservationDirectory);
   }

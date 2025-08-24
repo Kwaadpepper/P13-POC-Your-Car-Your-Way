@@ -6,6 +6,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.ycyw.support.domain.model.entity.conversation.Conversation;
+import com.ycyw.support.domain.model.entity.issue.IssueId;
 import com.ycyw.support.domain.port.repository.ConversationRepository;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -32,6 +33,23 @@ public class ConversationRepositoryInMemory implements ConversationRepository {
       return conv != null ? clone(conv) : null;
     } finally {
       MDC.remove("id");
+    }
+  }
+
+  @Override
+  public @Nullable Conversation findByIssueId(IssueId issueId) {
+    MDC.put("issueId", issueId.value().toString());
+    try {
+      for (Conversation conv : store.values()) {
+        if (conv.getIssue().value().equals(issueId.value())) {
+          logger.debug("Conversation found with issueId {}: {}", issueId.value(), conv);
+          return clone(conv);
+        }
+      }
+      logger.debug("No Conversation found with issueId {}", issueId.value());
+      return null;
+    } finally {
+      MDC.remove("issueId");
     }
   }
 

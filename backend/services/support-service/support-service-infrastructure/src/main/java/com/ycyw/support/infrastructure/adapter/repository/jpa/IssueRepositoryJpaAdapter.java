@@ -62,6 +62,7 @@ public class IssueRepositoryJpaAdapter implements IssueRepository {
         e.getId(),
         e.getSubject(),
         e.getDescription(),
+        e.getAnswer(),
         status,
         client,
         reservation,

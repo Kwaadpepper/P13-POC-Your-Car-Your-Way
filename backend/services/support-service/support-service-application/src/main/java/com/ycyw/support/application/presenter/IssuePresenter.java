@@ -29,9 +29,11 @@ public class IssuePresenter implements Presenter<List<IssueViewDetailsDto>, Outp
         model.id(),
         model.subject(),
         model.description(),
+        model.description(),
         model.status().name(),
         toClientDto(model.client()),
         toReservationDto(model.reservation()),
+        model.conversation(),
         model.updatedAt());
   }
 
@@ -42,7 +44,7 @@ public class IssuePresenter implements Presenter<List<IssueViewDetailsDto>, Outp
         model.lastName(),
         model.email().value(),
         model.phone().value(),
-        model.birthdate().toString(),
+        model.birthdate().value().toString(),
         toAddressDto(model.address()));
   }
 
@@ -57,7 +59,7 @@ public class IssuePresenter implements Presenter<List<IssueViewDetailsDto>, Outp
         model.status(),
         toStartingFromDto(model.from()),
         toArrivingToDto(model.to()),
-        new ReservationDto.VehiculeDto(vehicule.category().toString()),
+        new ReservationDto.VehiculeDto(vehicule.category().value()),
         model.payment());
   }
 

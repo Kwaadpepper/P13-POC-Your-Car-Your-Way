@@ -17,11 +17,13 @@ export class SupportConfigServiceImpl implements SupportConfigService {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.endpoint
 
-  private readonly resourceUrl = `${this.serviceUrl}/api/support`
+  private readonly resourceUrl = `${this.serviceUrl}`
+
+  private readonly companyInfo = `${this.resourceUrl}/company/info`
 
   getConfig(): Observable<SupportConfig> {
     return this.http.get<SupportConfigZod>(
-      this.resourceUrl,
+      this.companyInfo,
       {},
     ).pipe(
       catchError((error) => {

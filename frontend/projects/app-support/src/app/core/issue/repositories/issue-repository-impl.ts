@@ -17,7 +17,7 @@ export class IssueRepositoryImpl implements IssueRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.endpoint
 
-  readonly resourceUrl = `${this.serviceUrl}/api/support`
+  readonly resourceUrl = `${this.serviceUrl}`
 
   private readonly faqListUrl = `${this.resourceUrl}/issues`
 

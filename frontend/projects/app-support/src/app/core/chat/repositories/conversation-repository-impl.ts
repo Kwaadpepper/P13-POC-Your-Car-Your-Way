@@ -17,7 +17,7 @@ export class ConversationRepositoryImpl implements ConversationRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.endpoint
 
-  readonly resourceUrl = `${this.serviceUrl}/api/support`
+  readonly resourceUrl = `${this.serviceUrl}`
 
   private readonly conversationListUrl = `${this.resourceUrl}/conversations`
 

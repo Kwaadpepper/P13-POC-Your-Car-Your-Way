@@ -20,7 +20,6 @@ interface ChatBoxMessage {
   conversation: UUID
   from: {
     id: UUID
-    name: string
     role: Role
   }
   text: string
@@ -187,7 +186,6 @@ export class ChatBox implements OnInit, OnDestroy {
       conversation: msg.conversation,
       from: {
         id: msg.from.id,
-        name: msg.from.name,
         role: msg.from.role,
       },
       text: msg.text,

@@ -22,7 +22,7 @@ export class Message {
   readonly self = input<boolean>(false)
 
   get initials(): string {
-    const id = this.message().from.name || ''
+    const id = this.message().from.id || ''
     const part = id.split('-').pop() || id
     return (part[0] || '?').toUpperCase()
   }

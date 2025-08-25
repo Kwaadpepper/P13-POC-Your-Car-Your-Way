@@ -223,13 +223,13 @@ export class StompWebSocketTransport implements ChatTransport {
       case EventType.LEAVE:
         return '/app/conversation/leave'
       case EventType.MESSAGE:
-        return '/app/chat/send'
+        return '/app/conversation/send'
       case EventType.TYPING:
-        return '/app/chat/typing'
+        return '/app/conversation/typing'
       case EventType.HISTORY:
-        return '/app/chat/history'
+        return '/app/conversation/history'
       case EventType.PRESENCE:
-        return '/app/chat/presence'
+        return '/app/conversation/presence'
       case EventType.ERROR:
         return '/topic/errors'
       default:

@@ -1,6 +1,7 @@
 {
   "conventionalCommits.scopes": [
     "back",
+    "back-shared",
     "back-auth",
     "back-support",
     "back-user"

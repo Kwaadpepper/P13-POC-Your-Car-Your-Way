@@ -1,6 +1,6 @@
 package com.ycyw.shared.ddd.lib;
 
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.UUID;
@@ -48,6 +48,6 @@ public abstract class AggregateRoot implements Entity {
   public abstract ZonedDateTime getCreatedAt();
 
   private ZonedDateTime extractCreatedAtFromId(UUID id) {
-    return ZonedDateTime.ofInstant(UuidV7.extractInstant(id), ZoneId.systemDefault());
+    return ZonedDateTime.ofInstant(UuidV7.extractInstant(id), ZoneOffset.UTC);
   }
 }

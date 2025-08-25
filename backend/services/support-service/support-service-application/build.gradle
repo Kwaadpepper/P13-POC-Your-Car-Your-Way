@@ -29,6 +29,7 @@ dependencies {
   implementation(libs.spring.boot.starter.actuator)
   implementation(libs.spring.boot.starter.aop)
   implementation(libs.spring.boot.starter.amqp)
+  implementation(libs.spring.boot.starter.websocket)
   implementation(libs.spring.boot.starter.security)
 
   implementation(libs.datafaker)

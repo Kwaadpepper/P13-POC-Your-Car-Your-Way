@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -53,7 +52,8 @@ public class SpringSecurityConfig {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // No CSRF for stateless APIs.
         .csrf(AbstractHttpConfigurer::disable)
-        .cors(Customizer.withDefaults())
+        // Gateway handles CORS.
+        .cors(AbstractHttpConfigurer::disable)
         .exceptionHandling(
             handling ->
                 handling.authenticationEntryPoint(
@@ -64,6 +64,7 @@ public class SpringSecurityConfig {
               request.requestMatchers(routesToIgnore.toArray(new String[0])).permitAll();
 
               // Any other routes are.
+              // request.anyRequest().permitAll();
               request.anyRequest().fullyAuthenticated();
             })
         // Filter requests to check JWT and assert it matches an actual user.

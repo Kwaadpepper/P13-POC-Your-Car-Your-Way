@@ -3,6 +3,11 @@ server:
 
 debug: false
 
+eventbus:
+  rabbitmq:
+    exchange: support-chat-exchange
+    queue: support-chat-queue
+
 spring:
   datasource:
     url: ${DB_URL}

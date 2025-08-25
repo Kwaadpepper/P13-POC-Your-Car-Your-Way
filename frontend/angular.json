@@ -183,7 +183,8 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4200
+            "port": 4200,
+            "proxyConfig": "proxy.api.json"
           }
         },
         "lint": {
@@ -358,7 +359,8 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4201
+            "port": 4201,
+            "proxyConfig": "proxy.api.json"
           }
         }
       }
@@ -523,7 +525,8 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4202
+            "port": 4202,
+            "proxyConfig": "proxy.api.json"
           }
         }
       }
@@ -688,7 +691,8 @@
           },
           "defaultConfiguration": "development",
           "options": {
-            "port": 4203
+            "port": 4203,
+            "proxyConfig": "proxy.api.json"
           }
         }
       }

@@ -3,6 +3,7 @@ package com.ycyw.support.application.di;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.ycyw.shared.ddd.lib.DomainEventPublisher;
 import com.ycyw.support.domain.port.directory.ClientDirectory;
 import com.ycyw.support.domain.port.directory.ReservationDirectory;
 import com.ycyw.support.domain.port.repository.CompanyInformationRepository;
@@ -12,6 +13,7 @@ import com.ycyw.support.domain.port.repository.IssueRepository;
 import com.ycyw.support.domain.usecase.company.GetCompanyInfo;
 import com.ycyw.support.domain.usecase.conversation.CreateConversation;
 import com.ycyw.support.domain.usecase.conversation.GetAllConversation;
+import com.ycyw.support.domain.usecase.conversation.SendMessage;
 import com.ycyw.support.domain.usecase.faq.CreateFaq;
 import com.ycyw.support.domain.usecase.faq.GetAllFaq;
 import com.ycyw.support.domain.usecase.issue.CreateIssue;
@@ -63,8 +65,12 @@ public class SpringInjector {
       ConversationRepository conversationRepository) {
     return new GetAllIssue.Handler(
         issueRepository, clientDirectory, reservationDirectory, conversationRepository);
-      IssueRepository issueRepository) {
-    return new GetAllIssue.Handler(issueRepository, clientDirectory, reservationDirectory);
+  }
+
+  @Bean
+  SendMessage.Handler sendMessageHandler(
+      DomainEventPublisher domainEventPublisher, ConversationRepository conversationRepository) {
+    return new SendMessage.Handler(domainEventPublisher, conversationRepository);
   }
 
   // * OTHER DOMAIN SERVICES

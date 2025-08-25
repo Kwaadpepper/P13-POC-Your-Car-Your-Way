@@ -6,6 +6,11 @@ debug: false
 config:
   seed-data: true
 
+eventbus:
+  rabbitmq:
+    exchange: support-chat-exchange
+    queue: support-chat-queue
+
 spring:
   cloud:
   openfeign:

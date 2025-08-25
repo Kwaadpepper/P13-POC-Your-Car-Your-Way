@@ -9,7 +9,7 @@ import org.eclipse.jdt.annotation.Nullable;
 
 @Configuration
 @ConfigurationProperties(prefix = "security")
-public class PublicRoutesConfig {
+public class PublicRoutes {
   private List<String> publicRoutes = List.of();
 
   @Nullable public List<String> getPublicRoutes() {

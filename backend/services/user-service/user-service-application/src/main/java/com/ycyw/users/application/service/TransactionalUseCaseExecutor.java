@@ -3,6 +3,7 @@ package com.ycyw.users.application.service;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ycyw.shared.ddd.lib.DomainEvent;
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.lib.UseCaseHandler;
 import com.ycyw.shared.ddd.lib.UseCaseInput;
@@ -18,5 +19,11 @@ public class TransactionalUseCaseExecutor implements UseCaseExecutor {
   public <I extends UseCaseInput, O extends @Nullable UseCaseOutput> O execute(
       UseCaseHandler<I, O> useCaseHandler, I usecaseInput) {
     return useCaseHandler.handle(usecaseInput);
+  }
+
+  @Override
+  public void publish(DomainEvent<?> event) {
+    // eventsToPublish.add(event);
+    // domainEventPublisher.publish(event);
   }
 }

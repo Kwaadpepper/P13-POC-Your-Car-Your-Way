@@ -1,20 +1,15 @@
 package com.ycyw.users.application.service;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
 import com.ycyw.users.application.exception.exceptions.ServerErrorException;
+import com.ycyw.users.application.security.AuthenticatedUser;
 import com.ycyw.users.domain.usecase.session.VerifySession;
 
 import jakarta.annotation.Nullable;
@@ -74,23 +69,5 @@ public class AuthenticationService {
     throw new ServerErrorException(
         "Expected principal to be a '%s' instance given is '%s'"
             .formatted(AuthenticatedUser.class, principal.getClass()));
-  }
-
-  public record AuthenticatedUser(
-      UUID id, String username, JwtAccessToken jwtAccessToken, String role) implements UserDetails {
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return List.of();
-    }
-
-    @Override
-    public String getPassword() {
-      return jwtAccessToken.value();
-    }
-
-    @Override
-    public String getUsername() {
-      return username;
-    }
   }
 }

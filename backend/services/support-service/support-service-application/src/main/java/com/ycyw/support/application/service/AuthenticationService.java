@@ -1,23 +1,20 @@
 package com.ycyw.support.application.service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
 import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
 import com.ycyw.support.application.config.AppConfiguration;
 import com.ycyw.support.application.exception.exceptions.ServerErrorException;
+import com.ycyw.support.application.security.AuthenticatedUser;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -95,23 +92,5 @@ public class AuthenticationService {
 
   private SecretKey keyFromString(String base64String) {
     return Keys.hmacShaKeyFor(base64String.getBytes(StandardCharsets.UTF_8));
-  }
-
-  public record AuthenticatedUser(UUID id, JwtAccessToken jwtAccessToken, String role)
-      implements UserDetails {
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return List.of();
-    }
-
-    @Override
-    public String getPassword() {
-      return jwtAccessToken.value();
-    }
-
-    @Override
-    public String getUsername() {
-      return id.toString();
-    }
   }
 }

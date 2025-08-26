@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, OnDestroy, OnInit, signal } from '@angular/core'
+import { Component, computed, inject, input, OnDestroy, OnInit, signal } from '@angular/core'
 
 import { DividerModule } from 'primeng/divider'
 import { ScrollTopModule } from 'primeng/scrolltop'
@@ -65,17 +65,7 @@ export class ChatBox implements OnInit, OnDestroy {
     this._participants().filter(p => p.status === PresenceStatus.ONLINE).length,
   )
 
-  // Rejoin si l'Input conversation change après connexion
-  private readonly _rejoinEffect = effect(() => {
-    const id = this.conversation
-    if (!id || !this.isConnected()) return
-    this.join(id())
-  })
-
   ngOnInit() {
-    if (!this.user().id) throw new Error('ChatBox: user.id requis')
-    if (!this.conversation) throw new Error('ChatBox: conversation requis')
-
     this.connect()
       .then(() => this.join(this.conversation()))
       .catch(err => console.error('ChatBox: échec de la connexion', err))

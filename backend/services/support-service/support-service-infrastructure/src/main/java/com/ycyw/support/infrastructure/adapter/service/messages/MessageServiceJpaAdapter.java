@@ -22,7 +22,7 @@ public class MessageServiceJpaAdapter implements MessageService {
 
   @Override
   public List<Message> findAll(UUID conversation) {
-    return repo.findAll().stream().map(this::toDomain).toList();
+    return repo.findByConversationId(conversation).stream().map(this::toDomain).toList();
   }
 
   @Override

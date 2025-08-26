@@ -1,4 +1,4 @@
-package com.ycyw.support.infrastructure.adapter.repository.jpa;
+package com.ycyw.support.infrastructure.adapter.repository.jpa.compagnyinfo;
 
 import java.net.URI;
 import java.time.DayOfWeek;

@@ -1,4 +1,4 @@
-package com.ycyw.support.infrastructure.adapter.repository.jpa;
+package com.ycyw.support.infrastructure.adapter.repository.jpa.faq;
 
 import java.util.List;
 import java.util.UUID;

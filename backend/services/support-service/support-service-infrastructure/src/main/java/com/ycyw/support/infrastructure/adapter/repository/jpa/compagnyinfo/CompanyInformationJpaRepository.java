@@ -1,4 +1,4 @@
-package com.ycyw.support.infrastructure.adapter.repository.jpa;
+package com.ycyw.support.infrastructure.adapter.repository.jpa.compagnyinfo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

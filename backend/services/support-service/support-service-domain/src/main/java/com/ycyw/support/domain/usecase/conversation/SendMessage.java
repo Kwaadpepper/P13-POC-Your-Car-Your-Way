@@ -41,13 +41,16 @@ public sealed interface SendMessage {
         throw new DomainConstraintException("Conversation not found: " + conversationId);
       }
 
-      final var newMessage = new ConversationMessage(content, sender);
+      final var newMessage = new ConversationMessage(conversationId, content, sender);
 
       conversation.sendMessage(
           addedMessage -> {
             final var payload =
                 new MessageWasAddedToConversation.Message(
-                    addedMessage.getContent(), addedMessage.getSender());
+                    newMessage.getId(),
+                    conversationId,
+                    addedMessage.getContent(),
+                    addedMessage.getSender());
             final var event = new MessageWasAddedToConversation(payload);
 
             domainEventPublisher.publish(event);

@@ -1,6 +1,7 @@
 package com.ycyw.support.domain.event;
 
 import java.time.Instant;
+import java.util.UUID;
 
 import com.ycyw.shared.ddd.lib.event.DomainEvent;
 import com.ycyw.support.domain.event.MessageWasAddedToConversation.Message;
@@ -14,7 +15,7 @@ public class MessageWasAddedToConversation implements DomainEvent<Message> {
     this.payload = payload;
   }
 
-  public record Message(String content, MessageSender sender) {}
+  public record Message(UUID id, UUID conversation, String content, MessageSender sender) {}
 
   @Override
   public String routingKey() {

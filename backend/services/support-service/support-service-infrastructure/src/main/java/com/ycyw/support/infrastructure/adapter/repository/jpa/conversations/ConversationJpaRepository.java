@@ -1,4 +1,4 @@
-package com.ycyw.support.infrastructure.adapter.repository.jpa;
+package com.ycyw.support.infrastructure.adapter.repository.jpa.conversations;
 
 import java.util.Optional;
 import java.util.UUID;

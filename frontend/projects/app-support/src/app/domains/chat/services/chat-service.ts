@@ -2,7 +2,7 @@ import { Signal } from '@angular/core'
 
 import { Observable } from 'rxjs'
 
-import { PresenceEvent, TypingEvent } from '@ycyw/support-domains/events'
+import { JoinEvent, PresenceEvent, TypingEvent } from '@ycyw/support-domains/events'
 
 import { ChatMessage, ConversationId } from '../models'
 
@@ -10,6 +10,7 @@ export interface ChatService {
 
   readonly messages$: Observable<ChatMessage>
   readonly presence$: Observable<PresenceEvent>
+  readonly join$: Observable<JoinEvent>
   readonly typing$: Observable<TypingEvent>
   readonly history$: Observable<ChatMessage[]>
 

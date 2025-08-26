@@ -5,6 +5,7 @@ import { ChatTransport, Events, EventType, ServerEvent } from './chat/chat-trans
 type Unsub = () => void
 
 export type MessageEventPayload = Events[EventType.MESSAGE]['server']
+export type JoinEventPayload = Events[EventType.JOIN]['server']
 export type PresenceEventPayload = Events[EventType.PRESENCE]['server']
 export type TypingEventPayload = Events[EventType.TYPING]['server']
 export type HistoryEventPayload = Events[EventType.HISTORY]['server']
@@ -53,6 +54,12 @@ export class ChatClient {
   onMessage(cb: (m: MessageEventPayload) => void): Unsub {
     return this.transport.onEvent((evt: ServerEvent) => {
       if (evt.type === EventType.MESSAGE) cb(evt.payload)
+    })
+  }
+
+  onJoin(cb: (m: JoinEventPayload) => void): Unsub {
+    return this.transport.onEvent((evt: ServerEvent) => {
+      if (evt.type === EventType.JOIN) cb(evt.payload)
     })
   }
 

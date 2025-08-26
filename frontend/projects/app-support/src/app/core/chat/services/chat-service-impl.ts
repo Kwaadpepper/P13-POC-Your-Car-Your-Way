@@ -3,18 +3,20 @@ import { computed, inject, Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
 import { z, ZodError, ZodSchema } from 'zod'
 
+import joinSchema from '@ycyw/support-core/api/schemas/join-schema'
 import messageHistorySchema from '@ycyw/support-core/api/schemas/message-history-schema'
 import messageSchema from '@ycyw/support-core/api/schemas/message-schema'
 import presenceEventSchema from '@ycyw/support-core/api/schemas/presence-event-schema'
 import typingEventSchema from '@ycyw/support-core/api/schemas/typing-event-schema'
 import { ChatMessage, ConversationId } from '@ycyw/support-domains/chat/models'
 import { ChatService } from '@ycyw/support-domains/chat/services'
-import { PresenceEvent, TypingEvent } from '@ycyw/support-domains/events'
+import { JoinEvent, PresenceEvent, TypingEvent } from '@ycyw/support-domains/events'
 import { CHAT_TRANSPORT } from '@ycyw/support-tokens/chat-transport-token'
 
 import { ChatClient } from '../libs'
 import {
   HistoryEventPayload,
+  JoinEventPayload,
   MessageEventPayload,
   PresenceEventPayload,
   TypingEventPayload,
@@ -28,11 +30,13 @@ export class ChatServiceImpl implements ChatService {
   private readonly client: ChatClient
 
   private readonly messagesSub = new Subject<ChatMessage>()
+  private readonly joinSub = new Subject<JoinEvent>()
   private readonly presenceSub = new Subject<PresenceEvent>()
   private readonly typingSub = new Subject<TypingEvent>()
   private readonly historySub = new Subject<ChatMessage[]>()
 
   readonly messages$ = this.messagesSub.asObservable()
+  readonly join$ = this.joinSub.asObservable()
   readonly presence$ = this.presenceSub.asObservable()
   readonly typing$ = this.typingSub.asObservable()
   readonly history$ = this.historySub.asObservable()
@@ -44,6 +48,7 @@ export class ChatServiceImpl implements ChatService {
     this.client = new ChatClient(transport)
 
     this.client.onMessage(m => this.messagesSub.next(this.mapToChatMessage(m)))
+    this.client.onJoin(j => this.joinSub.next(this.mapToJoinEvent(j)))
     this.client.onPresence(p => this.presenceSub.next(this.mapPresenceEvent(p)))
     this.client.onTyping(t => this.typingSub.next(this.mapTypingEvent(t)))
     this.client.onHistory(h => this.historySub.next(this.mapToHistoryChatMessage(h)))
@@ -82,6 +87,17 @@ export class ChatServiceImpl implements ChatService {
 
     if (parsed.errors !== null) {
       console.error('Failed to parse message payload:', parsed.errors, payload)
+      throw new Error('Invalid message payload')
+    }
+
+    return parsed.validated
+  }
+
+  private mapToJoinEvent(payload: JoinEventPayload): JoinEvent {
+    const parsed = this.validateRequest(joinSchema, payload)
+
+    if (parsed.errors !== null) {
+      console.error('Failed to parse join payload:', parsed.errors, payload)
       throw new Error('Invalid message payload')
     }
 

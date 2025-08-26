@@ -59,8 +59,6 @@ export class ChatServiceImpl implements ChatService {
 
   join(conversationId: ConversationId) {
     this.client.join(conversationId)
-    // Optionnel: charger l'historique dès le join
-    this.client.getHistory(conversationId, 50)
   }
 
   leave(conversationId: ConversationId) {

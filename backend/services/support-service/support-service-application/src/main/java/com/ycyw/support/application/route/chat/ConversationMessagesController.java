@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
@@ -56,15 +55,19 @@ public class ConversationMessagesController {
 
   // HISTORY
   @MessageMapping("/history")
-  @SendToUser("/queue/history")
-  public Map<String, Object> history(HistoryPayload payload, SimpMessageHeaderAccessor headers) {
+  public void history(HistoryPayload payload, SimpMessageHeaderAccessor headers) {
 
     final var conversation = payload.conversation();
     final var messages =
         chatRoomService.getAllMessages(conversation).stream().map(this::toDto).toList();
 
-    return Map.of(
-        "type", "history", "payload", Map.of("conversation", conversation, "messages", messages));
+    messaging.convertAndSend(
+        CONVERSATION_TOPIC + conversation.toString(),
+        Map.of(
+            "type",
+            "history",
+            "payload",
+            Map.of("conversation", conversation, "messages", messages)));
   }
 
   private MessageDto toDto(ChatMessage message) {

@@ -3,6 +3,7 @@ package com.ycyw.support.application.service.chat;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,56 +42,91 @@ public class ChatRoomService {
   /** Add a message to the conversation. */
   public ChatMessage addMessage(
       UUID conversation, UUID userId, String role, String text, ZonedDateTime sentAt) {
+    startConversationIfNeeded(conversation);
 
+    // Send message to conversation service (persist)
     final var newMessageId =
         conversationService.sendMessage(conversation, text, userId, mapToUserRole(role));
 
-    final var chatMessage = new ChatMessage(newMessageId, conversation, userId, role, text, sentAt);
-
     // In-memory storage
-    messagesByRoom
-        .computeIfAbsent(conversation, k -> new CopyOnWriteArrayList<>())
-        .add(chatMessage);
+    final var chatMessage = new ChatMessage(newMessageId, conversation, userId, role, text, sentAt);
+    rememberMessage(conversation, chatMessage);
 
     return chatMessage;
   }
 
   /** Return all messages for a conversation (snapshot). */
   public List<ChatMessage> getAllMessages(UUID conversation) {
-    final var conversationMessages =
-        conversationService.getAllMessages(conversation).stream()
-            .map(m -> mapToChatMessage(conversation, m))
-            .toList();
+    startConversationIfNeeded(conversation);
 
     return Collections.unmodifiableList(
-        new ArrayList<>(messagesByRoom.getOrDefault(conversation, conversationMessages)));
+        new ArrayList<>(messagesByRoom.getOrDefault(conversation, List.of())));
   }
 
   // --- Participants operations ---
 
   /** Add a participant (presence) to a conversation. */
   public void addParticipant(UUID conversation, UserPresence presence) {
-    roomParticipants
-        .computeIfAbsent(conversation, k -> ConcurrentHashMap.newKeySet())
-        .add(presence);
+    @Nullable final Set<UserPresence> participants = roomParticipants.get(conversation);
+
+    if (participants == null) {
+      final var newParticipants = new HashSet<UserPresence>();
+      newParticipants.add(presence);
+      roomParticipants.put(conversation, newParticipants);
+      return;
+    }
+
+    participants.add(presence);
+    roomParticipants.put(conversation, participants);
   }
 
   /** Remove participant by user id. */
   public void removeParticipant(UUID conversation, UUID userId) {
-    @Nullable final Set<UserPresence> set = roomParticipants.get(conversation);
-    if (set == null) {
+    @Nullable final Set<UserPresence> participants = roomParticipants.get(conversation);
+    if (participants == null) {
       return;
     }
-    set.removeIf(p -> p.user().equals(userId));
+    participants.removeIf(p -> p.user().equals(userId));
   }
 
   /** Return participants snapshot for a conversation. */
   public Set<UserPresence> getParticipants(UUID conversation) {
-    @Nullable final Set<UserPresence> set = roomParticipants.get(conversation);
-    if (set == null) {
+    @Nullable final Set<UserPresence> participants = roomParticipants.get(conversation);
+
+    if (participants == null) {
       return Set.of();
     }
-    return Collections.unmodifiableSet(Set.copyOf(set));
+
+    return Collections.unmodifiableSet(Set.copyOf(participants));
+  }
+
+  private void startConversationIfNeeded(UUID conversationId) {
+    if (!messagesByRoom.containsKey(conversationId)) {
+      final var messages = fetchAllMesagesForConversation(conversationId);
+      messagesByRoom.put(conversationId, new CopyOnWriteArrayList<>(messages));
+    }
+  }
+
+  private void rememberMessage(UUID conversationId, ChatMessage message) {
+    final var conversationMessages = getRememberedMessages(conversationId);
+    conversationMessages.add(message);
+    messagesByRoom.put(conversationId, conversationMessages);
+  }
+
+  private List<ChatMessage> getRememberedMessages(UUID conversationId) {
+    return messagesByRoom.getOrDefault(conversationId, List.of());
+  }
+
+  private List<ChatMessage> fetchAllMesagesForConversation(UUID conversationId) {
+    final var conversationMessages = conversationService.getAllMessages(conversationId);
+
+    if (conversationMessages == null) {
+      return List.of();
+    }
+
+    return Collections.unmodifiableList(
+        new ArrayList<>(
+            conversationMessages.stream().map(m -> mapToChatMessage(conversationId, m)).toList()));
   }
 
   // --- Data types ---

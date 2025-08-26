@@ -1,8 +1,6 @@
 package com.ycyw.support.application.route.chat;
 
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -10,7 +8,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
-import com.ycyw.shared.utils.UuidV7;
 import com.ycyw.support.application.security.AuthenticatedUser;
 
 import org.slf4j.Logger;
@@ -60,18 +57,6 @@ public class ConversationTypingController {
                 conversation,
                 "typing",
                 payload.isTyping())));
-  }
-
-  // Helpers: à adapter selon ton auth
-  private UUID getUserId(SimpMessageHeaderAccessor headers) {
-    // À adapter selon JWT ou session
-    return UUID.fromString(
-        Optional.ofNullable(headers.getSessionId()).orElse(UuidV7.randomUuid().toString()));
-  }
-
-  private String getRole(SimpMessageHeaderAccessor headers) {
-    // À adapter selon JWT ou session
-    return "client";
   }
 
   public record TypingPayload(String conversation, boolean isTyping) {}

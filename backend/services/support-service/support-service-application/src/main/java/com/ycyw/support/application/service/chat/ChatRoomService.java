@@ -8,8 +8,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.stereotype.Component;
+
+import com.ycyw.support.application.service.chat.ConversationService.ConversationMessage;
+import com.ycyw.support.application.service.chat.ConversationService.UserRole;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -23,46 +27,43 @@ import org.eclipse.jdt.annotation.Nullable;
  */
 @Component
 public class ChatRoomService {
+  private final ConversationService conversationService;
 
-  private final Map<UUID, List<MessageEventPayload>> messagesByRoom = new ConcurrentHashMap<>();
+  private final Map<UUID, List<ChatMessage>> messagesByRoom = new ConcurrentHashMap<>();
   private final Map<UUID, Set<UserPresence>> roomParticipants = new ConcurrentHashMap<>();
 
-  // --- Models used by controller / service consumers ---
-
-  public static record MessageEventPayload(
-      UUID id, UUID conversation, User from, String text, ZonedDateTime sentAt) {}
-
-  public static record User(UUID id, String name, String role) {}
-
-  public static record UserPresence(UUID user, String role, String status) {}
+  public ChatRoomService(ConversationService conversationService) {
+    this.conversationService = conversationService;
+  }
 
   // --- Messages operations ---
 
   /** Add a message to the conversation. */
-  public void addMessage(UUID conversation, MessageEventPayload msg) {
+  public ChatMessage addMessage(
+      UUID conversation, UUID userId, String role, String text, ZonedDateTime sentAt) {
+
+    final var newMessageId =
+        conversationService.sendMessage(conversation, text, userId, mapToUserRole(role));
+
+    final var chatMessage = new ChatMessage(newMessageId, conversation, userId, role, text, sentAt);
+
+    // In-memory storage
     messagesByRoom
-        .computeIfAbsent(conversation, k -> new java.util.concurrent.CopyOnWriteArrayList<>())
-        .add(msg);
+        .computeIfAbsent(conversation, k -> new CopyOnWriteArrayList<>())
+        .add(chatMessage);
+
+    return chatMessage;
   }
 
   /** Return all messages for a conversation (snapshot). */
-  public List<MessageEventPayload> getAllMessages(String conversation) {
-    @Nullable final List<MessageEventPayload> list = messagesByRoom.get(conversation);
-    if (list == null) {
-      return List.of();
-    }
-    return Collections.unmodifiableList(new ArrayList<>(list));
-  }
+  public List<ChatMessage> getAllMessages(UUID conversation) {
+    final var conversationMessages =
+        conversationService.getAllMessages(conversation).stream()
+            .map(m -> mapToChatMessage(conversation, m))
+            .toList();
 
-  /** Return the last 'limit' messages for a conversation. */
-  public List<MessageEventPayload> getLastMessages(UUID conversation, int limit) {
-    @Nullable final List<MessageEventPayload> all = messagesByRoom.getOrDefault(conversation, List.of());
-    if (all.isEmpty()) {
-      return List.of();
-    }
-    final int size = all.size();
-    final int from = Math.max(0, size - limit);
-    return Collections.unmodifiableList(new ArrayList<>(all.subList(from, size)));
+    return Collections.unmodifiableList(
+        new ArrayList<>(messagesByRoom.getOrDefault(conversation, conversationMessages)));
   }
 
   // --- Participants operations ---
@@ -90,5 +91,37 @@ public class ChatRoomService {
       return Set.of();
     }
     return Collections.unmodifiableSet(Set.copyOf(set));
+  }
+
+  // --- Data types ---
+
+  public static record UserPresence(UUID user, String role, String status) {}
+
+  public static record ChatMessage(
+      UUID id, UUID conversation, UUID user, String role, String text, ZonedDateTime sentAt) {}
+
+  private ChatMessage mapToChatMessage(UUID conversationId, ConversationMessage message) {
+    return new ChatMessage(
+        message.id(),
+        conversationId,
+        message.userId(),
+        mapToRole(message.role()),
+        message.text(),
+        message.sentAt());
+  }
+
+  private UserRole mapToUserRole(String role) {
+    return switch (role.toLowerCase()) {
+      case "client" -> UserRole.CLIENT;
+      case "operator" -> UserRole.OPERATOR;
+      default -> throw new IllegalArgumentException("Unknown role: " + role);
+    };
+  }
+
+  private String mapToRole(UserRole role) {
+    return switch (role) {
+      case CLIENT -> "client";
+      case OPERATOR -> "operator";
+    };
   }
 }

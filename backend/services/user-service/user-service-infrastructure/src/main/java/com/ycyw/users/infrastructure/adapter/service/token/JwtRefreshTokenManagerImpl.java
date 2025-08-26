@@ -14,14 +14,15 @@ import com.ycyw.users.infrastructure.storage.KeyStorage;
 import org.eclipse.jdt.annotation.Nullable;
 
 public class JwtRefreshTokenManagerImpl implements JwtRefreshTokenManager {
-  private static final String REFRESH_PREFIX = "refresh:";
-
   private final JwtTokenProcessor jwtTokenProcessor;
   private final KeyStorage keyStorage;
+  private final String refreshPrefix;
 
-  public JwtRefreshTokenManagerImpl(JwtTokenProcessor jwtTokenProcessor, KeyStorage keyStorage) {
+  public JwtRefreshTokenManagerImpl(
+      JwtTokenProcessor jwtTokenProcessor, KeyStorage keyStorage, String refreshPrefix) {
     this.jwtTokenProcessor = jwtTokenProcessor;
     this.keyStorage = keyStorage;
+    this.refreshPrefix = refreshPrefix;
   }
 
   @Override
@@ -89,7 +90,7 @@ public class JwtRefreshTokenManagerImpl implements JwtRefreshTokenManager {
       // Si l'extraction a échoué, on parcourt toutes les clés pour supprimer les tokens
       // correspondants
       keyStorage
-          .listKeys(REFRESH_PREFIX + "*")
+          .listKeys(refreshPrefix + "*")
           .forEach(
               key -> {
                 @Nullable String stored = keyStorage.retrieve(key);
@@ -115,8 +116,8 @@ public class JwtRefreshTokenManagerImpl implements JwtRefreshTokenManager {
     return stored == null || !stored.equals(token.value());
   }
 
-  private static String refreshKey(RefreshTokenSubject subject) {
-    return REFRESH_PREFIX + subject.value().toString();
+  private String refreshKey(RefreshTokenSubject subject) {
+    return refreshPrefix + subject.value().toString();
   }
 
   private static JwtTokenProcessor.JwtToken toJwtToken(JwtRefreshToken token) {

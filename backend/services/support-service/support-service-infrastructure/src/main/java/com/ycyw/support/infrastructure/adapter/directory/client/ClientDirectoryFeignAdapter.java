@@ -1,4 +1,4 @@
-package com.ycyw.support.infrastructure.adapter.client.client;
+package com.ycyw.support.infrastructure.adapter.directory.client;
 
 import com.ycyw.annotation.annotations.Directory;
 import com.ycyw.shared.ddd.objectvalues.Address;
@@ -26,7 +26,7 @@ public class ClientDirectoryFeignAdapter implements ClientDirectory {
   }
 
   @Override
-  public @Nullable Client findById(ClientId id) {
+  public @Nullable Client find(ClientId id) {
     try {
       ClientDto payload = client.getClientByUuidOrEmail(id.value().toString());
 

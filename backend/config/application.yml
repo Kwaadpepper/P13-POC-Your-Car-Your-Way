@@ -16,6 +16,10 @@ jwt:
     # Expiration time in seconds (default: 25200s = 7 hours)
     expiration: ${JWT_REFRESH_EXPIRATION:25200}
 
+keystorage:
+  revoked_token_prefix: ${KEYSTORAGE_REVOKED_TOKEN_PREFIX:revoked_token:}
+  refresh_token_prefix: ${KEYSTORAGE_USER_REFRESH_TOKEN_PREFIX:refresh_token:}
+
 server:
   cors:
     allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:8080}

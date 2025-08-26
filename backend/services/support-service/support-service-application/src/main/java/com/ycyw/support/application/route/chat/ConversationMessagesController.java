@@ -11,11 +11,9 @@ import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
-import com.ycyw.shared.utils.UuidV7;
 import com.ycyw.support.application.security.AuthenticatedUser;
 import com.ycyw.support.application.service.chat.ChatRoomService;
-import com.ycyw.support.application.service.chat.ChatRoomService.MessageEventPayload;
-import com.ycyw.support.application.service.chat.ChatRoomService.User;
+import com.ycyw.support.application.service.chat.ChatRoomService.ChatMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,18 +46,12 @@ public class ConversationMessagesController {
     logger.debug(
         "User {} with role {} sent message to conversation {}", userId, role, conversation);
 
-    MessageEventPayload msg =
-        new MessageEventPayload(
-            UuidV7.randomUuid(),
-            conversation,
-            new User(userId, "toto", role),
-            payload.text(),
-            ZonedDateTime.now());
-
-    chatRoomService.addMessage(conversation, msg);
+    final var newMessage =
+        chatRoomService.addMessage(conversation, userId, role, payload.text(), ZonedDateTime.now());
 
     messaging.convertAndSend(
-        CONVERSATION_TOPIC + conversation.toString(), Map.of("type", "message", "payload", msg));
+        CONVERSATION_TOPIC + conversation.toString(),
+        Map.of("type", "message", "payload", toDto(newMessage)));
   }
 
   // HISTORY
@@ -68,17 +60,38 @@ public class ConversationMessagesController {
   public Map<String, Object> history(HistoryPayload payload, SimpMessageHeaderAccessor headers) {
 
     final var conversation = payload.conversation();
-    final var slice =
-        chatRoomService.getLastMessages(
-            conversation, payload.limit() != null ? payload.limit() : 50);
+    final var messages =
+        chatRoomService.getAllMessages(conversation).stream().map(this::toDto).toList();
 
     return Map.of(
-        "type", "history", "payload", Map.of("conversation", conversation, "messages", slice));
+        "type", "history", "payload", Map.of("conversation", conversation, "messages", messages));
   }
 
-  // Payload DTOs (kept as controller-local because they are request payloads)
+  private MessageDto toDto(ChatMessage message) {
+    return new MessageDto(
+        message.id(),
+        message.conversation(),
+        new MessageDto.UserDto(message.user(), message.role()),
+        message.text(),
+        message.sentAt());
+  }
+
+  // PAYLOADS
+
+  public record MessageEventPayload(
+      UUID conversation, UserPayload from, String text, ZonedDateTime sentAt) {}
+
+  public record UserPayload(UUID id, String role) {}
 
   public record SendPayload(UUID conversation, String text) {}
 
   public record HistoryPayload(UUID conversation, Integer limit) {}
+
+  // DTO
+
+  public static record MessageDto(
+      UUID id, UUID conversation, UserDto from, String text, ZonedDateTime sentAt) {
+
+    public static record UserDto(UUID id, String role) {}
+  }
 }

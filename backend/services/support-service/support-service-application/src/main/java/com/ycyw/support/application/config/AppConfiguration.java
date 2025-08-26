@@ -14,11 +14,14 @@ public class AppConfiguration {
   private final String jwtCookieName;
   private final String jwtSecretKey;
 
+  private final String accessStoragePrefix;
+
   AppConfiguration(
       @Value("${spring.application.name}") @Nullable final String appName,
       @Value("${jwt.issuer}") @Nullable final String jwtIssuer,
       @Value("${jwt.cookie.name}") @Nullable final String jwtCookieName,
-      @Value("${jwt.secret_key}") @Nullable final String jwtSecretKey) {
+      @Value("${jwt.secret_key}") @Nullable final String jwtSecretKey,
+      @Value("${keystorage.revoked_token_prefix}") @Nullable final String accessRevokedPrefix) {
 
     if (jwtSecretKey == null) {
       throw new IllegalStateException("Property 'jwt.secret_key' has to be set");
@@ -32,6 +35,8 @@ public class AppConfiguration {
     this.jwtIssuer = assertNotEmpty(jwtIssuer, "jwt.issuer");
     this.jwtCookieName = assertNotEmpty(jwtCookieName, "jwt.cookie.name");
     this.jwtSecretKey = assertNotEmpty(jwtSecretKey, "jwt.secret_key");
+    this.accessStoragePrefix =
+        assertNotEmpty(accessRevokedPrefix, "keystorage.revoked_token_prefix");
   }
 
   public String getAppName() {
@@ -48,6 +53,10 @@ public class AppConfiguration {
 
   public String getJwtSecretKey() {
     return jwtSecretKey;
+  }
+
+  public String getAccessStoragePrefix() {
+    return accessStoragePrefix;
   }
 
   private final String assertNotEmpty(@Nullable String value, String property) {

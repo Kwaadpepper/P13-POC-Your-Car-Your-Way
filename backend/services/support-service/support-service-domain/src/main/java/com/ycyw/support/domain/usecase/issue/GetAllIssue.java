@@ -201,7 +201,7 @@ public sealed interface GetAllIssue {
 
       Map<ClientId, Client> output = new HashMap<>();
       for (ClientId id : idSet) {
-        @Nullable Client client = clientDirectory.findById(id);
+        @Nullable Client client = clientDirectory.find(id);
         if (client != null) {
           output.put(id, client);
         }

@@ -15,6 +15,7 @@ import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
 import com.ycyw.support.application.config.AppConfiguration;
 import com.ycyw.support.application.exception.exceptions.ServerErrorException;
 import com.ycyw.support.application.security.AuthenticatedUser;
+import com.ycyw.support.infrastructure.storage.KeyStorage;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,9 +32,14 @@ public class AuthenticationService {
   private final String jwtIssuer;
   private final SecretKey jwtSigningKey;
 
-  public AuthenticationService(AppConfiguration appConfiguration) {
+  private final KeyStorage keyStorage;
+  private final String revokedAccessPrefix;
+
+  public AuthenticationService(AppConfiguration appConfiguration, KeyStorage keyStorage) {
     this.jwtIssuer = appConfiguration.getJwtIssuer();
     this.jwtSigningKey = keyFromString(appConfiguration.getJwtSecretKey());
+    this.keyStorage = keyStorage;
+    this.revokedAccessPrefix = appConfiguration.getAccessStoragePrefix();
   }
 
   public @Nullable AuthenticatedUser getAuthenticated() {
@@ -50,6 +56,10 @@ public class AuthenticationService {
   public AuthenticatedUser authenticate(final JwtAccessToken accessToken)
       throws BadCredentialsException {
     try {
+      if (keyStorage.retrieve(revokedAccessPrefix + accessToken.value()) != null) {
+        throw new BadCredentialsException("Token has been revoked");
+      }
+
       final var claims = extractAllClaims(accessToken);
       final var userId = UUID.fromString(claims.getSubject());
       @Nullable final String role = claims.get("role", String.class);

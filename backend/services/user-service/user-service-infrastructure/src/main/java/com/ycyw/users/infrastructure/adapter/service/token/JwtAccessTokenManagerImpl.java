@@ -15,14 +15,16 @@ import com.ycyw.users.infrastructure.storage.KeyStorage;
 import org.eclipse.jdt.annotation.Nullable;
 
 public class JwtAccessTokenManagerImpl implements JwtAccessTokenManager {
-  private static final String REVOKED_ACCESS_PREFIX = "revoked:access:";
 
   private final JwtTokenProcessor jwtTokenProcessor;
   private final KeyStorage keyStorage;
+  private final String revokedAccessPrefix;
 
-  public JwtAccessTokenManagerImpl(JwtTokenProcessor jwtTokenProcessor, KeyStorage keyStorage) {
+  public JwtAccessTokenManagerImpl(
+      JwtTokenProcessor jwtTokenProcessor, KeyStorage keyStorage, String revokedAccessPrefix) {
     this.jwtTokenProcessor = jwtTokenProcessor;
     this.keyStorage = keyStorage;
+    this.revokedAccessPrefix = revokedAccessPrefix;
   }
 
   @Override
@@ -90,8 +92,8 @@ public class JwtAccessTokenManagerImpl implements JwtAccessTokenManager {
     return (revoked != null && !revoked.isEmpty());
   }
 
-  private static String revokedKey(JwtAccessToken token) {
-    return REVOKED_ACCESS_PREFIX + token.value();
+  private String revokedKey(JwtAccessToken token) {
+    return revokedAccessPrefix + token.value();
   }
 
   private static JwtTokenProcessor.JwtToken toJwtToken(JwtAccessToken token) {

@@ -123,8 +123,9 @@ public class SpringInjector {
     final var jwtTokenExpiration = appConfiguration.getJwtTokenExpiration();
     final var jwtTokenProcessor =
         new JwtTokenProcessorImpl(jwtTokenExpiration, jwtSecretKey, jwtIssuer);
+    final var revokedAccessPrefix = appConfiguration.getJwtAccessRevokedStoragePrefix();
 
-    return new JwtAccessTokenManagerImpl(jwtTokenProcessor, keyStorage);
+    return new JwtAccessTokenManagerImpl(jwtTokenProcessor, keyStorage, revokedAccessPrefix);
   }
 
   @Bean
@@ -134,8 +135,9 @@ public class SpringInjector {
     final var jwtRefreshExpiration = appConfiguration.getJwtRefreshExpiration();
     final var jwtTokenProcessor =
         new JwtTokenProcessorImpl(jwtRefreshExpiration, jwtSecretKey, jwtIssuer);
+    final var refreshPrefix = appConfiguration.getJwtRefreshStoragePrefix();
 
-    return new JwtRefreshTokenManagerImpl(jwtTokenProcessor, keyStorage);
+    return new JwtRefreshTokenManagerImpl(jwtTokenProcessor, keyStorage, refreshPrefix);
   }
 
   // * MISCELLANEOUS

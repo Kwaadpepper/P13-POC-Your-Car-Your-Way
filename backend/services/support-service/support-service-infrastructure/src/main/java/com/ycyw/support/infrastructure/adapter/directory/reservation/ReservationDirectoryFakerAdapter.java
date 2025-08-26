@@ -1,4 +1,4 @@
-package com.ycyw.support.infrastructure.adapter.client.reservation;
+package com.ycyw.support.infrastructure.adapter.directory.reservation;
 
 import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;

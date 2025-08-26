@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core'
+import { computed, inject, Injectable } from '@angular/core'
 
 import { Subject } from 'rxjs'
 import { z, ZodError, ZodSchema } from 'zod'
@@ -36,6 +36,8 @@ export class ChatServiceImpl implements ChatService {
   readonly presence$ = this.presenceSub.asObservable()
   readonly typing$ = this.typingSub.asObservable()
   readonly history$ = this.historySub.asObservable()
+
+  readonly isOnline = computed(() => this.client.connectionStatus() === 'connected')
 
   constructor() {
     const transport = inject(CHAT_TRANSPORT)

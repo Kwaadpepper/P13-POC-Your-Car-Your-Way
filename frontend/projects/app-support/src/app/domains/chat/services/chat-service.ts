@@ -1,3 +1,5 @@
+import { Signal } from '@angular/core'
+
 import { Observable } from 'rxjs'
 
 import { PresenceEvent, TypingEvent } from '@ycyw/support-domains/events'
@@ -10,6 +12,8 @@ export interface ChatService {
   readonly presence$: Observable<PresenceEvent>
   readonly typing$: Observable<TypingEvent>
   readonly history$: Observable<ChatMessage[]>
+
+  readonly isOnline: Signal<boolean>
 
   connect(): Promise<void>
 

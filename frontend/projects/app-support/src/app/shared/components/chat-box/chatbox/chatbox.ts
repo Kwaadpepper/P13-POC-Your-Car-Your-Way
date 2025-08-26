@@ -51,13 +51,13 @@ export class ChatBox implements OnInit, OnDestroy {
   readonly conversation = input.required<UUID>()
 
   // State (signals locaux)
-  private readonly _connected = signal(false)
   private readonly _conversationId = signal<UUID | null>(null)
   private readonly _messages = signal<ChatBoxMessage[]>([])
   private readonly _participants = signal<ChatBoxParticipant[]>([])
   private readonly _typingUsers = signal<ChatBoxTypingUser[]>([])
 
   // Sélecteurs exposés
+  readonly isConnected = computed(() => this.chatService.isOnline())
   readonly messages = this._messages.asReadonly()
   readonly participants = this._participants.asReadonly()
   readonly typingUsers = this._typingUsers.asReadonly()
@@ -68,7 +68,7 @@ export class ChatBox implements OnInit, OnDestroy {
   // Rejoin si l'Input conversation change après connexion
   private readonly _rejoinEffect = effect(() => {
     const id = this.conversation
-    if (!id || !this._connected()) return
+    if (!id || !this.isConnected()) return
     this.join(id())
   })
 
@@ -83,7 +83,7 @@ export class ChatBox implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.leave()
-    if (this._connected()) this.chatService.disconnect()
+    if (this.isConnected()) this.chatService.disconnect()
   }
 
   /* Actions UI (reliées aux composants enfants) */
@@ -101,10 +101,9 @@ export class ChatBox implements OnInit, OnDestroy {
 
   /* Connexion + flux */
   private async connect() {
-    if (this._connected()) return
+    if (this.isConnected()) return
     await this.chatService.connect()
     this.bindStreams()
-    this._connected.set(true)
   }
 
   private bindStreams() {

@@ -20,13 +20,47 @@ export class StompWebSocketTransport implements ChatTransport {
   private connectPromise?: Promise<void>
   private readonly pendingQueue: ClientCommand[] = []
 
+  private readonly connectionChangeHandlers = new Set<(status: boolean) => void>()
+
   constructor(url: string) {
     this.client = new Client({
       brokerURL: url,
       reconnectDelay: 500,
-      onConnect: () => this.onConnect(),
+      onConnect: () => {
+        console.log('[STOMP] client connected.')
+
+        this.subscribeToPendingConversations()
+        this.flushPendingQueue()
+
+        // (Re)créer les subscriptions pour les conversations voulues
+        this.subscribeToPendingConversations()
+        // flushPendingQueue est appelé depuis la Promise connect() pour garantir l'ordre
+        this.connectionChangeHandlers.forEach(cb => cb(true))
+      },
+      onDisconnect: () => {
+        console.debug('[STOMP] client disconnected.')
+        this.connectionChangeHandlers.forEach(cb => cb(false))
+      },
+      onWebSocketClose: () => {
+        console.debug('[STOMP] websocket closed.')
+        this.unsubscribeFromEvents()
+        this.connectPromise = undefined
+        if (!this.intendedDisconnect) {
+          // stompjs gèrera la reconnexion selon reconnectDelay
+        }
+        this.connectionChangeHandlers.forEach(cb => cb(false))
+      },
+      onWebSocketError: (evt) => {
+        console.error('[STOMP] websocket error', evt)
+      },
       onStompError: frame => console.error('Broker reported error:', frame.headers?.['message']),
     })
+  }
+
+  onConnectionChange(cb: (status: boolean) => void): void {
+    this.connectionChangeHandlers.add(cb)
+    // appel immédiat avec le statut actuel
+    cb(this.isConnected())
   }
 
   async connect(): Promise<void> {
@@ -41,33 +75,6 @@ export class StompWebSocketTransport implements ChatTransport {
     }
 
     this.client.activate()
-
-    this.connectPromise = new Promise<void>((resolve) => {
-      this.client.onWebSocketClose = () => {
-        console.log('[STOMP] websocket closed')
-        this.unsubscribeFromEvents()
-        this.connectPromise = undefined
-        if (!this.intendedDisconnect) {
-          // stompjs gèrera la reconnexion selon reconnectDelay
-        }
-      }
-
-      const originalOnConnect = this.client.onConnect
-      this.client.onConnect = (frame) => {
-        try {
-          if (originalOnConnect) {
-            originalOnConnect(frame)
-          }
-        }
-        catch (e) {
-          console.warn('[STOMP] original onConnect error', e)
-        }
-
-        this.subscribeToPendingConversations()
-        this.flushPendingQueue()
-        resolve()
-      }
-    })
 
     return this.connectPromise
   }
@@ -147,13 +154,6 @@ export class StompWebSocketTransport implements ChatTransport {
         this.safePublish(destination, cmd)
       }
     }
-  }
-
-  private onConnect() {
-    console.log('STOMP client connected.')
-    // (Re)créer les subscriptions pour les conversations voulues
-    this.subscribeToPendingConversations()
-    // flushPendingQueue est appelé depuis la Promise connect() pour garantir l'ordre
   }
 
   private subscribeToConversation(conversationId: string) {

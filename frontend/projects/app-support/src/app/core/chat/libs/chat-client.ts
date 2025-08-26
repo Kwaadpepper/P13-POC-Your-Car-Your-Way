@@ -1,3 +1,5 @@
+import { signal } from '@angular/core'
+
 import { ChatTransport, Events, EventType, ServerEvent } from './chat/chat-transport'
 
 type Unsub = () => void
@@ -9,12 +11,18 @@ export type HistoryEventPayload = Events[EventType.HISTORY]['server']
 
 export class ChatClient {
   private readonly transport: ChatTransport
+  readonly connectionStatus = signal<'connected' | 'disconnected' | 'connecting'>('disconnected')
 
   constructor(transport: ChatTransport) {
     this.transport = transport
+    this.transport.onConnectionChange((status) => {
+      console.log('Connection status changed:', status ? 'connected' : 'disconnected')
+      this.connectionStatus.set(status ? 'connected' : 'disconnected')
+    })
   }
 
   async connect() {
+    this.connectionStatus.set('connecting')
     await this.transport.connect()
   }
 

@@ -15,6 +15,7 @@ export class WebSocketTransport implements ChatTransport {
   private ws?: WebSocket
   private intendedClose = false
   private reconnectDelayMs = 500 // Ms
+  private readonly connectionChangeHandlers = new Set<(status: boolean) => void>()
 
   constructor(url: string) {
     this.url = url
@@ -39,6 +40,11 @@ export class WebSocketTransport implements ChatTransport {
       ws.onclose = this.onClose.bind(this)
       ws.onerror = err => console.error('WebSocket error:', err)
     })
+  }
+
+  onConnectionChange(cb: (status: boolean) => void): void {
+    this.connectionChangeHandlers.add(cb)
+    cb(this.isConnected())
   }
 
   async disconnect() {
@@ -92,6 +98,7 @@ export class WebSocketTransport implements ChatTransport {
       this.safeSend(cmd)
     }
     this.reconnectDelayMs = 500
+    this.connectionChangeHandlers.forEach(cb => cb(true))
   }
 
   private onMessage(evt: MessageEvent) {
@@ -107,5 +114,6 @@ export class WebSocketTransport implements ChatTransport {
         this.open().catch(this.onClose.bind(this))
       }, this.reconnectDelayMs)
     }
+    this.connectionChangeHandlers.forEach(cb => cb(false))
   }
 }

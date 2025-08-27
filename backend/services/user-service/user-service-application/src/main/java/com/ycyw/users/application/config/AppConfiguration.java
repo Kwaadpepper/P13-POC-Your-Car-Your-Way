@@ -13,7 +13,6 @@ public class AppConfiguration {
   private static final Integer MIN_JWT_EXPIRATION = 1;
 
   private final String appName;
-  private final String allowedOrigins;
   private final String jwtIssuer;
   private final String jwtSecretKey;
   private final String jwtCookieName;
@@ -24,7 +23,6 @@ public class AppConfiguration {
 
   AppConfiguration(
       @Value("${spring.application.name}") @Nullable final String appName,
-      @Value("${server.cors.allowed-origins}") @Nullable final String allowedOrigins,
       @Value("${jwt.issuer}") @Nullable final String jwtIssuer,
       @Value("${jwt.secret_key}") @Nullable final String jwtSecretKey,
       @Value("${jwt.cookie.name}") @Nullable final String jwtCookieName,
@@ -67,7 +65,6 @@ public class AppConfiguration {
     }
 
     this.appName = assertNotEmpty(appName, "spring.application.name");
-    this.allowedOrigins = assertNotEmpty(allowedOrigins, "server.cors.allowed-origins");
     this.jwtIssuer = assertNotEmpty(jwtIssuer, "jwt.issuer");
     this.jwtSecretKey = assertNotEmpty(jwtSecretKey, "jwt.secret_key");
     this.jwtCookieName = assertNotEmpty(jwtCookieName, "jwt.cookie.name");
@@ -83,10 +80,6 @@ public class AppConfiguration {
 
   public String getAppName() {
     return appName;
-  }
-
-  public String getAllowedOrigins() {
-    return allowedOrigins;
   }
 
   public String getJwtIssuer() {

@@ -44,8 +44,7 @@ export class ChatServiceImpl implements ChatService {
   readonly isOnline = computed(() => this.client.connectionStatus() === 'connected')
 
   constructor() {
-    const transport = inject(CHAT_TRANSPORT)
-    this.client = new ChatClient(transport)
+    this.client = inject(ChatClient)
 
     this.client.onMessage(m => this.messagesSub.next(this.mapToChatMessage(m)))
     this.client.onJoin(j => this.joinSub.next(this.mapToJoinEvent(j)))

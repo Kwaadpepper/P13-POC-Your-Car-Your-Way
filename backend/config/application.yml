@@ -32,6 +32,7 @@ spring:
                 allowedMethods: "*"
                 allowedHeaders: "*"
                 allowCredentials: true
+                maxAge: 3600
   rabbitmq:
     host: ${RABBIT_HOST:localhost}
     port: ${RABBIT_PORT:5672}

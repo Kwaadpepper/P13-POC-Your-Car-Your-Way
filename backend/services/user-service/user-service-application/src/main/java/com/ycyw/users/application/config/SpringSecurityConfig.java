@@ -52,8 +52,6 @@ public class SpringSecurityConfig {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // No CSRF for stateless APIs.
         .csrf(AbstractHttpConfigurer::disable)
-        // Gateway handles CORS.
-        .cors(AbstractHttpConfigurer::disable)
         .exceptionHandling(
             handling ->
                 handling.authenticationEntryPoint(

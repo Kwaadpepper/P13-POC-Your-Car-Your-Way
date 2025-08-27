@@ -16,7 +16,7 @@ public class PingController {
     this.presenter = presenter;
   }
 
-  @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping(value = "/chat/ping", produces = MediaType.APPLICATION_JSON_VALUE)
   public SimpleMessageDto index() {
     return this.presenter.present(new SimpleMessage("Pong"));
   }

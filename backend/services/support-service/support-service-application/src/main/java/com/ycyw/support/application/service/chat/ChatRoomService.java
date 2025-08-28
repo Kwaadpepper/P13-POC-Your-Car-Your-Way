@@ -51,6 +51,22 @@ public class ChatRoomService {
     return chatMessage;
   }
 
+  public void addMessageFromRemote(ChatMessage message) {
+    final var conversation = message.conversation();
+    if (!hasConversation(conversation)) {
+      // Conversation not started
+      return;
+    }
+    final var messages = conversationMessages(message.conversation());
+
+    if (messages.stream().anyMatch(m -> m.id().equals(message.id()))) {
+      // Message already present
+      return;
+    }
+
+    messages.add(message);
+  }
+
   public List<ChatMessage> getAllMessages(UUID conversation) {
     if (!hasConversation(conversation)) {
       throw new ConversationException("Conversation not started");

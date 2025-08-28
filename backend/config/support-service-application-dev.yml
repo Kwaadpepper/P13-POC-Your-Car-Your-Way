@@ -6,6 +6,10 @@ debug: false
 config:
   seed-data: true
 
+rabbitmq:
+  chat:
+    exchange: support-chat-exchange
+
 spring:
   cloud:
   openfeign:

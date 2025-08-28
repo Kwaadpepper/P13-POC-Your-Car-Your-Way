@@ -1,9 +1,11 @@
 package com.ycyw.support.application.route.chat;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Controller;
 
 import com.ycyw.support.application.config.RabbitMqChatConfig;
 import com.ycyw.support.application.security.AuthenticatedUser;
-import com.ycyw.support.application.service.chat.ChatMessageSerializer;
+import com.ycyw.support.application.service.chat.ChatMessageEventSerializer;
 import com.ycyw.support.application.service.chat.ChatRoomService;
 import com.ycyw.support.application.service.chat.ChatRoomService.ChatMessage;
 import com.ycyw.support.application.service.chat.ConversationService;
@@ -29,22 +31,27 @@ public class ConversationMessagesController {
 
   private static final String CONVERSATION_TOPIC = "/topic/conversation/";
 
-  private final ChatMessageSerializer chatMessageSerializer;
+  private final RabbitTemplate rabbitTemplate;
+  private final ChatMessageEventSerializer chatMessageEventSerializer;
   private final SimpMessagingTemplate messaging;
   private final ChatRoomService chatRoomService;
   private final ConversationService conversationService;
 
+  private final String brokerChatExchange;
+
   public ConversationMessagesController(
-      SimpMessagingTemplate messaging, ChatRoomService chatRoomService) {
+      RabbitMqChatConfig rabbitConfig,
+      RabbitTemplate rabbitTemplate,
+      ChatMessageEventSerializer chatMessageSerializer,
       SimpMessagingTemplate messaging,
       ChatRoomService chatRoomService,
       ConversationService conversationService) {
-    this.rabbitConfig = rabbitConfig;
     this.rabbitTemplate = rabbitTemplate;
-    this.chatMessageSerializer = chatMessageSerializer;
+    this.chatMessageEventSerializer = chatMessageSerializer;
     this.messaging = messaging;
     this.chatRoomService = chatRoomService;
     this.conversationService = conversationService;
+    this.brokerChatExchange = rabbitConfig.getExchange();
   }
 
   // MESSAGE
@@ -70,10 +77,23 @@ public class ConversationMessagesController {
         chatRoomService.addMessage(
             newMessageId, conversation, userId, role, text, ZonedDateTime.now());
 
+    // 3. Dispatch to RabbitMQ for other services
+    final var payloadJson =
+        chatMessageEventSerializer.serialize(mapToNewChatMessageEvent(newMessage));
+    rabbitTemplate.convertAndSend(brokerChatExchange, "", payloadJson);
+
     // 4. Dispatch to WebSocket subscribers
     messaging.convertAndSend(
         CONVERSATION_TOPIC + conversation.toString(),
         Map.of("type", "message", "payload", toDto(newMessage)));
+  }
+
+  @RabbitListener(queues = "#{rabbitMqChatConfig.getNewMessageQueue()}")
+  public void handleNewChatMessageEvent(String eventPayloadAsJson) {
+    final var newChatMessageEvent = chatMessageEventSerializer.deserialize(eventPayloadAsJson);
+    logger.debug("Received new chat message event from broker: {}", newChatMessageEvent);
+    // Met à jour la mémoire sans repersister le message
+    chatRoomService.addMessageFromRemote(mapToChatMessage(newChatMessageEvent));
   }
 
   private MessageDto toDto(ChatMessage message) {
@@ -84,6 +104,35 @@ public class ConversationMessagesController {
         message.text(),
         message.sentAt());
   }
+
+  private NewChatMessageEvent mapToNewChatMessageEvent(ChatMessage message) {
+    return new NewChatMessageEvent(
+        message.conversation(),
+        message.id(),
+        message.user(),
+        message.role(),
+        message.text(),
+        message.sentAt());
+  }
+
+  private ChatMessage mapToChatMessage(NewChatMessageEvent event) {
+    return new ChatMessage(
+        event.messageId(),
+        event.conversationId(),
+        event.senderId(),
+        event.userRole(),
+        event.content(),
+        event.timestamp());
+  }
+
+  public record NewChatMessageEvent(
+      UUID conversationId,
+      UUID messageId,
+      UUID senderId,
+      String userRole,
+      String content,
+      ZonedDateTime timestamp)
+      implements Serializable {}
 
   public record SendPayload(UUID conversation, String text) {}
 

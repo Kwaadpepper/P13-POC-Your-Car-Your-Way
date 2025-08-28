@@ -3,6 +3,10 @@ server:
 
 debug: false
 
+rabbitmq:
+  chat:
+    exchange: support-chat-exchange
+
 spring:
   datasource:
     url: ${DB_URL}

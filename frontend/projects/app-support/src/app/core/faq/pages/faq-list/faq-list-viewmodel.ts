@@ -11,8 +11,8 @@ import { Faq } from '@ycyw/support-domains/faq/models'
 export class FaqListViewModel {
   private readonly store = inject(FaqStore)
 
-  readonly faqs = this.store.faqs
-  readonly loading = this.store.loading
+  readonly faqs = computed(() => this.store.faqs())
+  readonly loading = computed(() => this.store.loading())
 
   readonly loadingError = computed(() => this.store.error() !== undefined)
 

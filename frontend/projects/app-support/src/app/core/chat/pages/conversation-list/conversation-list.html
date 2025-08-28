@@ -30,7 +30,8 @@
           [filterPlaceHolder]="'Rechercher…'"
           (onChange)="open($event.value)"
           [metaKeySelection]="false"
-          class="block w-full h-screen"
+          class="block w-full md:max-h-screen overflow-y-auto"
+          [scrollHeight]="'65vh'"
         >
           <ng-template let-item pTemplate="item">
             <div class="item">

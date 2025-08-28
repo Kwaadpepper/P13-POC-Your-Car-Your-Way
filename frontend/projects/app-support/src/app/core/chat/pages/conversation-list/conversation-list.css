@@ -14,7 +14,7 @@
 }
 
 .last {
-  @apply overflow-hidden max-w-[60%] text-gray-500 text-ellipsis whitespace-nowrap;
+  @apply overflow-hidden text-gray-500 text-ellipsis whitespace-nowrap;
 }
 
 .badge {

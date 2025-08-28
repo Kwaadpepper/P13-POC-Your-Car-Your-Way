@@ -21,6 +21,6 @@ export class NavMenuViewModel {
       : '/backoffice'
   })
 
-  public readonly dashboardUrl = computed(() => `${this.routePrefix()}`)
+  public readonly dashboardUrl = computed(() => `${this.routePrefix()}/dashboard`)
   public readonly supportUrl = computed(() => `${this.routePrefix()}/support`)
 }

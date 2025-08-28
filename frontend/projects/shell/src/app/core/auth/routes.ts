@@ -2,7 +2,7 @@ import { Routes } from '@angular/router'
 
 import { GuestGuard } from '../../shared/guards'
 
-import { Login } from './pages'
+import { HomePage, Login } from './pages'
 
 export const redirectUrls = {
   guestHomeUrl: '',
@@ -13,6 +13,11 @@ export const redirectUrls = {
 }
 
 export const authRoutes: Routes = [
+  {
+    path: '',
+    canActivate: [GuestGuard],
+    component: HomePage,
+  },
   {
     path: 'login',
     canActivate: [GuestGuard],

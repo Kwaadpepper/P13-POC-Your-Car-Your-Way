@@ -2,7 +2,7 @@ import { Dashboard } from './pages'
 
 export const homeRoutes = [
   {
-    path: '',
+    path: 'dashboard',
     component: Dashboard,
   },
 ]

@@ -8,6 +8,23 @@
       </h1>
     </div>
   </div>
+  @if (loading()) {
+    <div class="row">
+      <div class="col text-center">
+        <p-progressSpinner></p-progressSpinner>
+      </div>
+    </div>
+  }
+  @if (loadingError()) {
+    <div class="row">
+      <div class="col">
+        <p-message
+          severity="error"
+          text="Une erreur est survenue lors du chargement des tickets."
+        ></p-message>
+      </div>
+    </div>
+  }
   @if (issues().length < 1) {
     <div class="row">
       <div class="col">Aucune ticket trouvé.</div>

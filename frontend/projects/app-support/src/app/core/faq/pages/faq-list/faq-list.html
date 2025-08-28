@@ -73,6 +73,18 @@
   <!-- Contenu -->
   <div class="row mb-5">
     <div class="col-12">
+      <!-- ERROR STATE -->
+      @if (loadingError()) {
+        <div class="row">
+          <div class="col">
+            <p-message
+              severity="error"
+              text="Une erreur est survenue lors du chargement des FAQs."
+            ></p-message>
+          </div>
+        </div>
+      }
+      <!-- LOADING STATE -->
       @if (viewModel.loading()) {
         <div class="space-y-3" aria-label="Chargement des FAQs">
           @for (sk of skeletonItems; track sk) {

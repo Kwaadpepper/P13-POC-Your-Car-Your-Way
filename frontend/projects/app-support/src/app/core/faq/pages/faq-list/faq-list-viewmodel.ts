@@ -14,6 +14,8 @@ export class FaqListViewModel {
   readonly faqs = this.store.faqs
   readonly loading = this.store.loading
 
+  readonly loadingError = computed(() => this.store.error() !== undefined)
+
   readonly availableTypes = computed(() => {
     const set = new Set(this.faqs().map(f => f.category).filter(Boolean))
     return Array.from(set).sort((a, b) => a.localeCompare(b))

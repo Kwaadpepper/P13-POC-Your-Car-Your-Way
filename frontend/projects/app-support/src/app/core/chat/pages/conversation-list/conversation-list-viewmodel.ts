@@ -1,4 +1,4 @@
-import { inject, Inject } from '@angular/core'
+import { computed, inject, Inject } from '@angular/core'
 
 import { UUID } from '@ycyw/shared'
 import { ConversationStore } from '@ycyw/support-core/chat/stores'
@@ -11,6 +11,8 @@ export class ConversationListViewModel {
 
   readonly conversations = this.store.conversations
   readonly loading = this.store.loading
+
+  readonly loadingError = computed(() => this.store.error() !== undefined)
 
   reloadAll() {
     this.store.reloadAll()

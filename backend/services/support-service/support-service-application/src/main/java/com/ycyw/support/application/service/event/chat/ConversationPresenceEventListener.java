@@ -30,11 +30,17 @@ public class ConversationPresenceEventListener {
 
   @RabbitListener(queues = "#{rabbitMqChatConfig.getPresenceQueue()}")
   public void handlePresenceEvent(PresenceEvent event) {
+    final var conversationId = event.conversationId();
     logger.debug(
         "Received presence event for conversation {}: user {} is {}",
         event.conversationId(),
         event.userId(),
         event.status());
+
+    if (!chatRoomService.hasConversation(conversationId)) {
+      logger.warn("Conversation {} not found, ignoring presence event", conversationId);
+      return;
+    }
 
     switch (event.status()) {
       case ONLINE ->

@@ -10,8 +10,10 @@ import java.util.UUID;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
+import com.ycyw.support.application.security.AuthenticatedUser;
 import com.ycyw.support.application.service.chat.ChatRoomService;
 import com.ycyw.support.application.service.chat.ChatRoomService.ChatMessage;
 import com.ycyw.support.application.service.chat.ConversationService;
@@ -37,7 +39,11 @@ public class ConversationHistoryController {
 
   // HISTORY
   @MessageMapping("/history")
-  public void history(HistoryPayload payload, SimpMessageHeaderAccessor headers) {
+  public void history(
+      HistoryPayload payload, SimpMessageHeaderAccessor headers, Authentication authentication) {
+    final var userDetails = (AuthenticatedUser) authentication.getPrincipal();
+    final var userId = userDetails.getSubjectId();
+
     final var conversation = payload.conversation();
 
     // 1. Fetch messages
@@ -46,8 +52,9 @@ public class ConversationHistoryController {
             ? chatRoomService.getAllMessages(conversation).stream().map(this::toDto).toList()
             : fetchAllMessagesForConversation(conversation).stream().map(this::toDto).toList();
 
-    // 2. Send messages to the user
-    messaging.convertAndSend(
+    // 2. Send messages history to the user
+    messaging.convertAndSendToUser(
+        userId.toString(),
         CONVERSATION_TOPIC + conversation.toString(),
         Map.of(
             "type",

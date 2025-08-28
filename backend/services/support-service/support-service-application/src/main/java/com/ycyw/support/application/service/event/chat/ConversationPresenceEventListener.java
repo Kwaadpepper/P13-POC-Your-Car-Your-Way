@@ -40,7 +40,7 @@ public class ConversationPresenceEventListener {
       case ONLINE ->
           chatRoomService.addParticipant(
               event.conversationId(),
-              new UserPresence(event.userId(), event.role(), event.status().toString()));
+              new UserPresence(event.userId(), event.role(), event.status().value()));
       case OFFLINE -> chatRoomService.removeParticipant(event.conversationId(), event.userId());
       default -> logger.warn("Unknown presence status: {}", event.status());
     }

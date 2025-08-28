@@ -24,10 +24,9 @@
         ></p-message>
       </div>
     </div>
-  }
-  @if (issues().length < 1) {
+  } @else if (issues().length < 1) {
     <div class="row">
-      <div class="col">Aucune ticket trouvé.</div>
+      <div class="col">Aucun ticket trouvé.</div>
     </div>
   } @else {
     <div class="row">

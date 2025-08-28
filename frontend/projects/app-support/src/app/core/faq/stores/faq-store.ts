@@ -1,4 +1,4 @@
-import { Injectable, computed, inject, resource } from '@angular/core'
+import { Injectable, inject, signal } from '@angular/core'
 
 import { firstValueFrom } from 'rxjs'
 
@@ -11,23 +11,18 @@ import { FAQ_REPOSITORY } from '@ycyw/support-tokens/faq-repository-token'
 })
 export class FaqStore {
   private readonly repository = inject(FAQ_REPOSITORY)
-  private readonly _faqs = resource({
-    defaultValue: [],
-    loader: this.loadFaqs.bind(this),
-  })
+  private readonly _faqs = signal<Faq[]>([])
 
-  readonly faqs = this._faqs.value.asReadonly()
-  readonly loading = computed(() => this._faqs.isLoading())
-  readonly error = computed(() => this._faqs.error())
+  readonly faqs = this._faqs.asReadonly()
 
   async getFaq(id: FaqId): Promise<Faq | null> {
-    const faq = this._faqs.value().find(f => f.id === id)
+    const faq = this.faqs().find(f => f.id === id)
       ?? (await this.loadFaqs()).find(f => f.id === id) ?? null
     return faq
   }
 
   reloadAll() {
-    this._faqs.reload()
+    this.loadFaqs()
   }
 
   private async loadFaqs() {

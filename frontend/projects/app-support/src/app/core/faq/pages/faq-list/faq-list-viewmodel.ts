@@ -12,7 +12,6 @@ export class FaqListViewModel {
   private readonly store = inject(FaqStore)
 
   readonly faqs = this.store.faqs
-  readonly loading = this.store.loading
 
   readonly availableTypes = computed(() => {
     const set = new Set(this.faqs().map(f => f.category).filter(Boolean))

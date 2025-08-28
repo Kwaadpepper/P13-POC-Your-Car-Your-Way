@@ -79,7 +79,8 @@ public class ConversationPresenceController {
         new PresenceEvent(conversation, userId, role, PresenceEvent.Status.ONLINE));
 
     // 4. Send current participants to the new user
-    messaging.convertAndSend(
+    messaging.convertAndSendToUser(
+        userId.toString(),
         CONVERSATION_TOPIC + conversation,
         Map.of(
             "type",
@@ -90,23 +91,6 @@ public class ConversationPresenceController {
                 conversation,
                 "participants",
                 chatRoomService.getParticipants(conversation))));
-
-    // 5. Notify others
-    messaging.convertAndSend(
-        CONVERSATION_TOPIC + conversation,
-        Map.of(
-            "type",
-            "presence",
-            "payload",
-            Map.of(
-                "user",
-                userId,
-                "role",
-                role,
-                "status",
-                PresenceEvent.Status.ONLINE.value(),
-                "conversation",
-                conversation)));
   }
 
   @MessageMapping("/leave")
@@ -131,28 +115,11 @@ public class ConversationPresenceController {
       return;
     }
 
-    // 3bis. Notify presence via RabbitMQ (to handle multiple instances)
+    // 4. Notify presence via RabbitMQ (to handle multiple instances)
     rabbitTemplate.convertAndSend(
         brokerChatExchange,
         "presence",
         new PresenceEvent(conversation, userId, role, PresenceEvent.Status.OFFLINE));
-
-    // 3bis. Notify others
-    messaging.convertAndSend(
-        CONVERSATION_TOPIC + conversation,
-        Map.of(
-            "type",
-            "presence",
-            "payload",
-            Map.of(
-                "user",
-                userId,
-                "role",
-                role,
-                "status",
-                PresenceEvent.Status.OFFLINE.value(),
-                "conversation",
-                conversation)));
   }
 
   private List<ChatMessage> fetchAllMesagesForConversation(UUID conversationId) {

@@ -1,8 +1,7 @@
-import { Injectable, computed, inject, signal } from '@angular/core'
+import { Injectable, computed, inject, resource } from '@angular/core'
 
 import { firstValueFrom } from 'rxjs'
 
-import { SupportConfig } from '@ycyw/support-domains/support/dtos'
 import { SUPPORT_CONFIG_SERVICE } from '@ycyw/support-tokens/support-config-service-token'
 
 @Injectable({
@@ -11,26 +10,32 @@ import { SUPPORT_CONFIG_SERVICE } from '@ycyw/support-tokens/support-config-serv
 })
 export class SupportConfigStore {
   private readonly service = inject(SUPPORT_CONFIG_SERVICE)
-  private readonly _supportConfig = signal<SupportConfig>({
-    phone: {
-      number: '+0000000000',
-      businessHours: {},
+  private readonly _supportConfig = resource({
+    defaultValue: {
+      phone: {
+        number: '+0000000000',
+        businessHours: {},
+      },
+      chat: {
+        businessHours: {},
+      },
+      email: '',
+      address: {
+        line1: '',
+        line2: undefined,
+        line3: undefined,
+        city: '',
+        zip: '',
+        country: '',
+      },
     },
-    chat: {
-      businessHours: {},
-    },
-    email: '',
-    address: {
-      line1: '',
-      line2: undefined,
-      line3: undefined,
-      city: '',
-      zip: '',
-      country: '',
-    },
+    loader: this.loadSupportConfig.bind(this),
   })
 
-  private readonly supportConfig = this._supportConfig.asReadonly()
+  private readonly supportConfig = this._supportConfig.value.asReadonly()
+
+  readonly loading = computed(() => this._supportConfig.isLoading())
+  readonly error = computed(() => this._supportConfig.error())
 
   readonly phoneNumber = computed(() => this.supportConfig().phone.number)
   readonly email = computed(() => this.supportConfig().email)
@@ -40,9 +45,7 @@ export class SupportConfigStore {
   readonly phoneBusinessHours = computed(() => this.supportConfig().phone.businessHours ?? {})
 
   reloadAll() {
-    this.loadSupportConfig().then((config) => {
-      this._supportConfig.set(config)
-    })
+    this._supportConfig.reload()
   }
 
   private async loadSupportConfig() {

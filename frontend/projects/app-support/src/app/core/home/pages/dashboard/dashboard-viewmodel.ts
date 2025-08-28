@@ -44,10 +44,6 @@ export class DashboardViewModel {
     sunday: new Date('2025-08-10T12:00:00Z'),
   }
 
-  public loadConfig() {
-    this.supportConfigStore.reloadAll()
-  }
-
   private mapBusinessHours(businessHours: BusinessHours) {
     return Object.entries(businessHours).map(([day, hours]) => ({
       day: this.translateWeekday(day as keyof typeof this.knownDatesForWeekdays),

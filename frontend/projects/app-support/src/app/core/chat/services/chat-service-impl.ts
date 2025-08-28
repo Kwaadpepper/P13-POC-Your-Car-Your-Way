@@ -77,8 +77,8 @@ export class ChatServiceImpl implements ChatService {
     this.client.setTyping(conversationId, isTyping)
   }
 
-  getHistory(conversationId: ConversationId, limit = 50) {
-    this.client.getHistory(conversationId, limit)
+  getHistory(conversationId: ConversationId) {
+    this.client.getHistory(conversationId)
   }
 
   private mapToChatMessage(payload: MessageEventPayload): ChatMessage {

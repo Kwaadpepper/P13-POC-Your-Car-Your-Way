@@ -67,8 +67,8 @@ export class ChatClient {
     this.transport.send({ type: EventType.TYPING, payload: { conversation, isTyping } })
   }
 
-  getHistory(conversation: string, limit = 50) {
-    this.transport.send({ type: EventType.HISTORY, payload: { conversation, limit } })
+  getHistory(conversation: string) {
+    this.transport.send({ type: EventType.HISTORY, payload: { conversation } })
   }
 
   onMessage(cb: (m: MessageEventPayload) => void): Unsub {

@@ -111,7 +111,9 @@ export class StompWebSocketTransport implements ChatTransport {
 
   send(cmd: ClientCommand): void {
     const destination = this.getDestination(cmd.type)
-    if (!destination) return
+    if (!destination) {
+      throw new Error(`Unknown command type: ${cmd.type}`)
+    }
 
     if (cmd.type === EventType.JOIN) {
       const conversationId = cmd.payload.conversation

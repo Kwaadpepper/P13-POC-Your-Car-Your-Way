@@ -54,7 +54,7 @@ public class ConversationHistoryController {
         message.sentAt());
   }
 
-  public record HistoryPayload(UUID conversation, Integer limit) {}
+  public record HistoryPayload(UUID conversation) {}
 
   public static record MessageDto(
       UUID id, UUID conversation, UserDto from, String text, ZonedDateTime sentAt) {

@@ -54,23 +54,9 @@ public class ConversationService {
     return new ConversationMessage(
         message.id(),
         message.sender().id(),
-        mapToUserRole(message.sender().type()),
+        UserRole.mapToUserRole(message.sender().type()),
         message.content(),
         message.sentAt());
-  }
-
-  private SenderType mapToSenderType(UserRole role) {
-    return switch (role) {
-      case CLIENT -> SenderType.CLIENT;
-      case OPERATOR -> SenderType.OPERATOR;
-    };
-  }
-
-  private UserRole mapToUserRole(SenderType type) {
-    return switch (type) {
-      case CLIENT -> UserRole.CLIENT;
-      case OPERATOR -> UserRole.OPERATOR;
-    };
   }
 
   public static record ConversationMessage(
@@ -79,9 +65,39 @@ public class ConversationService {
   public enum UserRole {
     CLIENT,
     OPERATOR;
+
+    public static UserRole mapToUserRole(String role) {
+      return switch (role.toLowerCase()) {
+        case "client" -> UserRole.CLIENT;
+        case "operator" -> UserRole.OPERATOR;
+        default -> throw new IllegalArgumentException("Unknown role: " + role);
+      };
+    }
+
+    public static UserRole mapToUserRole(SenderType type) {
+      return switch (type) {
+        case CLIENT -> UserRole.CLIENT;
+        case OPERATOR -> UserRole.OPERATOR;
+      };
+    }
+
+    public SenderType toSenderType() {
+      return switch (this) {
+        case CLIENT -> SenderType.CLIENT;
+        case OPERATOR -> SenderType.OPERATOR;
+      };
+    }
+
+    @Override
+    public String toString() {
+      return switch (this) {
+        case CLIENT -> "client";
+        case OPERATOR -> "operator";
+      };
+    }
   }
 
   private MessageSender toMessageSender(UUID senderId, UserRole role) {
-    return new MessageSender(mapToSenderType(role), senderId);
+    return new MessageSender(role.toSenderType(), senderId);
   }
 }

@@ -8,6 +8,10 @@ import com.ycyw.shared.ddd.objectvalues.SimpleMessage;
 import com.ycyw.support.application.dto.SimpleMessageDto;
 import com.ycyw.support.application.presenter.SimpleMessagePresenter;
 
+/**
+ * A simple controller to check if the chat service is up and running. This can be used for health
+ * checks or basic connectivity tests.
+ */
 @RestController
 public class PingController {
   private SimpleMessagePresenter presenter;

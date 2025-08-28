@@ -26,11 +26,12 @@ public class ConversationTypingController {
     this.messaging = messaging;
   }
 
-  // TYPING
   @MessageMapping("/typing")
   public void typing(
       TypingPayload payload, SimpMessageHeaderAccessor headers, Authentication authentication) {
     final var conversation = payload.conversation();
+
+    // 1. Get user info
     final var userDetails = (AuthenticatedUser) authentication.getPrincipal();
     final var userId = userDetails.getSubjectId();
     final var role = userDetails.getRole();
@@ -42,6 +43,7 @@ public class ConversationTypingController {
         payload.isTyping() ? "" : "not",
         conversation);
 
+    // 2. Broadcast TYPING event
     messaging.convertAndSend(
         CONVERSATION_TOPIC + conversation,
         Map.of(

@@ -25,7 +25,7 @@ VALUES
     'Support Request 2',
     'I have an issue with my booking.',
     'The issue has been resolved in shop by the customer.',
-    2,
+    0,
     '019159f8-d42f-7000-8000-000000000002',
     '0198f282-e472-72da-a876-36d72056f849',
     '2025-08-28T21:22:08.406Z'

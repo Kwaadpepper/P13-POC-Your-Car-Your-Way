@@ -4,7 +4,7 @@ server:
 debug: false
 
 config:
-  seed-data: true
+  seed-data: false
 
 rabbitmq:
   chat:

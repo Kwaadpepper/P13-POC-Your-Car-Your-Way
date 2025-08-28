@@ -3,6 +3,7 @@ package com.ycyw.support.infrastructure.adapter.service.messages;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ycyw.support.domain.model.valueobject.conversation.SenderType;
@@ -22,7 +23,9 @@ public class MessageServiceJpaAdapter implements MessageService {
 
   @Override
   public List<Message> findAll(UUID conversation) {
-    return repo.findByConversationId(conversation).stream().map(this::toDomain).toList();
+    return repo.findByConversationId(conversation, Sort.by(Sort.Direction.DESC, "id")).stream()
+        .map(this::toDomain)
+        .toList();
   }
 
   @Override

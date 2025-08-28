@@ -3,6 +3,7 @@ package com.ycyw.support.infrastructure.adapter.repository.jpa.issue;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import com.ycyw.support.domain.model.entity.externals.client.ClientId;
@@ -25,7 +26,7 @@ public class IssueRepositoryJpaAdapter implements IssueRepository {
 
   @Override
   public List<Issue> findAll() {
-    return repo.findAll().stream().map(this::toDomain).toList();
+    return repo.findAll(Sort.by(Sort.Direction.DESC, "id")).stream().map(this::toDomain).toList();
   }
 
   @Override

@@ -4,12 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ycyw.support.infrastructure.entity.MessageEntity;
 
 public interface MessageJpaRepository extends JpaRepository<MessageEntity, UUID> {
-  List<MessageEntity> findByConversationId(UUID conversationId);
+  List<MessageEntity> findByConversationId(UUID conversationId, Sort sort);
 
   Optional<MessageEntity> findTopByConversationIdOrderByIdDesc(UUID conversationId);
 }

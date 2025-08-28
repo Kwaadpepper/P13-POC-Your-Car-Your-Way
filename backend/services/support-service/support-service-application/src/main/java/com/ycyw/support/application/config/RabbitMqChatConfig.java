@@ -17,11 +17,13 @@ public class RabbitMqChatConfig {
   private final String exchange;
   private final String newMessageQueue;
   private final String presenceQueue;
+  private final String typingQueue;
 
   public RabbitMqChatConfig(@Value("${rabbitmq.chat.exchange}") String exchange) {
     this.exchange = exchange;
     this.newMessageQueue = "support-new-message-queue-" + UUID.randomUUID();
     this.presenceQueue = "support-presence-queue-" + UUID.randomUUID();
+    this.typingQueue = "support-typing-queue-" + UUID.randomUUID();
   }
 
   public String getExchange() {
@@ -36,6 +38,10 @@ public class RabbitMqChatConfig {
     return presenceQueue;
   }
 
+  public String getTypingQueue() {
+    return typingQueue;
+  }
+
   @Bean
   TopicExchange supportMessageExchange() {
     return new TopicExchange(this.exchange, true, true);
@@ -43,12 +49,17 @@ public class RabbitMqChatConfig {
 
   @Bean
   Queue supportNewMessageQueue() {
-    return new Queue(this.newMessageQueue, true, false, true);
+    return new Queue(this.newMessageQueue, true, true, true);
   }
 
   @Bean
   Queue supportPresenceQueue() {
-    return new Queue(this.presenceQueue, true, false, true);
+    return new Queue(this.presenceQueue, true, true, true);
+  }
+
+  @Bean
+  Queue supportTypingQueue() {
+    return new Queue(this.typingQueue, true, true, true);
   }
 
   @Bean
@@ -63,6 +74,11 @@ public class RabbitMqChatConfig {
     return BindingBuilder.bind(supportPresenceQueue())
         .to(supportMessageExchange())
         .with("presence");
+  }
+
+  @Bean
+  Binding bindingTypingQueue() {
+    return BindingBuilder.bind(supportTypingQueue()).to(supportMessageExchange()).with("typing");
   }
 
   @Bean

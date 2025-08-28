@@ -1,14 +1,14 @@
 package com.ycyw.support.application.route.chat;
 
-import java.util.Map;
-
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
+import com.ycyw.support.application.config.RabbitMqChatConfig;
 import com.ycyw.support.application.security.AuthenticatedUser;
+import com.ycyw.support.application.service.event.eventsdtos.TypingEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,20 +18,19 @@ import org.slf4j.LoggerFactory;
 public class ConversationTypingController {
   private final Logger logger = LoggerFactory.getLogger(ConversationTypingController.class);
 
-  private final SimpMessagingTemplate messaging;
+  private final RabbitTemplate rabbitTemplate;
+  private final String brokerChatExchange;
 
-  private static final String CONVERSATION_TOPIC = "/topic/conversation/";
-
-  public ConversationTypingController(SimpMessagingTemplate messaging) {
-    this.messaging = messaging;
+  public ConversationTypingController(
+      RabbitTemplate rabbitTemplate, RabbitMqChatConfig rabbitConfig) {
+    this.rabbitTemplate = rabbitTemplate;
+    this.brokerChatExchange = rabbitConfig.getExchange();
   }
 
   @MessageMapping("/typing")
   public void typing(
       TypingPayload payload, SimpMessageHeaderAccessor headers, Authentication authentication) {
     final var conversation = payload.conversation();
-
-    // 1. Get user info
     final var userDetails = (AuthenticatedUser) authentication.getPrincipal();
     final var userId = userDetails.getSubjectId();
     final var role = userDetails.getRole();
@@ -43,22 +42,10 @@ public class ConversationTypingController {
         payload.isTyping() ? "" : "not",
         conversation);
 
-    // 2. Broadcast TYPING event
-    messaging.convertAndSend(
-        CONVERSATION_TOPIC + conversation,
-        Map.of(
-            "type",
-            "typing",
-            "payload",
-            Map.of(
-                "user",
-                userId,
-                "role",
-                role,
-                "conversation",
-                conversation,
-                "typing",
-                payload.isTyping())));
+    rabbitTemplate.convertAndSend(
+        brokerChatExchange,
+        "typing",
+        new TypingEvent(userId.toString(), role, conversation, payload.isTyping()));
   }
 
   public record TypingPayload(String conversation, boolean isTyping) {}

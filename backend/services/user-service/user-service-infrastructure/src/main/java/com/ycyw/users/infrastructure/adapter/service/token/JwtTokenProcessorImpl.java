@@ -47,7 +47,7 @@ public class JwtTokenProcessorImpl implements JwtTokenProcessor {
       }
       return claims;
     } catch (Exception e) {
-      logger.debug("Error while extracting apiToken from JWT token", e);
+      logger.debug("Error while extracting apiToken from JWT token : {}", e.getMessage());
       return null;
     }
   }

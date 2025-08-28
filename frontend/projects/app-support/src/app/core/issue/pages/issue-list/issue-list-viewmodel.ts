@@ -10,7 +10,6 @@ export class IssueListViewModel {
   private readonly store = inject(IssueStore)
 
   readonly issues = this.store.issues
-  readonly loading = this.store.loading
 
   reloadAll() {
     this.store.reloadAll()

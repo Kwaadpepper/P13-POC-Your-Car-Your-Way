@@ -34,7 +34,7 @@ public class ConversationPresenceController {
   private final ChatRoomService chatRoomService;
   private final ConversationService conversationService;
 
-  private static final String CONVERSATION_TOPIC = "/topic/conversation/";
+  private static final String CONVERSATION_USER = "/queue/conversation/";
 
   private final RabbitTemplate rabbitTemplate;
   private final String brokerChatExchange;
@@ -81,7 +81,7 @@ public class ConversationPresenceController {
     // 4. Send current participants to the new user
     messaging.convertAndSendToUser(
         userId.toString(),
-        CONVERSATION_TOPIC + conversation,
+        CONVERSATION_USER + conversation,
         Map.of(
             "type",
             "join",

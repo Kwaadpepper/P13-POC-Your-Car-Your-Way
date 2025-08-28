@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common'
-import { Component, computed, inject } from '@angular/core'
+import { Component, computed, inject, OnInit } from '@angular/core'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { AvatarModule } from 'primeng/avatar'
@@ -30,7 +30,7 @@ import { ConversationListViewModel } from './conversation-list-viewmodel'
   templateUrl: './conversation-list.html',
   styleUrl: './conversation-list.css',
 })
-export class ConversationList {
+export class ConversationList implements OnInit {
   private readonly router = inject(Router)
   private readonly route = inject(ActivatedRoute)
 
@@ -38,6 +38,10 @@ export class ConversationList {
   readonly conversations = computed(() => this.viewModel.conversations())
   readonly loading = this.viewModel.loading
   readonly loadingError = this.viewModel.loadingError
+
+  ngOnInit(): void {
+    this.viewModel.reloadAll()
+  }
 
   open(item: Conversation) {
     this.router.navigate(['.', item.id], { relativeTo: this.route })

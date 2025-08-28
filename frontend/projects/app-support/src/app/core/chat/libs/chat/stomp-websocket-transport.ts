@@ -12,8 +12,7 @@ type Handler = (evt: ServerEvent) => void
 export class StompWebSocketTransport implements ChatTransport {
   private readonly client: Client
   private readonly handlers = new Set<Handler>()
-  private readonly subscriptions = new Map<string, StompSubscription>() // conversationId -> subscription
-  private intendedDisconnect = false
+  private readonly subscriptions = new Map<string, StompSubscription>()
 
   private readonly intendedConversations = new Set<string>()
 
@@ -32,9 +31,7 @@ export class StompWebSocketTransport implements ChatTransport {
         this.subscribeToPendingConversations()
         this.flushPendingQueue()
 
-        // (Re)créer les subscriptions pour les conversations voulues
         this.subscribeToPendingConversations()
-        // flushPendingQueue est appelé depuis la Promise connect() pour garantir l'ordre
         this.connectionChangeHandlers.forEach(cb => cb(true))
       },
       onDisconnect: () => {
@@ -45,9 +42,6 @@ export class StompWebSocketTransport implements ChatTransport {
         console.debug('[STOMP] websocket closed.')
         this.unsubscribeFromEvents()
         this.connectPromise = undefined
-        if (!this.intendedDisconnect) {
-          // stompjs gèrera la reconnexion selon reconnectDelay
-        }
         this.connectionChangeHandlers.forEach(cb => cb(false))
       },
       onWebSocketError: (evt) => {
@@ -59,14 +53,10 @@ export class StompWebSocketTransport implements ChatTransport {
 
   onConnectionChange(cb: (status: boolean) => void): void {
     this.connectionChangeHandlers.add(cb)
-    // appel immédiat avec le statut actuel
     cb(this.isConnected())
   }
 
   async connect(): Promise<void> {
-    this.intendedDisconnect = false
-
-    // Si une connexion est en cours, on réutilise la promise
     if (
       this.connectPromise !== undefined
       && this.client.connected === false
@@ -80,7 +70,6 @@ export class StompWebSocketTransport implements ChatTransport {
   }
 
   async disconnect(): Promise<void> {
-    this.intendedDisconnect = true
     try {
       await this.client.deactivate()
     }
@@ -162,7 +151,6 @@ export class StompWebSocketTransport implements ChatTransport {
     this.intendedConversations.add(conversationId)
 
     if (!this.client.connected) {
-      // on ne doit pas appeler client.subscribe si pas connecté
       console.debug('[STOMP] cannot subscribe now, not connected:', conversationId)
       return
     }
@@ -172,7 +160,9 @@ export class StompWebSocketTransport implements ChatTransport {
     }
 
     const topic = this.getTopicForConversation(conversationId)
-    const sub = this.client.subscribe(topic, (message) => {
+    const userQueue = this.getUserQueueForConversation(conversationId)
+
+    const topicSub = this.client.subscribe(topic, (message) => {
       try {
         const event = JSON.parse(message.body)
         this.handlers.forEach(handler => handler(event))
@@ -181,22 +171,37 @@ export class StompWebSocketTransport implements ChatTransport {
         console.error('[STOMP] failed to parse incoming message', e)
       }
     })
-    this.subscriptions.set(conversationId, sub)
-    console.log('[STOMP] subscribed to', topic)
+
+    const userQueueSub = this.client.subscribe(userQueue, (message) => {
+      try {
+        const event = JSON.parse(message.body)
+        this.handlers.forEach(handler => handler(event))
+      }
+      catch (e) {
+        console.error('[STOMP] failed to parse incoming message', e)
+      }
+    })
+
+    this.subscriptions.set(conversationId, topicSub)
+    this.subscriptions.set(`${conversationId}-userQueue`, userQueueSub)
+    console.log('[STOMP] subscribed to', topic, 'and', userQueue)
   }
 
   private unsubscribeFromConversation(conversationId: string) {
     try {
       this.subscriptions.get(conversationId)?.unsubscribe()
+      this.subscriptions.get(`${conversationId}-userQueue`)?.unsubscribe()
     }
-    catch { /* ignore */ }
+    catch {
+      console.warn('[STOMP] failed to unsubscribe from conversation', conversationId)
+    }
     this.intendedConversations.delete(conversationId)
     this.subscriptions.delete(conversationId)
+    this.subscriptions.delete(`${conversationId}-userQueue`)
     console.log('[STOMP] unsubscribed from conversation', conversationId)
   }
 
   private subscribeToPendingConversations() {
-    // pour chaque conversation qu'on souhaite, (re)crée l'abonnement si nécessaire
     this.intendedConversations.forEach((conversationId) => {
       if (!this.subscriptions.has(conversationId)) {
         this.subscribeToConversation(conversationId)
@@ -209,13 +214,19 @@ export class StompWebSocketTransport implements ChatTransport {
       try {
         sub.unsubscribe()
       }
-      catch { /* ignore */ }
+      catch {
+        console.warn('[STOMP] failed to unsubscribe', sub)
+      }
     })
     this.subscriptions.clear()
   }
 
   private getTopicForConversation(conversationId: string): string {
     return `/topic/conversation/${conversationId}`
+  }
+
+  private getUserQueueForConversation(conversationId: string): string {
+    return `/user/queue/conversation/${conversationId}`
   }
 
   private getDestination(eventType: EventType): string | null {

@@ -1,6 +1,6 @@
-import { Injectable, computed, inject, resource } from '@angular/core'
+import { computed, inject, Injectable, OnDestroy, resource } from '@angular/core'
 
-import { firstValueFrom } from 'rxjs'
+import { firstValueFrom, Subscription } from 'rxjs'
 
 import { Issue, IssueId } from '@ycyw/support-domains/issue/models'
 import { ISSUE_REPOSITORY } from '@ycyw/support-tokens/issue-repository-token'
@@ -9,7 +9,7 @@ import { ISSUE_REPOSITORY } from '@ycyw/support-tokens/issue-repository-token'
   providedIn: 'root',
   deps: [ISSUE_REPOSITORY],
 })
-export class IssueStore {
+export class IssueStore implements OnDestroy {
   private readonly repository = inject(ISSUE_REPOSITORY)
   private readonly _issues = resource({
     defaultValue: [],
@@ -19,6 +19,18 @@ export class IssueStore {
   readonly issues = this._issues.value.asReadonly()
   readonly loading = computed(() => this._issues.isLoading())
   readonly error = computed(() => this._issues.error())
+
+  private readonly sub: Subscription
+
+  constructor() {
+    this.sub = this.repository.getAll().subscribe({
+      next: issues => this._issues.set(issues),
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe()
+  }
 
   async getIssue(id: IssueId): Promise<Issue | null> {
     const faq = this._issues.value().find(f => f.id === id)

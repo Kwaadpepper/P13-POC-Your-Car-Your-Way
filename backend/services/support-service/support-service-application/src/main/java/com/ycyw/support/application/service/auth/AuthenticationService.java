@@ -1,4 +1,4 @@
-package com.ycyw.support.application.service;
+package com.ycyw.support.application.service.auth;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;

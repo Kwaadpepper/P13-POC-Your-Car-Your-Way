@@ -18,8 +18,8 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
 import com.ycyw.support.application.exception.exceptions.JwtAuthenticationFailureException;
-import com.ycyw.support.application.service.AuthenticationService;
-import com.ycyw.support.application.service.CookieService;
+import com.ycyw.support.application.service.auth.AuthenticationService;
+import com.ycyw.support.application.service.auth.CookieService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,18 +1,15 @@
 package com.ycyw.support.application.route.chat;
 
 import java.time.ZonedDateTime;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 import com.ycyw.support.application.config.RabbitMqChatConfig;
-import com.ycyw.support.application.dto.chat.MessageDto;
 import com.ycyw.support.application.security.AuthenticatedUser;
 import com.ycyw.support.application.service.chat.ChatRoomService;
 import com.ycyw.support.application.service.chat.ChatRoomService.ChatMessage;
@@ -28,10 +25,7 @@ import org.slf4j.LoggerFactory;
 public class ConversationMessagesController {
   private final Logger logger = LoggerFactory.getLogger(ConversationMessagesController.class);
 
-  private static final String CONVERSATION_TOPIC = "/topic/conversation/";
-
   private final RabbitTemplate rabbitTemplate;
-  private final SimpMessagingTemplate messaging;
   private final ChatRoomService chatRoomService;
   private final ConversationService conversationService;
 
@@ -40,11 +34,9 @@ public class ConversationMessagesController {
   public ConversationMessagesController(
       RabbitMqChatConfig rabbitConfig,
       RabbitTemplate rabbitTemplate,
-      SimpMessagingTemplate messaging,
       ChatRoomService chatRoomService,
       ConversationService conversationService) {
     this.rabbitTemplate = rabbitTemplate;
-    this.messaging = messaging;
     this.chatRoomService = chatRoomService;
     this.conversationService = conversationService;
     this.brokerChatExchange = rabbitConfig.getExchange();
@@ -76,20 +68,6 @@ public class ConversationMessagesController {
     // 3. Dispatch to RabbitMQ for other services
     rabbitTemplate.convertAndSend(
         brokerChatExchange, "message", mapToNewChatMessageEvent(newMessage));
-
-    // 4. Dispatch to WebSocket subscribers
-    messaging.convertAndSend(
-        CONVERSATION_TOPIC + conversation.toString(),
-        Map.of("type", "message", "payload", toDto(newMessage)));
-  }
-
-  private MessageDto toDto(ChatMessage message) {
-    return new MessageDto(
-        message.id(),
-        message.conversation(),
-        new MessageDto.UserDto(message.user(), message.role()),
-        message.text(),
-        message.sentAt());
   }
 
   private NewChatMessageEvent mapToNewChatMessageEvent(ChatMessage message) {

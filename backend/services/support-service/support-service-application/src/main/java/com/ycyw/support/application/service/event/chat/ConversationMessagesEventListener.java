@@ -31,7 +31,8 @@ public class ConversationMessagesEventListener {
 
   @RabbitListener(queues = "#{rabbitMqChatConfig.getNewMessageQueue()}")
   public void handleNewChatMessageEvent(NewChatMessageEvent newChatMessageEvent) {
-    ChatMessage chatMessage = mapToChatMessage(newChatMessageEvent);
+    final var conversation = newChatMessageEvent.conversationId();
+    final var chatMessage = mapToChatMessage(newChatMessageEvent);
 
     logger.debug(
         "Received new chat message event for conversation {} from user {}",
@@ -39,19 +40,11 @@ public class ConversationMessagesEventListener {
         chatMessage.user());
 
     // 1. Store message in local chat room service
-    final var messageAdded = chatRoomService.addMessageFromRemote(chatMessage);
+    chatRoomService.addMessageFromRemote(chatMessage);
 
-    if (!messageAdded) {
-      logger.debug(
-          "Message {} already exists in conversation {}, ignoring.",
-          chatMessage.id(),
-          chatMessage.conversation());
-      return;
-    }
-
-    // 2. Redistribute message to WebSocket subscribers
+    // 2. Dispatch message to WebSocket subscribers
     messaging.convertAndSend(
-        CONVERSATION_TOPIC + chatMessage.conversation().toString(),
+        CONVERSATION_TOPIC + conversation.toString(),
         Map.of("type", "message", "payload", toDto(chatMessage)));
   }
 

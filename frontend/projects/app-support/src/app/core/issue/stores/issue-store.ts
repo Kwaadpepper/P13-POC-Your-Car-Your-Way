@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core'
+import { Injectable, computed, inject, resource } from '@angular/core'
 
 import { firstValueFrom } from 'rxjs'
 
@@ -11,18 +11,23 @@ import { ISSUE_REPOSITORY } from '@ycyw/support-tokens/issue-repository-token'
 })
 export class IssueStore {
   private readonly repository = inject(ISSUE_REPOSITORY)
-  private readonly _issues = signal<Issue[]>([])
+  private readonly _issues = resource({
+    defaultValue: [],
+    loader: this.loadIssues.bind(this),
+  })
 
-  readonly issues = this._issues.asReadonly()
+  readonly issues = this._issues.value.asReadonly()
+  readonly loading = computed(() => this._issues.isLoading())
+  readonly error = computed(() => this._issues.error())
 
   async getIssue(id: IssueId): Promise<Issue | null> {
-    const faq = this.issues().find(f => f.id === id)
+    const faq = this._issues.value().find(f => f.id === id)
       ?? (await this.loadIssues()).find(f => f.id === id) ?? null
     return faq
   }
 
   reloadAll() {
-    this.loadIssues()
+    this._issues.reload()
   }
 
   private async loadIssues() {

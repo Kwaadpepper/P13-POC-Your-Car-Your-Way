@@ -1,6 +1,7 @@
-import { computed, inject, Injectable, OnDestroy, resource } from '@angular/core'
+import { computed, DestroyRef, inject, Injectable, resource } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
-import { firstValueFrom, Subscription } from 'rxjs'
+import { firstValueFrom } from 'rxjs'
 
 import { SUPPORT_CONFIG_SERVICE } from '@ycyw/support-tokens/support-config-service-token'
 
@@ -8,7 +9,7 @@ import { SUPPORT_CONFIG_SERVICE } from '@ycyw/support-tokens/support-config-serv
   providedIn: 'root',
   deps: [SUPPORT_CONFIG_SERVICE],
 })
-export class SupportConfigStore implements OnDestroy {
+export class SupportConfigStore {
   private readonly service = inject(SUPPORT_CONFIG_SERVICE)
   private readonly _supportConfig = resource({
     defaultValue: {
@@ -44,23 +45,16 @@ export class SupportConfigStore implements OnDestroy {
   readonly chatBusinessHours = computed(() => this.supportConfig().chat.businessHours ?? {})
   readonly phoneBusinessHours = computed(() => this.supportConfig().phone.businessHours ?? {})
 
-  private readonly sub: Subscription
-
-  constructor() {
-    this.sub = this.service.getConfig().subscribe({
-      next: config => this._supportConfig.set(config),
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.sub.unsubscribe()
-  }
+  private readonly destroyRef = inject(DestroyRef)
 
   reload() {
     this._supportConfig.reload()
   }
 
   private async loadSupportConfig() {
-    return await firstValueFrom(this.service.getConfig())
+    return await firstValueFrom(
+      this.service.getConfig()
+        .pipe(takeUntilDestroyed(this.destroyRef)),
+    )
   }
 }

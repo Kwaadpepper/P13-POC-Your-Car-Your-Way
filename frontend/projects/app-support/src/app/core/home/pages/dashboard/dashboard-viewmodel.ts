@@ -14,20 +14,23 @@ export type BusinessHours = Record<string, {
 })
 export class DashboardViewModel {
   private readonly config = inject(APP_CONFIG)
-  private readonly supportConfigStore = inject(SupportConfigStore)
+  private readonly store = inject(SupportConfigStore)
 
-  readonly phoneNumber = computed<string>(() => this.supportConfigStore.phoneNumber())
-  readonly email = computed<string>(() => this.supportConfigStore.email())
-  readonly address = computed<SupportConfig['address']>(() => this.supportConfigStore.address())
+  readonly loading = computed(() => this.store.loading())
+  readonly loadingError = computed(() => this.store.error() !== undefined)
+
+  readonly phoneNumber = computed<string>(() => this.store.phoneNumber())
+  readonly email = computed<string>(() => this.store.email())
+  readonly address = computed<SupportConfig['address']>(() => this.store.address())
 
   readonly chatBusinessHours = computed(() =>
     this.mapBusinessHours(
-      this.supportConfigStore.chatBusinessHours(),
+      this.store.chatBusinessHours(),
     ))
 
   readonly phoneBusinessHours = computed(() =>
     this.mapBusinessHours(
-      this.supportConfigStore.phoneBusinessHours(),
+      this.store.phoneBusinessHours(),
     ))
 
   get appName(): string {

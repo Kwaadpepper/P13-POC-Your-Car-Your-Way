@@ -2,6 +2,8 @@ import { Component, computed, inject } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
+import { MessageModule } from 'primeng/message'
+import { ProgressSpinnerModule } from 'primeng/progressspinner'
 
 import { DashboardViewModel } from './dashboard-viewmodel'
 
@@ -10,6 +12,8 @@ import { DashboardViewModel } from './dashboard-viewmodel'
   imports: [
     ButtonModule,
     RouterLink,
+    MessageModule,
+    ProgressSpinnerModule,
   ],
   providers: [
     DashboardViewModel,
@@ -27,4 +31,7 @@ export class Dashboard {
   readonly supportEmail = computed(() => this.viewModel.email())
 
   readonly supportChatBusinessHours = computed(() => this.viewModel.chatBusinessHours())
+
+  readonly loading = this.viewModel.loading
+  readonly loadingError = this.viewModel.loadingError
 }

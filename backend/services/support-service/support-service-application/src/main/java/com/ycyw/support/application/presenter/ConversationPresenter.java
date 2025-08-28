@@ -8,6 +8,8 @@ import com.ycyw.shared.application.Presenter;
 import com.ycyw.support.application.dto.ConversationDto;
 import com.ycyw.support.domain.usecase.conversation.GetAllConversation;
 
+import org.eclipse.jdt.annotation.Nullable;
+
 @Component
 public class ConversationPresenter
     implements Presenter<List<ConversationDto>, GetAllConversation.Output> {
@@ -21,6 +23,15 @@ public class ConversationPresenter
   }
 
   private ConversationDto toDto(GetAllConversation.Output.ConversationDto model) {
-    return new ConversationDto(model.id(), model.subject(), model.issue());
+    return new ConversationDto(
+        model.id(), model.subject(), model.issue(), toDto(model.lastMessage()));
+  }
+
+  private ConversationDto.@Nullable LastMessage toDto(
+      GetAllConversation.Output.ConversationDto.@Nullable LastMessage model) {
+    if (model == null) {
+      return null;
+    }
+    return new ConversationDto.LastMessage(model.content(), model.sentAt());
   }
 }

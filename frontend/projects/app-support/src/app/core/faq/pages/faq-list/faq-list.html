@@ -73,6 +73,18 @@
   <!-- Contenu -->
   <div class="row mb-5">
     <div class="col-12">
+      <!-- ERROR STATE -->
+      @if (loadingError()) {
+        <div class="row">
+          <div class="col">
+            <p-message
+              severity="error"
+              text="Une erreur est survenue lors du chargement des FAQs."
+            ></p-message>
+          </div>
+        </div>
+      }
+      <!-- LOADING STATE -->
       @if (viewModel.loading()) {
         <div class="space-y-3" aria-label="Chargement des FAQs">
           @for (sk of skeletonItems; track sk) {
@@ -86,7 +98,7 @@
             <div class="faq-groups space-y-5">
               <p-accordion [multiple]="true">
                 @for (group of groupedFaqs(); track group.type) {
-                  <p-accordion-panel>
+                  <p-accordion-panel value="{{ group.type }}">
                     <p-accordion-header
                       >{{ group.type }} ({{
                         group.faqs.length
@@ -139,7 +151,7 @@
             <div class="faq-flat">
               <p-accordion [multiple]="true">
                 @for (faq of filteredFaqs(); track faq.id) {
-                  <p-accordion-panel>
+                  <p-accordion-panel value="{{ faq.id }}">
                     <p-accordion-header>{{ faq.question }}</p-accordion-header>
                     <p-accordion-content>
                       <div class="space-y-3">

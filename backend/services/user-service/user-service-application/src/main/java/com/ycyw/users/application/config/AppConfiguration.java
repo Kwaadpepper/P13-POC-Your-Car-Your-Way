@@ -13,21 +13,23 @@ public class AppConfiguration {
   private static final Integer MIN_JWT_EXPIRATION = 1;
 
   private final String appName;
-  private final String allowedOrigins;
   private final String jwtIssuer;
   private final String jwtSecretKey;
   private final String jwtCookieName;
   private final Integer jwtTokenExpiration;
   private final Integer jwtRefreshExpiration;
+  private final String accessRevokedPrefix;
+  private final String refreshStoragePrefix;
 
   AppConfiguration(
       @Value("${spring.application.name}") @Nullable final String appName,
-      @Value("${server.cors.allowed-origins}") @Nullable final String allowedOrigins,
       @Value("${jwt.issuer}") @Nullable final String jwtIssuer,
       @Value("${jwt.secret_key}") @Nullable final String jwtSecretKey,
       @Value("${jwt.cookie.name}") @Nullable final String jwtCookieName,
       @Value("${jwt.token.expiration}") @Nullable final Integer jwtTokenExpiration,
-      @Value("${jwt.refresh.expiration}") @Nullable final Integer jwtRefreshExpiration) {
+      @Value("${jwt.refresh.expiration}") @Nullable final Integer jwtRefreshExpiration,
+      @Value("${keystorage.revoked_token_prefix}") @Nullable final String accessRevokedPrefix,
+      @Value("${keystorage.refresh_token_prefix}") @Nullable final String refreshStoragePrefix) {
 
     if (jwtSecretKey == null) {
       throw new IllegalStateException("Property 'jwt.secret_key' has to be set");
@@ -63,21 +65,21 @@ public class AppConfiguration {
     }
 
     this.appName = assertNotEmpty(appName, "spring.application.name");
-    this.allowedOrigins = assertNotEmpty(allowedOrigins, "server.cors.allowed-origins");
     this.jwtIssuer = assertNotEmpty(jwtIssuer, "jwt.issuer");
     this.jwtSecretKey = assertNotEmpty(jwtSecretKey, "jwt.secret_key");
     this.jwtCookieName = assertNotEmpty(jwtCookieName, "jwt.cookie.name");
 
     this.jwtTokenExpiration = jwtTokenExpiration;
     this.jwtRefreshExpiration = jwtRefreshExpiration;
+
+    this.accessRevokedPrefix =
+        assertNotEmpty(accessRevokedPrefix, "keystorage.revoked_token_prefix");
+    this.refreshStoragePrefix =
+        assertNotEmpty(refreshStoragePrefix, "keystorage.refresh_token_prefix");
   }
 
   public String getAppName() {
     return appName;
-  }
-
-  public String getAllowedOrigins() {
-    return allowedOrigins;
   }
 
   public String getJwtIssuer() {
@@ -98,6 +100,14 @@ public class AppConfiguration {
 
   public Integer getJwtRefreshExpiration() {
     return jwtRefreshExpiration;
+  }
+
+  public String getJwtAccessRevokedStoragePrefix() {
+    return accessRevokedPrefix;
+  }
+
+  public String getJwtRefreshStoragePrefix() {
+    return refreshStoragePrefix;
   }
 
   private final String assertNotEmpty(@Nullable String value, String property) {

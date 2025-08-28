@@ -1,23 +1,50 @@
-// Facade générique (sans Angular) pour manipuler le transport
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'
+import { inject, Injectable, signal } from '@angular/core'
 
-import { ChatTransport, Events, EventType, ServerEvent } from './chat/chat-transport'
+import { catchError, Observable, throwError } from 'rxjs'
+
+import { SessionExpiredError, verifyResponseType } from '@ycyw/shared'
+import { simpleMessageSchema, SimpleMessageZod } from '@ycyw/support-core/api/schemas'
+import { environment } from '@ycyw/support-env/environment'
+import { CHAT_TRANSPORT } from '@ycyw/support-tokens/chat-transport-token'
+
+import { Events, EventType, ServerEvent } from './chat/chat-transport'
 
 type Unsub = () => void
 
 export type MessageEventPayload = Events[EventType.MESSAGE]['server']
+export type JoinEventPayload = Events[EventType.JOIN]['server']
 export type PresenceEventPayload = Events[EventType.PRESENCE]['server']
 export type TypingEventPayload = Events[EventType.TYPING]['server']
 export type HistoryEventPayload = Events[EventType.HISTORY]['server']
 
+@Injectable({
+  providedIn: 'root',
+  deps: [CHAT_TRANSPORT],
+})
 export class ChatClient {
-  private readonly transport: ChatTransport
+  private readonly http = inject(HttpClient)
+  private readonly transport = inject(CHAT_TRANSPORT)
 
-  constructor(transport: ChatTransport) {
-    this.transport = transport
+  private readonly pingUrl = `${environment.endpoint}/chat/ping`
+
+  readonly connectionStatus = signal<'connected' | 'disconnected' | 'connecting'>('disconnected')
+
+  constructor() {
+    this.transport.onConnectionChange((status) => {
+      console.log('Connection status changed:', status ? 'connected' : 'disconnected')
+      this.connectionStatus.set(status ? 'connected' : 'disconnected')
+    })
   }
 
   async connect() {
-    await this.transport.connect()
+    this.connectionStatus.set('connecting')
+    this.pingChatServer().subscribe({
+      next: () => {
+        console.log('Ping to chat server successful, proceeding to connect...')
+        this.transport.connect()
+      },
+    })
   }
 
   disconnect() {
@@ -40,13 +67,19 @@ export class ChatClient {
     this.transport.send({ type: EventType.TYPING, payload: { conversation, isTyping } })
   }
 
-  getHistory(conversation: string, limit = 50) {
-    this.transport.send({ type: EventType.HISTORY, payload: { conversation, limit } })
+  getHistory(conversation: string) {
+    this.transport.send({ type: EventType.HISTORY, payload: { conversation } })
   }
 
   onMessage(cb: (m: MessageEventPayload) => void): Unsub {
     return this.transport.onEvent((evt: ServerEvent) => {
       if (evt.type === EventType.MESSAGE) cb(evt.payload)
+    })
+  }
+
+  onJoin(cb: (m: JoinEventPayload) => void): Unsub {
+    return this.transport.onEvent((evt: ServerEvent) => {
+      if (evt.type === EventType.JOIN) cb(evt.payload)
     })
   }
 
@@ -66,5 +99,23 @@ export class ChatClient {
     return this.transport.onEvent((evt: ServerEvent) => {
       if (evt.type === EventType.HISTORY) cb(evt.payload)
     })
+  }
+
+  /** This is used to trigger refresh token or logout before attempting cat connexion */
+  private pingChatServer(): Observable<SimpleMessageZod> {
+    return this.http.get<SimpleMessageZod>(
+      this.pingUrl,
+      {
+        withCredentials: true,
+      },
+    ).pipe(
+      catchError((error) => {
+        if (error instanceof HttpErrorResponse && error.status === 401) {
+          return throwError(() => new SessionExpiredError())
+        }
+        return throwError(() => error)
+      }),
+      verifyResponseType(simpleMessageSchema),
+    )
   }
 }

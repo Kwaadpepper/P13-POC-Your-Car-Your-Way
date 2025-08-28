@@ -1,9 +1,9 @@
-import { Component, computed, effect, inject, input, OnDestroy, OnInit, signal } from '@angular/core'
+import { Component, computed, inject, input, OnDestroy, OnInit, signal } from '@angular/core'
 
 import { DividerModule } from 'primeng/divider'
 import { ScrollTopModule } from 'primeng/scrolltop'
 import { TagModule } from 'primeng/tag'
-import { ObservedValueOf } from 'rxjs'
+import { ObservedValueOf, Subject, takeUntil } from 'rxjs'
 
 import { UUID } from '@ycyw/shared'
 import { PresenceEvent } from '@ycyw/support-domains/events/presence-event'
@@ -20,7 +20,6 @@ interface ChatBoxMessage {
   conversation: UUID
   from: {
     id: UUID
-    name: string
     role: Role
   }
   text: string
@@ -46,19 +45,20 @@ interface ChatBoxTypingUser { user: UUID, role: Role }
 })
 export class ChatBox implements OnInit, OnDestroy {
   private readonly chatService = inject(CHAT_SERVICE)
+  private readonly destroy$ = new Subject<void>()
 
   // Inputs
   readonly user = input.required<ChatBoxUser>()
   readonly conversation = input.required<UUID>()
 
   // State (signals locaux)
-  private readonly _connected = signal(false)
   private readonly _conversationId = signal<UUID | null>(null)
   private readonly _messages = signal<ChatBoxMessage[]>([])
   private readonly _participants = signal<ChatBoxParticipant[]>([])
   private readonly _typingUsers = signal<ChatBoxTypingUser[]>([])
 
   // Sélecteurs exposés
+  readonly isConnected = computed(() => this.chatService.isOnline())
   readonly messages = this._messages.asReadonly()
   readonly participants = this._participants.asReadonly()
   readonly typingUsers = this._typingUsers.asReadonly()
@@ -66,17 +66,7 @@ export class ChatBox implements OnInit, OnDestroy {
     this._participants().filter(p => p.status === PresenceStatus.ONLINE).length,
   )
 
-  // Rejoin si l'Input conversation change après connexion
-  private readonly _rejoinEffect = effect(() => {
-    const id = this.conversation
-    if (!id || !this._connected()) return
-    this.join(id())
-  })
-
   ngOnInit() {
-    if (!this.user().id) throw new Error('ChatBox: user.id requis')
-    if (!this.conversation) throw new Error('ChatBox: conversation requis')
-
     this.connect()
       .then(() => this.join(this.conversation()))
       .catch(err => console.error('ChatBox: échec de la connexion', err))
@@ -84,15 +74,15 @@ export class ChatBox implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.leave()
-    if (this._connected()) this.chatService.disconnect()
+    if (this.isConnected()) this.chatService.disconnect()
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 
-  /* Actions UI (reliées aux composants enfants) */
   onSend(message: string) {
     const cid = this._conversationId()
     if (!cid || !message.trim()) return
     this.chatService.sendMessage(cid, message.trim())
-    // Arrêt du typing
     this.setTyping(false)
   }
 
@@ -100,57 +90,72 @@ export class ChatBox implements OnInit, OnDestroy {
     this.setTyping(isTyping)
   }
 
-  /* Connexion + flux */
   private async connect() {
-    if (this._connected()) return
+    if (this.isConnected()) return
     await this.chatService.connect()
     this.bindStreams()
-    this._connected.set(true)
   }
 
   private bindStreams() {
-    // Messages individuels
-    this.chatService.messages$.subscribe((m) => {
-      const cid = this._conversationId()
-      if (cid && m.conversation === cid) {
-        this._messages.update(arr => [...arr, this.mapToChatBoxMessage(m)])
-      }
-    })
+    this.chatService.messages$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((m) => {
+        console.debug('Message received:', m)
+        const cid = this._conversationId()
+        if (cid && m.conversation === cid) {
+          this._messages.update(arr => [...arr, this.mapToChatBoxMessage(m)])
+        }
+      })
 
-    // Historique
-    this.chatService.history$.subscribe((list) => {
-      this._messages.set(list.map(m => this.mapToChatBoxMessage(m)))
-    })
+    this.chatService.history$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((list) => {
+        console.debug('History received:', list)
+        this._messages.set(list.map(m => this.mapToChatBoxMessage(m)))
+      })
 
-    // Présence
-    this.chatService.presence$.subscribe((p: PresenceEvent) => {
-      const cid = this._conversationId()
-      if (p.conversation && cid && p.conversation !== cid) return
-      const arr = [...this._participants()]
-      const idx = arr.findIndex(x => x.user === p.user)
-      const mapped = this.mapToChatBoxParticipant(p)
-      if (idx >= 0) arr[idx] = mapped
-      else arr.push(mapped)
-      this._participants.set(arr)
-    })
+    this.chatService.presence$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((p: PresenceEvent) => {
+        console.debug('Presence event received:', p)
+        const cid = this._conversationId()
+        if (p.conversation && cid && p.conversation !== cid) return
+        const arr = [...this._participants()]
+        const idx = arr.findIndex(x => x.user === p.user)
+        const mapped = this.mapToChatBoxParticipant(p)
+        if (idx >= 0) arr[idx] = mapped
+        else arr.push(mapped)
+        this._participants.set(arr)
+      })
 
-    // Typing
-    this.chatService.typing$.subscribe((t: TypingEvent) => {
-      const cid = this._conversationId()
-      if (!cid || t.conversation !== cid) return
-      const list = [...this._typingUsers()]
-      const idx = list.findIndex(x => x.user === t.user)
-      if (t.typing) {
-        if (idx === -1) list.push(this.mapToChatBoxTypingUser(t))
-      }
-      else if (idx >= 0) {
-        list.splice(idx, 1)
-      }
-      this._typingUsers.set(list)
-    })
+    this.chatService.join$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((j) => {
+        console.debug('Join event received:', j)
+        const cid = this._conversationId()
+        if (cid && j.conversation !== cid) return
+        const participants = this.mapToChatBoxJoinedParticipant(j)
+        this._participants.set(participants)
+      })
+
+    this.chatService.typing$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((t: TypingEvent) => {
+        console.debug('Typing event received:', t)
+        const cid = this._conversationId()
+        if (!cid || t.conversation !== cid) return
+        const list = [...this._typingUsers()]
+        const idx = list.findIndex(x => x.user === t.user)
+        if (t.typing) {
+          if (idx === -1) list.push(this.mapToChatBoxTypingUser(t))
+        }
+        else if (idx >= 0) {
+          list.splice(idx, 1)
+        }
+        this._typingUsers.set(list)
+      })
   }
 
-  /* Join / Leave */
   private join(conversationId: UUID) {
     const prev = this._conversationId()
     if (prev && prev !== conversationId) {
@@ -173,26 +178,31 @@ export class ChatBox implements OnInit, OnDestroy {
     this._participants.set([])
   }
 
-  /* Typing */
   private setTyping(isTyping: boolean) {
     const cid = this._conversationId()
     if (!cid) return
     this.chatService.setTyping(cid, isTyping)
   }
 
-  /* Mappers */
   private mapToChatBoxMessage(msg: ObservedValueOf<typeof this.chatService.messages$>): ChatBoxMessage {
     return {
       id: msg.id,
       conversation: msg.conversation,
       from: {
         id: msg.from.id,
-        name: msg.from.name,
         role: msg.from.role,
       },
       text: msg.text,
       sentAt: msg.sentAt,
     }
+  }
+
+  private mapToChatBoxJoinedParticipant(p: ObservedValueOf<typeof this.chatService.join$>): ChatBoxParticipant[] {
+    return p.participants.map(part => ({
+      user: part.user,
+      role: part.role,
+      status: part.status,
+    }))
   }
 
   private mapToChatBoxParticipant(p: ObservedValueOf<typeof this.chatService.presence$>): ChatBoxParticipant {

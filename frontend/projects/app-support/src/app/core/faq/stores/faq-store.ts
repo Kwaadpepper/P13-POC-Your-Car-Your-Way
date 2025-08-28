@@ -1,6 +1,6 @@
-import { Injectable, computed, inject, resource } from '@angular/core'
+import { computed, inject, Injectable, OnDestroy, resource } from '@angular/core'
 
-import { firstValueFrom } from 'rxjs'
+import { firstValueFrom, Subscription } from 'rxjs'
 
 import { Faq, FaqId } from '@ycyw/support-domains/faq/models'
 import { FAQ_REPOSITORY } from '@ycyw/support-tokens/faq-repository-token'
@@ -9,7 +9,7 @@ import { FAQ_REPOSITORY } from '@ycyw/support-tokens/faq-repository-token'
   providedIn: 'root',
   deps: [FAQ_REPOSITORY],
 })
-export class FaqStore {
+export class FaqStore implements OnDestroy {
   private readonly repository = inject(FAQ_REPOSITORY)
   private readonly _faqs = resource({
     defaultValue: [],
@@ -19,6 +19,18 @@ export class FaqStore {
   readonly faqs = this._faqs.value.asReadonly()
   readonly loading = computed(() => this._faqs.isLoading())
   readonly error = computed(() => this._faqs.error())
+
+  private readonly sub: Subscription
+
+  constructor() {
+    this.sub = this.repository.getAll().subscribe({
+      next: faqs => this._faqs.set(faqs),
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.sub.unsubscribe()
+  }
 
   async getFaq(id: FaqId): Promise<Faq | null> {
     const faq = this._faqs.value().find(f => f.id === id)

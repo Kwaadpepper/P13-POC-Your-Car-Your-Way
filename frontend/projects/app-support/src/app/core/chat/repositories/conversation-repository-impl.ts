@@ -17,14 +17,16 @@ export class ConversationRepositoryImpl implements ConversationRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.endpoint
 
-  readonly resourceUrl = `${this.serviceUrl}/api/support`
+  readonly resourceUrl = `${this.serviceUrl}`
 
   private readonly conversationListUrl = `${this.resourceUrl}/conversations`
 
   getAll(): Observable<Conversation[]> {
     return this.http.get<ConversationListZod>(
       this.conversationListUrl,
-      {},
+      {
+        withCredentials: true,
+      },
     ).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {

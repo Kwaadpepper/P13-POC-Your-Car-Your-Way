@@ -8,8 +8,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import org.eclipse.jdt.annotation.Nullable;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(schema = "support_context", name = "messages")
@@ -19,16 +17,14 @@ public class MessageEntity {
   @Column(columnDefinition = "uuid")
   private UUID id;
 
-  @Column(name = "message", columnDefinition = "text")
-  private @Nullable String message;
+  @Column(name = "message", columnDefinition = "text", nullable = false)
+  private String message;
 
-  @Column(name = "conversation", columnDefinition = "uuid")
-  private @Nullable UUID conversationId;
+  @Column(name = "conversation", columnDefinition = "uuid", nullable = false)
+  private UUID conversationId;
 
-  // smallint -> short
-  @JdbcTypeCode(SqlTypes.SMALLINT)
   @Column(name = "sender_type", nullable = false)
-  private short senderType;
+  private String senderType;
 
   // ID opérateur OU client (User Context)
   @Column(name = "sender", columnDefinition = "uuid", nullable = false)
@@ -36,9 +32,9 @@ public class MessageEntity {
 
   public MessageEntity() {
     this.id = UUID.randomUUID();
-    this.message = null;
-    this.conversationId = null;
-    this.senderType = 0;
+    this.message = "";
+    this.conversationId = UUID.randomUUID();
+    this.senderType = "";
     this.senderId = UUID.randomUUID();
   }
 
@@ -50,27 +46,27 @@ public class MessageEntity {
     this.id = id;
   }
 
-  public @Nullable String getMessage() {
+  public String getMessage() {
     return message;
   }
 
-  public void setMessage(@Nullable String message) {
+  public void setMessage(String message) {
     this.message = message;
   }
 
-  public @Nullable UUID getConversationId() {
+  public UUID getConversationId() {
     return conversationId;
   }
 
-  public void setConversationId(@Nullable UUID conversationId) {
+  public void setConversationId(UUID conversationId) {
     this.conversationId = conversationId;
   }
 
-  public short getSenderType() {
+  public String getSenderType() {
     return senderType;
   }
 
-  public void setSenderType(short senderType) {
+  public void setSenderType(String senderType) {
     this.senderType = senderType;
   }
 

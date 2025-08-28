@@ -7,6 +7,7 @@ import { BadgeModule } from 'primeng/badge'
 import { ButtonModule } from 'primeng/button'
 import { ListboxModule } from 'primeng/listbox'
 import { MessageModule } from 'primeng/message'
+import { ProgressSpinnerModule } from 'primeng/progressspinner'
 
 import { Conversation } from '@ycyw/support-domains/chat/models'
 import { BackButton } from '@ycyw/support-shared/components'
@@ -23,6 +24,7 @@ import { ConversationListViewModel } from './conversation-list-viewmodel'
     MessageModule,
     DatePipe,
     BackButton,
+    ProgressSpinnerModule,
   ],
   providers: [ConversationListViewModel],
   templateUrl: './conversation-list.html',
@@ -34,6 +36,8 @@ export class ConversationList {
 
   private readonly viewModel = inject(ConversationListViewModel)
   readonly conversations = computed(() => this.viewModel.conversations())
+  readonly loading = this.viewModel.loading
+  readonly loadingError = this.viewModel.loadingError
 
   open(item: Conversation) {
     this.router.navigate(['.', item.id], { relativeTo: this.route })

@@ -16,8 +16,7 @@
     "lint:css:ci": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" -f json",
     "lint:css:fix": "node ./node_modules/.bin/stylelint --config './.stylelintrc.json' --max-warnings 0 \"projects/**/src/**/*.css\" --fix",
     "check:alias": "node scripts/check-alias.mjs",
-    "prepare": "export GIT_DIR=\"./..\" husky",
-    "mock:ws": "bun dev-mocks/mock-ws-server.ts"
+    "prepare": "export GIT_DIR=\"./..\" husky"
   },
   "prettier": {
     "overrides": [
@@ -40,18 +39,19 @@
     "@angular/forms": "^20.1.6",
     "@angular/platform-browser": "^20.1.6",
     "@angular/router": "^20.1.6",
+    "@primeng/themes": "^19.1.4",
+    "@stomp/stompjs": "^7.1.1",
+    "@ycyw/styles": "file:projects/shared",
     "es-module-shims": "^1.10.1",
     "postcss-nesting": "^13.0.2",
     "primeicons": "^7.0.0",
     "primeng": "^19.1.4",
-    "@primeng/themes": "^19.1.4",
     "rxjs": "~7.8.2",
     "tailwind-bootstrap-grid": "^6.0.0",
     "tailwindcss": "^3.4.17",
     "tailwindcss-primeui": "^0.6.1",
     "tslib": "^2.8.1",
-    "zone.js": "~0.15.1",
-    "@ycyw/styles": "file:projects/shared"
+    "zone.js": "~0.15.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.1.5",

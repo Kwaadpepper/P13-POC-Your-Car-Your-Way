@@ -1,4 +1,4 @@
 export const environment = {
   env: 'production',
-  reservationWebServer: 'http://localhost:3001',
+  reservationWebServer: 'http://localhost:8080/reservation-service-application',
 }

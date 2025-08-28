@@ -17,14 +17,16 @@ export class IssueRepositoryImpl implements IssueRepository {
   private readonly http = inject(HttpClient)
   private readonly serviceUrl = environment.endpoint
 
-  readonly resourceUrl = `${this.serviceUrl}/api/support`
+  readonly resourceUrl = `${this.serviceUrl}`
 
   private readonly faqListUrl = `${this.resourceUrl}/issues`
 
   getAll(): Observable<Issue[]> {
     return this.http.get<IssueListZod>(
       this.faqListUrl,
-      {},
+      {
+        withCredentials: true,
+      },
     ).pipe(
       catchError((error) => {
         if (error instanceof HttpErrorResponse && error.status === 401) {

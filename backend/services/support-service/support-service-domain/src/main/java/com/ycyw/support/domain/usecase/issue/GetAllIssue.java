@@ -17,15 +17,18 @@ import com.ycyw.shared.ddd.objectvalues.BirthDate;
 import com.ycyw.shared.ddd.objectvalues.Email;
 import com.ycyw.shared.ddd.objectvalues.PhoneNumber;
 import com.ycyw.shared.ddd.objectvalues.acriss.AcrissCode;
+import com.ycyw.support.domain.model.entity.conversation.Conversation;
 import com.ycyw.support.domain.model.entity.externals.agency.Agency;
 import com.ycyw.support.domain.model.entity.externals.client.Client;
 import com.ycyw.support.domain.model.entity.externals.client.ClientId;
 import com.ycyw.support.domain.model.entity.externals.reservation.Reservation;
 import com.ycyw.support.domain.model.entity.externals.reservation.ReservationId;
 import com.ycyw.support.domain.model.entity.issue.Issue;
+import com.ycyw.support.domain.model.entity.issue.IssueId;
 import com.ycyw.support.domain.model.valueobject.IssueStatus;
 import com.ycyw.support.domain.port.directory.ClientDirectory;
 import com.ycyw.support.domain.port.directory.ReservationDirectory;
+import com.ycyw.support.domain.port.repository.ConversationRepository;
 import com.ycyw.support.domain.port.repository.IssueRepository;
 import com.ycyw.support.domain.usecase.issue.GetAllIssue.Output.ClientDto;
 import com.ycyw.support.domain.usecase.issue.GetAllIssue.Output.ReservationDto;
@@ -47,9 +50,11 @@ public sealed interface GetAllIssue {
         UUID id,
         String subject,
         String description,
+        @Nullable String answer,
         IssueStatus status,
         ClientDto client,
         @Nullable ReservationDto reservation,
+        @Nullable UUID conversation,
         ZonedDateTime updatedAt) {}
 
     record ClientDto(
@@ -80,14 +85,17 @@ public sealed interface GetAllIssue {
     private final IssueRepository issueRepository;
     private final ClientDirectory clientDirectory;
     private final ReservationDirectory reservationDirectory;
+    private final ConversationRepository conversationRepository;
 
     public Handler(
         IssueRepository issueRepository,
         ClientDirectory clientDirectory,
-        ReservationDirectory reservationDirectory) {
+        ReservationDirectory reservationDirectory,
+        ConversationRepository conversationRepository) {
       this.issueRepository = issueRepository;
       this.clientDirectory = clientDirectory;
       this.reservationDirectory = reservationDirectory;
+      this.conversationRepository = conversationRepository;
     }
 
     @Override
@@ -110,7 +118,10 @@ public sealed interface GetAllIssue {
           throw new IllegalDomainStateException("No client found for id " + clientId);
         }
 
-        agregates.add(new IssueAgregate(issue, client, reservation));
+        final var issueId = new IssueId(issue.getId());
+        @Nullable Conversation conversation = conversationRepository.findByIssueId(issueId);
+
+        agregates.add(new IssueAgregate(issue, client, reservation, conversation));
       }
 
       return new Output.All(agregates.stream().map(this::mapToDto).toList());
@@ -120,13 +131,16 @@ public sealed interface GetAllIssue {
       final Issue issue = agregate.issue;
       final Client client = agregate.client;
       @Nullable final Reservation reservation = agregate.reservation;
+      @Nullable final Conversation conversation = agregate.conversation;
       return new Output.IssueDto(
           issue.getId(),
           issue.getSubject(),
           issue.getDescription(),
+          issue.getAnswer(),
           issue.getStatus(),
           mapToDto(client),
           mapToDto(reservation),
+          conversation != null ? conversation.getId() : null,
           issue.getUpdatedAt());
     }
 
@@ -187,7 +201,7 @@ public sealed interface GetAllIssue {
 
       Map<ClientId, Client> output = new HashMap<>();
       for (ClientId id : idSet) {
-        @Nullable Client client = clientDirectory.findById(id);
+        @Nullable Client client = clientDirectory.find(id);
         if (client != null) {
           output.put(id, client);
         }
@@ -196,6 +210,10 @@ public sealed interface GetAllIssue {
       return output;
     }
 
-    private record IssueAgregate(Issue issue, Client client, @Nullable Reservation reservation) {}
+    private record IssueAgregate(
+        Issue issue,
+        Client client,
+        @Nullable Reservation reservation,
+        @Nullable Conversation conversation) {}
   }
 }

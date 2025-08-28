@@ -39,8 +39,8 @@ const businessHoursSchema = z
 
 const addressSchema = z.object({
   line1: z.string().min(1),
-  line2: z.string().optional(),
-  line3: z.string().optional(),
+  line2: z.string().optional().nullable().transform(val => val === null ? undefined : val),
+  line3: z.string().optional().nullable().transform(val => val === null ? undefined : val),
   city: z.string().min(1),
   zip: z.string().min(1),
   country: z.string().min(1),

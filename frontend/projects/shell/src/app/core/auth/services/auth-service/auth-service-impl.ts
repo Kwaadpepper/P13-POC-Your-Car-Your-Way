@@ -20,7 +20,7 @@ import { SessionStore } from '@ycyw/shell-shared/stores'
   ],
 })
 export class AuthServiceImpl implements AuthService {
-  readonly resourceUrl = `${environment.endpoint}/api/auth`
+  readonly resourceUrl = `${environment.userServiceEndpoint}/auth`
 
   private readonly loginUrl = `${this.resourceUrl}/login`
   private readonly refreshUrl = `${this.resourceUrl}/refresh-token`

@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms'
 import { AccordionModule } from 'primeng/accordion'
 import { ButtonModule } from 'primeng/button'
 import { InputTextModule } from 'primeng/inputtext'
+import { MessageModule } from 'primeng/message'
 import { SelectModule } from 'primeng/select'
 import { SkeletonModule } from 'primeng/skeleton'
 import { TagModule } from 'primeng/tag'
@@ -30,6 +31,7 @@ import { FaqListViewModel } from './faq-list-viewmodel'
     SkeletonModule,
     TooltipModule,
     BackButton,
+    MessageModule,
   ],
   providers: [
     FaqListViewModel,
@@ -40,6 +42,9 @@ import { FaqListViewModel } from './faq-list-viewmodel'
 })
 export class FaqList {
   readonly viewModel = inject(FaqListViewModel)
+
+  readonly loading = this.viewModel.loading
+  readonly loadingError = this.viewModel.loadingError
 
   readonly searchValue = signal('')
   readonly selectedType = signal<Faq['category'] | null>(null)

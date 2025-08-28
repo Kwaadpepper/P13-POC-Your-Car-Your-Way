@@ -1,2 +1,2 @@
 export * from './chat-transport'
-export * from './websocket-transport'
+export * from './stomp-websocket-transport'

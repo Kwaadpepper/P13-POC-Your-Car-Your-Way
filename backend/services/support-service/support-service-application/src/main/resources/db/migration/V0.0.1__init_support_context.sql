@@ -68,9 +68,9 @@ ALTER TABLE support_context.conversations OWNER TO postgres;
 -- DROP TABLE IF EXISTS support_context.messages CASCADE;
 CREATE TABLE support_context.messages (
 	id uuid NOT NULL,
-	message text,
-	conversation uuid,
-	sender_type smallint NOT NULL,
+	message text NOT NULL,
+	conversation uuid NOT NULL,
+	sender_type varchar(255) NOT NULL,
 	sender uuid NOT NULL,
 	CONSTRAINT message_pk PRIMARY KEY (id)
 );

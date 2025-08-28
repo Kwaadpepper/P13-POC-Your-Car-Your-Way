@@ -9,7 +9,7 @@ interface AgencyInfo {
     line2?: string
     line3?: string
     city: string
-    post_code: string
+    zipCode: string
     country: string
   }
   coordinates: {

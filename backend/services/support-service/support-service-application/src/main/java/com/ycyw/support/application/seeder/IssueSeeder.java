@@ -43,7 +43,7 @@ public class IssueSeeder implements Seeder {
   }
 
   private void createModel() {
-    final var JOHN_DOE_CLIENT_ID = "00000000-0000-7000-8000-000000000002";
+    final var JOHN_DOE_CLIENT_ID = "019159f8-d42f-7000-8000-000000000002";
 
     var subject = dataFaker.lorem().sentence();
     var description = dataFaker.lorem().paragraph();

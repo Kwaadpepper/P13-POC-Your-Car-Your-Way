@@ -4,6 +4,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.ycyw.shared.ddd.lib.AggregateRoot;
+import com.ycyw.shared.ddd.lib.event.AggregateEventBus;
 import com.ycyw.shared.utils.Domain;
 import com.ycyw.support.domain.model.entity.issue.IssueId;
 
@@ -46,6 +47,10 @@ public class Conversation extends AggregateRoot {
 
   public IssueId getIssue() {
     return issue;
+  }
+
+  public void addMessage(AggregateEventBus<ConversationMessage> bus, ConversationMessage message) {
+    bus.publish(message);
   }
 
   @Override

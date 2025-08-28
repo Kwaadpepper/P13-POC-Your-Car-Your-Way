@@ -1,4 +1,4 @@
 export const environment = {
   env: 'development',
-  backofficeWebServer: 'http://localhost:3001',
+  backofficeWebServer: 'http://localhost:8080/backoffice-service-application',
 }

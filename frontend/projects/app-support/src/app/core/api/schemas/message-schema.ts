@@ -8,7 +8,6 @@ const messageSchema = z.object({
   conversation: uuidSchema,
   from: z.object({
     id: uuidSchema,
-    name: z.string().nonempty(),
     role: z.nativeEnum(Role),
   }),
   text: z.string(),

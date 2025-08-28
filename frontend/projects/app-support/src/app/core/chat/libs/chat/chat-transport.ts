@@ -98,9 +98,9 @@ export type ClientCommand
 export interface ChatTransport {
   connect(): Promise<void>
   disconnect(): Promise<void>
-  isConnected(): boolean
 
   send(cmd: ClientCommand): void
 
+  onConnectionChange(cb: (status: boolean) => void): void
   onEvent(cb: (evt: ServerEvent) => void): () => void
 }

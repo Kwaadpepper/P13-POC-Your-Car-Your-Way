@@ -1,4 +1,4 @@
-import { inject, Inject } from '@angular/core'
+import { computed, inject, Inject } from '@angular/core'
 
 import { UUID } from '@ycyw/shared'
 import { IssueStore } from '@ycyw/support-core/issue/stores/issue-store'
@@ -11,6 +11,8 @@ export class IssueListViewModel {
 
   readonly issues = this.store.issues
   readonly loading = this.store.loading
+
+  readonly loadingError = computed(() => this.store.error() !== undefined)
 
   reloadAll() {
     this.store.reloadAll()

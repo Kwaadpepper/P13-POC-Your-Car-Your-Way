@@ -1,36 +1,45 @@
 package com.ycyw.users.application.service;
 
-import java.util.Collection;
-import java.util.List;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
-import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
+import com.ycyw.users.application.config.AppConfiguration;
 import com.ycyw.users.application.exception.exceptions.ServerErrorException;
-import com.ycyw.users.domain.usecase.session.VerifySession;
+import com.ycyw.users.application.security.AuthenticatedUser;
+import com.ycyw.users.infrastructure.storage.KeyStorage;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.Nullable;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Service
+@Component
 public class AuthenticationService {
   private static final Logger logger = LogManager.getLogger(AuthenticationService.class);
-  private final UseCaseExecutor useCaseExecutor;
-  private final VerifySession.Handler verifySessionHandler;
 
-  public AuthenticationService(
-      final UseCaseExecutor useCaseExecutor, final VerifySession.Handler verifySessionHandler) {
-    this.useCaseExecutor = useCaseExecutor;
-    this.verifySessionHandler = verifySessionHandler;
+  private final String jwtIssuer;
+  private final SecretKey jwtSigningKey;
+
+  private final KeyStorage keyStorage;
+  private final String revokedAccessPrefix;
+
+  public AuthenticationService(AppConfiguration appConfiguration, KeyStorage keyStorage) {
+    this.jwtIssuer = appConfiguration.getJwtIssuer();
+    this.jwtSigningKey = keyFromString(appConfiguration.getJwtSecretKey());
+    this.keyStorage = keyStorage;
+    this.revokedAccessPrefix = appConfiguration.getJwtAccessRevokedStoragePrefix();
   }
 
   public @Nullable AuthenticatedUser getAuthenticated() {
@@ -47,16 +56,22 @@ public class AuthenticationService {
   public AuthenticatedUser authenticate(final JwtAccessToken accessToken)
       throws BadCredentialsException {
     try {
-      final var input = new VerifySession.AccessToken(accessToken);
-      final var output = useCaseExecutor.execute(verifySessionHandler, input);
+      if (keyStorage.retrieve(revokedAccessPrefix + accessToken.value()) != null) {
+        throw new BadCredentialsException("Token has been revoked");
+      }
 
-      return switch (output) {
-        case VerifySession.Output.SessionInvalid ignored ->
-            throw new BadCredentialsException("Account cannot be used for the moment");
-        case VerifySession.Output.SessionVerified(var claims, var additionals) ->
-            new AuthenticatedUser(
-                claims.subject().value(), additionals.username(), accessToken, claims.role());
-      };
+      final var claims = extractAllClaims(accessToken);
+      final var userId = UUID.fromString(claims.getSubject());
+      @Nullable final String role = claims.get("role", String.class);
+
+      if (role == null) {
+        throw new BadCredentialsException("Invalid token claims");
+      }
+
+      return new AuthenticatedUser(userId, accessToken, role);
+    } catch (ExpiredJwtException e) {
+      throw new BadCredentialsException("Token has expired");
+
     } catch (DomainConstraintException e) {
       throw new BadCredentialsException("Account cannot be used for the moment");
     }
@@ -76,21 +91,16 @@ public class AuthenticationService {
             .formatted(AuthenticatedUser.class, principal.getClass()));
   }
 
-  public record AuthenticatedUser(
-      UUID id, String username, JwtAccessToken jwtAccessToken, String role) implements UserDetails {
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-      return List.of();
-    }
+  private Claims extractAllClaims(JwtAccessToken jwtAccessToken) {
+    return Jwts.parser()
+        .verifyWith(jwtSigningKey)
+        .requireIssuer(jwtIssuer)
+        .build()
+        .parseSignedClaims(jwtAccessToken.value())
+        .getPayload();
+  }
 
-    @Override
-    public String getPassword() {
-      return jwtAccessToken.value();
-    }
-
-    @Override
-    public String getUsername() {
-      return username;
-    }
+  private SecretKey keyFromString(String base64String) {
+    return Keys.hmacShaKeyFor(base64String.getBytes(StandardCharsets.UTF_8));
   }
 }

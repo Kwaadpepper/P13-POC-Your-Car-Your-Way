@@ -1,7 +1,6 @@
 package com.ycyw.support.application.dto;
 
 import java.net.URI;
-import java.time.DayOfWeek;
 import java.util.Map;
 
 import org.eclipse.jdt.annotation.Nullable;
@@ -13,11 +12,11 @@ public record CompanyInfoViewDto(
       @Nullable String line2,
       @Nullable String line3,
       String city,
-      String zipCode,
+      String zip,
       String country) {}
 
   public static record BusinessDto(
-      @Nullable String phone, Map<DayOfWeek, TimeRangeDto> businessHours) {}
+      @Nullable String number, Map<String, TimeRangeDto> businessHours) {}
 
   public static record TimeRangeDto(String from, String to) {}
 }

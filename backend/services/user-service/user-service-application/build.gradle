@@ -35,5 +35,9 @@ dependencies {
   implementation(libs.flyway.core)
   implementation(libs.flyway.postgres)
 
+  implementation(libs.jsonwebtoken.jjwt.api)
+  runtimeOnly(libs.jsonwebtoken.jjwt.impl)
+  runtimeOnly(libs.jsonwebtoken.jjwt.jackson)
+
   testImplementation(libs.spring.boot.starter.test)
 }

@@ -5,7 +5,6 @@ export interface ChatMessage extends Entity {
   conversation: UUID
   from: {
     id: UUID
-    name: string
     role: Role
   }
   text: string

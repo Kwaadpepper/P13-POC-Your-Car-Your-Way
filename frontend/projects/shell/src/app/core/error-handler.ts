@@ -33,6 +33,10 @@ export class ErrorHandler implements NgErrorHanlder {
     }
 
     if (error instanceof Error) {
+      if (error.cause instanceof SessionExpiredError) {
+        this.router.navigateByUrl('/login')
+        return
+      }
       // ! Unmanaged error occured
       const message = `Sorry an error occured ${error?.message}`
       console.error(message)

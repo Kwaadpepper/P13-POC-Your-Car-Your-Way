@@ -37,6 +37,10 @@ export class DashboardViewModel {
     return this.config.appName
   }
 
+  public reload(): void {
+    this.store.reload()
+  }
+
   private readonly knownDatesForWeekdays = {
     monday: new Date('2025-08-04T12:00:00Z'),
     tuesday: new Date('2025-08-05T12:00:00Z'),

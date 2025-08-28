@@ -22,7 +22,7 @@ import com.ycyw.support.application.service.chat.ConversationService.Conversatio
 @Controller
 @MessageMapping("/conversation")
 public class ConversationHistoryController {
-  private static final String CONVERSATION_TOPIC = "/topic/conversation/";
+  private static final String CONVERSATION_USER = "/queue/conversation/";
 
   private final SimpMessagingTemplate messaging;
   private final ConversationService conversationService;
@@ -55,7 +55,7 @@ public class ConversationHistoryController {
     // 2. Send messages history to the user
     messaging.convertAndSendToUser(
         userId.toString(),
-        CONVERSATION_TOPIC + conversation.toString(),
+        CONVERSATION_USER + conversation.toString(),
         Map.of(
             "type",
             "history",

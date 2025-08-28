@@ -36,13 +36,13 @@ public class ConversationPresenceEventListener {
         event.userId(),
         event.status());
 
-    if (event.status().equals(PresenceEvent.Status.ONLINE)) {
-      chatRoomService.addParticipant(
-          event.conversationId(),
-          new UserPresence(event.userId(), event.role(), event.status().toString()));
-    }
-    if (event.status().equals(PresenceEvent.Status.ONLINE)) {
-      chatRoomService.removeParticipant(event.conversationId(), event.userId());
+    switch (event.status()) {
+      case ONLINE ->
+          chatRoomService.addParticipant(
+              event.conversationId(),
+              new UserPresence(event.userId(), event.role(), event.status().toString()));
+      case OFFLINE -> chatRoomService.removeParticipant(event.conversationId(), event.userId());
+      default -> logger.warn("Unknown presence status: {}", event.status());
     }
 
     // Resdistribute presence event to WebSocket subscribers

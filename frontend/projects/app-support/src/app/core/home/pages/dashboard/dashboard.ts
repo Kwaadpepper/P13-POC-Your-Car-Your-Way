@@ -35,6 +35,8 @@ export class Dashboard implements OnInit {
   readonly loading = this.viewModel.loading
   readonly loadingError = this.viewModel.loadingError
 
+  readonly isOperator = this.viewModel.isOperator
+
   ngOnInit(): void {
     if (this.viewModel.loadingError()) {
       this.viewModel.reload()

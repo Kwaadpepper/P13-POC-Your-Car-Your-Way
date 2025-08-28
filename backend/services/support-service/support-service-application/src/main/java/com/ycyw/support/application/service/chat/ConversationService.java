@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.support.domain.model.valueobject.conversation.MessageSender;
 import com.ycyw.support.domain.model.valueobject.conversation.SenderType;
+import com.ycyw.support.domain.usecase.conversation.CreateMessage;
 import com.ycyw.support.domain.usecase.conversation.GetConversationMessages;
-import com.ycyw.support.domain.usecase.conversation.SendMessage;
 
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -18,20 +18,20 @@ import org.eclipse.jdt.annotation.Nullable;
 public class ConversationService {
   private final UseCaseExecutor useCaseExecutor;
   private final GetConversationMessages.Handler getHistoryHandler;
-  private final SendMessage.Handler sendMessageHandler;
+  private final CreateMessage.Handler sendMessageHandler;
 
   public ConversationService(
       UseCaseExecutor useCaseExecutor,
       GetConversationMessages.Handler getHistoryHandler,
-      SendMessage.Handler sendMessageHandler) {
+      CreateMessage.Handler sendMessageHandler) {
     this.useCaseExecutor = useCaseExecutor;
     this.getHistoryHandler = getHistoryHandler;
     this.sendMessageHandler = sendMessageHandler;
   }
 
-  public UUID sendMessage(UUID conversationId, String content, UUID senderId, UserRole role) {
+  public UUID persistMessage(UUID conversationId, String content, UUID senderId, UserRole role) {
     final var input =
-        new SendMessage.Message(conversationId, content, toMessageSender(senderId, role));
+        new CreateMessage.Message(conversationId, content, toMessageSender(senderId, role));
 
     final var output = useCaseExecutor.execute(sendMessageHandler, input);
 

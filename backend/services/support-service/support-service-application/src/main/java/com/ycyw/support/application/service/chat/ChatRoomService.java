@@ -18,14 +18,6 @@ import com.ycyw.support.application.service.chat.ConversationService.UserRole;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-/**
- * Service that holds in-memory chat rooms data: messages and participants.
- *
- * <p>Thread-safe for use from WebSocket controller.
- *
- * <p>Note: payload/value types are defined as nested static records so they can be referenced from
- * controllers as ChatRoomService.MessageEventPayload, etc.
- */
 @Component
 public class ChatRoomService {
   private final ConversationService conversationService;
@@ -46,7 +38,7 @@ public class ChatRoomService {
 
     // Send message to conversation service (persist)
     final var newMessageId =
-        conversationService.sendMessage(conversation, text, userId, mapToUserRole(role));
+        conversationService.persistMessage(conversation, text, userId, mapToUserRole(role));
 
     // In-memory storage
     final var chatMessage = new ChatMessage(newMessageId, conversation, userId, role, text, sentAt);

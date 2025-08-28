@@ -15,12 +15,12 @@ import com.ycyw.support.domain.port.repository.ConversationRepository;
 
 import org.eclipse.jdt.annotation.Nullable;
 
-public sealed interface SendMessage {
+public sealed interface CreateMessage {
   record Message(UUID conversation, String content, MessageSender sender) implements UseCaseInput {}
 
-  record Sent(UUID messageId) implements UseCaseOutput {}
+  record Created(UUID messageId) implements UseCaseOutput {}
 
-  final class Handler implements UseCaseHandler<Message, Sent>, SendMessage {
+  final class Handler implements UseCaseHandler<Message, Created>, CreateMessage {
     private final ConversationRepository conversationRepository;
     private final DomainEventPublisher domainEventPublisher;
 
@@ -31,7 +31,7 @@ public sealed interface SendMessage {
     }
 
     @Override
-    public Sent handle(Message message) {
+    public Created handle(Message message) {
       final var conversationId = message.conversation;
       final var content = message.content;
       final var sender = message.sender;
@@ -43,7 +43,7 @@ public sealed interface SendMessage {
 
       final var newMessage = new ConversationMessage(conversationId, content, sender);
 
-      conversation.sendMessage(
+      conversation.addMessage(
           addedMessage -> {
             final var payload =
                 new MessageWasAddedToConversation.Message(
@@ -59,7 +59,7 @@ public sealed interface SendMessage {
 
       conversationRepository.save(conversation);
 
-      return new Sent(newMessage.getId());
+      return new Created(newMessage.getId());
     }
   }
 }

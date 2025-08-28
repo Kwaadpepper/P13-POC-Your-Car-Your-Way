@@ -13,9 +13,9 @@ import com.ycyw.support.domain.port.repository.FaqRepository;
 import com.ycyw.support.domain.port.repository.IssueRepository;
 import com.ycyw.support.domain.usecase.company.GetCompanyInfo;
 import com.ycyw.support.domain.usecase.conversation.CreateConversation;
+import com.ycyw.support.domain.usecase.conversation.CreateMessage;
 import com.ycyw.support.domain.usecase.conversation.GetAllConversation;
 import com.ycyw.support.domain.usecase.conversation.GetConversationMessages;
-import com.ycyw.support.domain.usecase.conversation.SendMessage;
 import com.ycyw.support.domain.usecase.faq.CreateFaq;
 import com.ycyw.support.domain.usecase.faq.GetAllFaq;
 import com.ycyw.support.domain.usecase.issue.CreateIssue;
@@ -76,9 +76,9 @@ public class SpringInjector {
   }
 
   @Bean
-  SendMessage.Handler sendMessageHandler(
+  CreateMessage.Handler sendMessageHandler(
       DomainEventPublisher domainEventPublisher, ConversationRepository conversationRepository) {
-    return new SendMessage.Handler(domainEventPublisher, conversationRepository);
+    return new CreateMessage.Handler(domainEventPublisher, conversationRepository);
   }
 
   // * OTHER DOMAIN SERVICES

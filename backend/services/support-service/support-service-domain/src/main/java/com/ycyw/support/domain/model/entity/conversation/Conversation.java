@@ -49,7 +49,7 @@ public class Conversation extends AggregateRoot {
     return issue;
   }
 
-  public void sendMessage(AggregateEventBus<ConversationMessage> bus, ConversationMessage message) {
+  public void addMessage(AggregateEventBus<ConversationMessage> bus, ConversationMessage message) {
     bus.publish(message);
   }
 

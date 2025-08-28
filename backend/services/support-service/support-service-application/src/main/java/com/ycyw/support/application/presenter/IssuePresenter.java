@@ -29,7 +29,7 @@ public class IssuePresenter implements Presenter<List<IssueViewDetailsDto>, Outp
         model.id(),
         model.subject(),
         model.description(),
-        model.description(),
+        model.answer(),
         model.status().name(),
         toClientDto(model.client()),
         toReservationDto(model.reservation()),

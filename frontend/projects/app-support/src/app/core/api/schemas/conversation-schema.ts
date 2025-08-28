@@ -8,7 +8,7 @@ const conversationSchema = z.object({
   lastMessage: z.object({
     content: z.string().nonempty(),
     sentAt: z.coerce.date(),
-  }).optional(),
+  }).optional().nullable().transform(val => val === null ? undefined : val),
 })
 
 export type ConversationZod = z.infer<typeof conversationSchema>

@@ -50,8 +50,8 @@ public class SpringInjector {
 
   @Bean
   GetAllConversation.Handler getAllConversationHandler(
-      ConversationRepository conversationRepository) {
-    return new GetAllConversation.Handler(conversationRepository);
+      ConversationRepository conversationRepository, MessageDirectory messageDirectory) {
+    return new GetAllConversation.Handler(conversationRepository, messageDirectory);
   }
 
   @Bean

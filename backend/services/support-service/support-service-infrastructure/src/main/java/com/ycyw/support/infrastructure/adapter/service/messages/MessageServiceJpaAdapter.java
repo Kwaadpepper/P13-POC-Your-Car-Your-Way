@@ -35,6 +35,15 @@ public class MessageServiceJpaAdapter implements MessageService {
   }
 
   @Override
+  public @Nullable Message findLatestMessageForConversation(UUID conversationId) {
+    final var e = repo.findTopByConversationIdOrderByIdDesc(conversationId);
+    if (e.isEmpty()) {
+      return null;
+    }
+    return e.map(this::toDomain).orElseThrow();
+  }
+
+  @Override
   public void save(Message message) {
     repo.save(toEntity(message));
   }

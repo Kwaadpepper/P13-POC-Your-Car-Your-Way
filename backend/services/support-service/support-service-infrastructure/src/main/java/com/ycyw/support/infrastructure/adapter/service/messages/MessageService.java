@@ -15,6 +15,8 @@ public interface MessageService {
 
   @Nullable Message find(UUID message);
 
+  @Nullable Message findLatestMessageForConversation(UUID conversationId);
+
   void save(Message message);
 
   record Message(UUID id, String message, UUID conversation, UUID sender, SenderType senderType) {

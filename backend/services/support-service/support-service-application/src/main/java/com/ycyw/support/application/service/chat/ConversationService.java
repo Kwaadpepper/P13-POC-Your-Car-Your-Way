@@ -2,6 +2,7 @@ package com.ycyw.support.application.service.chat;
 
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -67,7 +68,7 @@ public class ConversationService {
     OPERATOR;
 
     public static UserRole mapToUserRole(String role) {
-      return switch (role.toLowerCase()) {
+      return switch (role.toLowerCase(Locale.ROOT)) {
         case "client" -> UserRole.CLIENT;
         case "operator" -> UserRole.OPERATOR;
         default -> throw new IllegalArgumentException("Unknown role: " + role);

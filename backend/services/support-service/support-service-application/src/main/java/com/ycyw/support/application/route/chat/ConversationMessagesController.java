@@ -1,5 +1,6 @@
 package com.ycyw.support.application.route.chat;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -63,7 +64,12 @@ public class ConversationMessagesController {
     // 2. Remember in local chat room (in-memory)
     final var newMessage =
         chatRoomService.addMessage(
-            newMessageId, conversation, userId, role, text, ZonedDateTime.now());
+            newMessageId,
+            conversation,
+            userId,
+            role,
+            text,
+            ZonedDateTime.now(ZoneId.systemDefault()));
 
     // 3. Dispatch to RabbitMQ for other services
     rabbitTemplate.convertAndSend(

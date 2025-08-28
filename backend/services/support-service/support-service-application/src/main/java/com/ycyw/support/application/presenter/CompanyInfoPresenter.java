@@ -2,6 +2,7 @@ package com.ycyw.support.application.presenter;
 
 import java.time.DayOfWeek;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -52,7 +53,7 @@ public class CompanyInfoPresenter implements Presenter<CompanyInfoViewDto, GetCo
       @Nullable PhoneNumber phone, BusinessHours businessHours) {
     Map<String, CompanyInfoViewDto.TimeRangeDto> hours = new LinkedHashMap<>();
     for (Entry<DayOfWeek, TimeRange> e : businessHours.hours().entrySet()) {
-      hours.put(e.getKey().name().toLowerCase(), toTimeRangeDto(e.getValue()));
+      hours.put(e.getKey().name().toLowerCase(Locale.ROOT), toTimeRangeDto(e.getValue()));
     }
     return new CompanyInfoViewDto.BusinessDto(phone != null ? phone.value() : null, hours);
   }

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core'
+import { Component, computed, inject, OnInit } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
 import { ButtonModule } from 'primeng/button'
@@ -17,7 +17,7 @@ import { DashboardViewModel } from './dashboard-viewmodel'
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
   private readonly viewModel = inject(DashboardViewModel)
 
   readonly appName = computed(() => this.viewModel.appName)
@@ -27,4 +27,8 @@ export class Dashboard {
   readonly supportEmail = computed(() => this.viewModel.email())
 
   readonly supportChatBusinessHours = computed(() => this.viewModel.chatBusinessHours())
+
+  ngOnInit(): void {
+    this.viewModel.loadConfig()
+  }
 }

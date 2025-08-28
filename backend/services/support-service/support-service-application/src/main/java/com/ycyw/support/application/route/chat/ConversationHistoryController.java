@@ -1,6 +1,9 @@
 package com.ycyw.support.application.route.chat;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Controller;
 
 import com.ycyw.support.application.service.chat.ChatRoomService;
 import com.ycyw.support.application.service.chat.ChatRoomService.ChatMessage;
+import com.ycyw.support.application.service.chat.ConversationService;
+import com.ycyw.support.application.service.chat.ConversationService.ConversationMessage;
 
 @Controller
 @MessageMapping("/conversation")
@@ -18,11 +23,15 @@ public class ConversationHistoryController {
   private static final String CONVERSATION_TOPIC = "/topic/conversation/";
 
   private final SimpMessagingTemplate messaging;
+  private final ConversationService conversationService;
   private final ChatRoomService chatRoomService;
 
   public ConversationHistoryController(
-      SimpMessagingTemplate messaging, ChatRoomService chatRoomService) {
+      SimpMessagingTemplate messaging,
+      ConversationService conversationService,
+      ChatRoomService chatRoomService) {
     this.messaging = messaging;
+    this.conversationService = conversationService;
     this.chatRoomService = chatRoomService;
   }
 
@@ -33,7 +42,9 @@ public class ConversationHistoryController {
 
     // 1. Fetch messages
     final var messages =
-        chatRoomService.getAllMessages(conversation).stream().map(this::toDto).toList();
+        chatRoomService.hasConversation(conversation)
+            ? chatRoomService.getAllMessages(conversation).stream().map(this::toDto).toList()
+            : fetchAllMessagesForConversation(conversation).stream().map(this::toDto).toList();
 
     // 2. Send messages to the user
     messaging.convertAndSend(
@@ -43,6 +54,28 @@ public class ConversationHistoryController {
             "history",
             "payload",
             Map.of("conversation", conversation, "messages", messages)));
+  }
+
+  private List<ChatMessage> fetchAllMessagesForConversation(UUID conversationId) {
+    final var conversationMessages = conversationService.getAllMessages(conversationId);
+
+    if (conversationMessages == null) {
+      return List.of();
+    }
+
+    return Collections.unmodifiableList(
+        new ArrayList<>(
+            conversationMessages.stream().map(m -> mapToChatMessage(conversationId, m)).toList()));
+  }
+
+  private ChatMessage mapToChatMessage(UUID conversationId, ConversationMessage message) {
+    return new ChatMessage(
+        message.id(),
+        conversationId,
+        message.userId(),
+        message.role().toString(),
+        message.text(),
+        message.sentAt());
   }
 
   private MessageDto toDto(ChatMessage message) {

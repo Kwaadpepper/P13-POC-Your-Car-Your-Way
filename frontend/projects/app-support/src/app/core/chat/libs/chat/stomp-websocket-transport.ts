@@ -13,6 +13,7 @@ export class StompWebSocketTransport implements ChatTransport {
   private readonly client: Client
   private readonly handlers = new Set<Handler>()
   private readonly subscriptions = new Map<string, StompSubscription>()
+  private intendedDisconnect = false
 
   private readonly intendedConversations = new Set<string>()
 
@@ -42,6 +43,13 @@ export class StompWebSocketTransport implements ChatTransport {
         console.debug('[STOMP] websocket closed.')
         this.unsubscribeFromEvents()
         this.connectPromise = undefined
+        if (!this.intendedDisconnect) {
+          // reconnexion automatique gérée par stompjs
+        }
+        else {
+          // fermeture volontaire : on n'essaie pas de reconnecter
+          this.client.reconnectDelay = 0
+        }
         this.connectionChangeHandlers.forEach(cb => cb(false))
       },
       onWebSocketError: (evt) => {
@@ -57,6 +65,9 @@ export class StompWebSocketTransport implements ChatTransport {
   }
 
   async connect(): Promise<void> {
+    this.intendedDisconnect = false
+    this.client.reconnectDelay = 500
+
     if (
       this.connectPromise !== undefined
       && this.client.connected === false
@@ -70,15 +81,15 @@ export class StompWebSocketTransport implements ChatTransport {
   }
 
   async disconnect(): Promise<void> {
+    this.intendedDisconnect = true
+    this.unsubscribeFromEvents()
+    this.connectPromise = undefined
     try {
       await this.client.deactivate()
     }
     catch (e) {
       console.warn('[STOMP] deactivate failed', e)
     }
-
-    this.unsubscribeFromEvents()
-    this.connectPromise = undefined
   }
 
   isConnected(): boolean {
@@ -210,6 +221,7 @@ export class StompWebSocketTransport implements ChatTransport {
   }
 
   private unsubscribeFromEvents() {
+    console.debug('[STOMP] unsubscribing from all events')
     this.subscriptions.forEach((sub) => {
       try {
         sub.unsubscribe()

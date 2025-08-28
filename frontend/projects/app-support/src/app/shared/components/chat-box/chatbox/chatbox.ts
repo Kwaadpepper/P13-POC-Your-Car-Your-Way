@@ -73,8 +73,12 @@ export class ChatBox implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    console.debug('ChatBox: destruction du composant, déconnexion du chat')
     this.leave()
-    if (this.isConnected()) this.chatService.disconnect()
+    if (this.isConnected()) {
+      this.chatService.disconnect()
+        .catch(err => console.error('ChatBox: échec de la déconnexion', err))
+    }
     this.destroy$.next()
     this.destroy$.complete()
   }

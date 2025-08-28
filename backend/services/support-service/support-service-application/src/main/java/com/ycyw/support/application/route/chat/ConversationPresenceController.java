@@ -6,18 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
+import com.ycyw.support.application.config.RabbitMqChatConfig;
 import com.ycyw.support.application.security.AuthenticatedUser;
 import com.ycyw.support.application.service.chat.ChatRoomService;
 import com.ycyw.support.application.service.chat.ChatRoomService.ChatMessage;
 import com.ycyw.support.application.service.chat.ChatRoomService.UserPresence;
 import com.ycyw.support.application.service.chat.ConversationService;
 import com.ycyw.support.application.service.chat.ConversationService.ConversationMessage;
+import com.ycyw.support.application.service.event.eventsdtos.PresenceEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +36,20 @@ public class ConversationPresenceController {
 
   private static final String CONVERSATION_TOPIC = "/topic/conversation/";
 
+  private final RabbitTemplate rabbitTemplate;
+  private final String brokerChatExchange;
+
   public ConversationPresenceController(
       SimpMessagingTemplate messaging,
       ChatRoomService chatRoomService,
-      ConversationService conversationService) {
+      ConversationService conversationService,
+      RabbitTemplate rabbitTemplate,
+      RabbitMqChatConfig rabbitConfig) {
     this.messaging = messaging;
     this.chatRoomService = chatRoomService;
     this.conversationService = conversationService;
+    this.rabbitTemplate = rabbitTemplate;
+    this.brokerChatExchange = rabbitConfig.getExchange();
   }
 
   @MessageMapping("/join")
@@ -62,7 +72,13 @@ public class ConversationPresenceController {
     final var presence = new UserPresence(userId, role, "online");
     chatRoomService.addParticipant(conversation, presence);
 
-    // 3. Send current participants to the user
+    // 3. Notify presence via RabbitMQ (to handle multiple instances)
+    rabbitTemplate.convertAndSend(
+        brokerChatExchange,
+        "presence",
+        new PresenceEvent(conversation, userId, role, PresenceEvent.Status.ONLINE));
+
+    // 4. Send current participants to the new user
     messaging.convertAndSend(
         CONVERSATION_TOPIC + conversation,
         Map.of(
@@ -75,7 +91,7 @@ public class ConversationPresenceController {
                 "participants",
                 chatRoomService.getParticipants(conversation))));
 
-    // 4. Notify others
+    // 5. Notify others
     messaging.convertAndSend(
         CONVERSATION_TOPIC + conversation,
         Map.of(
@@ -83,7 +99,14 @@ public class ConversationPresenceController {
             "presence",
             "payload",
             Map.of(
-                "user", userId, "role", role, "status", "online", "conversation", conversation)));
+                "user",
+                userId,
+                "role",
+                role,
+                "status",
+                PresenceEvent.Status.ONLINE.value(),
+                "conversation",
+                conversation)));
   }
 
   @MessageMapping("/leave")
@@ -108,6 +131,12 @@ public class ConversationPresenceController {
       return;
     }
 
+    // 3bis. Notify presence via RabbitMQ (to handle multiple instances)
+    rabbitTemplate.convertAndSend(
+        brokerChatExchange,
+        "presence",
+        new PresenceEvent(conversation, userId, role, PresenceEvent.Status.OFFLINE));
+
     // 3bis. Notify others
     messaging.convertAndSend(
         CONVERSATION_TOPIC + conversation,
@@ -116,7 +145,14 @@ public class ConversationPresenceController {
             "presence",
             "payload",
             Map.of(
-                "user", userId, "role", role, "status", "offline", "conversation", conversation)));
+                "user",
+                userId,
+                "role",
+                role,
+                "status",
+                PresenceEvent.Status.OFFLINE.value(),
+                "conversation",
+                conversation)));
   }
 
   private List<ChatMessage> fetchAllMesagesForConversation(UUID conversationId) {

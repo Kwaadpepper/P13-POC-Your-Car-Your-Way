@@ -51,20 +51,22 @@ public class ChatRoomService {
     return chatMessage;
   }
 
-  public void addMessageFromRemote(ChatMessage message) {
+  public boolean addMessageFromRemote(ChatMessage message) {
     final var conversation = message.conversation();
     if (!hasConversation(conversation)) {
       // Conversation not started
-      return;
+      return false;
     }
     final var messages = conversationMessages(message.conversation());
 
     if (messages.stream().anyMatch(m -> m.id().equals(message.id()))) {
       // Message already present
-      return;
+      return false;
     }
 
     messages.add(message);
+
+    return true;
   }
 
   public List<ChatMessage> getAllMessages(UUID conversation) {

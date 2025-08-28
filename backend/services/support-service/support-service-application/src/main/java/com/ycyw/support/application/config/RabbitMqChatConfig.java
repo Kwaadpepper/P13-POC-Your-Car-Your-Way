@@ -4,8 +4,10 @@ import java.util.UUID;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.support.converter.DefaultClassMapper;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,10 +16,12 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqChatConfig {
   private final String exchange;
   private final String newMessageQueue;
+  private final String presenceQueue;
 
   public RabbitMqChatConfig(@Value("${rabbitmq.chat.exchange}") String exchange) {
     this.exchange = exchange;
     this.newMessageQueue = "support-new-message-queue-" + UUID.randomUUID();
+    this.presenceQueue = "support-presence-queue-" + UUID.randomUUID();
   }
 
   public String getExchange() {
@@ -28,9 +32,13 @@ public class RabbitMqChatConfig {
     return newMessageQueue;
   }
 
+  public String getPresenceQueue() {
+    return presenceQueue;
+  }
+
   @Bean
-  FanoutExchange supportMessageExchange() {
-    return new FanoutExchange(this.exchange);
+  TopicExchange supportMessageExchange() {
+    return new TopicExchange(this.exchange, true, true);
   }
 
   @Bean
@@ -39,7 +47,30 @@ public class RabbitMqChatConfig {
   }
 
   @Bean
-  Binding binding() {
-    return BindingBuilder.bind(supportNewMessageQueue()).to(supportMessageExchange());
+  Queue supportPresenceQueue() {
+    return new Queue(this.presenceQueue, true, false, true);
+  }
+
+  @Bean
+  Binding bindingNewMessageQueue() {
+    return BindingBuilder.bind(supportNewMessageQueue())
+        .to(supportMessageExchange())
+        .with("message");
+  }
+
+  @Bean
+  Binding bindingPresenceQueue() {
+    return BindingBuilder.bind(supportPresenceQueue())
+        .to(supportMessageExchange())
+        .with("presence");
+  }
+
+  @Bean
+  Jackson2JsonMessageConverter jackson2JsonMessageConverter() {
+    Jackson2JsonMessageConverter converter = new Jackson2JsonMessageConverter();
+    DefaultClassMapper classMapper = new DefaultClassMapper();
+    classMapper.setTrustedPackages("com.ycyw.support.application.service.event.eventsdtos");
+    converter.setClassMapper(classMapper);
+    return converter;
   }
 }

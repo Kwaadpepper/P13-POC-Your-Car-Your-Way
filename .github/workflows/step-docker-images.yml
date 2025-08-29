@@ -127,7 +127,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context }}
-          file: ${{ matrix.context }}/../../backend/Dockerfile
+          file: ${{ matrix.context }}/../../docker/Dockerfile
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
@@ -164,7 +164,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context }}
-          file: ${{ matrix.context }}/../../backend/Dockerfile
+          file: ${{ matrix.context }}/../../docker/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha

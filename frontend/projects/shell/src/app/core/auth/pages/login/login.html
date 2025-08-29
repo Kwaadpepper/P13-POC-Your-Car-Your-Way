@@ -17,6 +17,40 @@
     </div>
   </div>
   <div class="row">
+    <div class="col-12 mb-5">
+      <p class="text-center">
+        Pour accéder à l'application et pour la démonstration, vous pouvez
+        utiliser un de ces comptes :
+      </p>
+      <ul class="list-disc list-inside text-center">
+        <li class="mb-2">
+          Client : <strong>John Doe</strong> / <strong>Password.123</strong>
+          <button
+            class="mx-2"
+            size="small"
+            pButton
+            severity="secondary"
+            type="button"
+            (click)="demoLogin('John Doe', 'Password.123')"
+          >
+            Utiliser
+          </button>
+        </li>
+        <li class="mb-2">
+          Opérateur : <strong>Jane Doe</strong> / <strong>Password.123</strong>
+          <button
+            class="mx-2"
+            size="small"
+            pButton
+            severity="secondary"
+            type="button"
+            (click)="demoLogin('Jane Doe', 'Password.123')"
+          >
+            Utiliser
+          </button>
+        </li>
+      </ul>
+    </div>
     <div class="col">
       <form
         [formGroup]="form"

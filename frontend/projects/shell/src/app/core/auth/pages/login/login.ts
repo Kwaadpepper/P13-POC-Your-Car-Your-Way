@@ -77,4 +77,11 @@ export class Login implements OnDestroy {
         },
       })
   }
+
+  public demoLogin(login: string, password: string): void {
+    this.viewModel.login.set(login)
+    this.viewModel.password.set(password)
+    this.form.setValue({ login, password })
+    this.onSubmit()
+  }
 }

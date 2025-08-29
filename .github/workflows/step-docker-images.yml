@@ -69,19 +69,24 @@ jobs:
           # Backend
           - name: config-server
             type: backend
-            context: ./backend/platform/platform-config-server
+            module: platform-config-server
+            modulePath: platform/platform-config-server
           - name: gateway
             type: backend
-            context: ./backend/platform/platform-gateway
+            module: platform-gateway
+            modulePath: platform/platform-gateway
           - name: service-registry
             type: backend
-            context: ./backend/platform/platform-service-registry
+            module: platform-service-registry
+            modulePath: platform/platform-service-registry
           - name: user-service
             type: backend
-            context: ./backend/services/user-service
+            module: user-service
+            modulePath: services/user-service
           - name: support-service
             type: backend
-            context: ./backend/services/support-service
+            module: support-service
+            modulePath: services/support-service
 
     concurrency:
       group: images-${{ matrix.name }}
@@ -126,8 +131,11 @@ jobs:
         if: matrix.type == 'backend'
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.context }}
-          file: ${{ matrix.context }}/../../docker/Dockerfile
+          context: ./backend
+          file: ./backend/docker/Dockerfile
+          build-args: |
+            SERVICE_MODULE=${{ matrix.module }}
+            SERVICE_MODULE_PATH=${{ matrix.modulePath }}
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
@@ -163,8 +171,11 @@ jobs:
         if: matrix.type == 'backend'
         uses: docker/build-push-action@v6
         with:
-          context: ${{ matrix.context }}
-          file: ${{ matrix.context }}/../../docker/Dockerfile
+          context: ./backend
+          file: ./backend/docker/Dockerfile
+          build-args: |
+            SERVICE_MODULE=${{ matrix.module }}
+            SERVICE_MODULE_PATH=${{ matrix.modulePath }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha

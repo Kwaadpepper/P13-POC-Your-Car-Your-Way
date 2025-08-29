@@ -81,12 +81,12 @@ jobs:
             modulePath: platform/platform-service-registry
           - name: user-service
             type: backend
-            module: user-service
-            modulePath: services/user-service
+            module: user-service-application
+            modulePath: services/user-service-application
           - name: support-service
             type: backend
             module: support-service
-            modulePath: services/support-service
+            modulePath: services/user-service-application
 
     concurrency:
       group: images-${{ matrix.name }}

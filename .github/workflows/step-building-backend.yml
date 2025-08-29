@@ -69,4 +69,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-back-services-${{ matrix.module }}
-          path: backend/services/platform-${{ matrix.module }}/build/libs/
+          path: backend/services/${{ matrix.module }}/build/libs/

@@ -81,8 +81,8 @@ services:
       - loki
     volumes:
       - grafana-data:/var/lib/grafana
-      - ./grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./docker/grafana/dashboards:/var/lib/grafana/dashboards:ro
     networks:
       - backend
 
@@ -94,7 +94,17 @@ services:
       - "6379:6379"
     volumes:
       - redis-data:/data
-    command: ["redis-server", "--requirepass", "redispassword", "--save", "60", "1", "--loglevel", "warning"]
+    command:
+      [
+        "redis-server",
+        "--requirepass",
+        "redispassword",
+        "--save",
+        "60",
+        "1",
+        "--loglevel",
+        "warning",
+      ]
     healthcheck:
       test: ["CMD", "redis-cli", "-a", "redispassword", "ping"]
       interval: 5s
@@ -123,7 +133,8 @@ services:
       - backend
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health || exit 1"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:8761/actuator/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -157,7 +168,8 @@ services:
       - backend
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health || exit 1"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:8888/actuator/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -198,7 +210,8 @@ services:
       - backend
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health || exit 1"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:8080/actuator/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -247,7 +260,8 @@ services:
       - backend
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health || exit 1"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:8081/actuator/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -296,7 +310,8 @@ services:
       - backend
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health || exit 1"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:8082/actuator/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -345,7 +360,8 @@ services:
       - backend
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health || exit 1"]
+      test:
+        ["CMD", "curl", "-f", "http://localhost:8083/actuator/health || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5

@@ -82,11 +82,11 @@ jobs:
           - name: user-service
             type: backend
             module: user-service-application
-            modulePath: services/user-service-application
+            modulePath: services/user-service/user-service-application
           - name: support-service
             type: backend
-            module: support-service
-            modulePath: services/user-service-application
+            module: support-service-application
+            modulePath: services/support-service/support-service-application
 
     concurrency:
       group: images-${{ matrix.name }}

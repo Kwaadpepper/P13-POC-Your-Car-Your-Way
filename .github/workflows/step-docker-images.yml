@@ -110,7 +110,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ./frontend
-          file: ./docker/frontend/Dockerfile.front
+          file: ./frontend/docker/Dockerfile.front
           target: ng-runtime
           push: false
           build-args: |
@@ -127,7 +127,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context }}
-          file: ./docker/backend/Dockerfile
+          file: ${{ matrix.context }}/../../backend/Dockerfile
           push: false
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha
@@ -164,7 +164,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: ${{ matrix.context }}
-          file: ./docker/backend/Dockerfile
+          file: ${{ matrix.context }}/../../backend/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           cache-from: type=gha

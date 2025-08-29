@@ -47,7 +47,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        module: ["support-service", "user-service"]
+        include:
+          - module: support-service-application
+            modulePath: services/support-service/support-service-application
+          - module: user-service-application
+            modulePath: services/user-service/user-service-application
 
     steps:
       - name: Checkout
@@ -63,10 +67,10 @@ jobs:
           cache: gradle
 
       - name: Build ${{ matrix.module }}
-        run: ./gradlew :${{ matrix.module }}-application:build -Pnullaway=true --scan --no-daemon
+        run: ./gradlew :${{ matrix.module }}:build -Pnullaway=true --scan --no-daemon
 
       - name: Upload ${{ matrix.module }} artifact
         uses: actions/upload-artifact@v4
         with:
           name: dist-back-services-${{ matrix.module }}
-          path: backend/services/${{ matrix.module }}/build/libs/
+          path: backend/services/${{ matrix.modulePath }}/build/libs/

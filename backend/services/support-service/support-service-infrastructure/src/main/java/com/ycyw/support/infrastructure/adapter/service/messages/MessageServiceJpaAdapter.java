@@ -23,7 +23,7 @@ public class MessageServiceJpaAdapter implements MessageService {
 
   @Override
   public List<Message> findAll(UUID conversation) {
-    return repo.findByConversationId(conversation, Sort.by(Sort.Direction.DESC, "id")).stream()
+    return repo.findByConversationId(conversation, Sort.by(Sort.Direction.ASC, "id")).stream()
         .map(this::toDomain)
         .toList();
   }

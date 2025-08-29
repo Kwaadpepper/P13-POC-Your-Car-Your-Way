@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-back-platform-${{ matrix.module }}
-          path: backend/platform/${{ matrix.module }}/build/libs/
+          path: backend/platform/platform-${{ matrix.module }}/build/libs/
 
   build-services:
     runs-on: ubuntu-latest
@@ -69,4 +69,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: dist-back-services-${{ matrix.module }}
-          path: backend/services/${{ matrix.module }}/build/libs/
+          path: backend/services/platform-${{ matrix.module }}/build/libs/

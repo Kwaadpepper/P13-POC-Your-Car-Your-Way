@@ -11,6 +11,7 @@ import { TabsModule } from 'primeng/tabs'
 import { TagModule } from 'primeng/tag'
 import { map } from 'rxjs/operators'
 
+import { IssueStatus } from '@ycyw/support-domains/issue/enums'
 import { Issue } from '@ycyw/support-domains/issue/models'
 import { BackButton, ChatBox } from '@ycyw/support-shared/components'
 
@@ -40,6 +41,7 @@ export class IssuePage {
   private readonly injector = inject(Injector)
   readonly viewModel = inject(IssuePageViewModel)
 
+  readonly IssueStatus = IssueStatus
   readonly issue = input.required<Issue>()
   readonly conversation = computed(() => this.issue().conversation)
 

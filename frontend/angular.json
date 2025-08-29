@@ -161,7 +161,7 @@
               "fileReplacements": [
                 {
                   "replace": "projects/shell/src/environments/environment.ts",
-                  "with": "projects/shell/src/environments/environment.development-docker.ts"
+                  "with": "projects/shell/src/environments/environment.development.ts"
                 }
               ]
             }
@@ -336,7 +336,7 @@
               "fileReplacements": [
                 {
                   "replace": "projects/app-backoffice/src/environments/environment.ts",
-                  "with": "projects/app-backoffice/src/environments/environment.development-docker.ts"
+                  "with": "projects/app-backoffice/src/environments/environment.development.ts"
                 }
               ]
             }
@@ -501,7 +501,7 @@
               "fileReplacements": [
                 {
                   "replace": "projects/app-reservation/src/environments/environment.ts",
-                  "with": "projects/app-reservation/src/environments/environment.development-docker.ts"
+                  "with": "projects/app-reservation/src/environments/environment.development.ts"
                 }
               ]
             }
@@ -666,7 +666,7 @@
               "fileReplacements": [
                 {
                   "replace": "projects/app-support/src/environments/environment.ts",
-                  "with": "projects/app-support/src/environments/environment.development-docker.ts"
+                  "with": "projects/app-support/src/environments/environment.development.ts"
                 }
               ]
             }

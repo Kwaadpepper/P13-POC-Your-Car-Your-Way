@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 
 import { Subject } from 'rxjs'
+import { v4 as uuidv4 } from 'uuid'
 
 import {
   LoginEvent,
@@ -14,7 +15,7 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class SessionBroadcastService {
-  private readonly instanceId = crypto.randomUUID()
+  private readonly instanceId = uuidv4()
   private readonly channel = new BroadcastChannel(SESSION_BROADCAST_CHANNEL)
 
   private currentUser: SharedUserProfile | null = null

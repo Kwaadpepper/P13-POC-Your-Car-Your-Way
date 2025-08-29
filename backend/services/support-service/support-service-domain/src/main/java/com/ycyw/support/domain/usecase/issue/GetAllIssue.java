@@ -3,6 +3,7 @@ package com.ycyw.support.domain.usecase.issue;
 import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -105,7 +106,7 @@ public sealed interface GetAllIssue {
       final var clients = mapToClients(issues);
       final var reservations = mapToReservations(issues);
 
-      final Set<IssueAgregate> agregates = new HashSet<>();
+      final Set<IssueAgregate> agregates = new LinkedHashSet<>();
 
       for (Issue issue : issues) {
         final var clientId = issue.getClient();

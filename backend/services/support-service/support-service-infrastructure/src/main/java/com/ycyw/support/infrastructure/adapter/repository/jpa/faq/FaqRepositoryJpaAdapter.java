@@ -3,6 +3,7 @@ package com.ycyw.support.infrastructure.adapter.repository.jpa.faq;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import com.ycyw.support.domain.model.entity.faq.Faq;
@@ -23,7 +24,7 @@ public class FaqRepositoryJpaAdapter implements FaqRepository {
 
   @Override
   public List<Faq> findAll() {
-    return repo.findAll().stream().map(this::toDomain).toList();
+    return repo.findAll(Sort.by(Sort.Direction.DESC, "id")).stream().map(this::toDomain).toList();
   }
 
   @Override

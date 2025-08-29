@@ -11,6 +11,12 @@ services:
         PROJECT: shell
         CONFIG: development-docker
     image: ycyw/shell:dev-docker
+    environment:
+      - APP_BACKOFFICE_URL=http://localhost:4201/remoteEntry.json
+      - APP_RESERVATION_URL=http://localhost:4202/remoteEntry.json
+      - APP_SUPPORT_URL=http://localhost:4203/remoteEntry.json
+      - GATEWAY_URL=http://localhost:8080
+      - GATEWAY_WS=ws://localhost:8080
     ports:
       - "4200:80"
 
@@ -24,6 +30,9 @@ services:
         PROJECT: app-backoffice
         CONFIG: development-docker
     image: ycyw/app-backoffice:dev-docker
+    environment:
+      - APP_SUPPORT_URL=http://localhost:4203/remoteEntry.json
+      - GATEWAY_URL=http://localhost:8080
     ports:
       - "4201:80"
 
@@ -37,6 +46,9 @@ services:
         PROJECT: app-reservation
         CONFIG: development-docker
     image: ycyw/app-reservation:dev-docker
+    environment:
+      - APP_SUPPORT_URL=http://localhost:4203/remoteEntry.json
+      - GATEWAY_URL=http://localhost:8080
     ports:
       - "4202:80"
 
@@ -50,5 +62,7 @@ services:
         PROJECT: app-support
         CONFIG: development-docker
     image: ycyw/app-support:dev-docker
+    environment:
+      - GATEWAY_URL=http://localhost:8080
     ports:
       - "4203:80"

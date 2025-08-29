@@ -2,6 +2,8 @@ import { computed, inject, Injectable } from '@angular/core'
 
 import { SupportConfigStore } from '@ycyw/support-core/home/stores'
 import { SupportConfig } from '@ycyw/support-domains/support/dtos'
+import { Role } from '@ycyw/support-shared/enums'
+import { SessionStore } from '@ycyw/support-shared/stores'
 import { APP_CONFIG } from '@ycyw/support-tokens/config-token'
 
 export type BusinessHours = Record<string, {
@@ -15,6 +17,7 @@ export type BusinessHours = Record<string, {
 export class DashboardViewModel {
   private readonly config = inject(APP_CONFIG)
   private readonly store = inject(SupportConfigStore)
+  private readonly sessionStore = inject(SessionStore)
 
   readonly loading = computed(() => this.store.loading())
   readonly loadingError = computed(() => this.store.error() !== undefined)
@@ -32,6 +35,8 @@ export class DashboardViewModel {
     this.mapBusinessHours(
       this.store.phoneBusinessHours(),
     ))
+
+  readonly isOperator = computed(() => this.sessionStore.session().user?.role === Role.OPERATOR)
 
   get appName(): string {
     return this.config.appName

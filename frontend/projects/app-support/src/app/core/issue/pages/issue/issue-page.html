@@ -22,7 +22,20 @@
       </p>
     </div>
     <div class="col-12 md:col flex flex-wrap gap-2">
-      <p-tag [value]="issue().status" severity="info"></p-tag>
+      @switch (issue().status) {
+        @case (IssueStatus.CLOSED) {
+          <p-tag [value]="issue().status" severity="secondary"></p-tag>
+        }
+        @case (IssueStatus.OPENED) {
+          <p-tag [value]="issue().status" severity="warning"></p-tag>
+        }
+        @case (IssueStatus.RESOLVED) {
+          <p-tag [value]="issue().status" severity="success"></p-tag>
+        }
+        @default {
+          <p-tag [value]="issue().status" severity="info"></p-tag>
+        }
+      }
     </div>
   </div>
 

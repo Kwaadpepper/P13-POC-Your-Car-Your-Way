@@ -54,6 +54,8 @@ public class ConversationPresenceEventListener {
           (conversationMessages != null ? conversationMessages : List.<ConversationMessage>of())
               .stream().map(message -> mapToChatMessage(conversationId, message)).toList();
       chatRoomService.startConversation(conversationId, chatMessages);
+      logger.warn("Conversation {} not found, ignoring presence event", conversationId);
+      return;
     }
 
     switch (event.status()) {

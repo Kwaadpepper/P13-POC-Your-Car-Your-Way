@@ -21,6 +21,8 @@ public class FlywayDevConfig {
 
   @PostConstruct
   public void cleanAndMigrate() {
-    flyway.clean();
+    if (!flyway.getConfiguration().isCleanDisabled()) {
+      flyway.clean();
+    }
   }
 }

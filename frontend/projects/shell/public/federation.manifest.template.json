@@ -1,0 +1,5 @@
+{
+  "app-backoffice": "${APP_BACKOFFICE_URL}",
+  "app-reservation": "${APP_RESERVATION_URL}",
+  "app-support": "${APP_SUPPORT_URL}"
+}

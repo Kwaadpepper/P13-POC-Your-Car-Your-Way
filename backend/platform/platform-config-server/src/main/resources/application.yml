@@ -11,7 +11,7 @@ spring:
       server:
         native:
           # Vu depuis backend/platform/config-server vers backend/config
-          search-locations: file:../../config
+          search-locations: ${CONFIG_SERVER_SEARCH_LOCATIONS:file:../../config}
 
 config:
   loki:

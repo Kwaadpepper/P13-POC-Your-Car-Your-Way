@@ -15,6 +15,7 @@ export const redirectUrls = {
 export const authRoutes: Routes = [
   {
     path: '',
+    title: 'YCYW',
     canActivate: [GuestGuard],
     component: HomePage,
   },

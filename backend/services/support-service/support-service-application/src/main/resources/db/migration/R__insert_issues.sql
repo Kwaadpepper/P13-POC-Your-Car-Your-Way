@@ -12,7 +12,7 @@ INSERT INTO
 VALUES
   (
     '0198f290-8e6d-7cdc-b3a2-feffbd0d21f7',
-    'Support Request 1',
+    'Help with my account',
     'I need help with my account.',
     NULL,
     1,
@@ -22,7 +22,7 @@ VALUES
   ),
   (
     '0198f290-c420-75ad-b251-2a15435391c3',
-    'Support Request 2',
+    'Issue with my booking',
     'I have an issue with my booking.',
     'The issue has been resolved in shop by the customer.',
     0,

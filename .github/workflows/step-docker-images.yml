@@ -69,13 +69,13 @@ jobs:
           # Backend
           - name: config-server
             type: backend
-            context: ./backend/platform/config-server
+            context: ./backend/platform/platform-config-server
           - name: gateway
             type: backend
-            context: ./backend/platform/gateway
+            context: ./backend/platform/platform-gateway
           - name: service-registry
             type: backend
-            context: ./backend/platform/service-registry
+            context: ./backend/platform/platform-service-registry
           - name: user-service
             type: backend
             context: ./backend/services/user-service

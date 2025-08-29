@@ -30,8 +30,7 @@
         ></p-message>
       </div>
     </div>
-  }
-  @if (conversations().length < 1) {
+  } @else if (conversations().length < 1) {
     <div class="row">
       <div class="col">
         <p-message severity="info">Aucune conversation trouvée.</p-message>

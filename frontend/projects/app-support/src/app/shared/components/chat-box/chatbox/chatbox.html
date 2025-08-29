@@ -1,4 +1,4 @@
-<div class="flex flex-col gap-3 w-full max-h-96 h-full">
+<div class="flex flex-col gap-3 w-full h-full max-h-[75vh]">
   <!-- Header -->
   <div class="flex items-center justify-between">
     <div class="flex items-center space-x-2 space-y-2">
@@ -21,9 +21,7 @@
   />
 
   <!-- Typing indicator -->
-  @if (typingUsers().length > 0) {
-    <support-typing-indicator [typingUsers]="typingUsers()" />
-  }
+  <support-typing-indicator [typingUsers]="typingUsers()" />
 
   <p-divider class="my-0" />
 

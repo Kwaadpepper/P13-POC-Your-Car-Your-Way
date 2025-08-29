@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common'
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 
 import { AccordionModule } from 'primeng/accordion'
@@ -40,7 +40,7 @@ import { FaqListViewModel } from './faq-list-viewmodel'
   templateUrl: './faq-list.html',
   styleUrl: './faq-list.css',
 })
-export class FaqList {
+export class FaqList implements OnInit {
   readonly viewModel = inject(FaqListViewModel)
 
   readonly loading = this.viewModel.loading
@@ -76,6 +76,12 @@ export class FaqList {
   )
 
   readonly skeletonItems = [1, 2, 3, 4, 5]
+
+  ngOnInit(): void {
+    if (this.viewModel.loadingError()) {
+      this.viewModel.reloadAll()
+    }
+  }
 
   toggleGroupByType() {
     this.groupByType.update(x => !x)

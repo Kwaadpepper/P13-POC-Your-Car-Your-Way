@@ -1,6 +1,7 @@
-import { computed, inject, Injectable, OnDestroy, resource } from '@angular/core'
+import { computed, DestroyRef, inject, Injectable, resource } from '@angular/core'
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 
-import { firstValueFrom, Subscription } from 'rxjs'
+import { firstValueFrom } from 'rxjs'
 
 import { Conversation, ConversationId } from '@ycyw/support-domains/chat/models'
 import { CONVERSATION_REPOSITORY } from '@ycyw/support-tokens/conversation-repository-token'
@@ -9,7 +10,7 @@ import { CONVERSATION_REPOSITORY } from '@ycyw/support-tokens/conversation-repos
   providedIn: 'root',
   deps: [CONVERSATION_REPOSITORY],
 })
-export class ConversationStore implements OnDestroy {
+export class ConversationStore {
   private readonly repository = inject(CONVERSATION_REPOSITORY)
   private readonly _conversations = resource({
     defaultValue: [],
@@ -20,17 +21,7 @@ export class ConversationStore implements OnDestroy {
   readonly loading = computed(() => this._conversations.isLoading())
   readonly error = computed(() => this._conversations.error())
 
-  private readonly sub: Subscription
-
-  constructor() {
-    this.sub = this.repository.getAll().subscribe({
-      next: conversations => this._conversations.set(conversations),
-    })
-  }
-
-  ngOnDestroy(): void {
-    this.sub.unsubscribe()
-  }
+  private readonly destroyRef = inject(DestroyRef)
 
   async getConversation(id: ConversationId): Promise<Conversation | null> {
     const faq = this._conversations.value().find(f => f.id === id)
@@ -43,6 +34,9 @@ export class ConversationStore implements OnDestroy {
   }
 
   private async loadConversations() {
-    return await firstValueFrom(this.repository.getAll())
+    return await firstValueFrom(
+      this.repository.getAll()
+        .pipe(takeUntilDestroyed(this.destroyRef)),
+    )
   }
 }

@@ -4,5 +4,8 @@
     "commitlint": "^19.8.1",
     "json5": "^2.2.3",
     "lint-staged": "^16.1.5"
+  },
+  "dependencies": {
+    "uuid": "^11.1.0"
   }
 }

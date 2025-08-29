@@ -1,0 +1,369 @@
+version: "3.9"
+services:
+  loki:
+    image: grafana/loki:2.8.3
+    command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./docker/loki-config-inmemory.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    environment:
+      - LOKI_STORAGE_DIR=/loki
+    ports:
+      - "3100:3100"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3100/ready || exit 1"]
+      start_interval: 10s
+      interval: 10s
+      timeout: 10s
+      retries: 12
+      start_period: 40s
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3.13-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - backend
+
+  postgres-user:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: userdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-user-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d userdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backend
+
+  postgres-support:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: supportdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-support-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d supportdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana:9.5.3
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "3000:3000"
+    depends_on:
+      - loki
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    networks:
+      - backend
+
+  redis:
+    image: redis:7.2
+    environment:
+      - REDIS_PASSWORD=redispassword
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    command: ["redis-server", "--requirepass", "redispassword", "--save", "60", "1", "--loglevel", "warning"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "redispassword", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - backend
+
+  service-registry:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_MODULE: platform-service-registry
+        SERVICE_MODULE_PATH: platform/platform-service-registry
+    container_name: service-registry
+    ports:
+      - "8761:8761"
+    environment:
+      - REGISTRY_SERVER_PORT=8761
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      loki:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  config-server:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_MODULE: platform-config-server
+        SERVICE_MODULE_PATH: platform/platform-config-server
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - CONFIG_SERVER_PORT=8888
+      - LOKI_ENABLED=true
+      - LOKI_URL=http://loki:3100/loki/api/v1/push
+      - EUREKA_URL=http://service-registry:8761/eureka/
+      - CONFIG_SERVER_SEARCH_LOCATIONS=file:/config
+      - SPRING_PROFILES_ACTIVE=native,dev
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+    volumes:
+      - ./config:/config
+    depends_on:
+      service-registry:
+        condition: service_healthy
+      loki:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  gateway:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_MODULE: platform-gateway
+        SERVICE_MODULE_PATH: platform/platform-gateway
+    container_name: gateway
+    hostname: gateway
+    ports:
+      - "8080:8080"
+    environment:
+      # CORS_ALLOWED_ORIGINS: Nom de domaine autorisé pour les requêtes cross-origin
+      - CORS_ALLOWED_ORIGINS=http://192.168.1.2:4200
+      - LOKI_ENABLED=true
+      - LOKI_URL=http://loki:3100/loki/api/v1/push
+      - GATEWAY_SERVER_PORT=8080
+      - SPRING_APPLICATION_NAME=platform-gateway
+      - SPRING_PROFILES_ACTIVE=dev
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+    depends_on:
+      support-service:
+        condition: service_healthy
+      user-service:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      service-registry:
+        condition: service_healthy
+      loki:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  user-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_MODULE: user-service-application
+        SERVICE_MODULE_PATH: services/user-service/user-service-application
+    container_name: user-service
+    hostname: user-service
+    ports:
+      - "8081:8081"
+    environment:
+      - USER_SERVER_PORT=8081
+      - USER_DB_URL=jdbc:postgresql://postgres-user:5432/userdb
+      - USER_DB_USER=postgres
+      - USER_DB_PASSWORD=password
+      - LOKI_ENABLED=true
+      - LOKI_URL=http://loki:3100/loki/api/v1/push
+      - RABBIT_HOST=rabbitmq
+      - RABBIT_PORT=5672
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redispassword
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_APPLICATION_NAME=user-service-application
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+    depends_on:
+      service-registry:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      postgres-user:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      loki:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  support-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_MODULE: support-service-application
+        SERVICE_MODULE_PATH: services/support-service/support-service-application
+    container_name: support-service
+    hostname: support-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SUPPORT_SERVER_PORT=8082
+      - SUPPORT_DB_URL=jdbc:postgresql://postgres-support:5432/supportdb
+      - SUPPORT_DB_USER=postgres
+      - SUPPORT_DB_PASSWORD=password
+      - LOKI_ENABLED=true
+      - LOKI_URL=http://loki:3100/loki/api/v1/push
+      - RABBIT_HOST=rabbitmq
+      - RABBIT_PORT=5672
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redispassword
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_APPLICATION_NAME=support-service-application
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+    depends_on:
+      service-registry:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      postgres-support:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      loki:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  support-service-2:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        SERVICE_MODULE: support-service-application
+        SERVICE_MODULE_PATH: services/support-service/support-service-application
+    container_name: support-service-2
+    hostname: support-service-2
+    ports:
+      - "8083:8083"
+    environment:
+      - SUPPORT_SERVER_PORT=8083
+      - SUPPORT_DB_URL=jdbc:postgresql://postgres-support:5432/supportdb
+      - SUPPORT_DB_USER=postgres
+      - SUPPORT_DB_PASSWORD=password
+      - LOKI_ENABLED=true
+      - LOKI_URL=http://loki:3100/loki/api/v1/push
+      - RABBIT_HOST=rabbitmq
+      - RABBIT_PORT=5672
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redispassword
+      - SPRING_PROFILES_ACTIVE=dev
+      - SPRING_APPLICATION_NAME=support-service-application
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-registry:8761/eureka/
+      - SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888
+    depends_on:
+      service-registry:
+        condition: service_healthy
+      config-server:
+        condition: service_healthy
+      postgres-support:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      loki:
+        condition: service_healthy
+    networks:
+      - backend
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres-user-data:
+    name: postgres-user-data
+  postgres-support-data:
+    name: postgres-support-data
+  loki-data:
+    name: loki-data
+  grafana-data:
+    name: grafana-data
+  rabbitmq-data:
+    name: rabbitmq-data
+  redis-data:
+    name: redis-data
+
+networks:
+  backend:
+    driver: bridge

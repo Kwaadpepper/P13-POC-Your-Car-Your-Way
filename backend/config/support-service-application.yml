@@ -1,5 +1,5 @@
 server:
-  port: ${SERVER_PORT}
+  port: ${SUPPORT_SERVER_PORT}
 
 debug: false
 
@@ -9,9 +9,9 @@ rabbitmq:
 
 spring:
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
+    url: ${SUPPORT_DB_URL}
+    username: ${SUPPORT_DB_USER}
+    password: ${SUPPORT_DB_PASSWORD}
   jpa:
     show-sql: false
     hibernate:
@@ -19,6 +19,3 @@ spring:
     open-in-view: false
   flyway:
     enabled: false
-  rabbitmq:
-    username: ${RABBIT_USER}
-    password: ${RABBIT_PASSWORD}

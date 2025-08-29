@@ -1,0 +1,47 @@
+# Gradle caches (local user)
+.gradle/
+**/.gradle/
+build/
+**/build/
+out/
+**/out/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+**/logs/
+
+# Test reports
+test-results/
+**/test-results/
+reports/
+**/reports/
+
+# Node/npm/yarn (si tu as du front dans le mono-repo)
+node_modules/
+**/node_modules/
+npm-debug.log
+yarn-error.log
+
+# Git
+.git/
+.gitignore
+
+# Docker
+docker-compose*
+*.dockerignore
+
+# Misc
+*.swp
+*~

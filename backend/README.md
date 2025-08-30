@@ -130,6 +130,8 @@ Arrêt :
 docker-compose down
 ```
 
+**Attention: il est possible qu'un des services s'arrete au démarrage car il démarre trop tôt, vérifiez que tous sont bien lancés et relancez ceux qui sont arrêtés si nécessaire.**
+
 ---
 
 ## 8bis. Démarrage sans Docker

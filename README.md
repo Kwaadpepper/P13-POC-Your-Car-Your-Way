@@ -2,6 +2,8 @@
 
 Ce dépôt présente une **preuve de concept (POC)** d’architecture moderne utilisant micro-frontends et micro-services, adaptée à des enjeux métier tels que l’authentification et le support chat.
 
+[![Pipeline](https://github.com/Kwaadpepper/P13-POC-Your-Car-Your-Way/actions/workflows/pipeline.yml/badge.svg)](https://github.com/Kwaadpepper/P13-POC-Your-Car-Your-Way/actions/workflows/pipeline.yml)
+
 ---
 
 ## Sommaire

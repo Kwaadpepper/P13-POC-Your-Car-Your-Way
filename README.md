@@ -32,26 +32,26 @@ L’objectif est de démontrer la **scalabilité, la robustesse et l’évolutiv
 
 *Figure : Architecture cible, flux technologiques et découplage des responsabilités.*
 
-> **Remarque :**  
+> **Remarque :**
 > Le schéma ci-dessous représente à titre indicatif les principaux *domaines métiers* adressés par la solution : chaque bloc (Support, Réservation, Catalogue, Utilisateur) illustre une séparation fonctionnelle qui, dans une organisation réelle, peut évoluer selon les besoins du métier.
 
 **Principaux composants du schéma :**
-- **Frontends Angular** (Cluster K8S-A) :  
+- **Frontends Angular** (Cluster K8S-A) :
   - 4 micro-frontends (Support, Réservation, Catalogue, Utilisateur) fédérés dans un shell
   - Communication via HTTPS/WebSocket
   - Expérience fluide pour le client et l’opérateur
 
-- **Gateway & Services** (Cluster K8S-B/C) :  
+- **Gateway & Services** (Cluster K8S-B/C) :
   - **Spring Cloud Gateway** : gestion des routes, sécurité, centralisation des accès
   - **Services Spring Boot** : chaque domaine métier a son service et sa BDD PostgreSQL dédiée
   - Monitoring natif (Prometheus/Grafana), configuration centralisée (Spring Cloud Config, Eureka)
 
-- **Infrastructure** :  
+- **Infrastructure** :
   - Multi-cluster Kubernetes pour la disponibilité, la sécurité et la scalabilité
   - RabbitMQ pour la communication asynchrone
   - Bases de données PostgreSQL sectorisées
 
-- **Interopérabilité** :  
+- **Interopérabilité** :
   - API REST/WebSocket pour l’intégration de services externes (ex : Vonage)
   - Ouverture vers des applications tierces
 
@@ -91,6 +91,8 @@ Chaque dossier contient les instructions nécessaires pour l’installation, le 
 ## Pour aller plus loin
 
 - Consultez les READMEs spécifiques à chaque sous-projet pour démarrer rapidement.
+  - [./backend/README.md](./backend/README.md)
+  - [./frontend/README.md](./frontend/README.md)
 - Utilisez les guides pour contribuer ou étendre l’architecture.
 - Explorez le schéma d’architecture pour comprendre les flux et les interactions.
 

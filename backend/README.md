@@ -1,307 +1,235 @@
-# YCYW Backend Monorepo (Spring Boot, Java 21, Gradle)
+# Backend
 
-Monorepo Gradle (Kotlin DSL) pour héberger des micro‑services Spring Boot alignés sur le diagramme cible:
-- Plateforme: Spring Cloud Config Server, Eureka Service Registry, Spring Cloud Gateway
-- Services métiers: ex. user-service (et futurs: catalogue, réservation, support…)
-- Messagerie: RabbitMQ
-- Base de données: un Postgres par service
-- Observabilité: Actuator + Micrometer Prometheus
+Monorepo **Java / Spring Boot** (build via **Gradle Kotlin DSL**) organisé en **microservices** :  
+- **Platform Service Registry (Eureka)**  
+- **Platform Config Server**  
+- **Platform API Gateway**  
+- **User Service** (PostgreSQL + Redis + RabbitMQ)  
+- **Support Service** (PostgreSQL + Redis + RabbitMQ)  
 
-Gradle: 8.10.2 (wrapper inclus)
+L’écosystème se lance via **Docker Compose** (bases de données, cache, broker, observabilité).  
 
-## Stack technique
-- Java 21
-- Spring Boot 3.4.x (compatible Java 21)
-- Spring Cloud 2024.0.x
-- Gradle (Wrapper, Kotlin DSL)
-- Docker (Postgres, RabbitMQ)
-- Gestion centralisée des versions via Version Catalog (gradle/deps.versions.toml)
+---
 
-## Arborescence
-```
-backend/
-├─ settings.gradle.kts            # Déclare les modules et le catalog TOML
-├─ build.gradle.kts               # Conventions communes
-├─ gradle/
-│  ├─ deps.versions.toml          # Version Catalog (libs, versions, plugins)
-│  └─ wrapper/                     # Gradle wrapper
-├─ platform/
-│  ├─ config-server/              # Spring Cloud Config Server (port 8888)
-│  ├─ service-registry/           # Eureka Server (port 8761)
-│  └─ gateway/                    # Spring Cloud Gateway (port 8080)
-├─ services/
-│  └─ user-service/               # Exemple de micro-service (port 8081)
-├─ config/                        # Config centralisée (servie par Config Server)
-│  ├─ application.yml
-│  └─ user-service.yml
-├─ docker/
-│  └─ docker-compose.yml          # RabbitMQ + Postgres pour user-service (et autres)
-└─ .vscode/
-   └─ launch.json                 # Configs Run/Debug VS Code
-```
+## Sommaire
 
-## Prérequis
-- JDK 21 installé (JAVA_HOME pointe vers le JDK 21)
-- Docker Desktop (ou équivalent)
-- VS Code (recommandé):
-  - Extension Pack for Java
-  - Spring Boot Extension Pack
-- Ports disponibles: 8888, 8761, 8080, 8081, 5432, 5672, 15672
+- [Backend](#backend)
+  - [Sommaire](#sommaire)
+  - [1. Présentation \& Objectifs](#1-présentation--objectifs)
+  - [2. Principes d’architecture](#2-principes-darchitecture)
+  - [3. Architecture logicielle \& technique](#3-architecture-logicielle--technique)
+  - [4. Prérequis](#4-prérequis)
+  - [5. Structure du projet](#5-structure-du-projet)
+  - [6. Gestion de la configuration](#6-gestion-de-la-configuration)
+  - [7. Observabilité (Logs \& Monitoring)](#7-observabilité-logs--monitoring)
+  - [8. Démarrage local](#8-démarrage-local)
+    - [Avec Docker](#avec-docker)
+  - [8bis. Démarrage sans Docker](#8bis-démarrage-sans-docker)
+  - [9. Accès aux services](#9-accès-aux-services)
+  - [10. Variables / Comptes par défaut](#10-variables--comptes-par-défaut)
+  - [11. Tests](#11-tests)
+  - [11bis. Analyse statique (Error Prone + NullAway)](#11bis-analyse-statique-error-prone--nullaway)
+  - [11ter. Vérification de style (Checkstyle)](#11ter-vérification-de-style-checkstyle)
+  - [12. Contribution](#12-contribution)
+  - [13. Ressources](#13-ressources)
 
-## Démarrage rapide
+---
 
-Ouvrez un terminal dans `backend/`.
+## 1. Présentation & Objectifs
 
-1) Build global
+Le projet **Your Car, Your Way** a pour objectif de moderniser la gestion de la **location automobile** et du **support client**, en unifiant des applications existantes hétérogènes.  
+Le backend fournit une **architecture évolutive et résiliente** pour :  
+- accompagner la croissance sur les marchés **US & EU**,  
+- garantir une **haute disponibilité**,  
+- simplifier la **maintenance et l’évolutivité** des services.  
+
+---
+
+## 2. Principes d’architecture
+
+- **Disponibilité & résilience** : réplication des services, reprise après panne (RPO/RTO réduits).  
+- **Évolutivité** : scalabilité horizontale fine (chaque microservice peut monter en charge).  
+- **Observabilité** : logs centralisés (Loki), métriques (Grafana), healthchecks (Actuator).  
+- **Sécurité** : isolation des bases, JWT en cookie HttpOnly, révocation via Redis.  
+- **Maintenabilité** : monorepo avec microservices indépendants (DDD : Domain / Application / Infrastructure).  
+- **Interopérabilité** : communication inter-services par **RabbitMQ (event-driven)** et **Feign + Eureka (REST direct)**.  
+
+---
+
+## 3. Architecture logicielle & technique
+
+- **Microservices** :  
+  - `user-service` : gestion des utilisateurs et sessions, JWT + Redis.  
+  - `support-service` : gestion du support client (tickets, chat temps réel via RabbitMQ).  
+  - futurs services : catalogue, réservation, facturation (extension facile).  
+
+- **Communication inter-services** :  
+  - **RabbitMQ (topic exchange)** : événements diffusés aux services abonnés (multi-queues par instance).  
+  - **Feign + Eureka** : appels directs avec découverte dynamique.  
+
+- **API Gateway** : unique point d’entrée, gère CORS, routage et sécurité.  
+- **Config Server** : centralise la configuration YAML.  
+- **Eureka** : assure la découverte et le load-balancing dynamique.  
+- **Bases de données** : isolation stricte par domaine (un PostgreSQL par service).  
+- **Observabilité** : logs collectés par **Loki**, dashboards via **Grafana**.  
+
+---
+
+## 4. Prérequis
+
+- **Docker** & **Docker Compose** (ou **Podman**)  
+- **JDK 21+** (pour builder en local si besoin)  
+- **Gradle Wrapper** (`./gradlew`)  
+
+---
+
+## 5. Structure du projet
+
+- `platform/`  
+  - `platform-service-registry` (Eureka)  
+  - `platform-config-server`  
+  - `platform-gateway`  
+- `services/`  
+  - `user-service/` (domain, application, infrastructure)  
+  - `support-service/` (domain, application, infrastructure)  
+- `config/` : fichiers de configuration centralisée (YAML)  
+- `docker/` : Dockerfile et provisioning Grafana/Loki  
+- `docker-compose.yml` : orchestration complète  
+
+---
+
+## 6. Gestion de la configuration
+
+- **Config Server** lit les fichiers depuis le volume monté `./config`.  
+- Les services consomment la conf via `SPRING_CONFIG_IMPORT=optional:configserver:http://config-server:8888`.  
+- Les secrets de dev (mots de passe DB, Redis, RabbitMQ) sont injectés par `docker-compose.yml`.  
+
+---
+
+## 7. Observabilité (Logs & Monitoring)
+
+- **Loki** agrège les logs applicatifs.  
+- **Grafana** propose des dashboards préconfigurés.  
+- **Healthchecks** exposés sur `/actuator/health`.  
+
+---
+
+## 8. Démarrage local
+
+### Avec Docker
+
 ```bash
-./gradlew clean build
-# Optionnel (analyse de nullité NullAway + ErrorProne):
-./gradlew -Pnullaway=true clean build
+docker-compose up --build
+# ou en arrière-plan
+docker-compose up -d --build
 ```
-Attendu: BUILD SUCCESSFUL.
 
-2) Lancer l’infra locale (RabbitMQ + Postgres)
+Arrêt :
+
 ```bash
-cd docker
-podman-compose -p backend up -d
-# RabbitMQ UI: http://localhost:15672 (guest/guest)
+docker-compose down
 ```
 
-3) Démarrer le Config Server (port 8888)
+---
+
+## 8bis. Démarrage sans Docker
+
+Exemples pour lancer un service indépendamment (les dépendances externes doivent tourner) :  
+
 ```bash
-./gradlew :platform-config-server:bootRun
-# Santé:
-curl http://localhost:8888/actuator/health   # {"status":"UP"}
+# Lancer le User Service
+./gradlew :services:user-service:user-service-application:bootRun
+
+# Lancer le Support Service
+./gradlew :services:support-service:support-service-application:bootRun
+
+# Lancer la Gateway
+./gradlew :platform:platform-gateway:bootRun
 ```
 
-4) Démarrer le Service Registry Eureka (port 8761)
+---
+
+## 9. Accès aux services
+
+| Service                        | Port  | URL / Accès                                                      |
+| ------------------------------ | ----- | ---------------------------------------------------------------- |
+| **API Gateway**                | 8080  | [http://localhost:8080](http://localhost:8080)                   |
+| **Eureka (Service Registry)**  | 8761  | [http://localhost:8761](http://localhost:8761)                   |
+| **Config Server**              | 8888  | [http://localhost:8888](http://localhost:8888)                   |
+| **User Service**               | 8081  | [http://localhost:8081](http://localhost:8081)                   |
+| **Support Service**            | 8082  | [http://localhost:8082](http://localhost:8082)                   |
+| **Support Service (2ᵉ inst.)** | 8083  | [http://localhost:8083](http://localhost:8083)                   |
+| **RabbitMQ (AMQP)**            | 5672  | `amqp://localhost:5672`                                          |
+| **RabbitMQ UI**                | 15672 | [http://localhost:15672](http://localhost:15672) *(guest/guest)* |
+| **Redis**                      | 6379  | `redis://:redispassword@localhost:6379`                          |
+| **PostgreSQL (user)**          | 5432  | DB `userdb` (postgres / password)                                |
+| **PostgreSQL (support)**       | 5433  | DB `supportdb` (postgres / password)                             |
+| **Loki**                       | 3100  | [http://localhost:3100](http://localhost:3100)                   |
+| **Grafana**                    | 3000  | [http://localhost:3000](http://localhost:3000) *(admin/admin)*   |
+
+---
+
+## 10. Variables / Comptes par défaut
+
+- **RabbitMQ** : user `guest`, pass `guest`  
+- **Redis** : mot de passe `redispassword`  
+- **PostgreSQL** :  
+  - user-db : `postgres / password` (DB `userdb`, port `5432`)  
+  - support-db : `postgres / password` (DB `supportdb`, port `5433`)  
+- **Grafana** : `admin / admin`  
+
+---
+
+## 11. Tests
+
 ```bash
-./gradlew :platform-service-registry:bootRun
-# Santé:
-curl http://localhost:8761/actuator/health   # {"status":"UP"}
-# UI:
-# http://localhost:8761
+./gradlew build
+./gradlew test
 ```
 
-5) Démarrer la Gateway (port 8080)
+---
+
+## 11bis. Analyse statique (Error Prone + NullAway)
+
+Error Prone (et NullAway) est activé lors de la compilation.  
+
 ```bash
-./gradlew :platform-gateway:bootRun
-# Santé:
-curl http://localhost:8080/actuator/health   # {"status":"UP"}
+# Compilation avec Error Prone
+./gradlew compileJava
+
+# Vérifier tous les modules
+./gradlew build
+
+# Exécution explicite avec NullAway
+./gradlew :support-service-application:build -Pnullaway=true --no-daemon
 ```
 
-6) Démarrer le user-service (port 8081)
+---
+
+## 11ter. Vérification de style (Checkstyle)
+
 ```bash
-# Si server.port est déjà 8081 dans application.yml:
-SPRING_APPLICATION_NAME=user-service-application SPRING_PROFILES_ACTIVE=dev
-./gradlew :services:user-service:bootRun
-
-# Ou en forçant le port à la volée:
-SPRING_APPLICATION_NAME=user-service-application SPRING_PROFILES_ACTIVE=dev
-./gradlew :services:user-service:bootRun -Dspring-boot.run.arguments=--server.port=8081
+./gradlew checkstyleMain --no-daemon --stacktrace
 ```
 
-7) Vérifications fonctionnelles
-```bash
-# Direct
-curl http://localhost:8081/users/hello
-# -> Hello from user-service
+---
 
-# Via la Gateway (service discovery locator activé)
-curl http://localhost:8080/user-service/users/hello
-# -> Hello from user-service
+## 12. Contribution
 
-# Dans Eureka (UI)
-# http://localhost:8761  (user-service doit apparaître)
-```
+- Branche : `feature/<votre-nom>/<description>`  
+- Commits : **Conventional Commits**  
+- Lint/format : respecter Checkstyle et Spotless si configurés  
 
-Arrêt
-```bash
-# Ctrl+C dans chaque terminal Spring Boot
-./gradlew --stop
-docker compose -f docker/docker-compose.yml down
-```
+---
 
-Astuce
-```bash
-# Si vous lancez depuis la racine du repo, préfixez avec -p backend
-./gradlew -p backend :platform-config-server:bootRun
-```
+## 13. Ressources
 
-## Configuration
+- [Spring Boot](https://spring.io/projects/spring-boot)  
+- [Spring Cloud Netflix (Eureka)](https://spring.io/projects/spring-cloud-netflix)  
+- [Spring Cloud Config](https://spring.io/projects/spring-cloud-config)  
+- [Docker Compose](https://docs.docker.com/compose/)  
+- [Grafana Loki](https://grafana.com/oss/loki/)  
+- [Error Prone](https://errorprone.info/)  
+- [NullAway](https://github.com/uber/NullAway)  
+- [Checkstyle](https://checkstyle.sourceforge.io/)  
 
-- Config centralisée via Spring Cloud Config (mode "native"):
-  - Le Config Server lit `backend/config/` (voir `platform/config-server/src/main/resources/application.yml`, `search-locations`).
-  - Exemple de clés communes: `management.endpoints.web.exposure.include`, `logging.level.root`, etc.
-- Chaque service importe la config:
-```yaml
-spring:
-  config:
-    import: optional:configserver:http://localhost:8888
-```
-- Variables d’environnement utiles:
-  - Base de données:
-    - `DB_URL` (ex: jdbc:postgresql://localhost:5432/userdb)
-    - `DB_USER`, `DB_PASSWORD`
-  - RabbitMQ:
-    - `RABBIT_HOST`, `RABBIT_PORT`, `RABBIT_USER`, `RABBIT_PASSWORD`
-  - Port service (optionnel):
-    - `SERVER_PORT` (ex: 8081)
-
-## Ajouter un nouveau micro‑service
-
-Deux approches: dupliquer `user-service` (rapide) ou générer via Spring Initializr.
-
-### Option A — Dupliquer `user-service`
-1) Copier le dossier
-```bash
-cp -R services/user-service services/catalog-service
-```
-
-2) Mettre à jour dans `services/catalog-service`:
-- `build.gradle.kts`:
-  - Le plugin `org.springframework.boot` doit être appliqué (comme dans user-service)
-  - Dépendances minimales (voir plus bas)
-- Packages Java et classe main:
-  - Renommez le package `com.ycyw.users` en `com.ycyw.catalog`
-  - Classe principale: `CatalogServiceApplication`
-- `src/main/resources/application.yml`:
-  - `spring.application.name: catalog-service`
-  - `server.port: 8082` (ou laissez vide et lancez avec `--server.port=...`)
-  - URL de sa base: `jdbc:postgresql://localhost:5433/catalogdb` (par exemple)
-- Ajoutez un contrôleur minimal (ex: GET `/catalog/hello`)
-
-3) Déclarer le module dans `settings.gradle.kts`
-```kotlin
-include(
-  // ...
-  "services:user-service",
-  "services:catalog-service", // <-- ajouter
-)
-```
-
-4) Config centralisée (optionnel mais conseillé)
-Créez `backend/config/catalog-service.yml` avec les surcharges nécessaires:
-```yaml
-spring:
-  datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5433/catalogdb}
-```
-
-5) Base de données (docker-compose)
-Ajoutez un service Postgres dédié dans `backend/docker/docker-compose.yml`:
-```yaml
-catalog-postgres:
-  image: postgres:16
-  environment:
-    POSTGRES_DB: catalogdb
-    POSTGRES_USER: catalog
-    POSTGRES_PASSWORD: password
-  ports:
-    - "5433:5432"
-  healthcheck:
-    test: ["CMD-SHELL", "pg_isready -U catalog -d catalogdb"]
-    interval: 5s
-    timeout: 5s
-    retries: 10
-```
-Puis relancez:
-```bash
-docker compose -f docker/docker-compose.yml up -d
-```
-
-6) Build et démarrage du nouveau service
-```bash
-./gradlew clean build
-./gradlew :services:catalog-service:bootRun -Dspring-boot.run.arguments=--server.port=8082
-```
-Vérifiez:
-```bash
-curl http://localhost:8082/catalog/hello
-curl http://localhost:8080/catalog-service/catalog/hello
-# Eureka UI: http://localhost:8761 -> catalog-service présent
-```
-
-Dépendances minimales conseillées pour un service type:
-- spring-boot-starter-web
-- spring-boot-starter-validation
-- spring-boot-starter-data-jpa
-- postgresql (scope runtime)
-- spring-boot-starter-amqp
-- spring-cloud-starter-netflix-eureka-client
-- spring-cloud-starter-config
-- spring-boot-starter-actuator
-- micrometer-registry-prometheus
-- spring-boot-starter-test (test)
-
-### Option B — Spring Initializr
-- Générez un projet Gradle Java 21, Spring Boot 3.4.x
-- Group: `com.ycyw`, Artifact: `catalog-service`
-- Dépendances: celles listées ci‑dessus
-- Placez-le dans `backend/services/`
-- Ajustez:
-  - `spring.application.name`
-  - `application.yml` (ports, DB, RabbitMQ)
-  - Ajoutez le module dans `settings.gradle.kts` (voir étape 3)
-  - Ajoutez `config/catalog-service.yml` si nécessaire
-
-## Observabilité
-
-- Chaque service expose `/actuator/prometheus` (Micrometer Prometheus).
-- Vous pouvez ajouter ultérieurement un `docker-compose` pour Prometheus + Grafana et scrapper les services.
-- Endpoints santé:
-  - Config Server: `http://localhost:8888/actuator/health`
-  - Eureka: `http://localhost:8761/actuator/health`
-  - Gateway: `http://localhost:8080/actuator/health`
-  - Services: `http://localhost:<port>/actuator/health`
-
-## Exécution avec VS Code
-
-- `.vscode/launch.json` peut inclure:
-  - “Start Platform (Config + Eureka + Gateway)” (compound)
-  - “User Service”, etc. pour chaque micro‑service
-- Palette de commande:
-  - “Java: Clean Java Language Server Workspace” en cas de souci d’indexation
-
-## Dépannage
-
-- Port déjà utilisé (“Address already in use”)
-  - Changer le port: `--server.port=808x` ou `server.port` dans `application.yml`
-  - Voir les processus:
-    ```bash
-    lsof -iTCP:8080 -sTCP:LISTEN -nP
-    lsof -iTCP:8081 -sTCP:LISTEN -nP
-    ```
-- Le service n’apparaît pas dans Eureka
-  - Vérifier `eureka.client.service-url.defaultZone`
-  - Vérifier la présence de `spring-cloud-starter-netflix-eureka-client`
-- Erreur Config Server
-  - Assurez-vous que Config Server est démarré (8888)
-  - Vérifier `spring.config.import=optional:configserver:http://localhost:8888`
-  - Vérifier `search-locations` pointe bien vers `backend/config`
-- Problèmes DB
-  - Vérifier variables `DB_URL`, `DB_USER`, `DB_PASSWORD`
-  - Vérifier que l’instance Postgres du service est UP (`docker compose ps`)
-
-## Commandes utiles
-
-- Build global:
-  ```bash
-  ./gradlew clean build
-  ```
-- Démarrer un module:
-  ```bash
-  ./gradlew :platform-config-server:bootRun
-  ./gradlew :platform-service-registry:bootRun
-  ./gradlew :platform-gateway:bootRun
-  ./gradlew :services:user-service:bootRun
-  ```
-- Forcer un port à la volée:
-  ```bash
-  ./gradlew :services:user-service:bootRun -Dspring-boot.run.arguments=--server.port=8081
-  ```
-- Infra locale:
-  ```bash
-  docker compose -f docker/docker-compose.yml up -d
-  docker compose -f docker/docker-compose.yml down
-  ```

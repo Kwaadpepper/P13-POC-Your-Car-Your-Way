@@ -43,12 +43,12 @@ public class IssueSeeder implements Seeder {
   }
 
   private void createModel() {
-    final var JOHN_DOE_CLIENT_ID = "019159f8-d42f-7000-8000-000000000002";
+    final var johnDoeClientId = "019159f8-d42f-7000-8000-000000000002";
 
     var subject = dataFaker.lorem().sentence();
     var description = dataFaker.lorem().paragraph();
     @Nullable IssueStatus status = dataFaker.options().option(IssueStatus.class);
-    var client = UUID.fromString(JOHN_DOE_CLIENT_ID);
+    var client = UUID.fromString(johnDoeClientId);
 
     // Using random uuid as the reservation directory adapter uses faker.
     @Nullable UUID reservation = UuidV7.randomUuid();

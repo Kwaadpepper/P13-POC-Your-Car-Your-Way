@@ -15,6 +15,7 @@ rabbitmq-amqp-client = "5.26.0"
 slf4j-api = "2.0.17"
 datafaker-version = "2.4.4"
 jsonwebtoken-jjwt-version = "0.12.6"
+springdoc-openapi-version = "2.8.11"
 
 [libraries]
 spring-context = { module = "org.springframework:spring-context" }
@@ -41,6 +42,8 @@ spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-
 spring-boot-starter-websocket = { module = "org.springframework.boot:spring-boot-starter-websocket" }
 
 spring-security-core = { module = "org.springframework.security:spring-security-core" }
+springdoc-openapi-starter-webmvc-api = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "springdoc-openapi-version" }
+springdoc-openapi-starter-webmvc-ui = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc-openapi-version" }
 
 eclipse-jdt-annotation = { module = "org.eclipse.jdt:org.eclipse.jdt.annotation", version.ref = "jdt-annotation-version" }
 errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "error-prone" }

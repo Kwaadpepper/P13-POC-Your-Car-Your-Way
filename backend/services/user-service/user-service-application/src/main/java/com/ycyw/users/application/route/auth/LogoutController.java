@@ -11,10 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.objectvalues.JwtAccessToken;
+import com.ycyw.users.application.dto.ApiErrorDetails;
 import com.ycyw.users.application.dto.SimpleMessageDto;
 import com.ycyw.users.application.service.CookieService;
 import com.ycyw.users.domain.usecase.session.InvalidateSession;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +41,19 @@ public class LogoutController {
     this.cookieService = cookieService;
   }
 
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            content = @Content(schema = @Schema(implementation = SimpleMessageDto.class))),
+        @ApiResponse(
+            responseCode = "400",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiErrorDetails.class)))
+      })
+  @SecurityRequirements
   @PostMapping(value = "/auth/logout", produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<SimpleMessageDto> logout(HttpServletRequest request) {
 

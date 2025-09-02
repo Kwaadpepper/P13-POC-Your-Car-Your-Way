@@ -8,11 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.shared.ddd.objectvalues.Email;
+import com.ycyw.users.application.dto.ApiErrorDetails;
 import com.ycyw.users.application.dto.OperatorViewDto;
 import com.ycyw.users.application.exception.exceptions.BadRequestException;
 import com.ycyw.users.application.presenter.OperatorPresenter;
 import com.ycyw.users.domain.usecase.operator.FindOperator;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.eclipse.jdt.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +38,24 @@ public class FindOperatorController {
     this.presenter = presenter;
   }
 
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            content = @Content(schema = @Schema(implementation = OperatorViewDto.class))),
+        @ApiResponse(
+            responseCode = "400",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiErrorDetails.class))),
+        @ApiResponse(
+            responseCode = "422",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiErrorDetails.class)))
+      })
   @GetMapping("/operators/{user}")
   public OperatorViewDto getUserById(
       @PathVariable(name = "user", required = true) final String user) {

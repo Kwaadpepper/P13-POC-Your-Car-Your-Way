@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
+import com.ycyw.users.application.dto.ApiErrorDetails;
 import com.ycyw.users.application.dto.AuthenticableViewDto;
 import com.ycyw.users.application.exception.exceptions.AuthenticationFailureException;
 import com.ycyw.users.application.exception.exceptions.BadRequestException;
@@ -21,6 +22,11 @@ import com.ycyw.users.domain.model.valueobject.PasswordCandidate;
 import com.ycyw.users.domain.model.valueobject.RawIdentifier;
 import com.ycyw.users.domain.usecase.session.CreateSession;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +47,21 @@ public class LoginController {
     this.cookieService = cookieService;
   }
 
+  @ApiResponses(
+      value = {
+        @ApiResponse(
+            responseCode = "200",
+            description = "Successfully authenticated",
+            content = @Content(schema = @Schema(implementation = AuthenticableViewDto.class))),
+        @ApiResponse(
+            responseCode = "401",
+            description = "User could not be authenticated",
+            content =
+                @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ApiErrorDetails.class)))
+      })
+  @SecurityRequirements
   @PostMapping(
       value = "/auth/login",
       consumes = MediaType.APPLICATION_JSON_VALUE,

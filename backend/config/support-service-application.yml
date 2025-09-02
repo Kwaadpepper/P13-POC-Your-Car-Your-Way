@@ -19,3 +19,9 @@ spring:
     open-in-view: false
   flyway:
     enabled: false
+
+springdoc:
+  api-docs:
+    enabled: ${SPDOC_ENABLE:false}
+  swagger-ui:
+    enabled: ${SPDOC_SWAGGER_ENABLE:false}

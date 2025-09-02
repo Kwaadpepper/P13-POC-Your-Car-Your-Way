@@ -61,6 +61,9 @@ public class SpringSecurityConfig {
               // Allow non protected AuthRequestToUrls are not protected.
               request.requestMatchers(routesToIgnore.toArray(new String[0])).permitAll();
 
+              // Allow root path.
+              request.requestMatchers("/").permitAll();
+
               // Any other routes are.
               request.anyRequest().fullyAuthenticated();
             })

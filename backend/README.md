@@ -26,6 +26,7 @@ L’écosystème se lance via **Docker Compose** (bases de données, cache, brok
     - [Avec Docker](#avec-docker)
   - [8bis. Démarrage sans Docker](#8bis-démarrage-sans-docker)
   - [9. Accès aux services](#9-accès-aux-services)
+  - [9bis. OpenAPI](#9bis-openapi)
   - [10. Variables / Comptes par défaut](#10-variables--comptes-par-défaut)
   - [11. Tests](#11-tests)
   - [11bis. Analyse statique (Error Prone + NullAway)](#11bis-analyse-statique-error-prone--nullaway)
@@ -171,6 +172,20 @@ Exemples pour lancer un service indépendamment (les dépendances externes doive
 
 ---
 
+## 9bis. OpenAPI
+
+Chaque microservice doit exposer sa spécification OpenAPI 3 ainsi que l’interface Swagger UI.
+
+- Accès direct (ports par défaut, susceptibles de varier selon l’environnement) :
+  - user-service-application (Swagger UI) : http://localhost:8081/swagger-ui/index.html
+  - support-service-application (Swagger UI) : http://localhost:8082/swagger-ui/index.html
+
+- Via l’API Gateway, les spécifications OpenAPI (JSON) sont accessibles :
+  - http://localhost:8080/user-service-application/v3/api-docs
+  - http://localhost:8080/support-service-application/v3/api-docs
+
+---
+
 ## 10. Variables / Comptes par défaut
 
 - **RabbitMQ** : user `guest`, pass `guest`  
@@ -234,4 +249,3 @@ Error Prone (et NullAway) est activé lors de la compilation.
 - [Error Prone](https://errorprone.info/)  
 - [NullAway](https://github.com/uber/NullAway)  
 - [Checkstyle](https://checkstyle.sourceforge.io/)  
-

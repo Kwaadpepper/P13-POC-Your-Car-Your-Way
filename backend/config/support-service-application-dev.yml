@@ -35,3 +35,9 @@ spring:
   rabbitmq:
     username: ${SUPPORT_RABBIT_USER:guest}
     password: ${SUPPORT_RABBIT_PASSWORD:guest}
+
+springdoc:
+  api-docs:
+    enabled: ${SPDOC_ENABLE:true}
+  swagger-ui:
+    enabled: ${SPDOC_SWAGGER_ENABLE:true}

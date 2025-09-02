@@ -39,5 +39,8 @@ dependencies {
   runtimeOnly(libs.jsonwebtoken.jjwt.impl)
   runtimeOnly(libs.jsonwebtoken.jjwt.jackson)
 
+  implementation(libs.springdoc.openapi.starter.webmvc.api)
+  implementation(libs.springdoc.openapi.starter.webmvc.ui)
+
   testImplementation(libs.spring.boot.starter.test)
 }

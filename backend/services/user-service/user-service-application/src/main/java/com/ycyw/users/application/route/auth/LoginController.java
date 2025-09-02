@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ycyw.shared.ddd.exceptions.DomainConstraintException;
 import com.ycyw.shared.ddd.lib.UseCaseExecutor;
 import com.ycyw.users.application.dto.AuthenticableViewDto;
+import com.ycyw.users.application.exception.exceptions.AuthenticationFailureException;
 import com.ycyw.users.application.exception.exceptions.BadRequestException;
 import com.ycyw.users.application.request.LoginRequest;
 import com.ycyw.users.application.service.CookieService;
@@ -63,8 +65,13 @@ public class LoginController {
 
   private CreateSession.NewSession createSession(
       final RawIdentifier login, final PasswordCandidate password) {
-    return this.useCaseExecutor.execute(
-        this.createSessionHandler, new CreateSession.Credentials(login, password));
+    try {
+      return this.useCaseExecutor.execute(
+          this.createSessionHandler, new CreateSession.Credentials(login, password));
+    } catch (DomainConstraintException e) {
+      logger.debug("Domain exception while creating sessions: {}", e.getMessage());
+      throw new AuthenticationFailureException(e.getMessage());
+    }
   }
 
   private AuthenticableViewDto toAuthenticableViewDto(CreateSession.NewSession session) {

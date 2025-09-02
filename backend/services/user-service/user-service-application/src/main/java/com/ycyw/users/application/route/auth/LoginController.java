@@ -70,7 +70,7 @@ public class LoginController {
           this.createSessionHandler, new CreateSession.Credentials(login, password));
     } catch (DomainConstraintException e) {
       logger.debug("Domain exception while creating sessions: {}", e.getMessage());
-      throw new AuthenticationFailureException(e.getMessage());
+      throw new AuthenticationFailureException("Login failure " + e.getMessage());
     }
   }
 
